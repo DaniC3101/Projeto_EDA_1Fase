@@ -1,7 +1,6 @@
 # Projeto_EDA_1Fase
 ## 📝 Fase 1 - Listas Ligadas
 
-EDA Listas Ligadas - Fase 1
 
 ## Instituto Politécnico do Cávado e do Ave (IPCA) - Barcelos
 
