@@ -1,4 +1,6 @@
 # Projeto_EDA_1Fase
+## 📝 Fase 1 - Listas Ligadas
+
 EDA Listas Ligadas - Fase 1
 
 ## Instituto Politécnico do Cávado e do Ave (IPCA) - Barcelos
@@ -20,8 +22,6 @@ Este projeto individual tem como objetivo reforçar e aplicar os conhecimentos a
   4. Modularização
 
   5. Documentação com Doxygen
-
-## 📝 Fase 1 - Listas Ligadas
 
 ## 📖 Descrição do Problema
 
