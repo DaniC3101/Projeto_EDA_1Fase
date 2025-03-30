@@ -1,29 +1,29 @@
-### Projeto_EDA_1Fase
+# Projeto_EDA_1Fase
 EDA Listas Ligadas - Fase 1
 
-Instituto Politécnico do Cávado e do Ave (IPCA) - Barcelos
+## Instituto Politécnico do Cávado e do Ave (IPCA) - Barcelos
 
-Aluno: Dani Cruz (a23016)
+## Aluno: Dani Cruz (a23016)
 
-📌 Motivação
+## 📌 Motivação
 
 Este projeto individual tem como objetivo reforçar e aplicar os conhecimentos adquiridos na Unidade Curricular de Estruturas de Dados Avançadas (EDA), especialmente no que diz respeito à manipulação de estruturas de dados dinâmicas na linguagem de programação C.
 
-🎯 Objetivo
+## 🎯 Objetivo
 
-Desenvolver soluções de software para manipulação de listas ligadas representando matrizes de antenas, aplicando os conhecimentos adquiridos sobre:
+  1. Desenvolver soluções de software para manipulação de listas ligadas representando matrizes de antenas, aplicando os conhecimentos adquiridos sobre:
 
-Estruturas de dados dinâmicas
+  2. Estruturas de dados dinâmicas
 
-Armazenamento em ficheiro
+  3. Armazenamento em ficheiro
 
-Modularização
+  4. Modularização
 
-Documentação com Doxygen
+  5. Documentação com Doxygen
 
-📝 Fase 1 - Listas Ligadas
+## 📝 Fase 1 - Listas Ligadas
 
-📖 Descrição do Problema
+## 📖 Descrição do Problema
 
 Implementar uma solução para uma cidade onde existem antenas com:
 
@@ -33,7 +33,7 @@ Frequências associadas
 
 Localizações nefastas, originadas por posições específicas de antenas com frequências iguais
 
-⚙️ Funcionalidades a Implementar
+## ⚙️ Funcionalidades a Implementar
 
 Estrutura de Dados Dinâmica: Utilizar listas ligadas para representar a matriz de inteiros.
 
@@ -47,7 +47,7 @@ Remoção de Antenas: Eliminar antenas.
 
 Listagem Tabular: Exibir todas as informações das antenas de forma tabular.
 
-📄 Documentação
+## 📄 Documentação
 
 Relatório Doxygen: doc/latex/Relatório-Latex.pdf
 
