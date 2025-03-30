@@ -1,0 +1,489 @@
+\doxysection{Air conditioner special code}
+\hypertarget{group__Airconditoners}{}\label{group__Airconditoners}\index{Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionLGProtocol}{LGProtocol}}
+\item 
+class \mbox{\hyperlink{classAircondition__LG}{Aircondition\+\_\+\+LG}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group__Airconditoners_ga23c78d99597e1fb79900c2c2162703ed}\label{group__Airconditoners_ga23c78d99597e1fb79900c2c2162703ed} 
+\#define {\bfseries LG\+\_\+\+ADDRESS}~0x88
+\item 
+\Hypertarget{group__Airconditoners_ga2e4ee6b0d489a06eb1115213bf8055ed}\label{group__Airconditoners_ga2e4ee6b0d489a06eb1115213bf8055ed} 
+\#define {\bfseries LG\+\_\+\+SWITCH\+\_\+\+ON\+\_\+\+MASK}~0x0800
+\item 
+\Hypertarget{group__Airconditoners_gaae2e0db9a5ce4151112a6906bfb1090c}\label{group__Airconditoners_gaae2e0db9a5ce4151112a6906bfb1090c} 
+\#define {\bfseries LG\+\_\+\+MODE\+\_\+\+COOLING}~0x0800
+\item 
+\Hypertarget{group__Airconditoners_gac49c9a2cf24d0bac6724167416236498}\label{group__Airconditoners_gac49c9a2cf24d0bac6724167416236498} 
+\#define {\bfseries LG\+\_\+\+MODE\+\_\+\+DEHUMIDIFIYING}~0x0990
+\item 
+\Hypertarget{group__Airconditoners_gae82f0963f74d72085d63857a33a8abfe}\label{group__Airconditoners_gae82f0963f74d72085d63857a33a8abfe} 
+\#define {\bfseries LG\+\_\+\+MODE\+\_\+\+FAN}~0x0\+A30
+\item 
+\Hypertarget{group__Airconditoners_ga7474777d5b8f60c2871b141c4c8febdc}\label{group__Airconditoners_ga7474777d5b8f60c2871b141c4c8febdc} 
+\#define {\bfseries LG\+\_\+\+MODE\+\_\+\+AUTO}~0x0\+B00
+\item 
+\Hypertarget{group__Airconditoners_ga49b7354b9ea838746bd12d44a73cbbfe}\label{group__Airconditoners_ga49b7354b9ea838746bd12d44a73cbbfe} 
+\#define {\bfseries LG\+\_\+\+MODE\+\_\+\+HEATING}~0x0\+C00
+\item 
+\Hypertarget{group__Airconditoners_ga50a68c01f30d77719bd0965849eb9432}\label{group__Airconditoners_ga50a68c01f30d77719bd0965849eb9432} 
+\#define {\bfseries LG\+\_\+\+ENERGY\+\_\+\+SAVING\+\_\+\+ON}~0x1004
+\item 
+\Hypertarget{group__Airconditoners_gaa04556b565d50612183d76a1cf17162a}\label{group__Airconditoners_gaa04556b565d50612183d76a1cf17162a} 
+\#define {\bfseries LG\+\_\+\+ENERGY\+\_\+\+SAVING\+\_\+\+OFF}~0x1005
+\item 
+\Hypertarget{group__Airconditoners_gac832ef74f7acce9703cf4bfe3af9c62c}\label{group__Airconditoners_gac832ef74f7acce9703cf4bfe3af9c62c} 
+\#define {\bfseries LG\+\_\+\+JET\+\_\+\+ON}~0x1008
+\item 
+\Hypertarget{group__Airconditoners_ga6e9da9436e1330717c4e521c3274f9e7}\label{group__Airconditoners_ga6e9da9436e1330717c4e521c3274f9e7} 
+\#define {\bfseries LG\+\_\+\+WALL\+\_\+\+SWING\+\_\+\+ON}~0x1314
+\item 
+\Hypertarget{group__Airconditoners_gac4018dd9d884ac5f47a72f8f97a30013}\label{group__Airconditoners_gac4018dd9d884ac5f47a72f8f97a30013} 
+\#define {\bfseries LG\+\_\+\+WALL\+\_\+\+SWING\+\_\+\+OFF}~0x1315
+\item 
+\Hypertarget{group__Airconditoners_gae2aa0cea45172493aff78b178429498b}\label{group__Airconditoners_gae2aa0cea45172493aff78b178429498b} 
+\#define {\bfseries LG\+\_\+\+SWING\+\_\+\+ON}~0x1316
+\item 
+\Hypertarget{group__Airconditoners_gae948545d5555a8e1661bf9ed84f8a5bd}\label{group__Airconditoners_gae948545d5555a8e1661bf9ed84f8a5bd} 
+\#define {\bfseries LG\+\_\+\+SWING\+\_\+\+OFF}~0x1317
+\item 
+\Hypertarget{group__Airconditoners_ga0d3fa053a91e0ccdbf82607d6f191884}\label{group__Airconditoners_ga0d3fa053a91e0ccdbf82607d6f191884} 
+\#define {\bfseries LG\+\_\+\+TIMER\+\_\+\+ON}~0x8000
+\item 
+\Hypertarget{group__Airconditoners_ga953e35300b777bf9b39ecb1c97fbe92b}\label{group__Airconditoners_ga953e35300b777bf9b39ecb1c97fbe92b} 
+\#define {\bfseries LG\+\_\+\+TIMER\+\_\+\+OFF}~0x9000
+\item 
+\Hypertarget{group__Airconditoners_gafa12114ef5d9a8113d9b812e1c3f215d}\label{group__Airconditoners_gafa12114ef5d9a8113d9b812e1c3f215d} 
+\#define {\bfseries LG\+\_\+\+SLEEP}~0x\+A000
+\item 
+\Hypertarget{group__Airconditoners_gabbff1ff71274f875aab9304e201697a9}\label{group__Airconditoners_gabbff1ff71274f875aab9304e201697a9} 
+\#define {\bfseries LG\+\_\+\+CLEAR\+\_\+\+ALL}~0x\+B000
+\item 
+\Hypertarget{group__Airconditoners_gac55cb8592c8e9e1d0d9d47e8921862d0}\label{group__Airconditoners_gac55cb8592c8e9e1d0d9d47e8921862d0} 
+\#define {\bfseries LG\+\_\+\+POWER\+\_\+\+DOWN}~0x\+C005
+\item 
+\Hypertarget{group__Airconditoners_gafc7cc7b8e3f42b30e478d80f917c917c}\label{group__Airconditoners_gafc7cc7b8e3f42b30e478d80f917c917c} 
+\#define {\bfseries LG\+\_\+\+LIGHT}~0x\+C00A
+\item 
+\Hypertarget{group__Airconditoners_ga3f6636d07bce14c9610e5acd74e4c32c}\label{group__Airconditoners_ga3f6636d07bce14c9610e5acd74e4c32c} 
+\#define {\bfseries LG\+\_\+\+AUTO\+\_\+\+CLEAN\+\_\+\+ON}~0x\+C00B
+\item 
+\Hypertarget{group__Airconditoners_ga61b4e884ce7bb6f44749e52af3fe93dc}\label{group__Airconditoners_ga61b4e884ce7bb6f44749e52af3fe93dc} 
+\#define {\bfseries LG\+\_\+\+AUTO\+\_\+\+CLEAN\+\_\+\+OFF}~0x\+C00C
+\item 
+\Hypertarget{group__Airconditoners_ga24fd67c4d0d7bf87fd4a7d788070a226}\label{group__Airconditoners_ga24fd67c4d0d7bf87fd4a7d788070a226} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+OFF}~\textquotesingle{}0\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga79162224c70f14abcb2a2dba386148c1}\label{group__Airconditoners_ga79162224c70f14abcb2a2dba386148c1} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+ON}~\textquotesingle{}1\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga82d5b518dba56f050e6563f22d9c2206}\label{group__Airconditoners_ga82d5b518dba56f050e6563f22d9c2206} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+SWING}~\textquotesingle{}s\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga718a9952e98c9ff0db43168edff9f9e1}\label{group__Airconditoners_ga718a9952e98c9ff0db43168edff9f9e1} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+AUTO\+\_\+\+CLEAN}~\textquotesingle{}a\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga64f924ab6a2a070627ca40bb8ea718a2}\label{group__Airconditoners_ga64f924ab6a2a070627ca40bb8ea718a2} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+JET}~\textquotesingle{}j\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga78b9d595527aac3bc74b16079f6a5875}\label{group__Airconditoners_ga78b9d595527aac3bc74b16079f6a5875} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+ENERGY}~\textquotesingle{}e\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga96e898832dfdd0788ba0d188eefed0c9}\label{group__Airconditoners_ga96e898832dfdd0788ba0d188eefed0c9} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+LIGHT}~\textquotesingle{}l\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga7476ae7bbae7d8bbc85101df2481e928}\label{group__Airconditoners_ga7476ae7bbae7d8bbc85101df2481e928} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+FAN\+\_\+\+SPEED}~\textquotesingle{}f\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gaee4c1f6351dff61efa70ac0f59c301b9}\label{group__Airconditoners_gaee4c1f6351dff61efa70ac0f59c301b9} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+TEMPERATURE}~\textquotesingle{}t\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga26bce5b8f0b1f61c21135f7ce116bd0e}\label{group__Airconditoners_ga26bce5b8f0b1f61c21135f7ce116bd0e} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+TEMPERATURE\+\_\+\+PLUS}~\textquotesingle{}+\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gad15f415d50b1f65322b15ea607d718d7}\label{group__Airconditoners_gad15f415d50b1f65322b15ea607d718d7} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+TEMPERATURE\+\_\+\+MINUS}~\textquotesingle{}-\/\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga8da7f66cacc866d8f7e50bfe1b80bab1}\label{group__Airconditoners_ga8da7f66cacc866d8f7e50bfe1b80bab1} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+MODE}~\textquotesingle{}m\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gaded0337c0d938ef82caaf8c2f1c59283}\label{group__Airconditoners_gaded0337c0d938ef82caaf8c2f1c59283} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+SLEEP}~\textquotesingle{}S\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga414f526948aba8247f62b560d75834d6}\label{group__Airconditoners_ga414f526948aba8247f62b560d75834d6} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+TIMER\+\_\+\+ON}~\textquotesingle{}T\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga2a765b54db1abe3e11c72f19feaa071f}\label{group__Airconditoners_ga2a765b54db1abe3e11c72f19feaa071f} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+TIMER\+\_\+\+OFF}~\textquotesingle{}O\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gaf1ec2778dd50f24b0eee7e2141a74de2}\label{group__Airconditoners_gaf1ec2778dd50f24b0eee7e2141a74de2} 
+\#define {\bfseries LG\+\_\+\+COMMAND\+\_\+\+CLEAR\+\_\+\+ALL}~\textquotesingle{}C\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gad40cb179d8947abb261c66c4025d6f5c}\label{group__Airconditoners_gad40cb179d8947abb261c66c4025d6f5c} 
+\#define {\bfseries AC\+\_\+\+MODE\+\_\+\+COOLING}~\textquotesingle{}c\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga3c73605f2e327ae30c0cb5cb90fdade5}\label{group__Airconditoners_ga3c73605f2e327ae30c0cb5cb90fdade5} 
+\#define {\bfseries AC\+\_\+\+MODE\+\_\+\+DEHUMIDIFIYING}~\textquotesingle{}d\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_gaa95639ff20eae994eac17c04cd1af46a}\label{group__Airconditoners_gaa95639ff20eae994eac17c04cd1af46a} 
+\#define {\bfseries AC\+\_\+\+MODE\+\_\+\+FAN}~\textquotesingle{}f\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga5e3517bd87cdd71f3faedd5648f3869a}\label{group__Airconditoners_ga5e3517bd87cdd71f3faedd5648f3869a} 
+\#define {\bfseries AC\+\_\+\+MODE\+\_\+\+AUTO}~\textquotesingle{}a\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga4d1f100bd13d68bbff9165cfeb1d011c}\label{group__Airconditoners_ga4d1f100bd13d68bbff9165cfeb1d011c} 
+\#define {\bfseries AC\+\_\+\+MODE\+\_\+\+HEATING}~\textquotesingle{}h\textquotesingle{}
+\item 
+\Hypertarget{group__Airconditoners_ga6d745a4e59f5d14e9983d174b6e9705a}\label{group__Airconditoners_ga6d745a4e59f5d14e9983d174b6e9705a} 
+\#define {\bfseries SIZE\+\_\+\+OF\+\_\+\+FAN\+\_\+\+SPEED\+\_\+\+MAPPING\+\_\+\+TABLE}~4
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__Airconditoners_gaa52ad3994191a2c8c004a4a288fee19a}{set\+Type}} (bool a\+Is\+Wall\+Type)
+\item 
+void \mbox{\hyperlink{group__Airconditoners_ga00d1cf91de8933cd9831f5f5f6a3d996}{print\+Menu}} (Print \texorpdfstring{$\ast$}{*}a\+Serial)
+\item 
+bool \mbox{\hyperlink{group__Airconditoners_ga4e27f4bf96c4295a68a769ee7de077b9}{send\+Command\+And\+Parameter}} (char a\+Command, int a\+Parameter)
+\item 
+void \mbox{\hyperlink{group__Airconditoners_ga9fbc0cb92e31b0b3de9900a07d7fcf69}{send\+IRCommand}} (uint16\+\_\+t a\+Command)
+\item 
+void \mbox{\hyperlink{group__Airconditoners_ga416adebb1de08aee20c2fa55d1f8431e}{send\+Temperature\+Fan\+Speed\+And\+Mode}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{group__Airconditoners_ga9e4c45659819db87363cdef65209ee56}{AC\+\_\+\+FAN\+\_\+\+TOWER}} \mbox{[}SIZE\+\_\+\+OF\+\_\+\+FAN\+\_\+\+SPEED\+\_\+\+MAPPING\+\_\+\+TABLE\mbox{]} = \{ 0, 4, 6, 6 \}
+\item 
+const int \mbox{\hyperlink{group__Airconditoners_ga06d1cb86267a1aa639caa670ba813600}{AC\+\_\+\+FAN\+\_\+\+WALL}} \mbox{[}SIZE\+\_\+\+OF\+\_\+\+FAN\+\_\+\+SPEED\+\_\+\+MAPPING\+\_\+\+TABLE\mbox{]} = \{ 0, 2, 4, 5 \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{group__Airconditoners_ga00d1cf91de8933cd9831f5f5f6a3d996}\index{Air conditioner special code@{Air conditioner special code}!printMenu@{printMenu}}
+\index{printMenu@{printMenu}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{printMenu()}{printMenu()}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga00d1cf91de8933cd9831f5f5f6a3d996} 
+void print\+Menu (\begin{DoxyParamCaption}\item[{Print \texorpdfstring{$\ast$}{*}}]{a\+Serial}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00074\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00075\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}Type\ command\ and\ optional\ parameter\ without\ a\ separator"{}}));}
+\DoxyCodeLine{00076\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}0\ Off"{}}));}
+\DoxyCodeLine{00077\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}1\ On"{}}));}
+\DoxyCodeLine{00078\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}s\ Swing\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00079\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}a\ Auto\ clean\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00080\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}j\ Jet\ on"{}}));}
+\DoxyCodeLine{00081\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}e\ Energy\ saving\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00082\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}l\ Lights\ toggle"{}}));}
+\DoxyCodeLine{00083\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}f\ Fan\ speed\ <0\ to\ 2\ or\ 3\ for\ cycle>"{}}));}
+\DoxyCodeLine{00084\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}t\ Temperature\ <18\ to\ 30>\ degree"{}}));}
+\DoxyCodeLine{00085\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}+\ Temperature\ +\ 1"{}}));}
+\DoxyCodeLine{00086\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}-\/\ Temperature\ -\/\ 1"{}}));}
+\DoxyCodeLine{00087\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}m\ <c(ool)\ or\ a(uto)\ or\ d(ehumidifying)\ or\ h(eating)\ or\ f(an)\ mode>"{}}));}
+\DoxyCodeLine{00088\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}S\ Sleep\ after\ <0\ to\ 420>\ minutes"{}}));}
+\DoxyCodeLine{00089\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}T\ Timer\ on\ after\ <0\ to\ 1439>\ minutes"{}}));}
+\DoxyCodeLine{00090\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}O\ Timer\ off\ after\ <0\ to\ 1439>\ minutes"{}}));}
+\DoxyCodeLine{00091\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}C\ Clear\ all\ timer\ and\ sleep"{}}));}
+\DoxyCodeLine{00092\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}e.g.\ \(\backslash\)"{}s1\(\backslash\)"{}\ or\ \(\backslash\)"{}t23\(\backslash\)"{}\ or\ \(\backslash\)"{}mc\(\backslash\)"{}\ or\ \(\backslash\)"{}O60\(\backslash\)"{}\ or\ \(\backslash\)"{}+\(\backslash\)"{}"{}}));}
+\DoxyCodeLine{00093\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}No\ plausibility\ check\ is\ made!"{}}));}
+\DoxyCodeLine{00094\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00095\ \}}
+
+\end{DoxyCode}
+\Hypertarget{group__Airconditoners_ga4e27f4bf96c4295a68a769ee7de077b9}\index{Air conditioner special code@{Air conditioner special code}!sendCommandAndParameter@{sendCommandAndParameter}}
+\index{sendCommandAndParameter@{sendCommandAndParameter}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{sendCommandAndParameter()}{sendCommandAndParameter()}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga4e27f4bf96c4295a68a769ee7de077b9} 
+bool send\+Command\+And\+Parameter (\begin{DoxyParamCaption}\item[{char}]{a\+Command}{, }\item[{int}]{a\+Parameter}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//\ Commands\ without\ parameter}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{switch}\ (aCommand)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_OFF:\ \textcolor{comment}{//\ off}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_POWER\_DOWN);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_ON:\ \textcolor{comment}{//\ on}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ set\ to\ false\ in\ order\ to\ suppress\ on\ bit}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_JET:}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}Send\ jet\ on"{}}));}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_JET\_ON);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_LIGHT:}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_LIGHT);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_CLEAR\_ALL:}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_CLEAR\_ALL);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE\_PLUS:}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (18\ <=\ Temperature\ \&\&\ Temperature\ <=\ 29)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature++;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE\_MINUS:}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (19\ <=\ Temperature\ \&\&\ Temperature\ <=\ 30)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature-\/-\/;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ \ \ \ *\ Now\ the\ commands\ which\ require\ a\ parameter}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <\ 0)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Error:\ Parameter\ is\ less\ than\ 0"{}}));}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{switch}\ (aCommand)\ \{}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_MODE:}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ Mode\ =\ aParameter\ +\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_SWING:}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ air\ swing="{}}));}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ACIsWallType)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_WALL\_SWING\_ON);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_WALL\_SWING\_OFF);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SWING\_ON);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SWING\_OFF);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_AUTO\_CLEAN:}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ auto\ clean="{}}));}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_AUTO\_CLEAN\_ON);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_AUTO\_CLEAN\_OFF);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_ENERGY:}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ energy\ saving\ on="{}}));}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_ENERGY\_SAVING\_ON);}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_ENERGY\_SAVING\_OFF);}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_FAN\_SPEED:}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <\ SIZE\_OF\_FAN\_SPEED\_MAPPING\_TABLE)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ FanIntensity\ =\ aParameter;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE:}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (18\ <=\ aParameter\ \&\&\ aParameter\ <=\ 30)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature\ =\ aParameter;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_SLEEP:}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 420\ =\ maximum\ I\ have\ recorded}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 420)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SLEEP\ +\ aParameter);}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TIMER\_ON:}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1440\ =\ minutes\ of\ a\ day}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 1439)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_TIMER\_ON\ +\ aParameter);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TIMER\_OFF:}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 1439)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_TIMER\_OFF\ +\ aParameter);}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00250\ \}}
+
+\end{DoxyCode}
+\Hypertarget{group__Airconditoners_ga9fbc0cb92e31b0b3de9900a07d7fcf69}\index{Air conditioner special code@{Air conditioner special code}!sendIRCommand@{sendIRCommand}}
+\index{sendIRCommand@{sendIRCommand}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{sendIRCommand()}{sendIRCommand()}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga9fbc0cb92e31b0b3de9900a07d7fcf69} 
+void send\+IRCommand (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{a\+Command}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00255\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Send\ code=0x"{}}));}
+\DoxyCodeLine{00256\ \ \ \ \ Serial.print(aCommand,\ HEX);}
+\DoxyCodeLine{00257\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ |\ 0b"{}}));}
+\DoxyCodeLine{00258\ \ \ \ \ Serial.println(aCommand,\ BIN);}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Decoder_ga1c3823c3e57516f35c94fa1fd875880f}{sendLG2}}((uint8\_t)\ LG\_ADDRESS,\ aCommand,\ 0);}
+\DoxyCodeLine{00262\ \}}
+
+\end{DoxyCode}
+\Hypertarget{group__Airconditoners_ga416adebb1de08aee20c2fa55d1f8431e}\index{Air conditioner special code@{Air conditioner special code}!sendTemperatureFanSpeedAndMode@{sendTemperatureFanSpeedAndMode}}
+\index{sendTemperatureFanSpeedAndMode@{sendTemperatureFanSpeedAndMode}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{sendTemperatureFanSpeedAndMode()}{sendTemperatureFanSpeedAndMode()}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga416adebb1de08aee20c2fa55d1f8431e} 
+void send\+Temperature\+Fan\+Speed\+And\+Mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ uint8\_t\ tTemperature\ =\ Temperature;}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00271\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Send\ temperature="{}}));}
+\DoxyCodeLine{00272\ \ \ \ \ Serial.print(tTemperature);}
+\DoxyCodeLine{00273\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ fan\ intensity="{}}));}
+\DoxyCodeLine{00274\ \ \ \ \ Serial.print(FanIntensity);}
+\DoxyCodeLine{00275\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ mode="{}}));}
+\DoxyCodeLine{00276\ \ \ \ \ Serial.println((\textcolor{keywordtype}{char}\ )Mode);}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ tIRCommand;}
+\DoxyCodeLine{00280\ \ \ \ \ tIRCommand.UWord\ =\ 0;}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//\ Temperature\ is\ coded\ in\ the\ upper\ nibble\ of\ the\ LowByte}}
+\DoxyCodeLine{00283\ \ \ \ \ tIRCommand.UByte.LowByte\ =\ ((tTemperature\ -\/\ 15)\ <<\ 4);\ \textcolor{comment}{//\ 16\ -\/>\ 0x00,\ 18\ -\/>\ 0x30,\ 30\ -\/>\ 0xF0}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//\ Fan\ intensity\ is\ coded\ in\ the\ lower\ nibble\ of\ the\ LowByte}}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{if}\ (ACIsWallType)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ tIRCommand.UByte.LowByte\ |=\ AC\_FAN\_WALL[FanIntensity];}
+\DoxyCodeLine{00288\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ tIRCommand.UByte.LowByte\ |=\ AC\_FAN\_TOWER[FanIntensity];}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{switch}\ (Mode)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_COOLING:}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_COOLING\ >>\ 8;}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_HEATING:}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_HEATING\ >>\ 8;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_AUTO:}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_AUTO\ >>\ 8;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_FAN:}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ tTemperature\ =\ 18;}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_FAN\ >>\ 8;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_DEHUMIDIFIYING:}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ tIRCommand.UWord\ =\ LG\_MODE\_DEHUMIDIFIYING;}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{if}\ (!PowerIsOn)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ switch\ on\ requires\ masked\ bit}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ \&=\ \string~(LG\_SWITCH\_ON\_MASK\ >>\ 8);}
+\DoxyCodeLine{00315\ \ \ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \ \ sendIRCommand(tIRCommand.UWord);}
+\DoxyCodeLine{00319\ \}}
+
+\end{DoxyCode}
+\Hypertarget{group__Airconditoners_gaa52ad3994191a2c8c004a4a288fee19a}\index{Air conditioner special code@{Air conditioner special code}!setType@{setType}}
+\index{setType@{setType}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{setType()}{setType()}}
+{\footnotesize\ttfamily \label{group__Airconditoners_gaa52ad3994191a2c8c004a4a288fee19a} 
+void set\+Type (\begin{DoxyParamCaption}\item[{bool}]{a\+Is\+Wall\+Type}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ ACIsWallType\ =\ aIsWallType;}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00067\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Set\ wall\ type\ to\ "{}}));}
+\DoxyCodeLine{00068\ \ \ \ \ Serial.println(aIsWallType);}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{group__Airconditoners_ga9e4c45659819db87363cdef65209ee56}\index{Air conditioner special code@{Air conditioner special code}!AC\_FAN\_TOWER@{AC\_FAN\_TOWER}}
+\index{AC\_FAN\_TOWER@{AC\_FAN\_TOWER}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{AC\_FAN\_TOWER}{AC\_FAN\_TOWER}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga9e4c45659819db87363cdef65209ee56} 
+const int AC\+\_\+\+FAN\+\_\+\+TOWER\mbox{[}SIZE\+\_\+\+OF\+\_\+\+FAN\+\_\+\+SPEED\+\_\+\+MAPPING\+\_\+\+TABLE\mbox{]} = \{ 0, 4, 6, 6 \}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00061\ \{\ 0,\ 4,\ 6,\ 6\ \};\ \textcolor{comment}{//\ last\ dummy\ entry\ to\ avoid\ out\ of\ bounds\ access}}
+
+\end{DoxyCode}
+\Hypertarget{group__Airconditoners_ga06d1cb86267a1aa639caa670ba813600}\index{Air conditioner special code@{Air conditioner special code}!AC\_FAN\_WALL@{AC\_FAN\_WALL}}
+\index{AC\_FAN\_WALL@{AC\_FAN\_WALL}!Air conditioner special code@{Air conditioner special code}}
+\doxysubsubsection{\texorpdfstring{AC\_FAN\_WALL}{AC\_FAN\_WALL}}
+{\footnotesize\ttfamily \label{group__Airconditoners_ga06d1cb86267a1aa639caa670ba813600} 
+const int AC\+\_\+\+FAN\+\_\+\+WALL\mbox{[}SIZE\+\_\+\+OF\+\_\+\+FAN\+\_\+\+SPEED\+\_\+\+MAPPING\+\_\+\+TABLE\mbox{]} = \{ 0, 2, 4, 5 \}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00062\ \{\ 0,\ 2,\ 4,\ 5\ \};\ \textcolor{comment}{//\ 0\ -\/>\ low,\ 4\ high,\ 5\ -\/>\ cycle}}
+
+\end{DoxyCode}

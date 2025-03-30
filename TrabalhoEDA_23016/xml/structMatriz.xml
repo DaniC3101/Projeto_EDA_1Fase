@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="structMatriz" kind="struct" language="C++" prot="public">
+    <compoundname>Matriz</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structMatriz_1a4cd008d60f3498a2b352d2d216aece97" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int tamMatriz[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>tamMatriz</name>
+        <qualifiedname>Matriz::tamMatriz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="9" column="5" bodyfile="Fase1/Fase1/Matriz.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMatriz_1ac75fe17bbd2c59cbb04fa71ee7b739c9" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structListaAntenas" kindref="compound">ListaAntenas</ref> *</type>
+        <definition>struct ListaAntenas* listaAntenas</definition>
+        <argsstring></argsstring>
+        <name>listaAntenas</name>
+        <qualifiedname>Matriz::listaAntenas</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="10" column="20" bodyfile="Fase1/Fase1/Matriz.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>Antena</label>
+        <link refid="structAntena"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>proxAntena</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>listaNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ListaAntenas</label>
+        <link refid="structListaAntenas"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>primAntena</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ListaNefastas</label>
+        <link refid="structListaNefastas"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>locNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>LocalizaoNefasta</label>
+        <link refid="structLocalizaoNefasta"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>proxNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Matriz</label>
+        <link refid="structMatriz"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>listaAntenas</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Fase1/Fase1/Matriz.h" line="7" column="1" bodyfile="Fase1/Fase1/Matriz.h" bodystart="8" bodyend="11"/>
+    <listofallmembers>
+      <member refid="structMatriz_1ac75fe17bbd2c59cbb04fa71ee7b739c9" prot="public" virt="non-virtual"><scope>Matriz</scope><name>listaAntenas</name></member>
+      <member refid="structMatriz_1a4cd008d60f3498a2b352d2d216aece97" prot="public" virt="non-virtual"><scope>Matriz</scope><name>tamMatriz</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

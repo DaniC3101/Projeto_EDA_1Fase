@@ -1,0 +1,465 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="Antena_8c" kind="file" language="C++">
+    <compoundname>Antena.c</compoundname>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes refid="Antena_8h" local="yes">Antena.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Fase1/Fase1/Antena.c</label>
+        <link refid="Antena_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Antena.h</label>
+        <link refid="Antena_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+      <node id="2">
+        <label>stdio.h</label>
+      </node>
+      <node id="3">
+        <label>stdlib.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="Antena_8c_1acd3f62ab7ff84cac5daf55876deaa34b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>Antena * AdicionarAntena</definition>
+        <argsstring>(int linha, int coluna, int frequencia)</argsstring>
+        <name>AdicionarAntena</name>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>frequencia</declname>
+        </param>
+        <briefdescription>
+<para>Adiciona uma nova antena numa posição específica da matriz. A antena recebe a posição, a frequência e um apontador para a próxima antena (inicialmente NULL). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>frequencia</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Frequência da antena.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna um apontador para a antena criada.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.c" line="13" column="8" bodyfile="Fase1/Fase1/Antena.c" bodystart="13" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8c_1ad155ed5c5f9a3eb4b42ddcfe5bc1cd9d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ApagarAntena</definition>
+        <argsstring>(Antena *listaAntena, int linha, int coluna)</argsstring>
+        <name>ApagarAntena</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>listaAntena</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <briefdescription>
+<para>Apaga uma antena da lista de antenas, procurando pela sua posição na matriz. Caso a antena seja encontrada, ela é removida da lista. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>listaAntena</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a lista de antenas.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha da antena a ser apagada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna da antena a ser apagada.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.c" line="31" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="31" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8c_1a8f26b6f71f8984ef8fb5fda61376a9ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int VerificarAntenaAnterior</definition>
+        <argsstring>(Antena *listaAntena, Antena *antenaAtual, int linhas, int colunas)</argsstring>
+        <name>VerificarAntenaAnterior</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>listaAntena</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antenaAtual</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linhas</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>colunas</declname>
+        </param>
+        <briefdescription>
+<para>Verifica se uma antena com a mesma frequência já existe na lista de antenas. Se encontrar, verifica se há interferência (zona nefasta) entre as antenas. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>listaAntena</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a lista de antenas.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>antenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena que está a ser verificada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linhas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de linhas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>colunas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de colunas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna 0.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.c" line="55" column="5" bodyfile="Fase1/Fase1/Antena.c" bodystart="55" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8c_1a8e8d7cc11d0b777fad2bfa1b97106a59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void NefastaAntena</definition>
+        <argsstring>(Antena *antenaAnterior, Antena *antenaAtual, int *auxAntenaAnterior, int *auxAntenaAtual)</argsstring>
+        <name>NefastaAntena</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antenaAnterior</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antenaAtual</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAnterior</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAtual</declname>
+        </param>
+        <briefdescription>
+<para>Marca as zonas de interferência (zonas nefastas) entre duas antenas. A interferência ocorre se as antenas partilharem a mesma frequência e estiverem na mesma área. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>antenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>antenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena atual.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena atual.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.c" line="81" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="81" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8c_1ac9e072c3770d3bac14dc128856f0ca13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void InserirNefasta</definition>
+        <argsstring>(int *auxAntenaAnterior, Antena *auxAntenaAntes, int *auxAntenaAtual, Antena *AntenaAtual)</argsstring>
+        <name>InserirNefasta</name>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAnterior</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>auxAntenaAntes</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAtual</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>AntenaAtual</declname>
+        </param>
+        <briefdescription>
+<para>Insere uma posição de interferência (zona nefasta) para uma antena. Adiciona a posição à lista de zonas nefastas de ambas as antenas envolvidas. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAntes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena atual.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena atual.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.c" line="108" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="108" bodyend="153"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Antena.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>AdicionarAntena(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frequencia)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antena<sp/>=<sp/>(<ref refid="structAntena" kindref="compound">Antena</ref>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structAntena" kindref="compound">Antena</ref>));</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>antena-&gt;posAntena[0]<sp/>=<sp/>linha;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>antena-&gt;posAntena[1]<sp/>=<sp/>coluna;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>antena-&gt;frequencia<sp/>=<sp/>frequencia;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>antena-&gt;proxAntena<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>antena-&gt;listaNefasta<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>antena;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ApagarAntena(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>listaAntena,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntena<sp/>=<sp/>listaAntena;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(auxAntena<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>aa<sp/>=<sp/>auxAntena-&gt;proxAntena;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((aa-&gt;posAntena[0]<sp/>==<sp/>linha)<sp/>&amp;&amp;<sp/>(aa-&gt;posAntena[1]<sp/>==<sp/>coluna))</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntena-&gt;proxAntena<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntena<sp/>=<sp/>auxAntena-&gt;proxAntena;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>VerificarAntenaAnterior(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>listaAntena,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antenaAtual,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linhas,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colunas)</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntenaAntes<sp/>=<sp/>listaAntena;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(auxAntenaAntes<sp/>!=<sp/>antenaAtual)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>auxAntenaAnterior[2]<sp/>=<sp/>{<sp/>auxAntenaAntes-&gt;posAntena[0],<sp/>auxAntenaAntes-&gt;posAntena[1]<sp/>};</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>auxAntenaAtual[2]<sp/>=<sp/>{<sp/>antenaAtual-&gt;posAntena[0],<sp/>antenaAtual-&gt;posAntena[1]<sp/>};</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(auxAntenaAntes-&gt;frequencia<sp/>==<sp/>antenaAtual-&gt;frequencia)</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VerificarNefasta(auxAntenaAnterior,<sp/>auxAntenaAtual,<sp/>linhas,<sp/>colunas);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NefastaAntena(auxAntenaAntes,<sp/>antenaAtual,<sp/>auxAntenaAnterior,<sp/>auxAntenaAtual);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAntes<sp/>=<sp/>auxAntenaAntes-&gt;proxAntena;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NefastaAntena(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antenaAnterior,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antenaAtual,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAnterior,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAtual)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntenaAntes<sp/>=<sp/>antenaAnterior;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(auxAntenaAntes<sp/>!=<sp/>antenaAtual)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((auxAntenaAnterior[0]<sp/>==<sp/>auxAntenaAntes-&gt;posAntena[0]<sp/>&amp;&amp;<sp/>auxAntenaAnterior[1]<sp/>==<sp/>auxAntenaAntes-&gt;posAntena[1]))</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAnterior[0]<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((auxAntenaAtual[0]<sp/>==<sp/>auxAntenaAntes-&gt;posAntena[0]<sp/>&amp;&amp;<sp/>auxAntenaAtual[1]<sp/>==<sp/>auxAntenaAntes-&gt;posAntena[1]))</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAtual<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAntes<sp/>=<sp/>auxAntenaAntes-&gt;proxAntena;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>InserirNefasta(auxAntenaAnterior,<sp/>antenaAnterior,<sp/>auxAntenaAtual,<sp/>antenaAtual);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>InserirNefasta(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAnterior,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntenaAntes,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAtual,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>AntenaAtual)</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(auxAntenaAntes<sp/>!=<sp/>NULL<sp/>&amp;&amp;<sp/>auxAntenaAnterior[0]<sp/>!=<sp/>-1<sp/>&amp;&amp;<sp/>auxAntenaAnterior[0]<sp/>!=<sp/>0<sp/>&amp;&amp;<sp/>auxAntenaAnterior[1]<sp/>!=<sp/>0)</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>novaPosicao<sp/>=<sp/>(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;posNefasta[0]<sp/>=<sp/>auxAntenaAnterior[0];</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;posNefasta[1]<sp/>=<sp/>auxAntenaAnterior[1];</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;proxNefasta<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(auxAntenaAntes-&gt;listaNefasta<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAntes-&gt;listaNefasta<sp/>=<sp/>(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>));</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>auxAntenaAntes-&gt;listaNefasta-&gt;locNefasta<sp/>=<sp/>novaPosicao;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>temp<sp/>=<sp/>auxAntenaAntes-&gt;listaNefasta-&gt;locNefasta;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(temp-&gt;proxNefasta<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temp<sp/>=<sp/>temp-&gt;proxNefasta;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temp-&gt;proxNefasta<sp/>=<sp/>novaPosicao;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(auxAntenaAtual[0]<sp/>!=<sp/>-1<sp/>&amp;&amp;<sp/>auxAntenaAtual[0]<sp/>!=<sp/>0<sp/>&amp;&amp;<sp/>auxAntenaAtual[1]<sp/>!=<sp/>0)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>novaPosicao<sp/>=<sp/>(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>));</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;posNefasta[0]<sp/>=<sp/>auxAntenaAtual[0];</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;posNefasta[1]<sp/>=<sp/>auxAntenaAtual[1];</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>novaPosicao-&gt;proxNefasta<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(AntenaAtual-&gt;listaNefasta<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AntenaAtual-&gt;listaNefasta<sp/>=<sp/>(<ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref>));</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AntenaAtual-&gt;listaNefasta-&gt;locNefasta<sp/>=<sp/>novaPosicao;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>temp<sp/>=<sp/>AntenaAtual-&gt;listaNefasta-&gt;locNefasta;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(temp-&gt;proxNefasta<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temp<sp/>=<sp/>temp-&gt;proxNefasta;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temp-&gt;proxNefasta<sp/>=<sp/>novaPosicao;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/Antena.c"/>
+  </compounddef>
+</doxygen>

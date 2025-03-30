@@ -1,0 +1,1023 @@
+\chapter{1º\+Fase}
+\hypertarget{index}{}\label{index}\index{1ºFase@{1ºFase}}
+\label{index_md_C_1_2Users_2danib_2Documents_2Arduino_2libraries_2IRremote_2README}%
+\Hypertarget{index_md_C_1_2Users_2danib_2Documents_2Arduino_2libraries_2IRremote_2README}%
+ 
+
+\hypertarget{index_autotoc_md59}{}\doxysection{\texorpdfstring{Arduino IRremote}{Arduino IRremote}}\label{index_autotoc_md59}
+ A library enabling the sending \& receiving of infra-\/red signals.
+
+\href{https://opensource.org/licenses/MIT}{\texttt{ }} ~ ~ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/releases/latest}{\texttt{ }} ~ ~ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/commits/master}{\texttt{ }} ~ ~ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/actions}{\texttt{ }} ~\newline
+ ~\newline
+ \href{https://stand-with-ukraine.pp.ua}{\texttt{ }}
+
+Available as \href{https://www.arduinolibraries.info/libraries/i-rremote}{\texttt{ Arduino library "{}\+IRremote"{}}}.
+
+\href{https://www.ardu-badge.com/IRremote}{\texttt{ }} ~ ~ \href{https://arduino-irremote.github.io/Arduino-IRremote/classIRrecv.html}{\texttt{ }} ~ ~ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md}{\texttt{ }} ~ ~ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributing.md}{\texttt{ }}
+
+\hypertarget{index_autotoc_md60}{}\doxysubsubsubsection{\texorpdfstring{If you find this program useful, please give it a star.}{If you find this program useful, please give it a star.}}\label{index_autotoc_md60}
+
+
+\&\#x1\+F30E; \href{https://translate.google.com/translate?sl=en&u=https://github.com/Arduino-IRremote/Arduino-IRremote}{\texttt{ Google Translate}}
+
+\hypertarget{index_autotoc_md61}{}\doxysection{\texorpdfstring{Table of content}{Table of content}}\label{index_autotoc_md61}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#supported-ir-protocols}{\texttt{ Supported IR Protocols}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#features}{\texttt{ Features}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#new-features-with-version-4x}{\texttt{ New features with version 4.\+x}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#new-features-with-version-3x}{\texttt{ New features with version 3.\+x}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#converting-your-2x-program-to-the-4x-version}{\texttt{ Converting your 2.\+x program to the 4.\+x version}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#how-to-convert-old-msb-first-32-bit-ir-data-codes-to-new-lsb-first-32-bit-ir-data-codes}{\texttt{ How to convert old MSB first 32 bit IR data codes to new LSB first 32 bit IR data codes}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#errors-with-using-the-3x-versions-for-old-tutorials}{\texttt{ Errors with using the 3.\+x versions for old tutorials}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#staying-on-2x}{\texttt{ Staying on 2.\+x}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#why-hpp-instead-of-cpp}{\texttt{ Why \texorpdfstring{$\ast$}{*}.hpp instead of \texorpdfstring{$\ast$}{*}.cpp}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#using-the-new-hpp-files}{\texttt{ Using the new \texorpdfstring{$\ast$}{*}.hpp files}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#3-ways-to-specify-an-ir-code}{\texttt{ 3 ways to specify an IR code}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#irreceiver-pinouts}{\texttt{ IRReceiver pinouts}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#receiving-ir-codes}{\texttt{ Receiving IR codes}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#decodedirdata-structure}{\texttt{ decoded\+IRData structure}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#ambiguous-protocols}{\texttt{ Ambiguous protocols}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#ram-usage-of-different-protocols}{\texttt{ RAM usage of different protocolsl}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#handling-unknown-protocols}{\texttt{ Handling unknown Protocols}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#disclaimer}{\texttt{ Disclaimer}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#other-libraries}{\texttt{ Other libraries}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#protocolpulse_distance}{\texttt{ Protocol=PULSE\+\_\+\+DISTANCE}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#protocolunknown}{\texttt{ Protocol=UNKNOWN}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#how-to-deal-with-protocols-not-supported-by-irremote}{\texttt{ How to deal with protocols not supported by IRremote}}
+\end{DoxyItemize}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#sending-ir-codes}{\texttt{ Sending IR codes}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#sending-irdb-ir-codes}{\texttt{ Sending IRDB IR codes}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#send-pin}{\texttt{ Send pin}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#list-of-public-ir-code-databases}{\texttt{ List of public IR code databases}}
+\end{DoxyItemize}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#tiny-nec-receiver-and-sender}{\texttt{ Tiny NEC receiver and sender}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#the-fast-protocol}{\texttt{ The FAST protocol}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#faq-and-hints}{\texttt{ FAQ and hints}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#receiving-stops-after-analogwrite-or-tone-or-after-running-a-motor}{\texttt{ Receiving stops after analog\+Write() or tone() or after running a motor}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#receiving-sets-overflow-flag}{\texttt{ Receiving sets overflow flag}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#problems-with-neopixels-fastled-etc}{\texttt{ Problems with Neopixels, Fast\+Led etc.}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#does-not-workcompile-with-another-library}{\texttt{ Does not work/compile with another library}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#multiple-ir-receiver}{\texttt{ Multiple IR receiver}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#increase-strength-of-sent-output-signal}{\texttt{ Increase strength of sent output signal}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#minimal-cpu-clock-frequency}{\texttt{ Minimal CPU clock frequency}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#bang--olufsen-protocol}{\texttt{ Bang \& Olufsen protocol}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#examples-for-this-library}{\texttt{ Examples for this library}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#wokwi-online-examples}{\texttt{ WOKWI online examples}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#ir-control-of-a-robot-car}{\texttt{ IR control of a robot car}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#issues-and-discussions}{\texttt{ Issues and discussions}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#compile-options--macros-for-this-library}{\texttt{ Compile options / macros for this library}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#changing-include-h-files-with-arduino-ide}{\texttt{ Changing include (\texorpdfstring{$\ast$}{*}.h) files with Arduino IDE}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#modifying-compile-options--macros-with-sloeber-ide}{\texttt{ Modifying compile options with Sloeber IDE}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#supported-boards}{\texttt{ Supported Boards}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#timer-and-pin-usage}{\texttt{ Timer and pin usage}}
+\begin{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#incompatibilities-to-other-libraries-and-arduino-commands-like-tone-and-analogwrite}{\texttt{ Incompatibilities to other libraries and Arduino commands like tone() and analog\+Write()}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#hardware-pwm-signal-generation-for-sending}{\texttt{ Hardware-\/\+PWM signal generation for sending}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#why-do-we-use-30-duty-cycle-for-sending}{\texttt{ Why do we use 30\% duty cycle for sending}}
+\end{DoxyItemize}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#how-we-decode-signals}{\texttt{ How we decode signals}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#nec-encoding-diagrams}{\texttt{ NEC encoding diagrams}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#quick-comparison-of-5-arduino-ir-receiving-libraries}{\texttt{ Quick comparison of 5 Arduino IR receiving libraries}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md}{\texttt{ History}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#useful-links}{\texttt{ Useful links}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributors.md}{\texttt{ Contributors}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#license}{\texttt{ License}}
+\item \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#copyright}{\texttt{ Copyright}}
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md62}{}\doxysection{\texorpdfstring{Supported IR Protocols}{Supported IR Protocols}}\label{index_autotoc_md62}
+{\ttfamily NEC / Onkyo / Apple} ~ ~ {\ttfamily Denon / Sharp} ~ ~ {\ttfamily Panasonic / Kaseikyo}
+
+{\ttfamily JVC} ~ ~ {\ttfamily LG} ~ ~ {\ttfamily RC5} ~ ~ {\ttfamily RC6} ~ ~ {\ttfamily Samsung} ~ ~ {\ttfamily Sony}
+
+{\ttfamily Universal Pulse Distance} ~ ~ {\ttfamily Universal Pulse Width} ~ ~ {\ttfamily Universal Pulse Distance Width}
+
+{\ttfamily Hash} ~ ~ {\ttfamily Pronto}
+
+{\ttfamily Bose\+Wave} ~ ~ {\ttfamily Bang \& Olufsen} ~ ~ {\ttfamily Lego} ~ ~ {\ttfamily FAST} ~ ~ {\ttfamily Whynter} ~ ~ {\ttfamily Magi\+Quest}
+
+Protocols can be switched off and on by defining macros before the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}} like \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleReceiver/SimpleReceiver.ino\#L33}{\texttt{ here}}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ DECODE\_NEC}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ DECODE\_DENON}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}>}}
+
+\end{DoxyCode}
+ ~\newline
+\hypertarget{index_autotoc_md63}{}\doxysection{\texorpdfstring{Features}{Features}}\label{index_autotoc_md63}
+
+\begin{DoxyItemize}
+\item Lots of tutorials and examples.
+\item Actively maintained.
+\item Allows receiving and sending of {\bfseries{raw timing data}}.
+\end{DoxyItemize}\hypertarget{index_autotoc_md64}{}\doxysubsection{\texorpdfstring{New features with version 4.\+x}{New features with version 4.\+x}}\label{index_autotoc_md64}
+
+\begin{DoxyItemize}
+\item {\bfseries{Since 4.\+3 {\ttfamily Ir\+Sender.\+begin(\+DISABLE\+\_\+\+LED\+\_\+\+FEEDBACK)} will no longer work}}, use {\ttfamily Ir\+Sender.\+begin(\+DISABLE\+\_\+\+LED\+\_\+\+FEEDBACK, 0)} instead.
+\item New universal {\bfseries{Pulse Distance / Pulse Width / Pulse Distance Width decoder}} added, which covers many previous unknown protocols.
+\item Printout of code how to send received command by {\ttfamily Ir\+Receiver.\+print\+IRSend\+Usage(\&Serial)}.
+\item Raw\+Data type is now 64 bit for 32 bit platforms and therefore {\ttfamily decoded\+IRData.\+decoded\+Raw\+Data} can contain complete frame information for more protocols than with 32 bit as before.
+\item {\bfseries{Callback}} after receiving a command -\/ It calls your code as soon as a message was received.
+\item Improved handling of {\ttfamily PULSE\+\_\+\+DISTANCE} + {\ttfamily PULSE\+\_\+\+WIDTH} protocols.
+\item New FAST protocol.
+\item Automatic printout of the {\bfseries{corresponding send function}} with {\ttfamily print\+IRSend\+Usage()}.
+\end{DoxyItemize}\hypertarget{index_autotoc_md65}{}\doxysubsubsubsection{\texorpdfstring{Converting your 3.\+x program to the 4.\+x version}{Converting your 3.\+x program to the 4.\+x version}}\label{index_autotoc_md65}
+
+\begin{DoxyItemize}
+\item You must replace {\ttfamily \#define DECODE\+\_\+\+DISTANCE} by {\ttfamily \#define DECODE\+\_\+\+DISTANCE\+\_\+\+WIDTH} (only if you explicitly enabled this decoder).
+\item The parameter {\ttfamily bool has\+Stop\+Bit} is not longer required and removed e.\+g. for function {\ttfamily send\+Pulse\+Distance\+Width()}.
+\end{DoxyItemize}\hypertarget{index_autotoc_md66}{}\doxysubsection{\texorpdfstring{New features with version 3.\+x}{New features with version 3.\+x}}\label{index_autotoc_md66}
+
+\begin{DoxyItemize}
+\item {\bfseries{Any pin}} can be used for receiving and if {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER} is not defined also for sending.
+\item Feedback LED can be activated for sending / receiving.
+\item An 8/16 bit \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}command\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} value as well as an 16 bit {\bfseries{address}} and a protocol number is provided for decoding (instead of the old 32 bit value).
+\item Protocol values comply to {\bfseries{protocol standards}}.~\newline
+ NEC, Panasonic, Sony, Samsung and JVC decode \& send LSB first.
+\item Supports {\bfseries{Universal Distance protocol}}, which covers a lot of previous unknown protocols.
+\item Compatible with {\bfseries{tone()}} library. See the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/21b5747a58e9d47c9e3f1beb056d58c875a92b47/examples/ReceiveDemo/ReceiveDemo.ino\#L159-L169}{\texttt{ Receive\+Demo}} example.
+\item Simultaneous sending and receiving. See the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SendAndReceive/SendAndReceive.ino\#L167-L170}{\texttt{ Send\+And\+Receive}} example.
+\item Supports {\bfseries{more platforms}}.
+\item Allows for the generation of non PWM signal to just {\bfseries{simulate an active low receiver signal}} for direct connect to existent receiving devices without using IR.
+\item Easy protocol configuration, {\bfseries{directly in your \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleReceiver/SimpleReceiver.ino\#L33-L57}{\texttt{ source code}}}}.~\newline
+ Reduces memory footprint and decreases decoding time.
+\item Contains a \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#minimal-nec-receiver}{\texttt{ very small NEC only decoder}}, which {\bfseries{does not require any timer resource}}.
+\end{DoxyItemize}
+
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#quick-comparison-of-5-arduino-ir-receiving-libraries}{\texttt{ -\/\texorpdfstring{$>$}{>} Feature comparison of 5 Arduino IR libraries}}.
+
+~\newline
+\hypertarget{index_autotoc_md67}{}\doxysection{\texorpdfstring{Converting your 2.\+x program to the 4.\+x version}{Converting your 2.\+x program to the 4.\+x version}}\label{index_autotoc_md67}
+Starting with the 3.\+1 version, {\bfseries{the generation of PWM for sending is done by software}}, thus saving the hardware timer and {\bfseries{enabling arbitrary output pins for sending}}.~\newline
+ If you use an (old) Arduino core that does not use the {\ttfamily -\/flto} flag for compile, you can activate the line {\ttfamily \#define SUPPRESS\+\_\+\+ERROR\+\_\+\+MESSAGE\+\_\+\+FOR\+\_\+\+BEGIN} in IRRemote.\+h, if you get false error messages regarding begin() during compilation.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{IRreceiver}} and {\bfseries{IRsender}} object have been added and can be used without defining them, like the well known Arduino {\bfseries{Serial}} object.
+\item Just remove the line {\ttfamily \doxylink{classIRrecv}{IRrecv} \doxylink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{Ir\+Receiver(\+IR\+\_\+\+RECEIVE\+\_\+\+PIN)};} and/or {\ttfamily \doxylink{classIRsend}{IRsend} Ir\+Sender;} in your program, and replace all occurrences of {\ttfamily \doxylink{classIRrecv}{IRrecv}.} or {\ttfamily irrecv.} with {\ttfamily Ir\+Receiver} and replace all {\ttfamily \doxylink{classIRsend}{IRsend}} or {\ttfamily irsend} with {\ttfamily Ir\+Sender}.
+\item Since the decoded values are now in {\ttfamily Ir\+Receiver.\+decoded\+IRData} and not in {\ttfamily results} any more, remove the line {\ttfamily \doxylink{structdecode__results}{decode\+\_\+results} results} or similar.
+\item Like for the Serial object, call \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/ReceiveDemo/ReceiveDemo.ino\#L106}{\texttt{ {\ttfamily Ir\+Receiver.\+begin(\+IR\+\_\+\+RECEIVE\+\_\+\+PIN, ENABLE\+\_\+\+LED\+\_\+\+FEEDBACK)}}} or {\ttfamily Ir\+Receiver.\+begin(\+IR\+\_\+\+RECEIVE\+\_\+\+PIN, DISABLE\+\_\+\+LED\+\_\+\+FEEDBACK)} instead of the {\ttfamily Ir\+Receiver.\+enable\+IRIn()} or {\ttfamily irrecv.\+enable\+IRIn()} in setup().~\newline
+ For sending, call {\ttfamily Ir\+Sender.\+begin();} in setup().~\newline
+ If IR\+\_\+\+SEND\+\_\+\+PIN is not defined (before the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}}) you must use e.\+g. {\ttfamily Ir\+Sender.\+begin(3, ENABLE\+\_\+\+LED\+\_\+\+FEEDBACK, USE\+\_\+\+DEFAULT\+\_\+\+FEEDBACK\+\_\+\+LED\+\_\+\+PIN);}
+\item Old {\ttfamily decode(decode\+\_\+results \texorpdfstring{$\ast$}{*}a\+Results)} function is replaced by simple {\ttfamily decode()}. So if you have a statement {\ttfamily if(irrecv.\+decode(\&results))} replace it with {\ttfamily if (Ir\+Receiver.\+decode())}.
+\item The decoded result is now in in {\ttfamily Ir\+Receiver.\+decoded\+IRData} and not in {\ttfamily results} any more, therefore replace any occurrences of {\ttfamily results.\+value} and {\ttfamily results.\+decode\+\_\+type} (and similar) to {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+decoded\+Raw\+Data} and {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+protocol}.
+\item Overflow, Repeat and other flags are now in \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRProtocol.h\#L90-L101}{\texttt{ {\ttfamily Ir\+Receiver.\+received\+IRData.\+flags}}}.
+\item Seldom used\+: {\ttfamily results.\+rawbuf} and {\ttfamily results.\+rawlen} must be replaced by {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+raw\+Data\+Ptr-\/\texorpdfstring{$>$}{>}rawbuf} and {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+raw\+Data\+Ptr-\/\texorpdfstring{$>$}{>}rawlen}.
+\item The 5 protocols {\bfseries{NEC, Panasonic, Sony, Samsung and JVC}} have been converted to LSB first. Send functions for sending old MSB data were renamed to {\ttfamily send\+NECMSB}, {\ttfamily send\+Samsung\+MSB()}, {\ttfamily send\+Sony\+MSB()} and {\ttfamily send\+JVCMSB()}. The old {\ttfamily send\+SAMSUNG()} and {\ttfamily send\+Sony()} MSB functions are still available. The old MSB version of {\ttfamily send\+Panasonic()} function was deleted, since it had bugs nobody recognized and therfore was assumed to be never used.~\newline
+ For converting MSB codes to LSB see \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#how-to-convert-old-msb-first-32-bit-ir-data-codes-to-new-lsb-first-32-bit-ir-data-codes}{\texttt{ below}}.
+\end{DoxyItemize}\hypertarget{index_autotoc_md68}{}\doxysubsubsection{\texorpdfstring{Example}{Example}}\label{index_autotoc_md68}
+\hypertarget{index_autotoc_md69}{}\doxysubsubsubsection{\texorpdfstring{Old 2.\+x program\+:}{Old 2.\+x program\+:}}\label{index_autotoc_md69}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8h}{IRremote.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ RECV\_PIN\ 2}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\mbox{\hyperlink{classIRrecv}{IRrecv}}\ irrecv(RECV\_PIN);}
+\DoxyCodeLine{\mbox{\hyperlink{structdecode__results}{decode\_results}}\ results;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{...}
+\DoxyCodeLine{\ \ Serial.begin(115200);\ \textcolor{comment}{//\ Establish\ serial\ communication}}
+\DoxyCodeLine{\ \ irrecv.enableIRIn();\ \textcolor{comment}{//\ Start\ the\ receiver}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (irrecv.decode(\&results))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ Serial.println(results.value,\ HEX);}
+\DoxyCodeLine{\ \ \ \ \ \ ...}
+\DoxyCodeLine{\ \ \ \ \ \ irrecv.resume();\ \textcolor{comment}{//\ Receive\ the\ next\ value}}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\ \ ...}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md70}{}\doxysubsubsubsection{\texorpdfstring{New 4.\+x program\+:}{New 4.\+x program\+:}}\label{index_autotoc_md70}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ 2}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{...}
+\DoxyCodeLine{\ \ Serial.begin(115200);\ \textcolor{comment}{//\ //\ Establish\ serial\ communication}}
+\DoxyCodeLine{\ \ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gab43cf2c58beebf12ad8e91c7d294a638}{begin}}(IR\_RECEIVE\_PIN,\ ENABLE\_LED\_FEEDBACK);\ \textcolor{comment}{//\ Start\ the\ receiver}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_ga74a663ea70562d1a7edb853c0ef9394b}{decode}}())\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ Serial.println(\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);\ \textcolor{comment}{//\ Print\ "{}old"{}\ raw\ data}}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gaa1ad5e6f5f4802c86cc59d0aece35f7c}{printIRResultShort}}(\&Serial);\ \textcolor{comment}{//\ Print\ complete\ received\ data\ in\ one\ line}}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gaf9709a0ee5e11bc28f8a83b118348540}{printIRSendUsage}}(\&Serial);\ \ \ \textcolor{comment}{//\ Print\ the\ statement\ required\ to\ send\ this\ data}}
+\DoxyCodeLine{\ \ \ \ \ \ ...}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_ga41de8150eff044a237990c271d57ea27}{resume}}();\ \textcolor{comment}{//\ Enable\ receiving\ of\ the\ next\ value}}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\ \ ...}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md71}{}\doxysubsection{\texorpdfstring{How to convert old MSB first 32 bit IR data codes to new LSB first 32 bit IR data codes}{How to convert old MSB first 32 bit IR data codes to new LSB first 32 bit IR data codes}}\label{index_autotoc_md71}
+For the new decoders for {\bfseries{NEC, Panasonic, Sony, Samsung and JVC}}, the result {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+decoded\+Raw\+Data} is now {\bfseries{LSB-\/first}}, as the definition of these protocols suggests!~\newline
+ ~\newline
+ To convert one into the other, you must reverse the byte/nibble positions and then reverse all bit positions of each byte/nibble or write it as one binary string and reverse/mirror it.~\newline
+~\newline
+ Example\+: {\ttfamily 0x\+CB 34 01 02}~\newline
+ {\ttfamily 0x20 10 43 BC} after nibble reverse~\newline
+ {\ttfamily 0x40 80 2C D3} after bit reverse of each nibble~\newline
+~\newline
+ \hypertarget{index_autotoc_md72}{}\doxysubsubsection{\texorpdfstring{Nibble reverse map\+:}{Nibble reverse map\+:}}\label{index_autotoc_md72}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0-\/>0\ \ \ 1-\/>8\ \ \ 2-\/>4\ \ \ 3-\/>C}
+\DoxyCodeLine{4-\/>2\ \ \ 5-\/>A\ \ \ 6-\/>6\ \ \ 7-\/>E}
+\DoxyCodeLine{8-\/>1\ \ \ 9-\/>9\ \ \ A-\/>5\ \ \ B-\/>D}
+\DoxyCodeLine{C-\/>3\ \ \ D-\/>B\ \ \ E-\/>7\ \ \ F-\/>F}
+
+\end{DoxyCode}
+ {\ttfamily 0x\+CB340102} is binary {\ttfamily 1100 1011 0011 0100 0000 0001 0000 0010}.~\newline
+ {\ttfamily 0x40802\+CD3} is binary {\ttfamily 0100 0000 1000 0000 0010 1100 1101 0011}.~\newline
+ If you {\bfseries{read the first binary sequence backwards}} (right to left), you get the second sequence. You may use {\ttfamily bitreverse\+One\+Byte()} or {\ttfamily bitreverse32\+Bit()} for this.
+
+Sending old MSB codes without conversion can be done by using {\ttfamily send\+NECMSB()}, {\ttfamily send\+Sony\+MSB()}, {\ttfamily send\+Samsung\+MSB()}, {\ttfamily send\+JVCMSB()}.
+
+~\newline
+\hypertarget{index_autotoc_md73}{}\doxysection{\texorpdfstring{Errors with using the 4.\+x versions for old tutorials}{Errors with using the 4.\+x versions for old tutorials}}\label{index_autotoc_md73}
+If you suffer from errors with old tutorial code including {\ttfamily \doxylink{IRremote_8h}{IRremote.\+h}} instead of {\ttfamily \doxylink{IRremote_8hpp}{IRremote.\+hpp}}, just try to rollback to \href{https://github.com/Arduino-IRremote/Arduino-IRremote/releases/tag/v2.4.0}{\texttt{ Version 2.\+4.\+0}}.~\newline
+ Most likely your code will run and you will not miss the new features.
+
+~\newline
+\hypertarget{index_autotoc_md74}{}\doxysubsection{\texorpdfstring{Staying on 2.\+x}{Staying on 2.\+x}}\label{index_autotoc_md74}
+Consider using the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/releases/tag/v2.4.0}{\texttt{ original 2.\+4 release form 2017}} or the last backwards compatible \href{https://github.com/Arduino-IRremote/Arduino-IRremote/releases/tag/2.8.0}{\texttt{ 2.\+8 version}} for you project.~\newline
+ It may be sufficient and deals flawlessly with 32 bit IR codes.~\newline
+ If this doesn\textquotesingle{}t fit your case, be assured that 4.\+x is at least trying to be backwards compatible, so your old examples should still work fine.\hypertarget{index_autotoc_md75}{}\doxysubsubsection{\texorpdfstring{Drawbacks of using 2.\+x}{Drawbacks of using 2.\+x}}\label{index_autotoc_md75}
+
+\begin{DoxyItemize}
+\item Only the following decoders are available\+:~\newline
+ {\ttfamily NEC} ~ ~ {\ttfamily Denon} ~ ~ {\ttfamily Panasonic} ~ ~ {\ttfamily JVC} ~ ~ {\ttfamily LG}~\newline
+ {\ttfamily RC5} ~ ~ {\ttfamily RC6} ~ ~ {\ttfamily Samsung} ~ ~ {\ttfamily Sony}
+\item The call of {\ttfamily irrecv.\+decode(\&results)} uses the old MSB first decoders like in 2.\+x and sets the 32 bit codes in {\ttfamily results.\+value}.
+\item No decoding to a more meaningful (constant) 8/16 bit address and 8 bit command.
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md76}{}\doxysection{\texorpdfstring{Why {\itshape .hpp instead of \texorpdfstring{$\ast$}{*}.cpp?}}{Why {\itshape .hpp instead of \texorpdfstring{$\ast$}{*}.cpp?}}}\label{index_autotoc_md76}
+{\bfseries{Every \texorpdfstring{$\ast$}{*}.cpp file is compiled separately}} by a call of the compiler exclusively for this cpp file. These calls are managed by the IDE / make system. In the Arduino IDE the calls are executed when you click on \texorpdfstring{$\ast$}{*}\+Verify or {\itshape Upload}.
+
+And now our problem with Arduino is\+:~\newline
+ {\bfseries{How to set compile options for all \texorpdfstring{$\ast$}{*}.cpp files, especially for libraries used?}}~\newline
+ IDE\textquotesingle{}s like \href{https://github.com/ArminJo/ServoEasing\#modifying-compile-options--macros-with-sloeber-ide}{\texttt{ Sloeber}} or \href{https://github.com/ArminJo/ServoEasing\#modifying-compile-options--macros-with-platformio}{\texttt{ Platform\+IO}} support this by allowing to specify a set of options per project. They add these options at each compiler call e.\+g. {\ttfamily -\/DTRACE}.
+
+But Arduino lacks this feature. So the {\bfseries{workaround}} is not to compile all sources separately, but to concatenate them to one huge source file by including them in your source.~\newline
+ This is done by e.\+g. {\ttfamily \#include "{}\+IRremote.\+hpp"{}}.
+
+But why not {\ttfamily \#include "{}\+IRremote.\+cpp"{}}?~\newline
+ Try it and you will see tons of errors, because each function of the {\itshape .cpp file is now compiled twice, first by compiling the huge file and second by compiling the \texorpdfstring{$\ast$}{*}.cpp file separately, like described above.~\newline
+ So using the extension \texorpdfstring{$\ast$}{*}cpp} is not longer possible, and one solution is to use {\itshape hpp} as extension, to show that it is an included {\itshape .cpp file.~\newline
+ Every other extension e.\+g. \texorpdfstring{$\ast$}{*}cinclude} would do, but {\itshape hpp} seems to be common sense.\hypertarget{index_autotoc_md77}{}\doxysection{\texorpdfstring{Using the new \texorpdfstring{$\ast$}{*}.hpp files}{Using the new \texorpdfstring{$\ast$}{*}.hpp files}}\label{index_autotoc_md77}
+In order to support compile options more easily, you must use the statement {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}} instead of {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8h}{IRremote.\+h}\texorpdfstring{$>$}{>}} in your main program (aka \texorpdfstring{$\ast$}{*}.ino file with setup() and loop()).
+
+In {\bfseries{all other files}} you must use the following, to {\bfseries{prevent {\ttfamily multiple definitions} linker errors}}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ USE\_IRREMOTE\_HPP\_AS\_PLAIN\_INCLUDE}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}>}}
+
+\end{DoxyCode}
+
+
+{\bfseries{Ensure that all macros in your main program are defined before any}} {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}}.~\newline
+ The following macros will definitely be overridden with default values otherwise\+:
+\begin{DoxyItemize}
+\item {\ttfamily RAW\+\_\+\+BUFFER\+\_\+\+LENGTH}
+\item {\ttfamily IR\+\_\+\+SEND\+\_\+\+PIN}
+\item {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER}
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md78}{}\doxysection{\texorpdfstring{3 ways to specify an IR code}{3 ways to specify an IR code}}\label{index_autotoc_md78}
+There are 3 different ways of specifying a particular IR code.\hypertarget{index_autotoc_md79}{}\doxysubsection{\texorpdfstring{1. Timing}{1. Timing}}\label{index_autotoc_md79}
+The timing of each mark/pulse and space/distance\+\_\+between\+\_\+pulses is specified in a list or array. This enables specifying {\bfseries{all IR codes}}, but requires a lot of memory and is {\bfseries{not readable at all}}. One formal definition of such a timing array, including {\bfseries{specification of frequency and repeats}} is the \href{http://www.harctoolbox.org/Glossary.html\#ProntoSemantics}{\texttt{ {\bfseries{Pronto}} format}}.~\newline
+ Memory can be saved by using a lower time resolution. For IRremote you can use a 50 {$\mu$}s resolution which halves the memory requirement by using byte values instead of int16 values. For receiving purposes you can use the {\bfseries{hash of the timing}} provided by the {\ttfamily decode\+Hash()} decoder.\hypertarget{index_autotoc_md80}{}\doxysubsection{\texorpdfstring{2. Encoding schemes}{2. Encoding schemes}}\label{index_autotoc_md80}
+There are 3 main encoding schemes which encodes a binary bitstream / hex value\+:
+\begin{DoxyEnumerate}
+\item {\ttfamily PULSE\+\_\+\+DISTANCE}. The distance between pulses determines the bit value. This requires always a stop bit! Examples are NEC and KASEIKYO protocols. The pulse width is constant for most protocols.
+\item {\ttfamily PULSE\+\_\+\+WIDTH}. The width of a pulse determines the bit value, pulse distance is constant. This requires no stop bit! The only known example is the SONY protocol.
+\item \href{https://en.wikipedia.org/wiki/Manchester_code}{\texttt{ Phase / Manchester encoding}}. The time of the pulse/pause transition (phase) relative to the clock determines the bit value. Examples are RC5 and RC6 protocols.
+\end{DoxyEnumerate}
+
+Phase encoding has a {\bfseries{constant bit length}}, {\ttfamily PULSE\+\_\+\+DISTANCE} with constant pulse width and {\ttfamily PULSE\+\_\+\+WIDTH} have {\bfseries{no constant bit length}}!
+
+A well known example for {\ttfamily PULSE\+\_\+\+DISTANCE} with non constant pulse width encoding is the {\bfseries{RS232 serial encoding}}. Here the non constant pulse width is used to enable a {\bfseries{constant bit length}}.
+
+Most IR signals have a {\bfseries{special header}} to help in setting the automatic gain of the receiver circuit. This header is not part of the encoding, but is often significant for a special protocol and therefore must be reproducible.
+
+Be aware that there are codes using a {\ttfamily PULSE\+\_\+\+DISTANCE} encoding where more than a binary 0/1 is put into a pulse/pause combination. This requires more than 2 different pulse or pause length combinations. The \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/ReceiveAndSendHob2Hood/ReceiveAndSendHob2Hood.ino}{\texttt{ Hob\+To\+Hood protocol}} uses such an encoding.
+
+Using encoding schemes reduces the specification of an IR code to a bitstream / hex value, which is LSB by default and pulse / pause timings of header, 0, and 1. The hex value is {\bfseries{quite readable}}. These schemes can not put any semantics like address, command or checksum on this bitstream.\hypertarget{index_autotoc_md81}{}\doxysubsection{\texorpdfstring{3. Protocols}{3. Protocols}}\label{index_autotoc_md81}
+There are a few common protocols that are implemented directly in IRremote. They specify the frequency, the timings of header, 0, and 1 as well as other values like checksum, repeat distance, repeat coding, bit toggling etc. The semantics of the hex value is also specified, allowing the usage of only 2 parameters {\bfseries{address}} and {\bfseries{command}} to specify an IR code. This saves memory and is {\bfseries{highly readable}}. Often the address is also constant, which further reduces memory requirements.\hypertarget{index_autotoc_md82}{}\doxysection{\texorpdfstring{IRReceiver pinouts}{IRReceiver pinouts}}\label{index_autotoc_md82}
+
+
+\href{https://learn.adafruit.com/ir-sensor}{\texttt{ Adafruit IR Sensor tutorial}}\hypertarget{index_autotoc_md83}{}\doxysection{\texorpdfstring{Receiving IR codes}{Receiving IR codes}}\label{index_autotoc_md83}
+In your program you check for a {\bfseries{completely received IR frame}} with\+:~\newline
+ {\ttfamily if (Ir\+Receiver.\+decode()) \{\}}~\newline
+ This also decodes the received data.~\newline
+ After successful decoding, the IR data is contained in the \doxylink{structIRData}{IRData} structure, available as {\ttfamily Ir\+Receiver.\+decoded\+IRData}.\hypertarget{index_autotoc_md84}{}\doxysubsection{\texorpdfstring{decoded\+IRData structure}{decoded\+IRData structure}}\label{index_autotoc_md84}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRData}{IRData}}\ \{}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ \mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}};\ \ \ \ \ \textcolor{comment}{//\ UNKNOWN,\ NEC,\ SONY,\ RC5,\ PULSE\_DISTANCE,\ ...}}
+\DoxyCodeLine{\ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Decoded\ address}}
+\DoxyCodeLine{\ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Decoded\ command}}
+\DoxyCodeLine{\ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a08a6d5eaf26fbbcc3271bcc930d6e331}{extra}};\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Used\ for\ Kaseikyo\ unknown\ vendor\ ID.\ Ticks\ used\ for\ decoding\ Distance\ protocol.}}
+\DoxyCodeLine{\ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}};\ \ \ \ \ \ \textcolor{comment}{//\ Number\ of\ bits\ received\ for\ data\ (address\ +\ command\ +\ parity)\ -\/\ to\ determine\ protocol\ length\ if\ different\ length\ are\ possible.}}
+\DoxyCodeLine{\ \ \ \ uint8\_t\ \mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ IRDATA\_FLAGS\_IS\_REPEAT,\ IRDATA\_FLAGS\_WAS\_OVERFLOW\ etc.\ See\ IRDATA\_FLAGS\_*\ definitions}}
+\DoxyCodeLine{\ \ \ \ IRRawDataType\ \mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};\ \ \ \ \textcolor{comment}{//\ Up\ to\ 32\ (64\ bit\ for\ 32\ bit\ CPU\ architectures)\ bit\ decoded\ raw\ data,\ used\ for\ sendRaw\ functions.}}
+\DoxyCodeLine{\ \ \ \ uint32\_t\ decodedRawDataArray[RAW\_DATA\_ARRAY\_SIZE];\ \textcolor{comment}{//\ 32\ bit\ decoded\ raw\ data,\ to\ be\ used\ for\ send\ function.}}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{structirparams__struct}{irparams\_struct}}\ *\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}};\ \textcolor{comment}{//\ Pointer\ of\ the\ raw\ timing\ data\ to\ be\ decoded.\ Mainly\ the\ data\ buffer\ filled\ by\ receiving\ ISR.}}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+ \hypertarget{index_autotoc_md85}{}\doxysubsubsubsection{\texorpdfstring{Flags}{Flags}}\label{index_autotoc_md85}
+This is the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRProtocol.h\#L88}{\texttt{ list of flags}} contained in the flags field.~\newline
+ Check it with e.\+g. {\ttfamily if(Ir\+Receiver.\+decoded\+IRData.\+flags \& IRDATA\+\_\+\+FLAGS\+\_\+\+IS\+\_\+\+REPEAT)}.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Flag name   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Flag name   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+IRDATA\+\_\+\+FLAGS\+\_\+\+IS\+\_\+\+REPEAT   &The gap between the preceding frame is as smaller than the maximum gap expected for a repeat. !!!\+We do not check for changed command or address, because it is almost not possible to press 2 different buttons on the remote within around 100 ms!!!    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+IS\+\_\+\+AUTO\+\_\+\+REPEAT   &The current repeat frame is a repeat, that is always sent after a regular frame and cannot be avoided. Only specified for protocols DENON, and LEGO.    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+PARITY\+\_\+\+FAILED   &The current (autorepeat) frame violated parity check.    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+TOGGLE\+\_\+\+BIT   &Is set if RC5 or RC6 toggle bit is set.    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+EXTRA\+\_\+\+INFO   &There is extra info not contained in address and data (e.\+g. Kaseikyo unknown vendor ID, or in decoded\+Raw\+Data\+Array).    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+WAS\+\_\+\+OVERFLOW   &Too many marks and spaces for the specified {\ttfamily RAW\+\_\+\+BUFFER\+\_\+\+LENGTH}. To avoid endless flagging of overflow, irparams.\+rawlen is set to 0 in this case.    \\\cline{1-2}
+IRDATA\+\_\+\+FLAGS\+\_\+\+IS\+\_\+\+MSB\+\_\+\+FIRST   &This value is mainly determined by the (known) protocol.   \\\cline{1-2}
+\end{longtabu}
+\hypertarget{index_autotoc_md86}{}\doxysubsubsubsection{\texorpdfstring{To access the {\bfseries{RAW data}}, use\+:}{To access the {\bfseries{RAW data}}, use\+:}}\label{index_autotoc_md86}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{keyword}{auto}\ myRawdata=\ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+
+\end{DoxyCode}
+
+
+The definitions for the {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+flags} are described \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRremoteInt.h\#L128-L140}{\texttt{ here}}.\hypertarget{index_autotoc_md87}{}\doxysubsubsubsection{\texorpdfstring{Print all fields\+:}{Print all fields\+:}}\label{index_autotoc_md87}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gaa1ad5e6f5f4802c86cc59d0aece35f7c}{printIRResultShort}}(\&Serial);}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md88}{}\doxysubsubsubsection{\texorpdfstring{Print the raw timing data received\+:}{Print the raw timing data received\+:}}\label{index_autotoc_md88}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gaa15d4bb54923f5846b595a6247a4a0d5}{printIRResultRawFormatted}}(\&Serial,\ \textcolor{keyword}{true});\`{}}
+
+\end{DoxyCode}
+ The raw data depends on the internal state of the Arduino timer in relation to the received signal and might therefore be slightly different each time. (resolution problem). The decoded values are the interpreted ones which are tolerant to such slight differences!\hypertarget{index_autotoc_md89}{}\doxysubsubsubsection{\texorpdfstring{Print how to send the received data\+:}{Print how to send the received data\+:}}\label{index_autotoc_md89}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.\mbox{\hyperlink{group__Receiving_gaf9709a0ee5e11bc28f8a83b118348540}{printIRSendUsage}}(\&Serial);}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md90}{}\doxysubsection{\texorpdfstring{Ambiguous protocols}{Ambiguous protocols}}\label{index_autotoc_md90}
+\hypertarget{index_autotoc_md91}{}\doxysubsubsection{\texorpdfstring{NEC, Extended NEC, ONKYO}{NEC, Extended NEC, ONKYO}}\label{index_autotoc_md91}
+The {\bfseries{NEC protocol}} is defined as 8 bit address and 8 bit command. But the physical address and data fields are each 16 bit wide. The additional 8 bits are used to send the inverted address or command for parity checking.~\newline
+ The {\bfseries{extended NEC protocol}} uses the additional 8 parity bit of address for a 16 bit address, thus disabling the parity check for address.~\newline
+ The {\bfseries{ONKYO protocol}} in turn uses the additional 8 parity bit of address and command for a 16 bit address and command.
+
+The decoder reduces the 16 bit values to 8 bit ones if the parity is correct. If the parity is not correct, it assumes no parity error, but takes the values as 16 bit values without parity assuming extended NEC or extended NEC protocol protocol.
+
+But now we have a problem when we want to receive e.\+g. the {\bfseries{16 bit}} address 0x00\+FF or 0x32\+CD! The decoder interprets this as a NEC 8 bit address 0x00 / 0x32 with correct parity of 0x\+FF / 0x\+CD and reduces it to 0x00 / 0x32.
+
+One way to handle this, is to force the library to {\bfseries{always}} use the ONKYO protocol interpretation by using {\ttfamily \#define DECODE\+\_\+\+ONKYO}. Another way is to check if {\ttfamily Ir\+Receiver.\+decoded\+IRData.\+protocol} is NEC and not ONKYO and to revert the parity reducing manually.\hypertarget{index_autotoc_md92}{}\doxysubsubsection{\texorpdfstring{NEC, NEC2}{NEC, NEC2}}\label{index_autotoc_md92}
+On a long press, the {\bfseries{NEC protocol}} does not repeat its frame, it sends a special short repeat frame. This enables an easy distinction between long presses and repeated presses and saves a bit of battery energy. This behavior is quite unique for NEC and its derived protocols like LG and Samsung.
+
+But of course there are also remote control systems, that uses the NEC protocol but only repeat the first frame when a long press is made instead of sending the special short repeat frame. We named this the {\bfseries{NEC2}} protocol and it is sent with {\ttfamily send\+NEC2()}.~\newline
+ But be careful, the NEC2 protocol can only be detected by the NEC library decoder {\bfseries{after}} the first frame and if you do a long press!\hypertarget{index_autotoc_md93}{}\doxysubsubsection{\texorpdfstring{Samsung, Samsung\+LG}{Samsung, Samsung\+LG}}\label{index_autotoc_md93}
+On a long press, the {\bfseries{Samsung\+LG protocol}} does not repeat its frame, it sends a special short repeat frame.\hypertarget{index_autotoc_md94}{}\doxysubsection{\texorpdfstring{RAM usage of different protocols}{RAM usage of different protocols}}\label{index_autotoc_md94}
+The {\ttfamily RAW\+\_\+\+BUFFER\+\_\+\+LENGTH} determines the length of the {\bfseries{byte buffer}} where the received IR timing data is stored before decoding.~\newline
+ {\bfseries{100}} is sufficient for standard protocols {\bfseries{up to 48 bits}}, with 1 bit consisting of one mark and space. We always require additional 4 btes, 1 byte for initial gap, 2 bytes for header and 1 byte for stop bit.
+\begin{DoxyItemize}
+\item {\bfseries{48}} bit protocols are PANASONIC, KASEIKYO, SAMSUNG48, RC6.
+\item {\bfseries{32}} bit protocols like NEC, SAMSUNG, WHYNTER, SONY(20), LG(28) require a {\bfseries{buffer length of 68}}.
+\item {\bfseries{16}} bit protocols like BOSEWAVE, DENON, FAST, JVC, LEGO\+\_\+\+PF, RC5, SONY(12 or 15) require a {\bfseries{buffer length of 36}}.
+\item MAGIQUEST requires a buffer length of {\bfseries{112}}.
+\item Air conditioners often send a longer protocol data stream {\bfseries{up to 750 bits}}.
+\end{DoxyItemize}
+
+If the record gap determined by {\ttfamily RECORD\+\_\+\+GAP\+\_\+\+MICROS} is changed from the default 8 ms to more than 20 ms, the buffer is no longer a byte but a uint16\+\_\+t buffer, requiring twice as much RAM. ~\newline
+\hypertarget{index_autotoc_md95}{}\doxysubsection{\texorpdfstring{Handling unknown Protocols}{Handling unknown Protocols}}\label{index_autotoc_md95}
+\hypertarget{index_autotoc_md96}{}\doxysubsubsection{\texorpdfstring{Disclaimer}{Disclaimer}}\label{index_autotoc_md96}
+{\bfseries{This library was designed to fit inside MCUs with relatively low levels of resources and was intended to work as a library together with other applications which also require some resources of the MCU to operate.}}
+
+Use the {\bfseries{Receive\+Demo example}} to print out all informations about your IR protocol.~\newline
+ The {\bfseries{Receive\+Dump example}} gives you more information but has bad repeat detection due to the time required for printing the information.\hypertarget{index_autotoc_md97}{}\doxysubsubsection{\texorpdfstring{Other libraries}{Other libraries}}\label{index_autotoc_md97}
+\hypertarget{index_autotoc_md98}{}\doxysubsubsubsection{\texorpdfstring{IRMP}{IRMP}}\label{index_autotoc_md98}
+If your protocol seems not to be supported by this library, you may try the \href{https://github.com/IRMP-org/IRMP}{\texttt{ IRMP library}}, which especially supports manchester protocols much better.\hypertarget{index_autotoc_md99}{}\doxysubsubsubsection{\texorpdfstring{IRremote\+ESP8266}{IRremote\+ESP8266}}\label{index_autotoc_md99}
+For {\bfseries{air conditioners}} , you may try the \href{https://github.com/crankyoldgit/IRremoteESP8266}{\texttt{ IRremote\+ESP8266 library}}, which supports an impressive set of protocols and a lot of air conditioners and works also on ESP32.\hypertarget{index_autotoc_md100}{}\doxysubsubsubsection{\texorpdfstring{rawirdecode and Heatpump\+IR}{rawirdecode and Heatpump\+IR}}\label{index_autotoc_md100}
+\href{https://github.com/ToniA/Raw-IR-decoder-for-Arduino}{\texttt{ Raw-\/\+IR-\/decoder-\/for-\/\+Arduino}} is not a library, but an arduino example sketch, which provides many methods of decoding especially {\bfseries{air conditioner}} protocols. Sending of these protocols can be done by the Arduino library \href{https://github.com/ToniA/arduino-heatpumpir}{\texttt{ Heatpump\+IR}}.\hypertarget{index_autotoc_md101}{}\doxysubsubsection{\texorpdfstring{Protocol=PULSE\+\_\+\+DISTANCE}{Protocol=PULSE\+\_\+\+DISTANCE}}\label{index_autotoc_md101}
+If you get something like this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{PULSE\_DISTANCE:\ HeaderMarkMicros=8900\ HeaderSpaceMicros=4450\ MarkMicros=550\ OneSpaceMicros=1700\ ZeroSpaceMicros=600\ \ NumberOfBits=56\ 0x43D8613C\ 0x3BC3BC}
+
+\end{DoxyCode}
+ then you have a code consisting of {\bfseries{56 bits}}, which is probably from an air conditioner remote.~\newline
+ You can send it with {\ttfamily send\+Pulse\+Distance\+Width()}. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{uint32\_t\ tRawData[]\ =\ \{\ 0xB02002,\ 0xA010\ \};}
+\DoxyCodeLine{IrSender.sendPulseDistance(38,\ 3450,\ 1700,\ 450,\ 1250,\ 450,\ 400,\ \&tRawData[0],\ 48,\ \textcolor{keyword}{false},\ 0,\ 0);}
+
+\end{DoxyCode}
+ You can send it with calling {\ttfamily send\+Pulse\+Distance\+Width\+Data()} twice, once for the first 32 bit and next for the remaining 24 bits.~\newline
+ The {\ttfamily PULSE\+\_\+\+DISTANCE} / {\ttfamily PULSE\+\_\+\+WIDTH} decoder just decodes a timing stream to a bitstream stored as hex values. These decoders can not put any semantics like address, command or checksum on this bitstream. But the bitstream is way more readable, than a timing stream. This bitstream is read {\bfseries{LSB first by default}}. If LSB does not suit for further research, you can change it \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/ir_DistanceProtocol.hpp\#L78}{\texttt{ here}}.
+
+{\bfseries{If RAM is not more than 2k, the decoder only accepts mark or space durations up to 2500 microseconds to save RAM space, otherwise it accepts durations up to 10 ms.}}\hypertarget{index_autotoc_md102}{}\doxysubsubsection{\texorpdfstring{Protocol=UNKNOWN}{Protocol=UNKNOWN}}\label{index_autotoc_md102}
+If you see something like {\ttfamily Protocol=UNKNOWN Hash=0x13\+BD886C 35 bits received} as output of e.\+g. the Receive\+Demo example, you either have a problem with decoding a protocol, or an unsupported protocol.
+
+
+\begin{DoxyItemize}
+\item If you have an {\bfseries{odd number of bits}} received, your receiver circuit probably has problems. Maybe because the IR signal is too weak.
+\item If you see timings like {\ttfamily + 600,-\/ 600 + 550,-\/ 150 + 200,-\/ 100 + 750,-\/ 550} then one 450 {$\mu$}s space was split into two 150 and 100 {$\mu$}s spaces with a spike / error signal of 200 {$\mu$}s between. Maybe because of a defective receiver or a weak signal in conjunction with another light emitting source nearby.
+\item If you see timings like {\ttfamily + 500,-\/ 550 + 450,-\/ 550 + 450,-\/ 500 + 500,-\/1550}, then marks are generally shorter than spaces and therefore {\ttfamily MARK\+\_\+\+EXCESS\+\_\+\+MICROS} (specified in your ino file) should be {\bfseries{negative}} to compensate for this at decoding.
+\item If you see {\ttfamily Protocol=UNKNOWN Hash=0x0 1 bits received} it may be that the space after the initial mark is longer than \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRremote.h\#L124}{\texttt{ {\ttfamily RECORD\+\_\+\+GAP\+\_\+\+MICROS}}}. This was observed for some LG air conditioner protocols. Try again with a line e.\+g. {\ttfamily \#define RECORD\+\_\+\+GAP\+\_\+\+MICROS 12000} before the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}} in your .ino file.
+\item To see more info supporting you to find the reason for your UNKNOWN protocol, you must enable the line {\ttfamily //\#define DEBUG} in \doxylink{IRremoteInt_8h}{IRremote\+Int.\+h}.
+\end{DoxyItemize}\hypertarget{index_autotoc_md103}{}\doxysubsubsection{\texorpdfstring{How to deal with protocols not supported by IRremote}{How to deal with protocols not supported by IRremote}}\label{index_autotoc_md103}
+If you do not know which protocol your IR transmitter uses, you have several choices.
+\begin{DoxyItemize}
+\item Just use the hash value to decide which command was received. See the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleReceiverForHashCodes/SimpleReceiverForHashCodes.ino}{\texttt{ Simple\+Receiver\+For\+Hash\+Codes example}}.
+\item Use the \href{examples/ReceiveDemo}{\texttt{ IRreceive\+Demo example}} or \href{examples/ReceiveDump}{\texttt{ IRreceive\+Dump example}} to dump out the IR timing. You can then reproduce/send this timing with the \href{examples/SendRawDemo}{\texttt{ Send\+Raw\+Demo example}}.
+\item The \href{https://github.com/IRMP-org/IRMP\#allprotocol-example}{\texttt{ IRMP All\+Protocol example}} prints the protocol and data for one of the {\bfseries{\href{https://github.com/IRMP-org/IRMP?tab=readme-ov-file\#list-of-protocols}{\texttt{ 40 supported protocols}}}}. The same library can be used to send this codes.
+\item If you have a bigger Arduino board at hand (\texorpdfstring{$>$}{>} 100 k\+Byte program memory) you can try the \href{https://github.com/bengtmartensson/Arduino-DecodeIR/blob/master/examples/IRremoteDecode/IRremoteDecode.ino}{\texttt{ IRremote\+Decode example}} of the Arduino library \href{https://github.com/bengtmartensson/Arduino-DecodeIR}{\texttt{ Decode\+IR}}.
+\item Use \href{http://www.harctoolbox.org/IrScrutinizer.html}{\texttt{ Ir\+Scrutinizer}}. It can automatically generate a send sketch for your protocol by exporting as "{}\+Arduino Raw"{}. It supports IRremote, the old \href{https://github.com/cyborg5/IRLib}{\texttt{ IRLib}} and \href{https://github.com/bengtmartensson/Infrared4Arduino}{\texttt{ Infrared4\+Arduino}}.
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md104}{}\doxysection{\texorpdfstring{Sending IR codes}{Sending IR codes}}\label{index_autotoc_md104}
+If you have a device at hand which can generate the IR codes you want to work with (aka IR remote), {\bfseries{it is recommended}} to receive the codes with the \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/ReceiveDemo/ReceiveDemo.ino}{\texttt{ Receive\+Demo example}}, which will tell you on the serial output how to send them.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Protocol=LG\ Address=0x2\ Command=0x3434\ Raw-\/Data=0x23434E\ 28\ bits\ MSB\ first}
+\DoxyCodeLine{Send\ with:\ IrSender.sendLG(0x2,\ 0x3434,\ <numberOfRepeats>);}
+
+\end{DoxyCode}
+ You will discover that {\bfseries{the address is a constant}} and the commands sometimes are sensibly grouped.~\newline
+ If you are uncertain about the numbers of repeats to use for sending, {\bfseries{3}} is a good starting point. If this works, you can check lower values afterwards.
+
+If you have enabled {\ttfamily DECODE\+\_\+\+DISTANCE\+\_\+\+WIDTH}, the code printed by {\ttfamily print\+IRSend\+Usage()} {\bfseries{differs between 8 and 32 bit platforms}}, so it is best to run the receiving program on the same platform as the sending program.
+
+{\bfseries{All sending functions support the sending of repeats}} if sensible. Repeat frames are sent at a fixed period determined by the protocol. e.\+g. 110 ms from start to start for NEC.~\newline
+ Keep in mind, that {\bfseries{there is no delay after the last sent mark}}. If you handle the sending of repeat frames by your own, you must insert sensible delays before the repeat frames to enable correct decoding.
+
+Sending old MSB codes without conversion can be done by using {\ttfamily send\+NECMSB()}, {\ttfamily send\+Sony\+MSB()}, {\ttfamily send\+Samsung\+MSB()}, {\ttfamily send\+JVCMSB()}.\hypertarget{index_autotoc_md105}{}\doxysubsection{\texorpdfstring{Sending IRDB IR codes}{Sending IRDB IR codes}}\label{index_autotoc_md105}
+The codes found in the \href{https://github.com/Lucaslhm/Flipper-IRDB}{\texttt{ Flipper-\/\+IRDB database}} are quite straightforward to convert, because the also use the address / command scheme.~\newline
+ Protocol matching is NECext -\/\texorpdfstring{$>$}{>} NECext (or Onkyo), Samsung32 -\/\texorpdfstring{$>$}{>} Samsung, SIRC20 -\/\texorpdfstring{$>$}{>} Sony with 20 bits etc.
+
+The codes found in the \href{https://github.com/probonopd/irdb/tree/master/codes}{\texttt{ irdb database}} specify a {\bfseries{device}}, a {\bfseries{subdevice}} and a {\bfseries{function}}. Most of the times, {\itshape device} and {\itshape subdevice} can be taken as upper and lower byte of the {\bfseries{address parameter}} and {\itshape function} is the {\bfseries{command parameter}} for the {\bfseries{new structured functions}} with address, command and repeat-\/count parameters like e.\+g. {\ttfamily Ir\+Sender.\+send\+NEC((device \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8) \texorpdfstring{$\vert$}{|} subdevice, 0x19, 2)}.~\newline
+ An {\bfseries{exact mapping}} can be found in the \href{https://github.com/probonopd/MakeHex/tree/master/protocols}{\texttt{ IRP definition files for IR protocols}}. "{}\+D"{} and "{}\+S"{} denotes device and subdevice and "{}\+F"{} denotes the function.\hypertarget{index_autotoc_md106}{}\doxysubsection{\texorpdfstring{Send pin}{Send pin}}\label{index_autotoc_md106}
+Any pin can be chosen as send pin, because the PWM signal is generated by default with software bit banging, since {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER} is not active.~\newline
+ On {\bfseries{ESP32}} ledc channel 0 is used for generating the IR PWM.~\newline
+ If {\ttfamily IR\+\_\+\+SEND\+\_\+\+PIN} is specified (as c macro), it reduces program size and improves send timing for AVR. If you want to use a variable to specify send pin e.\+g. with {\ttfamily set\+Send\+Pin(uint8\+\_\+t a\+Send\+Pin\+Number)}, you must disable this {\ttfamily IR\+\_\+\+SEND\+\_\+\+PIN} macro. Then you can change send pin at any time before sending an IR frame. See also \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#compile-options--macros-for-this-library}{\texttt{ Compile options / macros for this library}}.\hypertarget{index_autotoc_md107}{}\doxysubsubsection{\texorpdfstring{List of public IR code databases}{List of public IR code databases}}\label{index_autotoc_md107}
+\href{http://www.harctoolbox.org/IR-resources.html}{\texttt{ http\+://www.\+harctoolbox.\+org/\+IR-\/resources.\+html}}\hypertarget{index_autotoc_md108}{}\doxysubsection{\texorpdfstring{Flipper Zero}{Flipper Zero}}\label{index_autotoc_md108}
+\href{https://github.com/Lucaslhm/Flipper-IRDB}{\texttt{ Flipper IRDB Database}}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/flipperdevices/flipperzero-firmware/tree/release/lib/infrared/encoder_decoder}{\texttt{ Flipper decoding}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/tree/master/src}{\texttt{ IRremote decoding}}    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/flipperdevices/flipperzero-firmware/tree/release/lib/infrared/encoder_decoder}{\texttt{ Flipper decoding}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/tree/master/src}{\texttt{ IRremote decoding}}    }\\\cline{1-2}
+\endhead
+Samsung32   &Samsung    \\\cline{1-2}
+NEC   &NEC    \\\cline{1-2}
+NECext   &ONKYO    \\\cline{1-2}
+\href{https://github.com/flipperdevices/flipperzero-firmware/blob/027ea9ea36da137144548295c016d99255af53c3/lib/infrared/encoder_decoder/kaseikyo/infrared_decoder_kaseikyo.c\#L26}{\texttt{ \texorpdfstring{$<$}{<}start bit\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Vendor\+ID\+:16\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Vendor\+ID parity\+:4\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Genre1\+:4\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Genre2\+:4\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Command\+:10\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}ID\+:2\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Parity\+:8\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}stop bit\texorpdfstring{$>$}{>}}}~\newline
+and ID is MSB of address.~\newline
+address\+: 8A 02 20 00~\newline
+command\+: 56 03 00 00~\newline
+-\/\texorpdfstring{$>$}{>} {\bfseries{IRremote\+:}}~\newline
+Address 0x6\+A8, send\+Panasonic (for 02 20) and Command 0x35   &\texorpdfstring{$<$}{<}start bit\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Vendor\+ID\+:16\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Vendor\+ID parity\+:4\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Address\+:12\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Command\+:8\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}Parity of Vendor\+ID parity, Address and Command\+:8\texorpdfstring{$>$}{>}\texorpdfstring{$<$}{<}stop bit\texorpdfstring{$>$}{>}   \\\cline{1-2}
+\end{longtabu}
+
+
+~\newline
+\hypertarget{index_autotoc_md109}{}\doxysection{\texorpdfstring{Tiny NEC receiver and sender}{Tiny NEC receiver and sender}}\label{index_autotoc_md109}
+For applications only requiring NEC, NEC variants or FAST -\/see below-\/ protocol, there is a special receiver / sender included,~\newline
+ which has very {\bfseries{small code size of 500 bytes and does NOT require any timer}}.
+
+Check out the \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#tinyreceiver--tinysender}{\texttt{ Tiny\+Receiver}} and \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#irdispatcherdemo}{\texttt{ IRDispatcher\+Demo}} examples.~\newline
+ Take care to include {\ttfamily \doxylink{TinyIRReceiver_8hpp_source}{Tiny\+IRReceiver.\+hpp}} or {\ttfamily \doxylink{TinyIRSender_8hpp_source}{Tiny\+IRSender.\+hpp}} instead of {\ttfamily \doxylink{IRremote_8hpp}{IRremote.\+hpp}}.\hypertarget{index_autotoc_md110}{}\doxysubsubsection{\texorpdfstring{Tiny\+IRReceiver usage}{Tiny\+IRReceiver usage}}\label{index_autotoc_md110}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ USE\_ONKYO\_PROTOCOL\ \ \ \ //\ Like\ NEC,\ but\ take\ the\ 16\ bit\ address\ and\ command\ each\ as\ one\ 16\ bit\ value\ and\ not\ as\ 8\ bit\ normal\ and\ 8\ bit\ inverted\ value.}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ USE\_FAST\_PROTOCOL\ \ \ \ \ //\ Use\ FAST\ protocol\ instead\ of\ NEC\ /\ ONKYO}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}TinyIRReceiver.hpp"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()\ \{}
+\DoxyCodeLine{\ \ \mbox{\hyperlink{group__TinyReceiver_gaafb51bc656ba199129d261afa3f950c2}{initPCIInterruptForTinyReceiver}}();\ \textcolor{comment}{//\ Enables\ the\ interrupt\ generation\ on\ change\ of\ IR\ input\ signal}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (TinyReceiverDecode())\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ printTinyReceiverResultMinimal(\&Serial);}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \textcolor{comment}{//\ No\ resume()\ required\ :-\/)}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md111}{}\doxysubsubsection{\texorpdfstring{Tiny\+IRSender usage}{Tiny\+IRSender usage}}\label{index_autotoc_md111}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}TinyIRSender.hpp"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()\ \{}
+\DoxyCodeLine{\ \ sendNEC(3,\ 0,\ 11,\ 2);\ \textcolor{comment}{//\ Send\ address\ 0\ and\ command\ 11\ on\ pin\ 3\ with\ 2\ repeats.}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{\}}
+
+\end{DoxyCode}
+
+
+Another tiny receiver and sender {\bfseries{supporting more protocols}} can be found \href{https://github.com/LuisMiCa/IRsmallDecoder}{\texttt{ here}}.\hypertarget{index_autotoc_md112}{}\doxysection{\texorpdfstring{The FAST protocol}{The FAST protocol}}\label{index_autotoc_md112}
+The FAST protocol is a proprietary modified JVC protocol {\bfseries{without address, with parity and with a shorter header}}. It is meant to have a quick response to the event which sent the protocol frame on another board. FAST takes {\bfseries{21 ms for sending}} and is sent at a {\bfseries{50 ms period}}. It has full 8 bit parity for error detection.\hypertarget{index_autotoc_md113}{}\doxysubsubsection{\texorpdfstring{FAST protocol characteristics\+:}{FAST protocol characteristics\+:}}\label{index_autotoc_md113}
+
+\begin{DoxyItemize}
+\item Bit timing is like JVC
+\item The header is shorter, 3156 {$\mu$}s vs. 12500 {$\mu$}s
+\item No address and 16 bit data, interpreted as 8 bit command and 8 bit inverted command, leading to a fixed protocol length of (6 + (16 \texorpdfstring{$\ast$}{*} 3) + 1) \texorpdfstring{$\ast$}{*} 526 = 55 \texorpdfstring{$\ast$}{*} 526 = 28930 microseconds or 29 ms.
+\item Repeats are sent as complete frames but in a 50 ms period / with a 21 ms distance.
+\end{DoxyItemize}\hypertarget{index_autotoc_md114}{}\doxysubsubsection{\texorpdfstring{Sending FAST protocol with IRremote}{Sending FAST protocol with IRremote}}\label{index_autotoc_md114}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ 3}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()\ \{}
+\DoxyCodeLine{\ \ sendFAST(11,\ 2);\ \textcolor{comment}{//\ Send\ command\ 11\ on\ pin\ 3\ with\ 2\ repeats.}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{\}}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md115}{}\doxysubsubsection{\texorpdfstring{Sending FAST protocol with Tiny\+IRSender}{Sending FAST protocol with Tiny\+IRSender}}\label{index_autotoc_md115}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ USE\_FAST\_PROTOCOL\ }\textcolor{comment}{//\ Use\ FAST\ protocol.\ No\ address\ and\ 16\ bit\ data,\ interpreted\ as\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}TinyIRSender.hpp"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ setup()\ \{}
+\DoxyCodeLine{\ \ sendFAST(3,\ 11,\ 2);\ \textcolor{comment}{//\ Send\ command\ 11\ on\ pin\ 3\ with\ 2\ repeats.}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ loop()\ \{\}}
+
+\end{DoxyCode}
+ ~\newline
+
+
+The FAST protocol can be received by IRremote and Tiny\+IRReceiver.\hypertarget{index_autotoc_md116}{}\doxysection{\texorpdfstring{FAQ and hints}{FAQ and hints}}\label{index_autotoc_md116}
+\hypertarget{index_autotoc_md117}{}\doxysubsection{\texorpdfstring{Receiving stops after analog\+Write() or tone() or after running a motor.}{Receiving stops after analog\+Write() or tone() or after running a motor.}}\label{index_autotoc_md117}
+The receiver sample interval of 50 µs is generated by a timer. On many boards this must be a \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#timer-and-pin-usage}{\texttt{ hardware timer}}. On some boards where a software timer is available, the software timer is used.~\newline
+ Be aware that the hardware timer used for receiving should not be used for {\ttfamily analog\+Write()}.~\newline
+ Especially {\bfseries{motor}} control often uses the {\ttfamily analog\+Write()} function and will therefore stop the receiving if used on the pins indicated \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#timer-and-pin-usage}{\texttt{ here}}.~\newline
+ On the Uno and other AVR boards the receiver timer ist the same as the tone timer. Thus receiving will stop after a {\ttfamily tone()} command. See \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/b962db8f4e47408df01474a57f313f5a6bbe39a1/examples/ReceiveDemo/ReceiveDemo.ino\#L257}{\texttt{ Receive\+Demo example}} how to deal with it, i.\+e. how to use {\ttfamily Ir\+Receiver.\+restart\+Timer()}.\hypertarget{index_autotoc_md118}{}\doxysubsection{\texorpdfstring{Receiving sets overflow flag.}{Receiving sets overflow flag.}}\label{index_autotoc_md118}
+The flag {\ttfamily IRDATA\+\_\+\+FLAGS\+\_\+\+WAS\+\_\+\+OVERFLOW} is set, if {\ttfamily RAW\+\_\+\+BUFFER\+\_\+\+LENGTH} is too small for all the marks and spaces of the protocol. This can happen on long protocol frames like the ones from air conditioner. It also can happen, if {\ttfamily RECORD\+\_\+\+GAP\+\_\+\+MICROS} is smaller than the real gap between a frame and thr repetition frame, thus interpreting both as one consecutive frame. Best is to dump the timing then, to see which reason holds.\hypertarget{index_autotoc_md119}{}\doxysubsection{\texorpdfstring{Problems with Neopixels, Fast\+Led etc.}{Problems with Neopixels, Fast\+Led etc.}}\label{index_autotoc_md119}
+IRremote will not work right when you use {\bfseries{Neopixels}} (aka WS2811/\+WS2812/\+WS2812B) or other libraries blocking interrupts for a longer time (\texorpdfstring{$>$}{>} 50 {$\mu$}s).~\newline
+ Whether you use the Adafruit Neopixel lib, or Fast\+LED, interrupts get disabled on many lower end CPUs like the basic Arduinos for longer than 50 {$\mu$}s. In turn, this stops the IR interrupt handler from running when it needs to. See also this \href{https://www.youtube.com/watch?v=62-nEJtm070}{\texttt{ video}}.
+
+One {\bfseries{workaround}} is to wait for the IR receiver to be idle before you send the Neopixel data with {\ttfamily if (Ir\+Receiver.\+is\+Idle()) \{ strip.\+show();\}}.~\newline
+ This {\bfseries{prevents at least breaking a running IR transmission}} and -\/depending of the update rate of the Neopixel-\/ may work quite well.~\newline
+ There are some other solutions to this on more powerful processors, \href{http://marc.merlins.org/perso/arduino/post_2017-04-03_Arduino-328P-Uno-Teensy3_1-ESP8266-ESP32-IR-and-Neopixels.html}{\texttt{ see this page from Marc MERLIN}}\hypertarget{index_autotoc_md120}{}\doxysubsection{\texorpdfstring{Does not work/compile with another library}{Does not work/compile with another library}}\label{index_autotoc_md120}
+{\bfseries{Another library is only working/compiling}} if you deactivate the line {\ttfamily Ir\+Receiver.\+begin(\+IR\+\_\+\+RECEIVE\+\_\+\+PIN, ENABLE\+\_\+\+LED\+\_\+\+FEEDBACK);}.~\newline
+ This is often due to {\bfseries{timer resource conflicts}} with the other library. Please see \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#timer-and-pin-usage}{\texttt{ below}}.\hypertarget{index_autotoc_md121}{}\doxysubsection{\texorpdfstring{Multiple IR receiver and sender}{Multiple IR receiver and sender}}\label{index_autotoc_md121}
+{\bfseries{This library supports only one IR receiver and one IR sender object (\doxylink{classIRrecv}{IRrecv} and \doxylink{classIRsend}{IRsend}) per CPU.}}~\newline
+ However since sending is a serial task, you can use {\ttfamily set\+Send\+Pin()} to switch the pin to send, thus emulating multiple sender.~\newline
+ The receiver uses a special {\bfseries{timer}} triggered function, which reads the digital IR signal value from one pin every 50 {$\mu$}s.~\newline
+ So {\bfseries{multiple IR receivers}} can only be used by connecting the output pins of several IR receivers together. The IR receiver modules internally use an NPN transistor as output device with just a 30k resistor to VCC. This is basically an "{}open collector"{} and allows multiple output pins to be connected to one Arduino input pin.~\newline
+ However, keep in mind that any weak / disturbed signal from one of the receivers will also interfere with a good signal from another receiver.\hypertarget{index_autotoc_md122}{}\doxysubsection{\texorpdfstring{Increase strength of sent output signal}{Increase strength of sent output signal}}\label{index_autotoc_md122}
+{\bfseries{The best way to increase the IR power for free}} is to use 2 or 3 IR diodes in series. One diode requires 1.\+2 volt at 20 mA or 1.\+5 volt at 100 mA so you can supply up to 3 diodes with a 5 volt output.~\newline
+ To power {\bfseries{2 diodes}} with 1.\+2 V and 20 mA and a 5 V supply, set the resistor to\+: (5 V -\/ 2.\+4 V) -\/\texorpdfstring{$>$}{>} 2.\+6 V / 20 mA = {\bfseries{130 \&ohm;}}.~\newline
+ For {\bfseries{3 diodes}} it requires 1.\+4 V / 20 mA = {\bfseries{70 \&ohm;}}.~\newline
+ The actual current might be lower since of {\bfseries{loss at the AVR pin}}. E.\+g. 0.\+3 V at 20 mA.~\newline
+ If you do not require more current than 20 mA, there is no need to use an external transistor (at least for AVR chips).
+
+On my Arduino Nanos, I always use a 100 \&ohm; series resistor and one IR LED \+:grinning\+:.\hypertarget{index_autotoc_md123}{}\doxysubsection{\texorpdfstring{Minimal CPU clock frequency}{Minimal CPU clock frequency}}\label{index_autotoc_md123}
+For receiving, the {\bfseries{minimal CPU clock frequency is 4 MHz}}, since the 50 {$\mu$}s timer ISR (Interrupt Service Routine) takes around 12 {$\mu$}s on a 16 MHz ATmega.~\newline
+ The Tiny\+Receiver, which reqires no polling, runs with 1 MHz.~\newline
+ For sending, the {\bfseries{default software generated PWM has problems on AVR running with 8 MHz}}. The PWM frequency is around 30 instead of 38 k\+Hz and RC6 is not reliable. You can switch to timer PWM generation by {\ttfamily \#define SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER}.\hypertarget{index_autotoc_md124}{}\doxysubsection{\texorpdfstring{Bang \& Olufsen protocol}{Bang \& Olufsen protocol}}\label{index_autotoc_md124}
+The Bang \& Olufsen protocol decoder is not enabled by default, i.\+e if no protocol is enabled explicitly by \#define {\ttfamily DECODE\+\_\+\texorpdfstring{$<$}{<}XYZ\texorpdfstring{$>$}{>}}. It must always be enabled explicitly by {\ttfamily \#define DECODE\+\_\+\+BEO}. This is because it has an {\bfseries{IR transmit frequency of 455 k\+Hz}} and therefore requires a different receiver hardware (TSOP7000).~\newline
+ And because {\bfseries{generating a 455 k\+Hz PWM signal is currently only implemented for {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER}}}, sending only works if {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER} or {\ttfamily USE\+\_\+\+NO\+\_\+\+SEND\+\_\+\+PWM} is defined.~\newline
+ For more info, see \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/ir_BangOlufsen.hpp\#L44}{\texttt{ ir\+\_\+\+Bang\+Olufsen.\+hpp}}.\hypertarget{index_autotoc_md125}{}\doxysection{\texorpdfstring{Examples for this library}{Examples for this library}}\label{index_autotoc_md125}
+The examples are available at File \texorpdfstring{$>$}{>} Examples \texorpdfstring{$>$}{>} Examples from Custom Libraries / IRremote.~\newline
+ In order to fit the examples to the 8K flash of ATtiny85 and ATtiny88, the \href{https://github.com/ArminJo/ATtinySerialOut}{\texttt{ Arduino library ATtiny\+Serial\+Out}} is required for this CPU\textquotesingle{}s.~\newline
+ See also \href{https://dronebotworkshop.com/ir-remotes/\#SimpleReceiver_Example_Code}{\texttt{ Drone\+Bot Workshop Simple\+Receiver}} and \href{https://dronebotworkshop.com/ir-remotes/\#SimpleSender_Example_Code}{\texttt{ Simple\+Sender}}.\hypertarget{index_autotoc_md126}{}\doxysubsubsubsection{\texorpdfstring{Simple\+Receiver + Simple\+Sender}{Simple\+Receiver + Simple\+Sender}}\label{index_autotoc_md126}
+The {\bfseries{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleReceiver/SimpleReceiver.ino}{\texttt{ Simple\+Receiver}}}} and {\bfseries{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleSender/SimpleSender.ino}{\texttt{ Simple\+Sender}}}} examples are a good starting point. A simple example can be tested online with \href{https://wokwi.com/projects/338611596994544210}{\texttt{ WOKWI}}.\hypertarget{index_autotoc_md127}{}\doxysubsubsubsection{\texorpdfstring{Simple\+Receiver\+For\+Hash\+Codes}{Simple\+Receiver\+For\+Hash\+Codes}}\label{index_autotoc_md127}
+The {\bfseries{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SimpleReceiver/SimpleReceiver.ino}{\texttt{ Simple\+Receiver\+For\+Hash\+Codes}}}} uses only the hash decoder. It converts all IR frames longer than 6 to a 32 bit hash code, thus enabling receiving of unknown protocols.~\newline
+ See\+: \href{http://www.righto.com/2010/01/using-arbitrary-remotes-with-arduino.html}{\texttt{ http\+://www.\+righto.\+com/2010/01/using-\/arbitrary-\/remotes-\/with-\/arduino.\+html}}\hypertarget{index_autotoc_md128}{}\doxysubsubsubsection{\texorpdfstring{Tiny\+Receiver + Tiny\+Sender}{Tiny\+Receiver + Tiny\+Sender}}\label{index_autotoc_md128}
+If {\bfseries{code size}} or {\bfseries{timer usage}} matters, look at these examples.~\newline
+ The {\bfseries{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/TinyReceiver/TinyReceiver.ino}{\texttt{ Tiny\+Receiver}}}} example uses the {\bfseries{Tiny\+IRReceiver}} library which can {\bfseries{only receive NEC, Extended NEC, ONKYO and FAST protocols, but does not require any timer}}. They use pin change interrupt for on the fly decoding, which is the reason for the restricted protocol choice.~\newline
+ Tiny\+Receiver can be tested online with \href{https://wokwi.com/arduino/projects/339264565653013075}{\texttt{ WOKWI}}.
+
+The {\bfseries{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/TinySender/TinySender.ino}{\texttt{ Tiny\+Sender}}}} example uses the {\bfseries{Tiny\+IRSender}} library which can {\bfseries{only send NEC, ONKYO and FAST protocols}}.~\newline
+ It sends NEC protocol codes in standard format with 8 bit address and 8 bit command as in Simple\+Sender example. It has options to send using Extended NEC, ONKYO and FAST protocols. Saves 780 bytes program memory and 26 bytes RAM compared to Simple\+Sender, which does the same, but uses the IRRemote library (and is therefore much more flexible).\hypertarget{index_autotoc_md129}{}\doxysubsubsubsection{\texorpdfstring{Small\+Receiver}{Small\+Receiver}}\label{index_autotoc_md129}
+If the protocol is not NEC and code size matters, look at this \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SmallReceiver/SmallReceiver.ino}{\texttt{ example}}.~\newline
+\hypertarget{index_autotoc_md130}{}\doxysubsubsubsection{\texorpdfstring{Receive\+Demo + All\+Protocols\+On\+LCD}{Receive\+Demo + All\+Protocols\+On\+LCD}}\label{index_autotoc_md130}
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/ReceiveDemo/ReceiveDemo.ino}{\texttt{ Receive\+Demo}} receives all protocols and {\bfseries{generates a beep with the Arduino tone() function}} on each packet received.~\newline
+ Long press of one IR button (receiving of multiple repeats for one command) is detected.~\newline
+ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/AllProtocolsOnLCD/AllProtocolsOnLCD.ino}{\texttt{ All\+Protocols\+On\+LCD}} additionally {\bfseries{displays the short result on a 1602 LCD}}. The LCD can be connected parallel or serial (I2C).~\newline
+ By connecting debug pin to ground, you can force printing of the raw values for each frame. The pin number of the debug pin is printed during setup, because it depends on board and LCD connection type.~\newline
+ This example also serves as an {\bfseries{example how to use IRremote and tone() together}}.\hypertarget{index_autotoc_md131}{}\doxysubsubsubsection{\texorpdfstring{Receive\+Dump}{Receive\+Dump}}\label{index_autotoc_md131}
+Receives all protocols and dumps the received signal in different flavors including Pronto format. Since the printing takes much time, repeat signals may be skipped or interpreted as UNKNOWN.\hypertarget{index_autotoc_md132}{}\doxysubsubsubsection{\texorpdfstring{Send\+Demo}{Send\+Demo}}\label{index_autotoc_md132}
+Sends all available protocols at least once.\hypertarget{index_autotoc_md133}{}\doxysubsubsubsection{\texorpdfstring{Send\+And\+Receive}{Send\+And\+Receive}}\label{index_autotoc_md133}
+Demonstrates {\bfseries{receiving while sending}}.\hypertarget{index_autotoc_md134}{}\doxysubsubsubsection{\texorpdfstring{Receive\+And\+Send}{Receive\+And\+Send}}\label{index_autotoc_md134}
+Record and {\bfseries{play back last received IR signal}} at button press. IR frames of known protocols are sent by the approriate protocol encoder. {\ttfamily UNKNOWN} protocol frames are stored as raw data and sent with {\ttfamily send\+Raw()}.\hypertarget{index_autotoc_md135}{}\doxysubsubsubsection{\texorpdfstring{Receive\+And\+Send\+Distance\+Width}{Receive\+And\+Send\+Distance\+Width}}\label{index_autotoc_md135}
+Try to decode each IR frame with the {\itshape universal} {\bfseries{Distance\+Width decoder}}, store the data and send it on button press with {\ttfamily send\+Pulse\+Distance\+Width\+From\+Array()}.~\newline
+ If RAM is not more than 2k, the decoder only accepts mark or space durations up to 2500 microseconds to save RAM space, otherwise it accepts durations up to 10 ms.~\newline
+ Storing data for distance width protocol requires 17 bytes. The Receive\+And\+Send example requires 16 bytes for known protocol data and 37 bytes for raw data of e.\+g.\+NEC protocol.\hypertarget{index_autotoc_md136}{}\doxysubsubsubsection{\texorpdfstring{Receive\+One\+And\+Send\+Multiple}{Receive\+One\+And\+Send\+Multiple}}\label{index_autotoc_md136}
+Serves as a IR {\bfseries{remote macro expander}}. Receives Samsung32 protocol and on receiving a specified input frame, it sends multiple Samsung32 frames with appropriate delays in between. This serves as a {\bfseries{Netflix-\/key emulation}} for my old Samsung H5273 TV.\hypertarget{index_autotoc_md137}{}\doxysubsubsubsection{\texorpdfstring{IRDispatcher\+Demo}{IRDispatcher\+Demo}}\label{index_autotoc_md137}
+Framework for {\bfseries{calling different functions of your program}} for different IR codes.\hypertarget{index_autotoc_md138}{}\doxysubsubsubsection{\texorpdfstring{IRrelay}{IRrelay}}\label{index_autotoc_md138}
+{\bfseries{Control a relay}} (connected to an output pin) with your remote.\hypertarget{index_autotoc_md139}{}\doxysubsubsubsection{\texorpdfstring{IRremote\+Extension\+Test}{IRremote\+Extension\+Test}}\label{index_autotoc_md139}
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/IRremoteExtensionTest/IRremoteExtensionTest.ino}{\texttt{ Example}} for a user defined class, which itself uses the \doxylink{classIRrecv}{IRrecv} class from IRremote.\hypertarget{index_autotoc_md140}{}\doxysubsubsubsection{\texorpdfstring{Send\+LGAir\+Conditioner\+Demo}{Send\+LGAir\+Conditioner\+Demo}}\label{index_autotoc_md140}
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SendLGAirConditionerDemo/SendLGAirConditionerDemo.ino}{\texttt{ Example}} for sending LG air conditioner IR codes controlled by Serial input.~\newline
+ By just using the function {\ttfamily bool Aircondition\+\_\+\+LG\+::send\+Command\+And\+Parameter(char a\+Command, int a\+Parameter)} you can control the air conditioner by any other command source.~\newline
+ The file {\itshape ac\+LG.\+h} contains the command documentation of the LG air conditioner IR protocol. Based on reverse engineering of the LG AKB73315611 remote. ~\newline
+ IReceiver\+Timing\+Analysis can be tested online with \href{https://wokwi.com/projects/299033930562011656}{\texttt{ WOKWI}} Click on the receiver while simulation is running to specify individual IR codes.\hypertarget{index_autotoc_md141}{}\doxysubsubsubsection{\texorpdfstring{Receive\+And\+Send\+Hob2\+Hood}{Receive\+And\+Send\+Hob2\+Hood}}\label{index_autotoc_md141}
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/SendLGAirConditionerDemo/ReceiveAndSendHobToHood.ino}{\texttt{ Example}} for receiving and sending AEG / Elektrolux Hob2\+Hood protocol.~\newline
+\hypertarget{index_autotoc_md142}{}\doxysubsubsubsection{\texorpdfstring{Receiver\+Timing\+Analysis}{Receiver\+Timing\+Analysis}}\label{index_autotoc_md142}
+This \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/ReceiverTimingAnalysis/ReceiverTimingAnalysis.ino}{\texttt{ example}} analyzes the signal delivered by your IR receiver module. Values can be used to determine the stability of the received signal as well as a hint for determining the protocol.~\newline
+ It also computes the {\ttfamily MARK\+\_\+\+EXCESS\+\_\+\+MICROS} value, which is the extension of the mark (pulse) duration introduced by the IR receiver module.~\newline
+ It can be tested online with \href{https://wokwi.com/arduino/projects/299033930562011656}{\texttt{ WOKWI}}. Click on the receiver while simulation is running to specify individual NEC IR codes.\hypertarget{index_autotoc_md143}{}\doxysubsubsubsection{\texorpdfstring{Unit\+Test}{Unit\+Test}}\label{index_autotoc_md143}
+Receive\+Demo + Send\+Demo in one program. Demonstrates {\bfseries{receiving while sending}}. Here you see the delay of the receiver output (blue) from the IR diode input (yellow). \hypertarget{index_autotoc_md144}{}\doxysection{\texorpdfstring{WOKWI online examples}{WOKWI online examples}}\label{index_autotoc_md144}
+
+\begin{DoxyItemize}
+\item \href{https://wokwi.com/projects/338611596994544210}{\texttt{ Simple receiver}}
+\item \href{https://wokwi.com/projects/338611596994544210}{\texttt{ Simple toggle by IR key 5}}
+\item \href{https://wokwi.com/arduino/projects/339264565653013075}{\texttt{ Tiny\+Receiver}}
+\item \href{https://wokwi.com/projects/299033930562011656}{\texttt{ Receiver\+Timing\+Analysis}}
+\item \href{https://wokwi.com/projects/298934082074575369}{\texttt{ Receiver with LCD output and switch statement}}
+\end{DoxyItemize}\hypertarget{index_autotoc_md145}{}\doxysection{\texorpdfstring{IR control of a robot car}{IR control of a robot car}}\label{index_autotoc_md145}
+This \href{https://github.com/ArminJo/PWMMotorControl?tab=readme-ov-file\#basicircontrol}{\texttt{ example}} of the {\bfseries{Arduino PWMMotor\+Control library}} controls the basic functions of a robot car using the IRremote library.~\newline
+ It controls 2 PWM motor channels, 2 motors at each channel.~\newline
+ \href{https://www.instructables.com/Arduino-4WD-Car-Assembly-and-Code-With-Optional-In/}{\texttt{ Here}} you can find the instructable for car assembly and code.~\newline
+
+
+IR\+\_\+\+Robot\+Car with TL1838 IR receiver plugged into expansion board.~\newline
+ 
+
+~\newline
+\hypertarget{index_autotoc_md146}{}\doxysection{\texorpdfstring{Issues and discussions}{Issues and discussions}}\label{index_autotoc_md146}
+
+\begin{DoxyItemize}
+\item Do not open an issue without first testing some of the examples!
+\item If you have a problem, please post the MCVE (Minimal Complete Verifiable Example) showing this problem. My experience is, that most of the times you will find the problem while creating this MCVE \+:smile\+:.
+\item \href{https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet\#code}{\texttt{ Use code blocks}}; {\bfseries{it helps us to help you when we can read your code!}}
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md147}{}\doxysection{\texorpdfstring{Compile options / macros for this library}{Compile options / macros for this library}}\label{index_autotoc_md147}
+To customize the library to different requirements, there are some compile options / macros available.~\newline
+ These macros must be defined in your program {\bfseries{before}} the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}} to take effect.~\newline
+ Modify them by enabling / disabling them, or change the values if applicable.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Name   }&\PBS\raggedleft \cellcolor{\tableheadbgcolor}\textbf{ Default value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Name   }&\PBS\raggedleft \cellcolor{\tableheadbgcolor}\textbf{ Default value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily RAW\+\_\+\+BUFFER\+\_\+\+LENGTH}   &\PBS\raggedleft 200   &Buffer size of raw input uint16\+\_\+t buffer. Must be even! If it is too small, overflow flag will be set. 100 is sufficient for {\itshape regular} protocols of up to 48 bits, but for most air conditioner protocols a value of up to 750 is required. Use the Receive\+Dump example to find smallest value for your requirements. A value of 200 requires 200 bytes RAM.    \\\cline{1-3}
+{\ttfamily EXCLUDE\+\_\+\+UNIVERSAL\+\_\+\+PROTOCOLS}   &\PBS\raggedleft disabled   &Excludes the universal decoder for pulse distance width protocols and decode\+Hash (special decoder for all protocols) from {\ttfamily decode()}. Saves up to 1000 bytes program memory.    \\\cline{1-3}
+{\ttfamily DECODE\+\_\+\texorpdfstring{$<$}{<}Protocol name\texorpdfstring{$>$}{>}}   &\PBS\raggedleft all   &Selection of individual protocol(s) to be decoded. You can specify multiple protocols. See \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRremote.hpp\#L98-L121}{\texttt{ here}}    \\\cline{1-3}
+{\ttfamily DECODE\+\_\+\+STRICT\+\_\+\+CHECKS}   &\PBS\raggedleft disabled   &Check for additional required characteristics of protocol timing like length of mark for a constant mark protocol, where space length determines the bit value. Requires up to 194 additional bytes of program memory.    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+REMOTE\+\_\+\+DISABLE\+\_\+\+RECEIVE\+\_\+\+COMPLETE\+\_\+\+CALLBACK}   &\PBS\raggedleft disabled   &Saves up to 60 bytes of program memory and 2 bytes RAM.    \\\cline{1-3}
+{\ttfamily MARK\+\_\+\+EXCESS\+\_\+\+MICROS}   &\PBS\raggedleft 20   &MARK\+\_\+\+EXCESS\+\_\+\+MICROS is subtracted from all marks and added to all spaces before decoding, to compensate for the signal forming of different IR receiver modules.    \\\cline{1-3}
+{\ttfamily RECORD\+\_\+\+GAP\+\_\+\+MICROS}   &\PBS\raggedleft 5000   &Minimum gap between IR transmissions, to detect the end of a protocol.~\newline
+Must be greater than any space of a protocol e.\+g. the NEC header space of 4500 {$\mu$}s.~\newline
+Must be smaller than any gap between a command and a repeat; e.\+g. the retransmission gap for Sony is around 24 ms.~\newline
+Keep in mind, that this is the delay between the end of the received command and the start of decoding.    \\\cline{1-3}
+{\ttfamily DISTANCE\+\_\+\+WIDTH\+\_\+\+DECODER\+\_\+\+DURATION\+\_\+\+ARRAY\+\_\+\+SIZE}   &\PBS\raggedleft 50 if RAM \texorpdfstring{$<$}{<}= 2k, else 200   &A value of 200 allows to decode mark or space durations up to 10 ms.    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+INPUT\+\_\+\+IS\+\_\+\+ACTIVE\+\_\+\+HIGH}   &\PBS\raggedleft disabled   &Enable it if you use a RF receiver, which has an active HIGH output signal.    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+SEND\+\_\+\+PIN}   &\PBS\raggedleft disabled   &If specified, it reduces program size and improves send timing for AVR. If you want to use a variable to specify send pin e.\+g. with {\ttfamily set\+Send\+Pin(uint8\+\_\+t a\+Send\+Pin\+Number)}, you must not use / disable this macro in your source.    \\\cline{1-3}
+{\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER}   &\PBS\raggedleft disabled   &Disables carrier PWM generation in software and use hardware PWM (by timer). Has the advantage of more exact PWM generation, especially the duty cycle (which is not very relevant for most IR receiver circuits), and the disadvantage of using a hardware timer, which in turn is not available for other libraries and to fix the send pin (but not the receive pin) at the \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#timer-and-pin-usage}{\texttt{ dedicated timer output pin(s)}}. Is enabled for ESP32 and RP2040 in all examples, since they support PWM gereration for each pin without using a shared resource (timer).    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+SEND\+\_\+\+DUTY\+\_\+\+CYCLE\+\_\+\+PERCENT}   &\PBS\raggedleft 30   &Duty cycle of IR send signal.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+NO\+\_\+\+SEND\+\_\+\+PWM}   &\PBS\raggedleft disabled   &Uses no carrier PWM, just simulate an {\bfseries{active low}} receiver signal. Used for transferring signal by cable instead of IR. Overrides {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER} definition.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+OPEN\+\_\+\+DRAIN\+\_\+\+OUTPUT\+\_\+\+FOR\+\_\+\+SEND\+\_\+\+PIN}   &\PBS\raggedleft disabled   &Uses or simulates open drain output mode at send pin. {\bfseries{Attention, active state of open drain is LOW}}, so connect the send LED between positive supply and send pin!    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+ACTIVE\+\_\+\+HIGH\+\_\+\+OUTPUT\+\_\+\+FOR\+\_\+\+SEND\+\_\+\+PIN}   &\PBS\raggedleft disabled   &Only if {\ttfamily USE\+\_\+\+NO\+\_\+\+SEND\+\_\+\+PWM} is enabled. Simulate an {\bfseries{active high}} receiver signal instead of an active low signal.    \\\cline{1-3}
+{\ttfamily DISABLE\+\_\+\+CODE\+\_\+\+FOR\+\_\+\+RECEIVER}   &\PBS\raggedleft disabled   &Disables static receiver code like receive timer ISR handler and static IRReceiver and irparams data. Saves 450 bytes program memory and 269 bytes RAM if receiving functions are not required.    \\\cline{1-3}
+{\ttfamily EXCLUDE\+\_\+\+EXOTIC\+\_\+\+PROTOCOLS}   &\PBS\raggedleft disabled   &Excludes BANG\+\_\+\+OLUFSEN, BOSEWAVE, WHYNTER, FAST and LEGO\+\_\+\+PF from {\ttfamily decode()} and from sending with {\ttfamily Ir\+Sender.\+write()}. Saves up to 650 bytes program memory.    \\\cline{1-3}
+{\ttfamily FEEDBACK\+\_\+\+LED\+\_\+\+IS\+\_\+\+ACTIVE\+\_\+\+LOW}   &\PBS\raggedleft disabled   &Required on some boards (like my Blue\+Pill and my ESP8266 board), where the feedback LED is active low.    \\\cline{1-3}
+{\ttfamily NO\+\_\+\+LED\+\_\+\+FEEDBACK\+\_\+\+CODE}   &\PBS\raggedleft disabled   &Disables the LED feedback code for send and receive. Saves around 100 bytes program memory for receiving, around 500 bytes for sending and halving the receiver ISR (Interrupt Service Routine) processing time.    \\\cline{1-3}
+{\ttfamily MICROS\+\_\+\+PER\+\_\+\+TICK}   &\PBS\raggedleft 50   &Resolution of the raw input buffer data. Corresponds to 2 pulses of each 26.\+3 {$\mu$}s at 38 k\+Hz.    \\\cline{1-3}
+{\ttfamily TOLERANCE\+\_\+\+FOR\+\_\+\+DECODERS\+\_\+\+MARK\+\_\+\+OR\+\_\+\+SPACE\+\_\+\+MATCHING\+\_\+\+PERCENT}   &\PBS\raggedleft 25   &Relative tolerance for \doxylink{group__Receiving_ga495b7f49ff71cde1289b118fac0f0674}{match\+Ticks()}, \doxylink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{match\+Mark()} and \doxylink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{match\+Space()} functions used for protocol decoding.    \\\cline{1-3}
+{\ttfamily DEBUG}   &\PBS\raggedleft disabled   &Enables lots of lovely debug output.    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+USE\+\_\+\+AVR\+\_\+\+TIMER\texorpdfstring{$\ast$}{*}}   &\PBS\raggedleft &Selection of timer to be used for generating IR receiving sample interval.   \\\cline{1-3}
+\end{longtabu}
+
+
+These next macros for {\bfseries{Tiny\+IRReceiver}} must be defined in your program before the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{TinyIRReceiver_8hpp_source}{Tiny\+IRReceiver.\+hpp}\texorpdfstring{$>$}{>}} to take effect. \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Name   }&\PBS\raggedleft \cellcolor{\tableheadbgcolor}\textbf{ Default value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Name   }&\PBS\raggedleft \cellcolor{\tableheadbgcolor}\textbf{ Default value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily IR\+\_\+\+RECEIVE\+\_\+\+PIN}   &\PBS\raggedleft 2   &The pin number for Tiny\+IRReceiver IR input, which gets compiled in.    \\\cline{1-3}
+{\ttfamily IR\+\_\+\+FEEDBACK\+\_\+\+LED\+\_\+\+PIN}   &\PBS\raggedleft {\ttfamily LED\+\_\+\+BUILTIN}   &The pin number for Tiny\+IRReceiver feedback LED, which gets compiled in.    \\\cline{1-3}
+{\ttfamily NO\+\_\+\+LED\+\_\+\+FEEDBACK\+\_\+\+CODE}   &\PBS\raggedleft disabled   &Disables the feedback LED function. Saves 14 bytes program memory.    \\\cline{1-3}
+{\ttfamily DISABLE\+\_\+\+PARITY\+\_\+\+CHECKS}   &\PBS\raggedleft disabled   &Disables the addres and command parity checks. Saves 48 bytes program memory.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+EXTENDED\+\_\+\+NEC\+\_\+\+PROTOCOL}   &\PBS\raggedleft disabled   &Like NEC, but take the 16 bit address as one 16 bit value and not as 8 bit normal and 8 bit inverted value.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+ONKYO\+\_\+\+PROTOCOL}   &\PBS\raggedleft disabled   &Like NEC, but take the 16 bit address and command each as one 16 bit value and not as 8 bit normal and 8 bit inverted value.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+FAST\+\_\+\+PROTOCOL}   &\PBS\raggedleft disabled   &Use FAST protocol (no address and 16 bit data, interpreted as 8 bit command and 8 bit inverted command) instead of NEC.    \\\cline{1-3}
+{\ttfamily ENABLE\+\_\+\+NEC2\+\_\+\+REPEATS}   &\PBS\raggedleft disabled   &Instead of sending / receiving the NEC special repeat code, send / receive the original frame for repeat.    \\\cline{1-3}
+{\ttfamily USE\+\_\+\+CALLBACK\+\_\+\+FOR\+\_\+\+TINY\+\_\+\+RECEIVER}   &\PBS\raggedleft disabled   &Call the fixed function {\ttfamily void handle\+Received\+Tiny\+IRData()} each time a frame or repeat is received.   \\\cline{1-3}
+\end{longtabu}
+
+
+The next macro for {\bfseries{\doxylink{classIRCommandDispatcher}{IRCommand\+Dispatcher}}} must be defined in your program before the line {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRCommandDispatcher_8hpp_source}{IRCommand\+Dispatcher.\+hpp}\texorpdfstring{$>$}{>}} to take effect. \texorpdfstring{$\vert$}{|} {\ttfamily USE\+\_\+\+TINY\+\_\+\+IR\+\_\+\+RECEIVER} \texorpdfstring{$\vert$}{|} disabled \texorpdfstring{$\vert$}{|} Use \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#tinyreceiver--tinysender}{\texttt{ Tiny\+Receiver}} for receiving IR codes. \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} {\ttfamily IR\+\_\+\+COMMAND\+\_\+\+HAS\+\_\+\+MORE\+\_\+\+THAN\+\_\+8\+\_\+\+BIT} \texorpdfstring{$\vert$}{|} disabled \texorpdfstring{$\vert$}{|} Enables mapping and dispatching of IR commands consisting of more than 8 bits. Saves up to 160 bytes program memory and 4 bytes RAM + 1 byte RAM per mapping entry. \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} {\ttfamily BUZZER\+\_\+\+PIN} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} If {\ttfamily USE\+\_\+\+TINY\+\_\+\+IR\+\_\+\+RECEIVER} is enabled, the pin to be used for the optional 50 ms buzzer feedback before executing a command. Other IR libraries than Tiny are not compatible with tone() command. \texorpdfstring{$\vert$}{|}\hypertarget{index_autotoc_md148}{}\doxysubsubsection{\texorpdfstring{Changing include ({\itshape .h) files with Arduino IDE}}{Changing include ({\itshape .h) files with Arduino IDE}}}\label{index_autotoc_md148}
+First, use \texorpdfstring{$\ast$}{*}\+Sketch \texorpdfstring{$>$}{>} Show Sketch Folder (Ctrl+K).~\newline
+ If you have not yet saved the example as your own sketch, then you are instantly in the right library folder.~\newline
+ Otherwise you have to navigate to the parallel {\ttfamily libraries} folder and select the library you want to access.~\newline
+ In both cases the library source and include files are located in the libraries {\ttfamily src} directory.~\newline
+ The modification must be renewed for each new library version!\hypertarget{index_autotoc_md149}{}\doxysubsubsection{\texorpdfstring{Modifying compile options / macros with Platform\+IO}{Modifying compile options / macros with Platform\+IO}}\label{index_autotoc_md149}
+If you are using Platform\+IO, you can define the macros in the {\itshape \href{https://docs.platformio.org/en/latest/projectconf/section_env_build.html}{\texttt{ platformio.\+ini}}} file with {\ttfamily build\+\_\+flags = -\/D MACRO\+\_\+\+NAME} or {\ttfamily build\+\_\+flags = -\/D MACRO\+\_\+\+NAME=macro\+Value}.\hypertarget{index_autotoc_md150}{}\doxysubsubsection{\texorpdfstring{Modifying compile options / macros with Sloeber IDE}{Modifying compile options / macros with Sloeber IDE}}\label{index_autotoc_md150}
+If you are using \href{https://eclipse.baeyens.it}{\texttt{ Sloeber}} as your IDE, you can easily define global symbols with {\itshape Properties \texorpdfstring{$>$}{>} Arduino \texorpdfstring{$>$}{>} Compile\+Options}.~\newline
+ 
+
+~\newline
+\hypertarget{index_autotoc_md151}{}\doxysection{\texorpdfstring{Supported Boards}{Supported Boards}}\label{index_autotoc_md151}
+{\bfseries{Issues and discussions with the content "{}\+Is it possible to use this library with the ATTiny\+XYZ? / board XYZ"{} without any reasonable explanations will be immediately closed without further notice.}}~\newline
+ For {\bfseries{ESP8266/\+ESP32}}, \href{https://github.com/crankyoldgit/IRremoteESP8266}{\texttt{ this library}} supports an \href{https://github.com/crankyoldgit/IRremoteESP8266/blob/master/SupportedProtocols.md}{\texttt{ impressive set of protocols and a lot of air conditioners}}~\newline
+ ~\newline
+ Digispark boards are only tested with \href{https://github.com/SpenceKonde/ATTinyCore}{\texttt{ ATTiny\+Core}} using {\ttfamily New Style} pin mapping for the Digispark Pro board.~\newline
+ ATtiny boards are only tested with \href{https://github.com/SpenceKonde/ATTinyCore\#supported-devices}{\texttt{ ATTiny\+Core}} or \href{https://github.com/SpenceKonde/megaTinyCore}{\texttt{ mega\+Tiny\+Core}}.
+
+
+\begin{DoxyItemize}
+\item Arduino Uno / Mega / Leonardo / Duemilanove / Diecimila / Lily\+Pad / Mini / Fio / Nano etc.
+\item Arduino Uno R4, but not yet tested, because of lack of a R4 board. {\bfseries{Sending does not work}} on the {\ttfamily arduino\+:renesas\+\_\+uno\+:unor4wifi}.
+\item Teensy 1.\+0 / 1.\+0++ / 2.\+0 / 2++ / 3.\+0 / 3.\+1 / 3.\+2 / Teensy-\/\+LC -\/ but \href{https://forum.pjrc.com/threads/65912-Enable-Continuous-Integration-with-arduino-cli-for-3-party-libraries}{\texttt{ limited support}}; Credits\+: Paul\+Stoffregen (Teensy Team)
+\item Sanguino
+\item ATmega8, 48, 88, 168, 328
+\item ATmega8535, 16, 32, 164, 324, 644, 1284,
+\item ATmega64, 128
+\item ATmega4809 (Nano every)
+\item ATtiny3217 (Tiny Core 32 Dev Board)
+\item ATtiny84, 85, 167 (Digispark + Digispark Pro)
+\item SAMD21 (Zero, MKR\texorpdfstring{$\ast$}{*}, {\bfseries{but not SAMD51 and not DUE, the latter is SAM architecture}})
+\item ESP8266
+\item ESP32 (ESP32-\/\+C3 since board package 2.\+0.\+2 from Espressif)
+\item Sparkfun Pro Micro
+\item Nano Every, Uno Wi\+Fi Rev2, n\+RF5 BBC Micro\+Bit, Nano33\+\_\+\+BLE
+\item Blue\+Pill with STM32
+\item RP2040 based boards (Raspberry Pi Pico, Nano RP2040 Connect etc.)
+\end{DoxyItemize}
+
+We are open to suggestions for adding support to new boards, however we highly recommend you contact your supplier first and ask them to provide support from their side.~\newline
+ If you can provide {\bfseries{examples of using a periodic timer for interrupts}} for the new board, and the board name for selection in the Arduino IDE, then you have way better chances to get your board supported by IRremote.
+
+~\newline
+\hypertarget{index_autotoc_md152}{}\doxysection{\texorpdfstring{Timer and pin usage}{Timer and pin usage}}\label{index_autotoc_md152}
+The {\bfseries{receiver sample interval of 50 {$\mu$}s is generated by a timer}}. On many boards this must be a hardware timer. On some boards where a software timer is available, the software timer is used.~\newline
+ On {\bfseries{ESP8266}} {\ttfamily timer1} is used for receive interrupts, which makes it incompatible to the Servo and other libraries.~\newline
+ On {\bfseries{ESP32}} {\ttfamily hw\+\_\+timer\+\_\+t} is used for receive interrupts and {\ttfamily ledc} channel 0 is used for generating the IR PWM.
+
+Every pin can be used for receiving.~\newline
+ If software PWM is selected, which is default, every pin can also be used for sending. Sending with software PWM does not require a timer!
+
+The Tiny\+Receiver example uses the {\bfseries{Tiny\+Receiver}} library, which can {\bfseries{only receive NEC codes, but does not require any timer}} and runs even on a 1 MHz ATtiny85.
+
+The code for the timer and the {\bfseries{timer selection}} is located in \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/private/IRTimer.hpp}{\texttt{ private/\+IRTimer.\+hpp}}. The selected timer can be adjusted here.
+
+{\bfseries{Be aware that the hardware timer used for receiving should not be used for analog\+Write()!}}.~\newline
+
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Board/\+CPU   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Receive~\newline
+\& send PWM Timer~\newline
+Default timer is {\bfseries{bold}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Hardware-\/\+Send-\/\+PWM Pin   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ analog\+Write()~\newline
+pins occupied by timer    }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Board/\+CPU   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Receive~\newline
+\& send PWM Timer~\newline
+Default timer is {\bfseries{bold}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Hardware-\/\+Send-\/\+PWM Pin   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ analog\+Write()~\newline
+pins occupied by timer    }\\\cline{1-4}
+\endhead
+\href{https://github.com/SpenceKonde/ATTinyCore/blob/v2.0.0-devThis-is-the-head-submit-PRs-against-this/avr/extras/ATtiny_x4.md}{\texttt{ ATtiny84}}   &{\bfseries{1}}   &{\bfseries{6}}   &\\\cline{1-4}
+\href{https://github.com/SpenceKonde/ATTinyCore/blob/v2.0.0-devThis-is-the-head-submit-PRs-against-this/avr/extras/ATtiny_x5.md}{\texttt{ ATtiny85 \texorpdfstring{$>$}{>} 4 MHz}}   &{\bfseries{0}}, 1   &{\bfseries{0}}, 4   &{\bfseries{0}}, 1 \& 4    \\\cline{1-4}
+\href{https://github.com/SpenceKonde/ATTinyCore/blob/v2.0.0-devThis-is-the-head-submit-PRs-against-this/avr/extras/ATtiny_x8.md}{\texttt{ ATtiny88 \texorpdfstring{$>$}{>} 4 MHz}}   &{\bfseries{1}}   &{\bfseries{PB1 / 8}}   &{\bfseries{PB1 / 8 \& PB2 / 9}}    \\\cline{1-4}
+\href{https://github.com/SpenceKonde/ATTinyCore/blob/v2.0.0-devThis-is-the-head-submit-PRs-against-this/avr/extras/ATtiny_x7.md}{\texttt{ ATtiny167 \texorpdfstring{$>$}{>} 4 MHz}}   &{\bfseries{1}}   &{\bfseries{9}}, 8 -\/ 15   &{\bfseries{8 -\/ 15}}   \\\cline{1-4}
+\end{longtabu}
+\texorpdfstring{$\vert$}{|} \href{https://github.com/SpenceKonde/megaTinyCore/blob/master/megaavr/extras/ATtiny_x04.md}{\texttt{ ATtiny1604}} \texorpdfstring{$\vert$}{|} {\bfseries{TCB0}} \texorpdfstring{$\vert$}{|} {\bfseries{PA05}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/SpenceKonde/megaTinyCore/blob/master/megaavr/extras/ATtiny_x14.md}{\texttt{ ATtiny1614, ATtiny816}} \texorpdfstring{$\vert$}{|} {\bfseries{TCA0}} \texorpdfstring{$\vert$}{|} {\bfseries{PA3}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/SpenceKonde/megaTinyCore/blob/master/megaavr/extras/ATtiny_x17.md}{\texttt{ ATtiny3217}} \texorpdfstring{$\vert$}{|} {\bfseries{TCA0}}, TCD \texorpdfstring{$\vert$}{|} \% \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MiniCore\#supported-microcontrollers}{\texttt{ ATmega8}} \texorpdfstring{$\vert$}{|} {\bfseries{1}} \texorpdfstring{$\vert$}{|} {\bfseries{9}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MightyCore\#supported-microcontrollers}{\texttt{ ATmega1284}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{2}}, 3 \texorpdfstring{$\vert$}{|} 13, 14, 6 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MightyCore\#supported-microcontrollers}{\texttt{ ATmega164, ATmega324, ATmega644}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{2}} \texorpdfstring{$\vert$}{|} 13, {\bfseries{14}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MightyCore\#supported-microcontrollers}{\texttt{ ATmega8535 ATmega16, ATmega32}} \texorpdfstring{$\vert$}{|} {\bfseries{1}} \texorpdfstring{$\vert$}{|} {\bfseries{13}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MegaCore\#supported-microcontrollers}{\texttt{ ATmega64, ATmega128, ATmega1281, ATmega2561}} \texorpdfstring{$\vert$}{|} {\bfseries{1}} \texorpdfstring{$\vert$}{|} {\bfseries{13}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/MCUdude/MajorCore\#pinout}{\texttt{ ATmega8515, ATmega162}} \texorpdfstring{$\vert$}{|} {\bfseries{1}} \texorpdfstring{$\vert$}{|} {\bfseries{13}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} ATmega168, {\bfseries{ATmega328}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{2}} \texorpdfstring{$\vert$}{|} 9, {\bfseries{3}} \texorpdfstring{$\vert$}{|} 9 \& 10, {\bfseries{3 \& 11}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} ATmega1280, {\bfseries{ATmega2560}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{2}}, 3, 4, 5 \texorpdfstring{$\vert$}{|} 5, 6, {\bfseries{9}}, 11, 46 \texorpdfstring{$\vert$}{|} 5, 6, {\bfseries{9}}, 11, 46 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} ATmega4809 \texorpdfstring{$\vert$}{|} {\bfseries{TCB0}} \texorpdfstring{$\vert$}{|} {\bfseries{A4}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} Leonardo (Atmega32u4) \texorpdfstring{$\vert$}{|} 1, 3, {\bfseries{4\+\_\+\+HS}} \texorpdfstring{$\vert$}{|} 5, {\bfseries{9}}, 13 \texorpdfstring{$\vert$}{|} 5, {\bfseries{9}}, 13 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} Zero (SAMD) \texorpdfstring{$\vert$}{|} {\bfseries{TC3}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\ast$}{*}, {\bfseries{9}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{http://esp8266.net/}{\texttt{ ESP8266}} \texorpdfstring{$\vert$}{|} {\bfseries{timer1}} \texorpdfstring{$\vert$}{|} \% \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{http://esp32.net/}{\texttt{ ESP32}} \texorpdfstring{$\vert$}{|} {\bfseries{hw\+\_\+timer\+\_\+t}}~\newline
+{\bfseries{Ledc channel 0}} \texorpdfstring{$\vert$}{|} All pins \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.sparkfun.com/products/12640}{\texttt{ Sparkfun Pro Micro}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{3}} \texorpdfstring{$\vert$}{|} {\bfseries{5}}, 9 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy 1.\+0}} \texorpdfstring{$\vert$}{|} {\bfseries{1}} \texorpdfstring{$\vert$}{|} {\bfseries{17}} \texorpdfstring{$\vert$}{|} 15, 18 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy 2.\+0}} \texorpdfstring{$\vert$}{|} 1, 3, {\bfseries{4\+\_\+\+HS}} \texorpdfstring{$\vert$}{|} 9, {\bfseries{10}}, 14 \texorpdfstring{$\vert$}{|} 12 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy++ 1.\+0 / 2.\+0}} \texorpdfstring{$\vert$}{|} 1, {\bfseries{2}}, 3 \texorpdfstring{$\vert$}{|} {\bfseries{1}}, 16, 25 \texorpdfstring{$\vert$}{|} 0 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy-\/\+LC}} \texorpdfstring{$\vert$}{|} {\bfseries{TPM1}} \texorpdfstring{$\vert$}{|} {\bfseries{16}} \texorpdfstring{$\vert$}{|} 17 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy 3.\+0 -\/ 3.\+6}} \texorpdfstring{$\vert$}{|} {\bfseries{CMT}} \texorpdfstring{$\vert$}{|} {\bfseries{5}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://www.pjrc.com/teensy/pinout.html}{\texttt{ Teensy 4.\+0 -\/ 4.\+1}} \texorpdfstring{$\vert$}{|} {\bfseries{Flex\+PWM1.\+3}} \texorpdfstring{$\vert$}{|} {\bfseries{8}} \texorpdfstring{$\vert$}{|} 7, 25 \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/stm32duino/Arduino_Core_STM32}{\texttt{ Blue\+Pill / STM32\+F103\+C8\+T6}} \texorpdfstring{$\vert$}{|} {\bfseries{3}} \texorpdfstring{$\vert$}{|} \% \texorpdfstring{$\vert$}{|} {\bfseries{PA6 \& PA7 \& PB0 \& PB1}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://stm32-base.org/boards/STM32F103C8T6-Blue-Pill}{\texttt{ Blue\+Pill / STM32\+F103\+C8\+T6}} \texorpdfstring{$\vert$}{|} {\bfseries{TIM4}} \texorpdfstring{$\vert$}{|} \% \texorpdfstring{$\vert$}{|} {\bfseries{PB6 \& PB7 \& PB8 \& PB9}} \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/earlephilhower/arduino-pico}{\texttt{ RP2040 / Pi Pico}} \texorpdfstring{$\vert$}{|} \href{https://raspberrypi.github.io/pico-sdk-doxygen/group__repeating__timer.html}{\texttt{ default alarm pool}} \texorpdfstring{$\vert$}{|} All pins \texorpdfstring{$\vert$}{|} No pin \texorpdfstring{$\vert$}{|} \texorpdfstring{$\vert$}{|} \href{https://github.com/arduino/ArduinoCore-mbed}{\texttt{ RP2040 / Mbed based}} \texorpdfstring{$\vert$}{|} Mbed Ticker \texorpdfstring{$\vert$}{|} All pins \texorpdfstring{$\vert$}{|} No pin \texorpdfstring{$\vert$}{|}\hypertarget{index_autotoc_md153}{}\doxysubsubsection{\texorpdfstring{No timer required for sending}{No timer required for sending}}\label{index_autotoc_md153}
+The {\bfseries{send PWM signal}} is by default generated by software. {\bfseries{Therefore every pin can be used for sending}}. The PWM pulse length is guaranteed to be constant by using {\ttfamily delay\+Microseconds()}. Take care not to generate interrupts during sending with software generated PWM, otherwise you will get jitter in the generated PWM. E.\+g. wait for a former {\ttfamily Serial.\+print()} statement to be finished by {\ttfamily Serial.\+flush()}. Since the Arduino {\ttfamily micros()} function has a resolution of 4 {$\mu$}s at 16 MHz, we always see a small jitter in the signal, which seems to be OK for the receivers.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Software generated PWM showing small jitter because of the limited resolution of 4 {$\mu$}s of the Arduino core {\ttfamily micros()} function for an ATmega328   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Detail (ATmega328 generated) showing 30\% duty cycle    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Software generated PWM showing small jitter because of the limited resolution of 4 {$\mu$}s of the Arduino core {\ttfamily micros()} function for an ATmega328   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Detail (ATmega328 generated) showing 30\% duty cycle    }\\\cline{1-2}
+\endhead
+   &   \\\cline{1-2}
+\end{longtabu}
+\hypertarget{index_autotoc_md154}{}\doxysubsection{\texorpdfstring{Incompatibilities to other libraries and Arduino commands like tone() and analog\+Write()}{Incompatibilities to other libraries and Arduino commands like tone() and analog\+Write()}}\label{index_autotoc_md154}
+If you use a library which requires the same timer as IRremote, you have a problem, since {\bfseries{the timer resource cannot be shared simultaneously}} by both libraries.\hypertarget{index_autotoc_md155}{}\doxysubsubsection{\texorpdfstring{Use NEC protocol and Tiny\+Receiver}{Use NEC protocol and Tiny\+Receiver}}\label{index_autotoc_md155}
+\href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#tiny-nec-receiver-and-sender}{\texttt{ Tiny\+Receiver}} does not require a timer, it relies on interrupts, thus avoiding any timer resource problems.\hypertarget{index_autotoc_md156}{}\doxysubsubsection{\texorpdfstring{Change timer}{Change timer}}\label{index_autotoc_md156}
+The best approach is to {\bfseries{change the timer}} used for IRremote, which can be accomplished by specifying the timer before {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}}.~\newline
+ The timer specifications available for your board can be found in \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/private/IRTimer.hpp}{\texttt{ private/\+IRTimer.\+hpp}}.~\newline
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER4)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER5)}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 11}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 9}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ //\ send\ pin\ =\ pin\ 5}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4\ \ \ //\ send\ pin\ =\ pin\ 6}}
+\DoxyCodeLine{\textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER5\ \ \ //\ send\ pin\ =\ pin\ 46}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#\ \ endif}}
+
+\end{DoxyCode}
+ Here you see the Arduino Mega board and the available specifications are {\ttfamily IR\+\_\+\+USE\+\_\+\+AVR\+\_\+\+TIMER\mbox{[}1,2,3,4,5\mbox{]}}.~\newline
+ You {\bfseries{just have to include a line}} e.\+g. {\ttfamily \#define IR\+\_\+\+USE\+\_\+\+AVR\+\_\+\+TIMER3} before {\ttfamily \#include \texorpdfstring{$<$}{<}\doxylink{IRremote_8hpp}{IRremote.\+hpp}\texorpdfstring{$>$}{>}} to enable timer 3.
+
+But be aware that the new timer in turn might be again incompatible with other libraries or Arduino functions.~\newline
+ For non AVR boards/platforms you must look for the appropriate section guarded by e.\+g. {\ttfamily \#elif defined(\+ESP32)}.\hypertarget{index_autotoc_md157}{}\doxysubsubsection{\texorpdfstring{Stop and start timer}{Stop and start timer}}\label{index_autotoc_md157}
+Another approach can be to share the timer {\bfseries{sequentially}} if their functionality is used only for a short period of time like for the {\bfseries{Arduino tone() command}}. An example can be seen \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/21b5747a58e9d47c9e3f1beb056d58c875a92b47/examples/ReceiveDemo/ReceiveDemo.ino\#L159-L169}{\texttt{ here}}, where the IR timer is restarted after the tone has stopped.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.stopTimer();\ \textcolor{comment}{//\ Stop\ timer\ consistently\ before\ calling\ tone()\ or\ other\ functions\ using\ the\ timer\ resource.}}
+\DoxyCodeLine{tone(TONE\_PIN,\ 2200,\ 8);}
+\DoxyCodeLine{delay(8);}
+\DoxyCodeLine{\mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.restartTimer();\ \textcolor{comment}{//\ Restart\ IR\ timer\ after\ timer\ resource\ is\ no\ longer\ blocked.}}
+
+\end{DoxyCode}
+ This works on AVR boards like Uno because each call to{\ttfamily tone()} completely initializes the timer 2 used by the {\ttfamily tone()} command.\hypertarget{index_autotoc_md158}{}\doxysubsection{\texorpdfstring{Hardware-\/\+PWM signal generation for sending}{Hardware-\/\+PWM signal generation for sending}}\label{index_autotoc_md158}
+If you define {\ttfamily SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER}, the send PWM signal is forced to be generated by a hardware timer on most platforms.~\newline
+ By default, the same timer as for the receiver is used.~\newline
+ Since each hardware timer has its dedicated output pin(s), you must change timer or timer sub-\/specifications to change PWM output pin. See \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/private/IRTimer.hpp}{\texttt{ private/\+IRTimer.\+hpp}}~\newline
+ {\bfseries{Exeptions}} are currently \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/39bdf8d7bf5b90dc221f8ae9fb3efed9f0a8a1db/examples/SimpleSender/PinDefinitionsAndMore.h\#L273}{\texttt{ ESP32, ARDUINO\+\_\+\+ARCH\+\_\+\+RP2040, PARTICLE and ARDUINO\+\_\+\+ARCH\+\_\+\+MBED}}, where {\bfseries{PWM generation does not require a timer}}.\hypertarget{index_autotoc_md159}{}\doxysubsection{\texorpdfstring{Why do we use 30\% duty cycle for sending}{Why do we use 30\% duty cycle for sending}}\label{index_autotoc_md159}
+We \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRSend.hpp\#L1192}{\texttt{ do it}} according to the statement in the \href{https://www.vishay.com/docs/80069/circuit.pdf}{\texttt{ Vishay datasheet}}\+:
+\begin{DoxyItemize}
+\item Carrier duty cycle 50 \%, peak current of emitter IF = 200 mA, the resulting transmission distance is 25 m.
+\item Carrier duty cycle 10 \%, peak current of emitter IF = 800 mA, the resulting transmission distance is 29 m. -\/ Factor 1.\+16 The reason is, that it is not the pure energy of the fundamental which is responsible for the receiver to detect a signal. Due to automatic gain control and other bias effects, high intensity of the 38 k\+Hz pulse counts more than medium intensity (e.\+g. 50\% duty cycle) at the same total energy.
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md160}{}\doxysection{\texorpdfstring{How we decode signals}{How we decode signals}}\label{index_autotoc_md160}
+The IR signal is sampled at a {\bfseries{50 {$\mu$}s interval}}. For a constant 525 {$\mu$}s pulse or pause we therefore get 10 or 11 samples, each with 50\% probability.~\newline
+ And believe me, if you send a 525 {$\mu$}s signal, your receiver will output something between around 400 and 700 {$\mu$}s!~\newline
+ Therefore {\bfseries{we decode by default with a +/-\/ 25\% margin}} using the formulas \href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRremoteInt.h\#L376-L399}{\texttt{ here}}.~\newline
+ E.\+g. for the NEC protocol with its 560 {$\mu$}s unit length, we have TICKS\+\_\+\+LOW = 8.\+358 and TICKS\+\_\+\+HIGH = 15.\+0. This means, we accept any value between 8 ticks / 400 {$\mu$}s and 15 ticks / 750 {$\mu$}s (inclusive) as a mark or as a zero space. For a one space we have TICKS\+\_\+\+LOW = 25.\+07 and TICKS\+\_\+\+HIGH = 45.\+0.~\newline
+ And since the receivers generated marks are longer or shorter than the spaces, we have introduced the \href{https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file\#compile-options--macros-for-this-library}{\texttt{ {\ttfamily MARK\+\_\+\+EXCESS\+\_\+\+MICROS}}} macro to compensate for this receiver (and signal strength as well as ambient light dependent \+:disappointed\+: ) specific deviation.~\newline
+ Welcome to the world of {\bfseries{real world signal processing}}.
+
+~\newline
+\hypertarget{index_autotoc_md161}{}\doxysection{\texorpdfstring{NEC encoding diagrams}{NEC encoding diagrams}}\label{index_autotoc_md161}
+Created with sigrok Pulse\+View with IR\+\_\+\+NEC decoder by Djordje\+Mandic.~\newline
+ 8 bit address NEC code  16 bit address NEC code 
+
+~\newline
+\hypertarget{index_autotoc_md162}{}\doxysection{\texorpdfstring{Quick comparison of 5 Arduino IR receiving libraries}{Quick comparison of 5 Arduino IR receiving libraries}}\label{index_autotoc_md162}
+{\bfseries{This is a short comparison and may not be complete or correct.}}
+
+I created this comparison matrix for \href{https://github.com/ArminJo}{\texttt{ myself}} in order to choose a small IR lib for my project and to have a quick overview, when to choose which library.~\newline
+ It is dated from {\bfseries{24.\+06.\+2022}} and updated 10/2023. If you have complains about the data or request for extensions, please send a PM or open a discussion.
+
+\href{https://github.com/crankyoldgit/IRremoteESP8266}{\texttt{ Here}} you find an {\bfseries{ESP8266/\+ESP32}} version of IRremote with an {\bfseries{\href{https://github.com/crankyoldgit/IRremoteESP8266/blob/master/SupportedProtocols.md}{\texttt{ impressive list of supported protocols}}}}.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{7}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Subject   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/IRMP-org/IRMP}{\texttt{ IRMP}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/NicoHood/IRLremote}{\texttt{ IRLremote}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/cyborg5/IRLib2}{\texttt{ IRLib2}}~\newline
+{\bfseries{mostly unmaintained}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote}{\texttt{ IRremote}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/tree/master/examples/TinyReceiver/TinyReceiver.ino}{\texttt{ Tiny\+IR}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/LuisMiCa/IRsmallDecoder}{\texttt{ IRsmall\+Decoder}}    }\\\cline{1-7}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Subject   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/IRMP-org/IRMP}{\texttt{ IRMP}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/NicoHood/IRLremote}{\texttt{ IRLremote}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/cyborg5/IRLib2}{\texttt{ IRLib2}}~\newline
+{\bfseries{mostly unmaintained}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote}{\texttt{ IRremote}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/Arduino-IRremote/Arduino-IRremote/tree/master/examples/TinyReceiver/TinyReceiver.ino}{\texttt{ Tiny\+IR}}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \href{https://github.com/LuisMiCa/IRsmallDecoder}{\texttt{ IRsmall\+Decoder}}    }\\\cline{1-7}
+\endhead
+Number of protocols   &{\bfseries{50}}   &Nec + Panasonic + Hash \texorpdfstring{$\ast$}{*}   &12 + Hash \texorpdfstring{$\ast$}{*}   &17 + Pulse\+Distance + Hash \texorpdfstring{$\ast$}{*}   &NEC + FAST   &NEC + RC5 + Sony + Samsung    \\\cline{1-7}
+Timing method receive   &Timer2 or interrupt for pin 2 or 3   &{\bfseries{Interrupt}}   &Timer2 or interrupt for pin 2 or 3   &Timer2   &{\bfseries{Interrupt}}   &{\bfseries{Interrupt}}    \\\cline{1-7}
+Timing method send   &PWM and timing with Timer2 interrupts   &Timer2 interrupts   &Timer2 and blocking wait   &PWM with Timer2 and/or blocking wait with delay~\newline
+Microseconds()   &blocking wait with delay~\newline
+Microseconds()   &\%    \\\cline{1-7}
+Send pins   &All   &All   &All ?   &Timer dependent   &All   &\%    \\\cline{1-7}
+Decode method   &On\+The\+Fly   &On\+The\+Fly   &RAM   &RAM   &On\+The\+Fly   &On\+The\+Fly    \\\cline{1-7}
+Encode method   &On\+The\+Fly   &On\+The\+Fly   &On\+The\+Fly   &On\+The\+Fly or RAM   &On\+The\+Fly   &\%    \\\cline{1-7}
+Callback support   &x   &\%   &\%   &x   &x   &\%    \\\cline{1-7}
+Repeat handling   &Receive + Send (partially)   &\%   &?   &Receive + Send   &Receive + Send   &Receive    \\\cline{1-7}
+LED feedback   &x   &\%   &x   &x   &Receive   &\%    \\\cline{1-7}
+FLASH usage (simple NEC example with 5 prints)   &1820~\newline
+(4300 for 15 main / 8000 for all 40 protocols)~\newline
+(+200 for callback)~\newline
+(+80 for interrupt at pin 2+3)   &1270~\newline
+(1400 for pin 2+3)   &4830   &1770   &{\bfseries{900}}   &?1100?    \\\cline{1-7}
+RAM usage   &52~\newline
+(73 / 100 for 15 (main) / 40 protocols)   &62   &334   &227   &{\bfseries{19}}   &29    \\\cline{1-7}
+Supported platforms   &{\bfseries{avr, megaavr, attiny, Digispark (Pro), esp8266, ESP32, STM32, SAMD 21, Apollo3~\newline
+(plus arm and pic for non Arduino IDE)}}   &avr, esp8266   &avr, SAMD 21, SAMD 51   &avr, attiny, \href{https://github.com/crankyoldgit/IRremoteESP8266}{\texttt{ esp8266}}, esp32, SAM, SAMD   &{\bfseries{All platforms with attach~\newline
+Interrupt()}}   &{\bfseries{All platforms with attach~\newline
+Interrupt()}}    \\\cline{1-7}
+Last library update   &5/2023   &4/2018   &11/2022   &9/2023   &5/2023   &2/2022    \\\cline{1-7}
+Remarks   &Decodes 40 protocols concurrently.~\newline
+39 Protocols to send.~\newline
+Work in progress.   &Only one protocol at a time.   &Consists of 5 libraries. \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\+Project containing bugs -\/ 63 issues, 10 pull requests.\texorpdfstring{$\ast$}{*}   &Universal decoder and encoder.~\newline
+Supports {\bfseries{Pronto}} codes and sending of raw timing values.   &Requires no timer.   &Requires no timer.   \\\cline{1-7}
+\end{longtabu}
+
+
+
+\begin{DoxyItemize}
+\item The Hash protocol gives you a hash as code, which may be sufficient to distinguish your keys on the remote, but may not work with some protocols like Mitsubishi
+\end{DoxyItemize}
+
+~\newline
+\hypertarget{index_autotoc_md163}{}\doxysection{\texorpdfstring{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md}{\texttt{ History}}}{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md}{\texttt{ History}}}}\label{index_autotoc_md163}
+\hypertarget{index_autotoc_md164}{}\doxysection{\texorpdfstring{Useful links}{Useful links}}\label{index_autotoc_md164}
+
+\begin{DoxyItemize}
+\item \href{http://www.harctoolbox.org/IR-resources.html}{\texttt{ List of public IR code databases}}
+\item \href{http://lirc-remotes.sourceforge.net/remotes-table.html}{\texttt{ LIRC database}}
+\item \href{https://www.mikrocontroller.net/articles/IRMP_-_english\#IR_Protocols}{\texttt{ IRMP list of IR protocols}}
+\item \href{https://github.com/probonopd/irdb/tree/master/codes}{\texttt{ IRDB database for IR codes}}
+\item \href{https://github.com/probonopd/MakeHex/tree/master/protocols}{\texttt{ IRP definition files for IR protocols}}
+\item \href{https://dronebotworkshop.com/ir-remotes/}{\texttt{ Good introduction to IR remotes by Drone\+Bot Workshop}}
+\item \href{https://www.sbprojects.net/knowledge/ir/}{\texttt{ IR Remote Control Theory and some protocols (upper right hamburger icon)}}
+\item \href{http://www.hifi-remote.com/johnsfine/DecodeIR.html}{\texttt{ Interpreting Decoded IR Signals (v2.\+45)}}
+\item \href{https://www.analysir.com/blog/2014/03/19/air-conditioners-problems-recording-long-infrared-remote-control-signals-arduino}{\texttt{ "{}\+Recording long Infrared Remote control signals with Arduino"{}}}
+\item The original blog post of Ken Shirriff \href{http://www.arcfn.com/2009/08/multi-protocol-infrared-remote-library.html}{\texttt{ A Multi-\/\+Protocol Infrared Remote Library for the Arduino}}
+\item \href{https://www.vishay.com/docs/80069/circuit.pdf}{\texttt{ Vishay datasheet}}
+\end{DoxyItemize}\hypertarget{index_autotoc_md165}{}\doxysection{\texorpdfstring{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributors.md}{\texttt{ Contributors}}}{\href{https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributors.md}{\texttt{ Contributors}}}}\label{index_autotoc_md165}
+\hypertarget{index_autotoc_md166}{}\doxysection{\texorpdfstring{License}{License}}\label{index_autotoc_md166}
+Up to the version 2.\+7.\+0, the License is GPLv2. From the version 2.\+8.\+0, the license is the MIT license.\hypertarget{index_autotoc_md167}{}\doxysection{\texorpdfstring{Copyright}{Copyright}}\label{index_autotoc_md167}
+Initially coded 2009 Ken Shirriff \href{http://www.righto.com}{\texttt{ http\+://www.\+righto.\+com}}~\newline
+ Copyright (c) 2016-\/2017 Rafi Khan \href{https://rafikhan.io}{\texttt{ https\+://rafikhan.\+io}}~\newline
+ Copyright (c) 2020-\/2024 \href{https://github.com/ArminJo}{\texttt{ Armin Joachimsmeyer}} 

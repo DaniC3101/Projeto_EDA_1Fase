@@ -1,0 +1,52 @@
+\doxysection{IRremote\+Extension\+Class.\+h}
+\hypertarget{IRremoteExtensionClass_8h_source}{}\label{IRremoteExtensionClass_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRremoteExtensionTest/IRremoteExtensionClass.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRremoteExtensionTest/IRremoteExtensionClass.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ IRremoteExtensionClass.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Example\ for\ a\ class\ which\ itself\ uses\ the\ IRrecv\ class\ from\ IRremote}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2021-\/2024\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ USE\_IRREMOTE\_HPP\_AS\_PLAIN\_INCLUDE}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}>}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIRExtensionClass}{IRExtensionClass}}}
+\DoxyCodeLine{00038\ \{}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classIRrecv}{IRrecv}}\ *\ MyIrReceiver;}
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{classIRExtensionClass}{IRExtensionClass}}(\mbox{\hyperlink{classIRrecv}{IRrecv}}\ *\ aIrReceiver);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ decode();}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ printIRResultShort(Print\ *aSerial,\ \textcolor{keywordtype}{bool}\ aPrintRepeatGap\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ aCheckForRecordGapsMicros\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ resume();}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+
+\end{DoxyCode}

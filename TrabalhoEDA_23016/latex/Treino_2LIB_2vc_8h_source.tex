@@ -1,0 +1,44 @@
+\doxysection{vc.\+h}
+\hypertarget{Treino_2LIB_2vc_8h_source}{}\label{Treino_2LIB_2vc_8h_source}\index{C:/Users/danib/Desktop/VC/Treino/LIB/vc.h@{C:/Users/danib/Desktop/VC/Treino/LIB/vc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ INSTITUTO\ POLITÉCNICO\ DO\ CÁVADO\ E\ DO\ AVE}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 2022/2023}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ ENGENHARIA\ DE\ SISTEMAS\ INFORMÁTICOS}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ VISÃO\ POR\ COMPUTADOR}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ [\ \ DUARTE\ DUQUE\ -\/\ dduque@ipca.pt\ \ ]}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ VC\_DEBUG}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ESTRUTURA\ DE\ UMA\ IMAGEM}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *data;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ width,\ height;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ channels;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Binário/Cinzentos=1;\ RGB=3}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ levels;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Binário=1;\ Cinzentos\ [1,255];\ RGB\ [1,255]}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ bytesperline;\ \ \ \ \ \ \ \textcolor{comment}{//\ width\ *\ channels}}
+\DoxyCodeLine{00025\ \}\ \mbox{\hyperlink{structIVC}{IVC}};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PROTÓTIPOS\ DE\ FUNÇÕES}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ FUNÇÕES:\ ALOCAR\ E\ LIBERTAR\ UMA\ IMAGEM}}
+\DoxyCodeLine{00033\ \mbox{\hyperlink{structIVC}{IVC}}\ *vc\_image\_new(\textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keywordtype}{int}\ channels,\ \textcolor{keywordtype}{int}\ levels);}
+\DoxyCodeLine{00034\ \mbox{\hyperlink{structIVC}{IVC}}\ *vc\_image\_free(\mbox{\hyperlink{structIVC}{IVC}}\ *image);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ FUNÇÕES:\ LEITURA\ E\ ESCRITA\ DE\ IMAGENS\ (PBM,\ PGM\ E\ PPM)}}
+\DoxyCodeLine{00037\ \mbox{\hyperlink{structIVC}{IVC}}\ *vc\_read\_image(\textcolor{keywordtype}{char}\ *filename);}
+\DoxyCodeLine{00038\ \textcolor{keywordtype}{int}\ vc\_write\_image(\textcolor{keywordtype}{char}\ *filename,\ \mbox{\hyperlink{structIVC}{IVC}}\ *image);}
+
+\end{DoxyCode}

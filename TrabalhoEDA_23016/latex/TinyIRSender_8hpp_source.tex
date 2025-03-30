@@ -1,0 +1,347 @@
+\doxysection{Tiny\+IRSender.\+hpp}
+\hypertarget{TinyIRSender_8hpp_source}{}\label{TinyIRSender_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIRSender.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIRSender.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ \ TinyIRSender.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Sends\ IR\ protocol\ data\ of\ NEC\ and\ FAST\ protocol\ using\ bit\ banging.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ NEC\ is\ the\ protocol\ of\ most\ cheap\ remote\ controls\ for\ Arduino.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ The\ FAST\ protocol\ is\ a\ proprietary\ modified\ JVC\ protocol\ without\ address,\ with\ parity\ and\ with\ a\ shorter\ header.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ FAST\ Protocol\ characteristics:}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ -\/\ Bit\ timing\ is\ like\ NEC\ or\ JVC}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ -\/\ The\ header\ is\ shorter,\ 3156\ vs.\ 12500}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ -\/\ No\ address\ and\ 16\ bit\ data,\ interpreted\ as\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ \ \ \ leading\ to\ a\ fixed\ protocol\ length\ of\ (6\ +\ (16\ *\ 3)\ +\ 1)\ *\ 526\ =\ 55\ *\ 526\ =\ 28930\ microseconds\ or\ 29\ ms.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ -\/\ Repeats\ are\ sent\ as\ complete\ frames\ but\ in\ a\ 50\ ms\ period\ /\ with\ a\ 21\ ms\ distance.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ IRMP\ https://github.com/IRMP-\/org/IRMP.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2022-\/2024\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#ifndef\ \_TINY\_IR\_SENDER\_HPP}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ \_TINY\_IR\_SENDER\_HPP}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//\#define\ ENABLE\_NEC2\_REPEATS\ //\ Instead\ of\ sending\ /\ receiving\ the\ NEC\ special\ repeat\ code,\ send\ /\ receive\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ "{}TinyIR.h"{}}\ \textcolor{comment}{//\ Defines\ protocol\ timings}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#include\ "{}digitalWriteFast.h"{}}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#if\ !defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#warning\ "{}IR\_SEND\_PIN\ is\ not\ defined,\ so\ it\ is\ set\ to\ 3"{}}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ 3}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00067\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ *\ Generate\ 38\ kHz\ IR\ signal\ by\ bit\ banging}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00070\ \textcolor{keywordtype}{void}\ sendMark(uint8\_t\ aSendPin,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ aMarkMicros)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tStartMicros\ =\ micros();}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tNextPeriodEnding\ =\ tStartMicros;}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tMicros;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Generate\ pulse}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ noInterrupts();\ \textcolor{comment}{//\ do\ not\ let\ interrupts\ extend\ the\ short\ on\ period}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ digitalWriteFast(aSendPin,\ HIGH);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ delayMicroseconds(8);\ \textcolor{comment}{//\ 8\ us\ for\ a\ 30\ \%\ duty\ cycle\ for\ 38\ kHz}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ digitalWriteFast(aSendPin,\ LOW);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ interrupts();\ \textcolor{comment}{//\ Enable\ interrupts\ -\/\ to\ keep\ micros\ correct-\/\ for\ the\ longer\ off\ period\ 3.4\ us\ until\ receive\ ISR\ is\ active\ (for\ 7\ us\ +\ pop's)}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ PWM\ pause\ timing\ and\ end\ check}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Minimal\ pause\ duration\ is\ 4.3\ us}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ tNextPeriodEnding\ +=\ 26;\ \textcolor{comment}{//\ for\ 38\ kHz}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ tMicros\ =\ micros();\ \textcolor{comment}{//\ we\ have\ only\ 4\ us\ resolution\ for\ AVR\ @16MHz}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Exit\ the\ forever\ loop\ if\ aMarkMicros\ has\ reached}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tDeltaMicros\ =\ tMicros\ -\/\ tStartMicros;}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Just\ getting\ variables\ and\ check\ for\ end\ condition\ takes\ minimal\ 3.8\ us}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tDeltaMicros\ >=\ aMarkMicros\ -\/\ (112\ /\ (F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND)))\ \{\ \textcolor{comment}{//\ To\ compensate\ for\ call\ duration\ -\/\ 112\ is\ an\ empirical\ value}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tDeltaMicros\ >=\ aMarkMicros)\ \{}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (tMicros\ <\ tNextPeriodEnding);}
+\DoxyCodeLine{00104\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true});}
+\DoxyCodeLine{00105\ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ *\ Send\ NEC\ with\ 16\ bit\ address\ and\ command,\ even\ if\ aCommand\ <\ 0x100\ (I.E.\ ONKYO)}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ *\ @param\ aAddress\ \ -\/\ The\ 16\ bit\ address\ to\ send.}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ *\ @param\ aCommand\ \ -\/\ The\ 16\ bit\ command\ to\ send.}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ *\ @param\ aNumberOfRepeats\ \ -\/\ Number\ of\ repeats\ send\ at\ a\ period\ of\ 110\ ms.}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ *\ @param\ aSendNEC2Repeats\ -\/\ Instead\ of\ sending\ the\ NEC\ special\ repeat\ code,\ send\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00114\ \textcolor{keywordtype}{void}\ sendONKYO(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ pinModeFast(aSendPin,\ OUTPUT);}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tStartOfFrameMillis\ =\ millis();}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_HEADER\_MARK);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((!aSendNEC2Repeats)\ \&\&\ (tNumberOfCommands\ <\ aNumberOfRepeats\ +\ 1))\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ the\ NEC\ special\ repeat}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_REPEAT\_HEADER\_SPACE);\ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ header}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_HEADER\_SPACE);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tData;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.LowWord\ =\ aAddress;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.HighWord\ =\ aCommand;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ data}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ NEC\_BITS;\ ++i)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);\ \textcolor{comment}{//\ constant\ mark\ length}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tData.ULong\ \&\ 1)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ONE\_SPACE);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ZERO\_SPACE);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.ULong\ >>=\ 1;\ \textcolor{comment}{//\ shift\ command\ for\ next\ bit}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ stop\ bit}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ and\ fallback\ for\ wrong\ RepeatPeriodMillis\ parameter.\ I.e\ the\ repeat\ period\ must\ be\ greater\ than\ each\ frame\ duration.}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tFrameDurationMillis\ =\ millis()\ -\/\ tStartOfFrameMillis;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NEC\_REPEAT\_PERIOD\ /\ 1000\ >\ tFrameDurationMillis)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delay(NEC\_REPEAT\_PERIOD\ /\ 1000\ -\/\ tFrameDurationMillis);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ *\ Send\ NEC\ with\ 8\ or\ 16\ bit\ address\ or\ command\ depending\ on\ the\ values\ of\ aAddress\ and\ aCommand.}}
+\DoxyCodeLine{00160\ \textcolor{comment}{\ *\ @param\ aAddress\ \ -\/\ If\ aAddress\ <\ 0x100\ send\ 8\ bit\ address\ and\ 8\ bit\ inverted\ address,\ else\ send\ 16\ bit\ address.}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ *\ @param\ aCommand\ \ -\/\ If\ aCommand\ <\ 0x100\ send\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command,\ else\ send\ 16\ bit\ command.}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ *\ @param\ aNumberOfRepeats\ \ -\/\ Number\ of\ repeats\ send\ at\ a\ period\ of\ 110\ ms.}}
+\DoxyCodeLine{00163\ \textcolor{comment}{\ *\ @param\ aSendNEC2Repeats\ -\/\ Instead\ of\ sending\ the\ NEC\ special\ repeat\ code,\ send\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00165\ \textcolor{keywordtype}{void}\ sendNECMinimal(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ sendNEC(aSendPin,\ aAddress,\ aCommand,\ aNumberOfRepeats);\ \textcolor{comment}{//\ sendNECMinimal()\ is\ deprecated}}
+\DoxyCodeLine{00167\ \}}
+\DoxyCodeLine{00168\ \textcolor{keywordtype}{void}\ sendNEC(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ pinModeFast(aSendPin,\ OUTPUT);}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tStartOfFrameMillis\ =\ millis();}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_HEADER\_MARK);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((!aSendNEC2Repeats)\ \&\&\ (tNumberOfCommands\ <\ aNumberOfRepeats\ +\ 1))\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ the\ NEC\ special\ repeat}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_REPEAT\_HEADER\_SPACE);\ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ header}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_HEADER\_SPACE);}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tData;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ The\ compiler\ is\ intelligent\ and\ removes\ the\ code\ for\ "{}(aAddress\ >\ 0xFF)"{}\ if\ we\ are\ called\ with\ an\ uint8\_t\ address\ :-\/).}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Using\ an\ uint16\_t\ address\ requires\ additional\ 28\ bytes\ program\ memory.}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aAddress\ >\ 0xFF)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.LowWord\ =\ aAddress;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.LowByte\ =\ aAddress;\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.MidLowByte\ =\ \string~aAddress;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aCommand\ >\ 0xFF)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.HighWord\ =\ aCommand;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.MidHighByte\ =\ aCommand;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.HighByte\ =\ \string~aCommand;\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ data}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ NEC\_BITS;\ ++i)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);\ \textcolor{comment}{//\ constant\ mark\ length}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tData.ULong\ \&\ 1)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ONE\_SPACE);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ZERO\_SPACE);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.ULong\ >>=\ 1;\ \textcolor{comment}{//\ shift\ command\ for\ next\ bit}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ stop\ bit}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00217\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ and\ fallback\ for\ wrong\ RepeatPeriodMillis\ parameter.\ I.e\ the\ repeat\ period\ must\ be\ greater\ than\ each\ frame\ duration.}}
+\DoxyCodeLine{00218\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tFrameDurationMillis\ =\ millis()\ -\/\ tStartOfFrameMillis;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NEC\_REPEAT\_PERIOD\ /\ 1000\ >\ tFrameDurationMillis)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delay(NEC\_REPEAT\_PERIOD\ /\ 1000\ -\/\ tFrameDurationMillis);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ *\ Send\ Extended\ NEC\ with\ a\ forced\ 16\ bit\ address\ and\ 8\ or\ 16\ bit\ command\ depending\ on\ the\ value\ of\ aCommand.}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ *\ @param\ aAddress\ \ -\/\ Send\ 16\ bit\ address.}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ *\ @param\ aCommand\ \ -\/\ If\ aCommand\ <\ 0x100\ send\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command,\ else\ send\ 16\ bit\ command.}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ *\ @param\ aNumberOfRepeats\ \ -\/\ Number\ of\ repeats\ send\ at\ a\ period\ of\ 110\ ms.}}
+\DoxyCodeLine{00232\ \textcolor{comment}{\ *\ @param\ aSendNEC2Repeats\ -\/\ Instead\ of\ sending\ the\ NEC\ special\ repeat\ code,\ send\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00233\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00234\ \textcolor{keywordtype}{void}\ sendExtendedNEC(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ pinModeFast(aSendPin,\ OUTPUT);}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tStartOfFrameMillis\ =\ millis();}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_HEADER\_MARK);}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((!aSendNEC2Repeats)\ \&\&\ (tNumberOfCommands\ <\ aNumberOfRepeats\ +\ 1))\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ the\ NEC\ special\ repeat}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_REPEAT\_HEADER\_SPACE);\ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ header}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_HEADER\_SPACE);}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tData;}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.LowWord\ =\ aAddress;}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aCommand\ >\ 0xFF)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UWord.HighWord\ =\ aCommand;}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.MidHighByte\ =\ aCommand;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.UByte.HighByte\ =\ \string~aCommand;\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ data}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ NEC\_BITS;\ ++i)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);\ \textcolor{comment}{//\ constant\ mark\ length}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tData.ULong\ \&\ 1)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ONE\_SPACE);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(NEC\_ZERO\_SPACE);}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tData.ULong\ >>=\ 1;\ \textcolor{comment}{//\ shift\ command\ for\ next\ bit}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ stop\ bit}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ NEC\_BIT\_MARK);}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ and\ fallback\ for\ wrong\ RepeatPeriodMillis\ parameter.\ I.e\ the\ repeat\ period\ must\ be\ greater\ than\ each\ frame\ duration.}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tFrameDurationMillis\ =\ millis()\ -\/\ tStartOfFrameMillis;}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NEC\_REPEAT\_PERIOD\ /\ 1000\ >\ tFrameDurationMillis)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delay(NEC\_REPEAT\_PERIOD\ /\ 1000\ -\/\ tFrameDurationMillis);}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00285\ \textcolor{comment}{\ *\ LSB\ first,\ send\ header,\ command,\ inverted\ command\ and\ stop\ bit}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00287\ \textcolor{keywordtype}{void}\ sendFast8BitAndParity(uint8\_t\ aSendPin,\ uint8\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ sendFAST(aSendPin,\ aCommand,\ aNumberOfRepeats);}
+\DoxyCodeLine{00289\ \}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ *\ LSB\ first,\ send\ header,\ 16\ bit\ command\ or\ 8\ bit\ command,\ inverted\ command\ and\ stop\ bit}}
+\DoxyCodeLine{00293\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00294\ \textcolor{keywordtype}{void}\ sendFAST(uint8\_t\ aSendPin,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ pinModeFast(aSendPin,\ OUTPUT);}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ tStartOfFrameMillis\ =\ millis();}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ header}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ FAST\_HEADER\_MARK);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ delayMicroseconds(FAST\_HEADER\_SPACE);}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ uint16\_t\ tData;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ The\ compiler\ is\ intelligent\ and\ removes\ the\ code\ for\ "{}(aCommand\ >\ 0xFF)"{}\ if\ we\ are\ called\ with\ an\ uint8\_t\ command\ :-\/).}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Using\ an\ uint16\_t\ command\ requires\ additional\ 56\ bytes\ program\ memory.}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aCommand\ >\ 0xFF)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ tData\ =\ aCommand;}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ tData\ =\ aCommand\ |\ (((uint8\_t)\ (\string~aCommand))\ <<\ 8);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ data}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ FAST\_BITS;\ ++i)\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ FAST\_BIT\_MARK);\ \textcolor{comment}{//\ constant\ mark\ length}}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tData\ \&\ 1)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(FAST\_ONE\_SPACE);}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delayMicroseconds(FAST\_ZERO\_SPACE);}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ tData\ >>=\ 1;\ \textcolor{comment}{//\ shift\ command\ for\ next\ bit}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ stop\ bit}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ sendMark(aSendPin,\ FAST\_BIT\_MARK);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00332\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ and\ fallback\ for\ wrong\ RepeatPeriodMillis\ parameter.\ I.e\ the\ repeat\ period\ must\ be\ greater\ than\ each\ frame\ duration.}}
+\DoxyCodeLine{00333\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tFrameDurationMillis\ =\ millis()\ -\/\ tStartOfFrameMillis;}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (FAST\_REPEAT\_PERIOD\ /\ 1000\ >\ tFrameDurationMillis)\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ delay(FAST\_REPEAT\_PERIOD\ /\ 1000\ -\/\ tFrameDurationMillis);}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00344\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_TINY\_IR\_SENDER\_HPP}}
+
+\end{DoxyCode}

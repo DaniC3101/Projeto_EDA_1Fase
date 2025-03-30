@@ -1,0 +1,212 @@
+\doxysection{ir\+\_\+\+Lego.\+hpp}
+\hypertarget{ir__Lego_8hpp_source}{}\label{ir__Lego_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Lego.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Lego.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_Lego.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ Lego\ Power\ Functions\ IR\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2020-\/2023\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_LEGO\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_LEGO\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ \ EEEEEE\ \ \ EEEE\ \ \ \ OOOO}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ \ E\ \ \ \ \ \ \ E\ \ \ \ \ \ \ O\ \ \ \ O}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ \ EEEE\ \ \ \ E\ \ EEE\ \ O\ \ \ \ O}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ \ E\ \ \ \ \ \ \ E\ \ \ \ E\ \ O\ \ \ \ O}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ LLLLLL\ \ EEEEEE\ \ \ EEEE\ \ \ \ OOOO}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ from\ LEGO\ Power\ Functions\ RC\ Manual\ 26.02.2010\ Version\ 1.20}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ https://github.com/jurriaan/Arduino-\/PowerFunctions/raw/master/LEGO\_Power\_Functions\_RC\_v120.pdf}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ https://oberguru.net/elektronik/ir/codes/lego\_power\_functions\_train.lircd.conf}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ For\ original\ LEGO\ receiver\ see:\ https://www.philohome.com/pfrec/pfrec.htm\ and\ https://www.youtube.com/watch?v=KCM4Ug1bPrM}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ To\ ensure\ correct\ detection\ of\ IR\ messages\ six\ 38\ kHz\ cycles\ are\ transmitted\ as\ mark.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ Low\ bit\ consists\ of\ 6\ cycles\ of\ IR\ and\ 10\ {\ucr}cycles{\ucr}\ of\ pause,}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ high\ bit\ of\ 6\ cycles\ IR\ and\ 21\ {\ucr}cycles{\ucr}\ of\ pause\ and\ start\ bit\ of\ 6\ cycles\ IR\ and\ 39\ {\ucr}cycles{\ucr}\ of\ pause.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ Low\ bit\ range\ 316\ -\/\ 526\ us}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ High\ bit\ range\ 526\ {\ucr}\ 947\ us}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ Start/stop\ bit\ range\ 947\ {\ucr}\ 1579\ us}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ If\ tm\ is\ the\ maximum\ message\ length\ (16ms)\ and\ Ch\ is\ the\ channel\ number,\ then}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ The\ delay\ before\ transmitting\ the\ first\ message\ is:\ (4\ {\ucr}\ Ch)*tm}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ The\ time\ from\ start\ to\ start\ for\ the\ next\ 2\ messages\ is:\ 5*tm}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ The\ time\ from\ start\ to\ start\ for\ the\ following\ messages\ is:\ (6\ +\ 2*Ch)*tm}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ Supported\ Devices}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ LEGO\ Power\ Functions\ IR\ Receiver\ 8884}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ MSB\ first,\ 1\ start\ bit\ +\ 4\ bit\ channel,\ 4\ bit\ mode\ +\ 4\ bit\ command\ +\ 4\ bit\ parity\ +\ 1\ stop\ bit.}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ LEGO\_CHANNEL\_BITS\ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ LEGO\_MODE\_BITS\ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ LEGO\_COMMAND\_BITS\ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ LEGO\_PARITY\_BITS\ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ LEGO\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (LEGO\_CHANNEL\_BITS\ +\ LEGO\_MODE\_BITS\ +\ LEGO\_COMMAND\_BITS\ +\ LEGO\_PARITY\_BITS)}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ LEGO\_HEADER\_MARK\ \ \ \ \ \ \ \ 158\ \ \ \ }\textcolor{comment}{//\ \ 6\ cycles}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ LEGO\_HEADER\_SPACE\ \ \ \ \ \ \ 1026\ \ \ }\textcolor{comment}{//\ 39\ cycles}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ LEGO\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ 158\ \ \ \ }\textcolor{comment}{//\ \ 6\ cycles}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ LEGO\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ 553\ \ \ \ }\textcolor{comment}{//\ 21\ cycles}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ LEGO\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ 263\ \ \ \ }\textcolor{comment}{//\ 10\ cycles}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ LEGO\_AVERAGE\_DURATION\ \ \ 11000\ }\textcolor{comment}{//\ LEGO\_HEADER\_MARK\ +\ LEGO\_HEADER\_SPACE\ \ +\ 16\ *\ 600\ +\ 158}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ LEGO\_AUTO\_REPEAT\_PERIOD\_MIN\ 110000\ }\textcolor{comment}{//\ Every\ frame\ is\ auto\ repeated\ 5\ times.}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ LEGO\_AUTO\_REPEAT\_PERIOD\_MAX\ 230000\ }\textcolor{comment}{//\ space\ for\ channel\ 3}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ LEGO\_MODE\_EXTENDED\ \ 0}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ LEGO\_MODE\_COMBO\ \ \ \ \ 1}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ LEGO\_MODE\_SINGLE\ \ \ \ 0x4\ }\textcolor{comment}{//\ here\ the\ 2\ LSB\ have\ meanings\ like\ Output\ A\ /\ Output\ B}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ LegoProtocolConstants\ =\ \{\ LEGO\_PF,\ 38,\ LEGO\_HEADER\_MARK,\ LEGO\_HEADER\_SPACE,\ LEGO\_BIT\_MARK,}
+\DoxyCodeLine{00087\ LEGO\_ONE\_SPACE,\ LEGO\_BIT\_MARK,\ LEGO\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (LEGO\_AUTO\_REPEAT\_PERIOD\_MIN}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00093\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ *\ Here\ we\ process\ the\ structured\ data,\ and\ call\ the\ send\ raw\ data\ function}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ *\ @param\ aMode\ one\ of\ LEGO\_MODE\_EXTENDED,\ LEGO\_MODE\_COMBO,\ LEGO\_MODE\_SINGLE}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00097\ \textcolor{keywordtype}{void}\ IRsend::sendLegoPowerFunctions(uint8\_t\ aChannel,\ uint8\_t\ aCommand,\ uint8\_t\ aMode,\ \textcolor{keywordtype}{bool}\ aDoSend5Times)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ aChannel\ \&=\ 0x0F;\ \textcolor{comment}{//\ allow\ toggle\ and\ escape\ bits\ too}}
+\DoxyCodeLine{00099\ \ \ \ \ aCommand\ \&=\ 0x0F;}
+\DoxyCodeLine{00100\ \ \ \ \ aMode\ \&=\ 0x0F;}
+\DoxyCodeLine{00101\ \ \ \ \ uint8\_t\ tParity\ =\ 0xF\ \string^\ aChannel\ \string^\ aMode\ \string^\ aCommand;}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ send\ 4\ bit\ channel,\ 4\ bit\ mode,\ 4\ bit\ command,\ 4\ bit\ parity}}
+\DoxyCodeLine{00103\ \ \ \ \ uint16\_t\ tRawData\ =\ (((aChannel\ <<\ LEGO\_MODE\_BITS)\ |\ aMode)\ <<\ (LEGO\_COMMAND\_BITS\ +\ LEGO\_PARITY\_BITS))}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ |\ (aCommand\ <<\ LEGO\_PARITY\_BITS)\ |\ tParity;}
+\DoxyCodeLine{00105\ \ \ \ \ sendLegoPowerFunctions(tRawData,\ aChannel,\ aDoSend5Times);}
+\DoxyCodeLine{00106\ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{keywordtype}{void}\ IRsend::sendLegoPowerFunctions(uint16\_t\ aRawData,\ uint8\_t\ aChannel,\ \textcolor{keywordtype}{bool}\ aDoSend5Times)\ \{}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}sendLego\ aRawData=0x"{}}));}
+\DoxyCodeLine{00111\ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aRawData,\ HEX);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ aChannel\ \&=\ 0x03;\ \textcolor{comment}{//\ we\ have\ 4\ channels}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ uint\_fast8\_t\ tNumberOfRepeats\ =\ 0;}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}\ (aDoSend5Times)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ tNumberOfRepeats\ =\ 4;}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//\ required\ for\ repeat\ timing,\ see\ http://www.hackvandedam.nl/blog/?page\_id=559}}
+\DoxyCodeLine{00120\ \ \ \ \ uint8\_t\ tRepeatPeriod\ =\ (LEGO\_AUTO\_REPEAT\_PERIOD\_MIN\ /\ MICROS\_IN\_ONE\_MILLI)\ +\ (aChannel\ *\ 40);\ \textcolor{comment}{//\ from\ 110\ to\ 230}}
+\DoxyCodeLine{00121\ \ \ \ \ LegoProtocolConstants.RepeatPeriodMillis\ =\ tRepeatPeriod;}
+\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&LegoProtocolConstants,\ aRawData,\ LEGO\_BITS,\ tNumberOfRepeats);}
+\DoxyCodeLine{00123\ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ *\ Mode\ is\ stored\ in\ the\ upper\ nibble\ of\ command}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00128\ \textcolor{keywordtype}{bool}\ IRrecv::decodeLegoPowerFunctions()\ \{}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&LegoProtocolConstants))\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ enough\ data\ -\/\ +4\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ LEGO\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}LEGO:\ "{}}));}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 36"{}}));}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&LegoProtocolConstants,\ LEGO\_BITS))\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}LEGO:\ "{}}));}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ Stop\ bit}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3\ +\ (2\ *\ LEGO\_BITS)],\ LEGO\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}LEGO:\ "{}}));}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00157\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00158\ \ \ \ \ uint16\_t\ tDecodedValue\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00159\ \ \ \ \ uint8\_t\ tToggleEscapeChannel\ =\ tDecodedValue\ >>\ (LEGO\_MODE\_BITS\ +\ LEGO\_COMMAND\_BITS\ +\ LEGO\_PARITY\_BITS);}
+\DoxyCodeLine{00160\ \ \ \ \ uint8\_t\ tMode\ =\ (tDecodedValue\ >>\ (LEGO\_COMMAND\_BITS\ +\ LEGO\_PARITY\_BITS))\ \&\ 0xF;}
+\DoxyCodeLine{00161\ \ \ \ \ uint8\_t\ tData\ =\ (tDecodedValue\ >>\ LEGO\_PARITY\_BITS)\ \&\ 0xF;\ \textcolor{comment}{//\ lego\ calls\ this\ field\ "{}data"{}}}
+\DoxyCodeLine{00162\ \ \ \ \ uint8\_t\ tParityReceived\ =\ tDecodedValue\ \&\ 0xF;}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ This\ is\ parity\ as\ defined\ in\ the\ specifications}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//\ But\ in\ some\ scans\ I\ saw\ 0x9\ \string^\ ..\ as\ parity\ formula}}
+\DoxyCodeLine{00166\ \ \ \ \ uint8\_t\ tParityComputed\ =\ 0xF\ \string^\ tToggleEscapeChannel\ \string^\ tMode\ \string^\ tData;}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{comment}{//\ parity\ check}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}\ (tParityReceived\ !=\ tParityComputed)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}LEGO:\ "{}}));}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Parity\ is\ not\ correct.\ expected=0x"{}}));}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(tParityComputed,\ HEX);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}\ received=0x"{}}));}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(tParityReceived,\ HEX);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{},\ raw=0x"{}}));}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(tDecodedValue,\ HEX);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{},\ 3\ nibbles\ are\ 0x"{}}));}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(tToggleEscapeChannel,\ HEX);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{},\ 0x"{}}));}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(tMode,\ HEX);}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{},\ 0x"{}}));}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(tData,\ HEX);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ might\ not\ be\ an\ error,\ so\ just\ continue}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}}\ |\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ \ \ \ *\ Check\ for\ autorepeat\ (should\ happen\ 4\ times\ for\ one\ press)}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}}\ <\ (LEGO\_AUTO\_REPEAT\_PERIOD\_MAX\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}))\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a5c5e6ae69aa440bfa132550d120ace08}{IRDATA\_FLAGS\_IS\_AUTO\_REPEAT}};}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tToggleEscapeChannel;}
+\DoxyCodeLine{00194\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tData\ |\ tMode\ <<\ LEGO\_COMMAND\_BITS;}
+\DoxyCodeLine{00195\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ LEGO\_BITS;}
+\DoxyCodeLine{00196\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ LEGO\_PF;}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00199\ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \textcolor{keywordtype}{void}\ IRsend::sendLegoPowerFunctions(uint16\_t\ aRawData,\ \textcolor{keywordtype}{bool}\ aDoSend5Times)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ sendLegoPowerFunctions(aRawData,\ (aRawData\ >>\ (LEGO\_MODE\_BITS\ +\ LEGO\_COMMAND\_BITS\ +\ LEGO\_PARITY\_BITS))\ \&\ 0x3,\ aDoSend5Times);}
+\DoxyCodeLine{00207\ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_LEGO\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,24 @@
+\doxysection{Matriz.\+h}
+\hypertarget{_matriz_8h_source}{}\label{_matriz_8h_source}\index{Fase1/Fase1/Matriz.h@{Fase1/Fase1/Matriz.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ MATRIZ\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ MATRIZ\_H}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}ListaAntenas.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{int}\ tamMatriz[2];}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_lista_antenas}{ListaAntenas}}*\ listaAntenas;}
+\DoxyCodeLine{00011\ \}\mbox{\hyperlink{struct_matriz}{Matriz}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00020\ \mbox{\hyperlink{struct_matriz}{Matriz}}*\ CriarMatriz(\textcolor{keywordtype}{int}\ linhas,\ \textcolor{keywordtype}{int}\ colunas);}
+\DoxyCodeLine{00030\ \mbox{\hyperlink{struct_antena}{Antena}}*\ CriarAntena(\mbox{\hyperlink{struct_matriz}{Matriz}}*\ m,\ \textcolor{keywordtype}{int}\ linha,\ \textcolor{keywordtype}{int}\ coluna,\ \textcolor{keywordtype}{double}\ frequencia);}
+\DoxyCodeLine{00038\ \textcolor{keywordtype}{void}\ AdiconarAntenaMatriz(\mbox{\hyperlink{struct_matriz}{Matriz}}*\ m,\ \mbox{\hyperlink{struct_antena}{Antena}}*\ antena);}
+\DoxyCodeLine{00044\ \textcolor{keywordtype}{void}\ MostrarMatriz(\mbox{\hyperlink{struct_matriz}{Matriz}}*\ m);}
+\DoxyCodeLine{00052\ \mbox{\hyperlink{struct_antena}{Antena}}*\ \ \ EliminarAntena(\mbox{\hyperlink{struct_matriz}{Matriz}}*\ m,\ \textcolor{keywordtype}{int}\ linha,\ \textcolor{keywordtype}{int}\ coluna);}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

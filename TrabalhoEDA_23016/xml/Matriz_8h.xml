@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="Matriz_8h" kind="file" language="C++">
+    <compoundname>Matriz.h</compoundname>
+    <includes refid="ListaAntenas_8h" local="yes">ListaAntenas.h</includes>
+    <includedby refid="Dados_8c" local="yes">Fase1/Fase1/Dados.c</includedby>
+    <includedby refid="Dados_8h" local="yes">Fase1/Fase1/Dados.h</includedby>
+    <includedby refid="Matriz_8c" local="yes">Fase1/Fase1/Matriz.c</includedby>
+    <includedby refid="main_8c" local="yes">Fase1/Fase1/main.c</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>Antena.h</label>
+        <link refid="Antena_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Fase1/Fase1/Dados.h</label>
+        <link refid="Dados_8h_source"/>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structMatriz" prot="public">Matriz</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="Matriz_8h_1a39457bb5dd70f810b107a2b43aede415" prot="public" static="no">
+        <name>MATRIZ_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="3" column="9" bodyfile="Fase1/Fase1/Matriz.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="Matriz_8h_1a75c2b9c0a41f11ffbd59a5b42cc73e77" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structMatriz" kindref="compound">Matriz</ref> *</type>
+        <definition>Matriz * CriarMatriz</definition>
+        <argsstring>(int linhas, int colunas)</argsstring>
+        <name>CriarMatriz</name>
+        <param>
+          <type>int</type>
+          <declname>linhas</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>colunas</declname>
+        </param>
+        <briefdescription>
+<para>Cria uma nova matriz com o número de linhas e colunas especificados. Aloca memória para a estrutura da matriz e para a lista de antenas. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>linhas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de linhas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>colunas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de colunas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna um apontador para a estrutura da matriz criada.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="20" column="8" bodyfile="Fase1/Fase1/Matriz.c" bodystart="12" bodyend="23" declfile="Fase1/Fase1/Matriz.h" declline="20" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="Matriz_8h_1a336fd74f5743f44d16c885124bfd3aa5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>Antena * CriarAntena</definition>
+        <argsstring>(Matriz *m, int linha, int coluna, double frequencia)</argsstring>
+        <name>CriarAntena</name>
+        <param>
+          <type><ref refid="structMatriz" kindref="compound">Matriz</ref> *</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>frequencia</declname>
+        </param>
+        <briefdescription>
+<para>Cria uma nova antena numa posição específica na matriz e a adiciona à lista de antenas. Verifica também a posição da antena na lista de antenas já existentes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a estrutura da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>frequencia</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Frequência da antena.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna um apontador para a antena criada.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="30" column="8" bodyfile="Fase1/Fase1/Matriz.c" bodystart="34" bodyend="42" declfile="Fase1/Fase1/Matriz.h" declline="30" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="Matriz_8h_1a43f150bfdd45f0465f49488546b5ba9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AdiconarAntenaMatriz</definition>
+        <argsstring>(Matriz *m, Antena *antena)</argsstring>
+        <name>AdiconarAntenaMatriz</name>
+        <param>
+          <type><ref refid="structMatriz" kindref="compound">Matriz</ref> *</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antena</declname>
+        </param>
+        <briefdescription>
+<para>Adiciona uma antena à lista de antenas de uma matriz. Se a lista estiver vazia, a antena será a primeira da lista. Caso contrário, a antena será adicionada ao final da lista. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a estrutura da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>antena</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena a ser adicionada.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="38" column="6" bodyfile="Fase1/Fase1/Matriz.c" bodystart="64" bodyend="81" declfile="Fase1/Fase1/Matriz.h" declline="38" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="Matriz_8h_1a3e4b15202ffa92238154a330d4fdb3f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MostrarMatriz</definition>
+        <argsstring>(Matriz *m)</argsstring>
+        <name>MostrarMatriz</name>
+        <param>
+          <type><ref refid="structMatriz" kindref="compound">Matriz</ref> *</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Mostra a matriz no terminal, representando as antenas e as zonas de interferência. Utiliza caracteres para indicar a presença de antenas e zonas de interferência. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a estrutura da matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="44" column="6" bodyfile="Fase1/Fase1/Matriz.c" bodystart="88" bodyend="155" declfile="Fase1/Fase1/Matriz.h" declline="44" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="Matriz_8h_1a4bdab159f7c02d224cd6395cdb64467e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>Antena * EliminarAntena</definition>
+        <argsstring>(Matriz *m, int linha, int coluna)</argsstring>
+        <name>EliminarAntena</name>
+        <param>
+          <type><ref refid="structMatriz" kindref="compound">Matriz</ref> *</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <briefdescription>
+<para>Elimina uma antena de uma posição específica na matriz. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a estrutura da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha da antena a ser eliminada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna da antena a ser eliminada.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna um apontador para a antena eliminada.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Matriz.h" line="52" column="7" bodyfile="Fase1/Fase1/Matriz.c" bodystart="51" bodyend="55" declfile="Fase1/Fase1/Matriz.h" declline="52" declcolumn="7"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>MATRIZ_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MATRIZ_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;ListaAntenas.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="structMatriz" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tamMatriz[2];</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structListaAntenas" kindref="compound">ListaAntenas</ref>*<sp/>listaAntenas;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">}<ref refid="structMatriz" kindref="compound">Matriz</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><ref refid="structMatriz" kindref="compound">Matriz</ref>*<sp/>CriarMatriz(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linhas,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colunas);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>CriarAntena(<ref refid="structMatriz" kindref="compound">Matriz</ref>*<sp/>m,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>frequencia);</highlight></codeline>
+<codeline lineno="38"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AdiconarAntenaMatriz(<ref refid="structMatriz" kindref="compound">Matriz</ref>*<sp/>m,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antena);</highlight></codeline>
+<codeline lineno="44"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>MostrarMatriz(<ref refid="structMatriz" kindref="compound">Matriz</ref>*<sp/>m);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>EliminarAntena(<ref refid="structMatriz" kindref="compound">Matriz</ref>*<sp/>m,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/Matriz.h"/>
+  </compounddef>
+</doxygen>

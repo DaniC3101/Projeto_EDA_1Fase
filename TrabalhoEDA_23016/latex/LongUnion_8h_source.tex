@@ -1,0 +1,145 @@
+\doxysection{Long\+Union.\+h}
+\hypertarget{LongUnion_8h_source}{}\label{LongUnion_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/LongUnion.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/LongUnion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ LongUnion.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2020-\/2022\ \ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Email:\ armin.joachimsmeyer@gmail.com}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/Utils\ https://github.com/ArminJo/Arduino-\/Utils.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ \ Arduino-\/Utils\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ See\ the\ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/gpl.html>.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#if\ !defined(\_WORD\_UNION\_H)\ ||\ !defined(\_LONG\_UNION\_H)\ ||\ !defined(\_LONG\_LONG\_UNION\_H)}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#ifndef\ \_WORD\_UNION\_H}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ \_WORD\_UNION\_H}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionWordUnion}{WordUnion}}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ uint8\_t\ LowByte;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ uint8\_t\ HighByte;}
+\DoxyCodeLine{00040\ \ \ \ \ \}\ UByte;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ int8\_t\ LowByte;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ int8\_t\ HighByte;}
+\DoxyCodeLine{00044\ \ \ \ \ \}\ Byte;}
+\DoxyCodeLine{00045\ \ \ \ \ uint8\_t\ UBytes[2];\ \textcolor{comment}{//\ UBytes[0]\ is\ LowByte}}
+\DoxyCodeLine{00046\ \ \ \ \ int8\_t\ Bytes[2];}
+\DoxyCodeLine{00047\ \ \ \ \ uint16\_t\ UWord;}
+\DoxyCodeLine{00048\ \ \ \ \ int16\_t\ Word;}
+\DoxyCodeLine{00049\ \ \ \ \ uint8\_t\ *BytePointer;}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_WORD\_UNION\_H}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#ifndef\ \_LONG\_UNION\_H}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ \_LONG\_UNION\_H}}
+\DoxyCodeLine{00059\ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionLongUnion}{LongUnion}}\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ uint8\_t\ LowByte;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ uint8\_t\ MidLowByte;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ uint8\_t\ MidHighByte;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ uint8\_t\ HighByte;}
+\DoxyCodeLine{00065\ \ \ \ \ \}\ UByte;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ int8\_t\ LowByte;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ int8\_t\ MidLowByte;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ int8\_t\ MidHighByte;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ int8\_t\ HighByte;}
+\DoxyCodeLine{00071\ \ \ \ \ \}\ Byte;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{/*\ Does\ not\ work\ for\ STM32}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ \ \ struct\ \{}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ \ \ \ \ \ \ uint8\_t\ LowByte;}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ \ \ \ \ \ \ uint16\_t\ MidWord;}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ \ \ \ \ \ \ uint8\_t\ HighByte;}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ \ \ \ \}\ UByteWord;}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ uint16\_t\ LowWord;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ uint16\_t\ HighWord;}
+\DoxyCodeLine{00082\ \ \ \ \ \}\ UWord;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ int16\_t\ LowWord;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ int16\_t\ HighWord;}
+\DoxyCodeLine{00086\ \ \ \ \ \}\ Word;}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ LowWord;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ HighWord;}
+\DoxyCodeLine{00090\ \ \ \ \ \}\ TwoWordUnions;}
+\DoxyCodeLine{00091\ \ \ \ \ uint8\_t\ UBytes[4];\ \textcolor{comment}{//\ seems\ to\ have\ the\ same\ code\ size\ as\ using\ struct\ UByte}}
+\DoxyCodeLine{00092\ \ \ \ \ int8\_t\ Bytes[4];\ \textcolor{comment}{//\ Bytes[0]\ is\ LowByte}}
+\DoxyCodeLine{00093\ \ \ \ \ uint16\_t\ UWords[2];}
+\DoxyCodeLine{00094\ \ \ \ \ int16\_t\ Words[2];}
+\DoxyCodeLine{00095\ \ \ \ \ uint32\_t\ ULong;}
+\DoxyCodeLine{00096\ \ \ \ \ int32\_t\ Long;}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{float}\ Float;}
+\DoxyCodeLine{00098\ \};}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_LONG\_UNION\_H}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#ifndef\ \_LONG\_LONG\_UNION\_H}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ \_LONG\_LONG\_UNION\_H}}
+\DoxyCodeLine{00107\ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionLongLongUnion}{LongLongUnion}}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ uint16\_t\ LowWord;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ uint16\_t\ MidLowWord;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ uint16\_t\ MidHighWord;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ uint16\_t\ HighWord;}
+\DoxyCodeLine{00113\ \ \ \ \ \}\ UWord;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ int16\_t\ LowWord;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ int16\_t\ MidLowWord;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ int16\_t\ MidHighWord;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ int16\_t\ HighWord;}
+\DoxyCodeLine{00119\ \ \ \ \ \}\ Word;}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ LowWord;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ MidLowWord;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ MidHighWord;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ HighWord;}
+\DoxyCodeLine{00125\ \ \ \ \ \}\ FourWordUnions;}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ uint32\_t\ LowLong;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ uint32\_t\ HighLong;}
+\DoxyCodeLine{00129\ \ \ \ \ \}\ ULong;}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ int32\_t\ LowLong;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ int32\_t\ HighLong;}
+\DoxyCodeLine{00133\ \ \ \ \ \}\ Long;}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ LowLong;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ HighLong;}
+\DoxyCodeLine{00137\ \ \ \ \ \}\ TwoLongUnions;}
+\DoxyCodeLine{00138\ \ \ \ \ uint8\_t\ UBytes[8];\ \textcolor{comment}{//\ seems\ to\ have\ the\ same\ code\ size\ as\ using\ struct\ UByte}}
+\DoxyCodeLine{00139\ \ \ \ \ int8\_t\ Bytes[8];}
+\DoxyCodeLine{00140\ \ \ \ \ uint16\_t\ UWords[4];}
+\DoxyCodeLine{00141\ \ \ \ \ int16\_t\ Words[4];}
+\DoxyCodeLine{00142\ \ \ \ \ uint64\_t\ ULongLong;}
+\DoxyCodeLine{00143\ \ \ \ \ int64\_t\ LongLong;}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#if\ \_\_DBL\_MANT\_DIG\_\_==\ 24}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordtype}{float}\ Floats[2];\ \textcolor{comment}{//\ 32\ bit\ double,\ as\ for\ AVR}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ 64\ bit\ double}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{double}\ Double;}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00150\ \};}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_LONG\_LONG\_UNION\_H}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \ !defined(\_WORD\_UNION\_H)\ ||\ !defined(\_LONG\_UNION\_H)\ ||\ !defined(\_LONG\_LONG\_UNION\_H)}}
+
+\end{DoxyCode}

@@ -1,0 +1,181 @@
+\doxysection{ir\+\_\+\+Template.\+hpp}
+\hypertarget{ir__Template_8hpp_source}{}\label{ir__Template_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Template.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Template.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ Assuming\ the\ protocol\ we\ are\ adding\ is\ for\ the\ (imaginary)\ manufacturer:\ \ Shuzu}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ Our\ fantasy\ protocol\ is\ a\ standard\ protocol,\ so\ we\ can\ use\ this\ standard}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ template\ without\ too\ much\ work.\ Some\ protocols\ are\ quite\ unique\ and\ will\ require}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ considerably\ more\ work\ in\ this\ file!\ It\ is\ way\ beyond\ the\ scope\ of\ this\ text\ to}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ explain\ how\ to\ reverse\ engineer\ "{}unusual"{}\ IR\ protocols.\ But,\ unless\ you\ own\ an}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ oscilloscope,\ the\ starting\ point\ is\ probably\ to\ use\ the\ ReceiveDump.ino\ sketch\ and}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ try\ to\ spot\ the\ pattern!}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ Before\ you\ start,\ make\ sure\ the\ IR\ library\ is\ working\ OK:}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \#\ Open\ up\ the\ Arduino\ IDE}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \#\ Load\ up\ the\ ReceiveDump.ino\ example\ sketch}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \#\ Run\ it}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \#\ Analyze\ your\ data\ to\ have\ an\ idea,\ what\ is\ the\ header\ timing,\ the\ bit\ timing,\ the\ address,\ the\ command\ and\ the\ checksum\ of\ your\ protocol.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ Now\ we\ can\ start\ to\ add\ our\ new\ protocol...}}
+\DoxyCodeLine{00018\ \textcolor{comment}{}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ 1.\ Copy\ this\ file\ to\ :\ ir\_<YourProtocolName>.hpp}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ 2.\ Replace\ all\ occurrences\ of\ "{}SHUZU"{}\ with\ the\ name\ of\ your\ protocol.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ 3.\ Tweak\ the\ \#defines\ to\ suit\ your\ protocol.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ 4.\ If\ you're\ lucky,\ tweaking\ the\ \#defines\ will\ make\ the\ decode\ and\ send()\ function}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ work.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ You\ have\ now\ written\ the\ code\ to\ support\ your\ new\ protocol!}}
+\DoxyCodeLine{00029\ \textcolor{comment}{}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ To\ integrate\ it\ into\ the\ IRremote\ library,\ you\ must\ search\ for\ "{}BOSEWAVE"{}}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ and\ add\ your\ protocol\ in\ the\ same\ way\ as\ it\ is\ already\ done\ for\ BOSEWAVE.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ You\ have\ to\ change\ the\ following\ files:}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ IRSend.hpp\ \ \ \ \ IRsend::write(IRData\ *aIRSendData\ +\ int\_fast8\_t\ aNumberOfRepeats)}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ IRProtocol.h\ \ \ Add\ it\ to\ decode\_type\_t}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ IRReceive.hpp\ \ IRrecv::decode()\ +\ printActiveIRProtocols(Print\ *aSerial)\ +\ getProtocolString(decode\_type\_t\ aProtocol)}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ IRremote.hpp\ \ \ At\ 3\ occurrences\ of\ DECODE\_XXX}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ IRremoteInt.h\ \ Add\ the\ declaration\ of\ the\ decode\ and\ send\ function}}
+\DoxyCodeLine{00039\ \textcolor{comment}{}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ Now\ open\ the\ Arduino\ IDE,\ load\ up\ the\ ReceiveDump.ino\ sketch,\ and\ run\ it.}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ Hopefully\ it\ will\ compile\ and\ upload.}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ If\ it\ doesn't,\ you've\ done\ something\ wrong.\ Check\ your\ work\ and\ look\ carefully\ at\ the\ error\ messages.}}
+\DoxyCodeLine{00043\ \textcolor{comment}{}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ If\ you\ get\ this\ far,\ I\ will\ assume\ you\ have\ successfully\ added\ your\ new\ protocol}}
+\DoxyCodeLine{00045\ \textcolor{comment}{}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ At\ last,\ delete\ this\ giant\ instructional\ comment.}}
+\DoxyCodeLine{00047\ \textcolor{comment}{}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ If\ you\ want\ us\ to\ include\ your\ work\ in\ the\ library\ so\ others\ may\ benefit}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ from\ your\ hard\ work,\ you\ have\ to\ extend\ the\ examples}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ IRremoteInfo,\ SmallReceiver,\ simple\ Receiver,\ SendDemo\ and\ UnitTest\ too}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ as\ well\ as\ the\ Readme.md}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ It\ is\ not\ an\ act,\ but\ required\ for\ completeness.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ Thanks}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ The\ maintainer}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ ir\_Shuzu.hpp}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ Shuzu\ IR\ Protocol\ ...}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2022\ \ Shuzu\ Guru}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ *\ \ shuzu.guru@gmail.com}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2022\ Unknown\ Contributor\ :-\/)}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#ifndef\ \_IR\_SHUZU\_HPP}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ \_IR\_SHUZU\_HPP}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S\ H\ U\ Z\ U}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ see:\ https://www....}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ LSB\ first,\ 1\ start\ bit\ +\ 16\ bit\ address\ +\ 8\ bit\ command\ +\ 1\ stop\ bit.}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ SHUZU\_ADDRESS\_BITS\ \ \ \ \ \ 16\ }\textcolor{comment}{//\ 16\ bit\ address}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ SHUZU\_COMMAND\_BITS\ \ \ \ \ \ 8\ }\textcolor{comment}{//\ Command}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ SHUZU\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ (SHUZU\_ADDRESS\_BITS\ +\ SHUZU\_COMMAND\_BITS)\ }\textcolor{comment}{//\ The\ number\ of\ bits\ in\ the\ protocol}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ SHUZU\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ 560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ All\ timings\ are\ in\ microseconds}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ SHUZU\_HEADER\_MARK\ \ \ \ \ \ \ (16\ *\ SHUZU\_UNIT)\ }\textcolor{comment}{//\ The\ length\ of\ the\ Header:Mark}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ SHUZU\_HEADER\_SPACE\ \ \ \ \ \ (8\ *\ SHUZU\_UNIT)\ \ }\textcolor{comment}{//\ The\ length\ of\ the\ Header:Space}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ SHUZU\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ SHUZU\_UNIT\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Mark}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ SHUZU\_ONE\_SPACE\ \ \ \ \ \ \ \ \ (3\ *\ SHUZU\_UNIT)\ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Space\ for\ 1's}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ SHUZU\_ZERO\_SPACE\ \ \ \ \ \ \ \ SHUZU\_UNIT\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Space\ for\ 0's}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ SHUZU\_REPEAT\_HEADER\_SPACE\ (4\ *\ SHUZU\_UNIT)\ \ }\textcolor{comment}{//\ 2250}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ SHUZU\_REPEAT\_PERIOD\ \ \ \ \ 110000\ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ From\ start\ to\ start}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ SHUZU\_REPEAT\_SPACE\ \ \ \ \ \ 45000\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ SHUZU\_REPEAT\_PERIOD\ -\/\ default\ frame\ duration.\ Used\ for\ repeat\ detection.}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ SHUZU\_OTHER\ \ \ \ \ \ \ \ \ \ \ \ \ 1234\ \ }\textcolor{comment}{//\ Other\ things\ you\ may\ need\ to\ define}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ use\ BOSEWAVE,\ we\ have\ no\ SHUZU\ code}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ ShuzuProtocolConstants\ =\ \{\ BOSEWAVE,\ 38,\ SHUZU\_HEADER\_MARK,\ SHUZU\_HEADER\_SPACE,}
+\DoxyCodeLine{00127\ SHUZU\_BIT\_MARK,\ SHUZU\_ONE\_SPACE,\ SHUZU\_BIT\_MARK,\ SHUZU\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (SHUZU\_REPEAT\_PERIOD}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{keywordtype}{void}\ IRsend::sendShuzu(uint16\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&ShuzuProtocolConstants,\ (uint32\_t)\ aCommand\ <<\ 8\ |\ aCommand,\ SHUZU\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00137\ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \textcolor{keywordtype}{bool}\ IRrecv::decodeShuzu()\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00141\ \textcolor{comment}{\ \ \ \ \ *\ First\ check\ for\ right\ data\ length}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ \ \ \ *\ Next\ check\ start\ bit\ /\ header}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ \ \ \ *\ Next\ try\ the\ decode}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (28).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ SHUZU\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ no\ debug\ output,\ since\ this\ check\ is\ mainly\ to\ determine\ the\ received\ protocol}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{comment}{//\ Check\ header}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&ShuzuProtocolConstants))\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ Decode}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{if}\ (!decodePulseDistanceData(\&ShuzuProtocolConstants,\ SHUZU\_BITS))\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Shuzu:\ "{}}));}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//\ Success,\ interpret\ raw\ data}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00165\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ SHUZU\_ADDRESS\_BITS;\ \ \textcolor{comment}{//\ upper\ 8\ bits\ of\ LSB\ first\ value}}
+\DoxyCodeLine{00166\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0xFFFF;\ \ \ \ \textcolor{comment}{//\ lowest\ 16\ bit\ of\ LSB\ first\ value}}
+\DoxyCodeLine{00167\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ SHUZU\_BITS;}
+\DoxyCodeLine{00168\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ BOSEWAVE;\ \textcolor{comment}{//\ we\ have\ no\ SHUZU\ code}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{comment}{//Check\ for\ repeat}}
+\DoxyCodeLine{00171\ \ \ \ \ checkForRepeatSpaceAndSetFlag(SHUZU\_REPEAT\_SPACE\ /\ MICROS\_IN\_ONE\_MILLI);}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00174\ \}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_SHUZU\_HPP}}
+
+\end{DoxyCode}

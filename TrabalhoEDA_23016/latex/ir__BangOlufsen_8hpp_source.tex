@@ -1,0 +1,502 @@
+\doxysection{ir\+\_\+\+Bang\+Olufsen.\+hpp}
+\hypertarget{ir__BangOlufsen_8hpp_source}{}\label{ir__BangOlufsen_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_BangOlufsen.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_BangOlufsen.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_BangOlufsen.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ Bang\ \&\ Olufsen\ IR\ and\ Datalink\ '86\ protocols}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ To\ receive\ B\&O\ and\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ is\ NOT\ defined,\ you\ must\ set\ RECORD\_GAP\_MICROS\ to}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ at\ least\ 16000\ to\ accommodate\ the\ unusually\ long\ 3.\ start\ space.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2022-\/2023\ Daniel\ Wallner\ and\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#ifndef\ \_IR\_BANG\_OLUFSEN\_HPP}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ \_IR\_BANG\_OLUFSEN\_HPP}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Bang\ \&\ Olufsen}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ https://www.mikrocontroller.net/attachment/33137/datalink.pdf}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#B\&O}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ This\ protocol\ is\ unusual\ in\ two\ ways:}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ 1.\ The\ carrier\ frequency\ is\ 455\ kHz}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ You\ can\ build\ your\ own\ receiver\ as\ Bang\ \&\ Olufsen\ did\ (check\ old\ schematics)\ or\ use\ a\ TSOP7000}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ Vishay\ stopped\ producing\ TSOP7000\ since\ 2009\ so\ you\ will\ probably\ only\ find\ counterfeits:}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ https://www.vishay.com/files/whatsnew/doc/ff\_FastFacts\_CounterfeitTSOP7000\_Dec72018.pdf}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ It\ is\ also\ likely\ that\ you\ will\ need\ an\ oscilloscope\ to\ debug\ a\ counterfeit\ TSOP7000}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ The\ specimen\ used\ to\ test\ this\ code\ was\ very\ noisy\ and\ had\ a\ very\ low\ output\ current}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ A\ somewhat\ working\ fix\ was\ to\ put\ a\ 4n7\ capacitor\ across\ the\ output\ and\ ground\ followed\ by\ a\ pnp\ emitter\ follower}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ Other\ examples\ may\ require\ a\ different\ treatment}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ This\ particular\ receiver\ also\ did\ receive\ lower\ frequencies\ but\ rather\ poorly\ and\ with\ a\ lower\ delay\ than\ usual}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ If\ you\ need\ to\ parallel\ a\ receiver\ with\ another\ one\ you\ may\ need\ to\ delay\ the\ signal\ to\ get\ in\ phase\ with\ the\ other\ receiver}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ 2.\ A\ stream\ of\ messages\ can\ be\ sent\ back\ to\ back\ with\ a\ new\ message\ immediately\ following\ the\ previous\ stop\ space}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ It\ might\ be\ that\ this\ only\ happens\ over\ IR\ and\ not\ on\ the\ datalink\ protocol}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ You\ can\ choose\ to\ support\ this\ or\ not:}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ Mode\ 1:\ Mode\ with\ gaps\ between\ frames}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ Set\ RECORD\_GAP\_MICROS\ to\ at\ least\ 16000\ to\ accept\ the\ unusually\ long\ 3.\ start\ space}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ Can\ only\ receive\ single\ messages.\ Back\ to\ back\ repeats\ will\ result\ in\ overflow}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ Mode\ 2:\ Break\ at\ start\ mode}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ Define\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ and\ set\ RECORD\_GAP\_MICROS\ to\ less\ than\ 15000}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ to\ treat\ the\ 3.\ start\ space\ of\ 15.5\ ms\ as\ a\ gap\ between\ messages,\ which\ makes\ decoding\ easier\ :-\/).}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ The\ receiving\ of\ a\ transmission\ will\ then\ result\ in\ a\ dummy\ decode\ of\ the\ first\ 2\ start\ bits\ with\ 0\ bits\ data}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ followed\ by\ a\ 15.5\ ms\ gap\ and\ a\ data\ frame\ with\ one\ start\ bit\ (originally\ sent\ as\ 4.\ start\ bit).}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ If\ the\ receiver\ is\ not\ resumed\ within\ a\ ms\ or\ so,\ partial\ messages\ will\ be\ decoded}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ Debug\ printing\ in\ the\ wrong\ place\ is\ very\ likely\ to\ break\ reception}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ Make\ sure\ to\ check\ the\ number\ of\ bits\ to\ filter\ dummy\ and\ incomplete\ messages}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ !!!\ We\ assume\ that\ the\ real\ implementations\ never\ set\ the\ official\ first\ header\ bit\ to\ anything\ other\ than\ 0\ !!!}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ !!!\ We\ therefore\ use\ 4\ start\ bits\ instead\ of\ the\ specified\ 3\ and\ in\ turn\ ignore\ the\ first\ header\ bit\ of\ the\ specification\ !!!}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ IR\ messages\ are\ 16\ bits\ long.\ Datalink\ messages\ have\ different\ lengths.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ This\ implementation\ supports\ up\ to\ 40\ bits\ total\ length\ split\ into\ 8\ bit\ data/command\ and\ a\ header/address\ of\ variable\ length}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ Header\ data\ with\ more\ than\ 16\ bits\ is\ stored\ in\ decodedIRData.extra}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ B\&O\ is\ a\ pulse\ distance\ protocol,\ but\ it\ has\ 3\ bit\ values\ 0,\ 1\ and\ (equal/repeat)\ as\ well\ as\ a\ special\ start\ and\ trailing\ bit.}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ MSB\ first,\ 4\ start\ bits\ +\ 8\ to\ 16?\ bit\ address\ +\ 8\ bit\ command\ +\ 1\ special\ trailing\ bit\ +\ 1\ stop\ bit.}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ Address\ can\ be\ longer\ than\ 8\ bit.}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ *\ Options\ for\ this\ decoder}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ }\textcolor{comment}{//\ Requires\ additional\ 30\ bytes\ program\ memory.\ Enabled\ by\ default,\ see\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/discussions/1181}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\#define\ SUPPORT\_BEO\_DATALINK\_TIMING\_FOR\_DECODE\ //\ This\ also\ supports\ headers\ up\ to\ 32\ bit.\ Requires\ additional\ 150\ bytes\ program\ memory.}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#if\ defined(DECODE\_BEO)}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#\ \ if\ defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#\ \ \ \ if\ RECORD\_GAP\_MICROS\ >\ 15000}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#warning\ If\ defined\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP,\ RECORD\_GAP\_MICROS\ must\ be\ set\ to\ <=\ 15000\ by\ "{}\#define\ RECORD\_GAP\_MICROS\ 12750"{}}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#\ \ \ \ if\ RECORD\_GAP\_MICROS\ <\ 16000}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#error\ If\ not\ defined\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP,\ RECORD\_GAP\_MICROS\ must\ be\ set\ to\ a\ value\ >=\ 16000\ by\ "{}\#define\ RECORD\_GAP\_MICROS\ 16000"{}}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ BEO\_DATA\_BITS\ \ \ \ \ \ \ \ \ 8\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Command\ or\ character}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ BEO\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ 3125\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ All\ timings\ are\ in\ microseconds}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ BEO\_IR\_MARK\ \ \ \ \ \ \ \ \ \ \ 200\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ mark\ in\ the\ IR\ protocol}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ BEO\_DATALINK\_MARK\ \ \ \ \ (BEO\_UNIT\ /\ 2)\ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ mark\ in\ the\ Datalink\ protocol}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ BEO\_PULSE\_LENGTH\_ZERO\ \ \ \ \ \ \ \ \ \ \ BEO\_UNIT\ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ one\ to\ zero\ transition}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#define\ BEO\_PULSE\_LENGTH\_EQUAL\ \ \ \ \ \ \ \ \ \ (2\ *\ BEO\_UNIT)\ \ \ }\textcolor{comment}{//\ 6250\ The\ length\ of\ an\ equal\ bit}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ BEO\_PULSE\_LENGTH\_ONE\ \ \ \ \ \ \ \ \ \ \ \ (3\ *\ BEO\_UNIT)\ \ \ }\textcolor{comment}{//\ 9375\ The\ length\ of\ a\ zero\ to\ one\ transition}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ BEO\_PULSE\_LENGTH\_TRAILING\_BIT\ \ \ (4\ *\ BEO\_UNIT)\ \ \ }\textcolor{comment}{//\ 12500\ The\ length\ of\ the\ stop\ bit}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ BEO\_PULSE\_LENGTH\_START\_BIT\ \ \ \ \ \ (5\ *\ BEO\_UNIT)\ \ \ }\textcolor{comment}{//\ 15625\ The\ length\ of\ the\ start\ bit}}
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ It\ is\ not\ allowed\ to\ send\ two\ ones\ or\ zeros,\ you\ must\ send\ a\ one\ or\ zero\ and\ a\ equal\ instead.}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{comment}{//\#define\ BEO\_LOCAL\_DEBUG}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\#define\ BEO\_LOCAL\_TRACE}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#ifdef\ BEO\_LOCAL\_DEBUG}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#\ \ define\ BEO\_DEBUG\_PRINT(...)\ \ \ \ Serial.print(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#\ \ define\ BEO\_DEBUG\_PRINTLN(...)\ \ Serial.println(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#\ \ define\ BEO\_DEBUG\_PRINT(...)\ void()}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#\ \ define\ BEO\_DEBUG\_PRINTLN(...)\ void()}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#ifdef\ BEO\_LOCAL\_TRACE}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#\ \ undef\ BEO\_TRACE\_PRINT}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#\ \ undef\ BEO\_TRACE\_PRINTLN}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#\ \ define\ BEO\_TRACE\_PRINT(...)\ \ \ \ Serial.print(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#\ \ define\ BEO\_TRACE\_PRINTLN(...)\ \ Serial.println(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#\ \ define\ BEO\_TRACE\_PRINT(...)\ void()}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#\ \ define\ BEO\_TRACE\_PRINTLN(...)\ void()}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00146\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ *\ TODO\ aNumberOfRepeats\ are\ handled\ not\ correctly\ if\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ is\ defined}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00151\ \textcolor{keywordtype}{void}\ IRsend::sendBangOlufsen(uint16\_t\ aHeader,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats,\ int8\_t\ aNumberOfHeaderBits)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{for}\ (int\_fast8\_t\ i\ =\ 0;\ i\ <\ aNumberOfRepeats\ +\ 1;\ ++i)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ sendBangOlufsenRaw((uint32\_t(aHeader)\ <<\ 8)\ |\ aData,\ aNumberOfHeaderBits\ +\ 8,\ i\ !=\ 0);}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{keywordtype}{void}\ IRsend::sendBangOlufsenDataLink(uint32\_t\ aHeader,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats,\ int8\_t\ aNumberOfHeaderBits)\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{for}\ (int\_fast8\_t\ i\ =\ 0;\ i\ <\ aNumberOfRepeats\ +\ 1;\ ++i)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ sendBangOlufsenRawDataLink((uint64\_t(aHeader)\ <<\ 8)\ |\ aData,\ aNumberOfHeaderBits\ +\ 8,\ i\ !=\ 0,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ *\ @param\ aBackToBack\ \ \ If\ true\ send\ data\ back\ to\ back,\ which\ cannot\ be\ decoded\ if\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ is\ NOT\ defined}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00166\ \textcolor{keywordtype}{void}\ IRsend::sendBangOlufsenRaw(uint32\_t\ aRawData,\ int\_fast8\_t\ aBits,\ \textcolor{keywordtype}{bool}\ aBackToBack)\ \{}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#if\ defined(USE\_NO\_SEND\_PWM)\ ||\ defined(SEND\_PWM\_BY\_TIMER)\ ||\ BEO\_KHZ\ ==\ 38\ }\textcolor{comment}{//\ BEO\_KHZ\ ==\ 38\ is\ for\ unit\ test\ which\ runs\ the\ B\&O\ protocol\ with\ 38\ kHz}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ \ \ \ *\ 455\ kHz\ PWM\ is\ currently\ only\ supported\ with\ SEND\_PWM\_BY\_TIMER\ defined,\ otherwise\ maximum\ is\ 180\ kHz}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#\ \ if\ !defined(USE\_NO\_SEND\_PWM)}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00174\ \ \ \ \ enableHighFrequencyIROut\ (BEO\_KHZ);}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#\ \ \ \ elif\ (BEO\_KHZ\ ==\ 38)}}
+\DoxyCodeLine{00176\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (BEO\_KHZ);\ \textcolor{comment}{//\ currently\ only\ for\ unit\ test}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ AGC\ /\ Start\ -\/\ 3\ bits\ +\ first\ constant\ 0\ header\ bit\ described\ in\ the\ official\ documentation}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{if}\ (!aBackToBack)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00185\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00186\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00187\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00188\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_START\_BIT\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{comment}{//\ First\ bit\ of\ header\ is\ assumed\ to\ be\ a\ constant\ 0\ to\ have\ a\ fixed\ state\ to\ begin\ with\ the\ equal\ decisions.}}
+\DoxyCodeLine{00191\ \textcolor{comment}{//\ So\ this\ first\ 0\ is\ treated\ as\ the\ last\ bit\ of\ AGC}}
+\DoxyCodeLine{00192\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00193\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordtype}{bool}\ tLastBitValueWasOne\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ Header\ /\ Data}}
+\DoxyCodeLine{00197\ \ \ \ \ uint32\_t\ mask\ =\ 1UL\ <<\ (aBits\ -\/\ 1);}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ mask;\ mask\ >>=\ 1)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tLastBitValueWasOne\ \&\&\ !(aRawData\ \&\ mask))\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ tLastBitValueWasOne\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!tLastBitValueWasOne\ \&\&\ (aRawData\ \&\ mask))\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ONE\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ tLastBitValueWasOne\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_EQUAL\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ Stop}}
+\DoxyCodeLine{00214\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00215\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_TRAILING\_BIT\ -\/\ BEO\_IR\_MARK);}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(BEO\_IR\_MARK);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00219\ \ \ \ \ (void)\ aRawData;}
+\DoxyCodeLine{00220\ \ \ \ \ (void)\ aBits;}
+\DoxyCodeLine{00221\ \ \ \ \ (void)\ aBackToBack;}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ *\ Version\ with\ 64\ bit\ aRawData,\ which\ can\ send\ both\ timings,\ but\ costs\ more\ program\ memory}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ *\ @param\ aBackToBack\ \ \ If\ true\ send\ data\ back\ to\ back,\ which\ cannot\ be\ decoded\ if\ ENABLE\_BEO\_WITHOUT\_FRAME\_GAP\ is\ NOT\ defined}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ *\ @param\ aUseDatalinkTiming\ \ \ \ if\ false\ it\ does\ the\ same\ as\ sendBangOlufsenRaw()}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00230\ \textcolor{keywordtype}{void}\ IRsend::sendBangOlufsenRawDataLink(uint64\_t\ aRawData,\ int\_fast8\_t\ aBits,\ \textcolor{keywordtype}{bool}\ aBackToBack,\ \textcolor{keywordtype}{bool}\ aUseDatalinkTiming)\ \{}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#if\ defined(USE\_NO\_SEND\_PWM)\ ||\ BEO\_KHZ\ ==\ 38\ }\textcolor{comment}{//\ BEO\_KHZ\ ==\ 38\ is\ for\ unit\ test\ which\ runs\ the\ B\&O\ protocol\ with\ 38\ kHz\ instead\ 0f\ 455\ kHz}}
+\DoxyCodeLine{00232\ \ \ \ \ uint16\_t\ tSendBEOMarkLength\ =\ aUseDatalinkTiming\ ?\ BEO\_DATALINK\_MARK\ :\ BEO\_IR\_MARK;}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ \ \ \ \ *\ 455\ kHz\ PWM\ is\ currently\ not\ supported,\ maximum\ is\ 180\ kHz}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#if\ !defined(USE\_NO\_SEND\_PWM)}}
+\DoxyCodeLine{00238\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (BEO\_KHZ);}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \textcolor{comment}{//\ AGC\ /\ Start\ -\/\ 3\ bits\ +\ first\ constant\ 0\ header\ bit\ described\ in\ the\ official\ documentation}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{if}\ (!aBackToBack)\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00244\ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00246\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00247\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00248\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00249\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_START\_BIT\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \textcolor{comment}{//\ First\ bit\ of\ header\ is\ assumed\ to\ be\ a\ constant\ 0\ to\ have\ a\ fixed\ state\ to\ begin\ with\ the\ equal\ decisions.}}
+\DoxyCodeLine{00252\ \textcolor{comment}{//\ So\ this\ first\ 0\ is\ treated\ as\ the\ last\ bit\ of\ AGC}}
+\DoxyCodeLine{00253\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00254\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordtype}{bool}\ tLastBitValueWasOne\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ Header\ /\ Data}}
+\DoxyCodeLine{00258\ \ \ \ \ uint32\_t\ mask\ =\ 1UL\ <<\ (aBits\ -\/\ 1);}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ mask;\ mask\ >>=\ 1)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tLastBitValueWasOne\ \&\&\ !(aRawData\ \&\ mask))\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ZERO\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ tLastBitValueWasOne\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!tLastBitValueWasOne\ \&\&\ (aRawData\ \&\ mask))\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_ONE\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ tLastBitValueWasOne\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_EQUAL\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \textcolor{comment}{//\ Stop}}
+\DoxyCodeLine{00275\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00276\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(BEO\_PULSE\_LENGTH\_TRAILING\_BIT\ -\/\ tSendBEOMarkLength);}
+\DoxyCodeLine{00277\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(tSendBEOMarkLength);}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00280\ \ \ \ \ (void)\ aRawData;}
+\DoxyCodeLine{00281\ \ \ \ \ (void)\ aBits;}
+\DoxyCodeLine{00282\ \ \ \ \ (void)\ aUseDatalinkTiming;}
+\DoxyCodeLine{00283\ \ \ \ \ (void)\ aBackToBack;}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00285\ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#define\ BEO\_MATCH\_DELTA\ (BEO\_UNIT\ /\ 2\ -\/\ MICROS\_PER\_TICK)}}
+\DoxyCodeLine{00288\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ matchBeoLength(uint16\_t\ aMeasuredTicks,\ uint16\_t\ aMatchValueMicros)\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tMeasuredMicros\ =\ aMeasuredTicks\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keywordflow}{return}\ aMatchValueMicros\ -\/\ BEO\_MATCH\_DELTA\ <\ tMeasuredMicros\ \&\&\ tMeasuredMicros\ <\ aMatchValueMicros\ +\ BEO\_MATCH\_DELTA;}
+\DoxyCodeLine{00291\ \}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{keywordtype}{bool}\ IRrecv::decodeBangOlufsen()\ \{}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ 6\ \&\&\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ <\ 36)\ \{\ \textcolor{comment}{//\ 16\ bits\ minimum}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ <\ 44)\ \{\ \textcolor{comment}{//\ 16\ bits\ minimum}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00300\ \ \ \ \ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#if\ defined(SUPPORT\_BEO\_DATALINK\_TIMING\_FOR\_DECODE)}}
+\DoxyCodeLine{00303\ \ \ \ \ uint16\_t\ protocolMarkLength\ =\ 0;\ \textcolor{comment}{//\ contains\ BEO\_IR\_MARK\ or\ BEO\_DATALINK\_MARK\ depending\ of\ 4.\ mark\ received}}
+\DoxyCodeLine{00304\ \ \ \ \ uint64\_t\ tDecodedRawData\ =\ 0;}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00306\ \ \ \ \ uint32\_t\ tDecodedRawData\ =\ 0;}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00308\ \ \ \ \ uint8\_t\ tLastDecodedBitValue\ =\ 0;\ \textcolor{comment}{//\ the\ last\ start\ bit\ is\ assumed\ to\ be\ zero}}
+\DoxyCodeLine{00309\ \ \ \ \ uint8\_t\ tPulseNumber\ =\ 0;}
+\DoxyCodeLine{00310\ \ \ \ \ uint8\_t\ tBitNumber\ =\ 0;}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}Pre\ gap:\ "{}}));}
+\DoxyCodeLine{00313\ \ \ \ \ BEO\_TRACE\_PRINT(decodedIRData.\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}}\ *\ 50);}
+\DoxyCodeLine{00314\ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}\ raw\ len:\ "{}}));}
+\DoxyCodeLine{00315\ \ \ \ \ BEO\_TRACE\_PRINTLN(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00319\ \textcolor{comment}{\ \ \ \ \ *\ Check\ if\ we\ have\ the\ AGC\ part\ of\ the\ first\ frame,\ i.e.\ start\ bit\ 1\ and\ 2.}}
+\DoxyCodeLine{00320\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ ==\ 6)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3],\ BEO\_IR\_MARK)}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3],\ BEO\_DATALINK\_MARK))}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[4],\ BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_IR\_MARK)}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ \mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[4],\ BEO\_PULSE\_LENGTH\_ZERO\ -\/\ BEO\_DATALINK\_MARK)))\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{}B\&O:\ AGC\ only\ part\ (start\ bits\ 1\ +\ 2\ of\ 4)\ detected"{}}));}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ no\ B\&O\ protocol}}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00333\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Check\ if\ leading\ gap\ is\ trailing\ bit\ of\ first\ frame}}
+\DoxyCodeLine{00334\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}},\ BEO\_PULSE\_LENGTH\_START\_BIT))\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ Leading\ gap\ is\ wrong"{}}));\ \textcolor{comment}{//\ Leading\ gap\ is\ trailing\ bit\ of\ first\ frame}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ no\ B\&O\ protocol}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ BEO\_IR\_MARK))\ \{}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#\ \ if\ defined(SUPPORT\_BEO\_DATALINK\_TIMING\_FOR\_DECODE)}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ protocolMarkLength\ =\ BEO\_IR\_MARK;}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ BEO\_DATALINK\_MARK))\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ protocolMarkLength\ =\ BEO\_DATALINK\_MARK;}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ first\ zero\ header\ bit}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint8\_t\ tRawBufferMarkIndex\ =\ 3;\ tRawBufferMarkIndex\ <\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}};\ tRawBufferMarkIndex\ +=\ 2)\ \{}
+\DoxyCodeLine{00355\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint8\_t\ tRawBufferMarkIndex\ =\ 1;\ tRawBufferMarkIndex\ <\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}};\ tRawBufferMarkIndex\ +=\ 2)\ \{}
+\DoxyCodeLine{00357\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ markLength\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[tRawBufferMarkIndex];}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ spaceLength\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[tRawBufferMarkIndex\ +\ 1];}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(tPulseNumber);}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(markLength\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(spaceLength\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}\ ("{}}));}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT((markLength\ +\ spaceLength)\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{})\ "{}}));}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#if\ !defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00373\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Handle\ the\ first\ 4\ start\ bits}}
+\DoxyCodeLine{00374\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Check\ if\ the\ 3.\ bit\ is\ the\ long\ start\ bit.\ If\ we\ see\ the\ long\ start\ bit\ earlier,\ synchronize\ bit\ counter.}}
+\DoxyCodeLine{00375\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tPulseNumber\ <\ 4)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tPulseNumber\ <\ 2)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ bit\ 0\ and\ 1}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(spaceLength,\ BEO\_PULSE\_LENGTH\_START\_BIT\ -\/\ BEO\_IR\_MARK))\ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ detected\ long\ start\ bit\ -\/>\ synchronize\ state\ now"{}}));}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tPulseNumber\ =\ 2;}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tPulseNumber\ ==\ 3)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(markLength,\ BEO\_IR\_MARK))\ \{}
+\DoxyCodeLine{00386\ \textcolor{preprocessor}{\#\ \ if\ defined(SUPPORT\_BEO\_DATALINK\_TIMING\_FOR\_DECODE)}}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ protocolMarkLength\ =\ BEO\_IR\_MARK;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(markLength,\ BEO\_DATALINK\_MARK))\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ protocolMarkLength\ =\ BEO\_DATALINK\_MARK;}
+\DoxyCodeLine{00390\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ 4.\ (start)\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ bit\ 2\ and\ 3}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!matchBeoLength(markLength\ +\ spaceLength,}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (tPulseNumber\ ==\ 2)\ ?\ BEO\_PULSE\_LENGTH\_START\_BIT\ :\ BEO\_PULSE\_LENGTH\_ZERO))\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ Start\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00406\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00409\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Decode\ header\ /\ data}}
+\DoxyCodeLine{00410\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ First\ check\ for\ length\ of\ mark}}
+\DoxyCodeLine{00411\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#if\ defined(SUPPORT\_BEO\_DATALINK\_TIMING\_FOR\_DECODE)}}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(markLength,\ protocolMarkLength))\ \{}
+\DoxyCodeLine{00414\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(markLength,\ BEO\_IR\_MARK))\ \{}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ Mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00421\ }
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00423\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ for\ stop\ after\ receiving\ at\ least\ 8\ bits\ for\ data\ and\ 4\ bits\ for\ header}}
+\DoxyCodeLine{00424\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tBitNumber\ >\ BEO\_DATA\_BITS\ +\ 4)\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (matchBeoLength(markLength\ +\ spaceLength,\ BEO\_PULSE\_LENGTH\_TRAILING\_BIT))\ \{}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ Trailing\ bit\ detected"{}}));}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00431\ \textcolor{preprocessor}{\#if\ !defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tRawBufferMarkIndex\ >=\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 3)\ \{\ \textcolor{comment}{//\ (rawlen\ -\/\ 3)\ is\ index\ of\ trailing\ bit\ mark}}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ End\ of\ buffer,\ but\ no\ trailing\ bit\ detected"{}}));}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00437\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00441\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Decode\ bit}}
+\DoxyCodeLine{00442\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tLastDecodedBitValue\ ==\ 0\ \&\&\ matchBeoLength(markLength\ +\ spaceLength,\ BEO\_PULSE\_LENGTH\_ONE))\ \{}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tLastDecodedBitValue\ =\ 1;}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (tLastDecodedBitValue\ ==\ 1\ \&\&\ matchBeoLength(markLength\ +\ spaceLength,\ BEO\_PULSE\_LENGTH\_ZERO))\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tLastDecodedBitValue\ =\ 0;}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!matchBeoLength(markLength\ +\ spaceLength,\ BEO\_PULSE\_LENGTH\_EQUAL))\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}:\ Index="{}}));}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(tRawBufferMarkIndex);}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}\ Length\ "{}}));}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINT((markLength\ +\ spaceLength)\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}\ is\ wrong"{}}));}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ tDecodedRawData\ <<=\ 1;}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \ \ tDecodedRawData\ |=\ tLastDecodedBitValue;}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \ \ \ \ ++tBitNumber;}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}Bits\ "{}}));}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(tBitNumber);}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}\ "{}}));}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(uint32\_t(tDecodedRawData\ >>\ BEO\_DATA\_BITS),\ HEX);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(F(\textcolor{stringliteral}{"{}\ "{}}));}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(uint8\_t(tDecodedRawData\ \&\ ((1\ <<\ BEO\_DATA\_BITS)\ -\/\ 1)),\ HEX);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ End\ of\ bit\ decode}}
+\DoxyCodeLine{00466\ \textcolor{preprocessor}{\#if\ !defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00471\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ for\ last\ bit\ after\ decoding\ it}}
+\DoxyCodeLine{00472\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tRawBufferMarkIndex\ >=\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 3)\ \{\ \textcolor{comment}{//\ (rawlen\ -\/\ 3)\ is\ index\ of\ last\ bit\ mark}}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINT(::getProtocolString(BANG\_OLUFSEN));}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BEO\_TRACE\_PRINTLN(F(\textcolor{stringliteral}{"{}:\ Last\ bit\ reached"{}}));}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00478\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ ++tPulseNumber;}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00482\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_BEO\_WITHOUT\_FRAME\_GAP)}}
+\DoxyCodeLine{00483\ \ \ \ \ \}}
+\DoxyCodeLine{00484\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ BANG\_OLUFSEN;}
+\DoxyCodeLine{00487\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tDecodedRawData\ >>\ BEO\_DATA\_BITS;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ lower\ header\ tBitNumber}}
+\DoxyCodeLine{00488\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tDecodedRawData\ \&\ ((1\ <<\ BEO\_DATA\_BITS)\ -\/\ 1);\ \ \textcolor{comment}{//\ lower\ 8\ tBitNumber}}
+\DoxyCodeLine{00489\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a08a6d5eaf26fbbcc3271bcc930d6e331}{extra}}\ =\ tDecodedRawData\ >>\ (BEO\_DATA\_BITS\ +\ 16);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ upper\ header\ tBitNumber}}
+\DoxyCodeLine{00490\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ tBitNumber;}
+\DoxyCodeLine{00491\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00492\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ =\ tDecodedRawData;}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00495\ \}}
+\DoxyCodeLine{00496\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_BANG\_OLUFSEN\_HPP}}
+
+\end{DoxyCode}

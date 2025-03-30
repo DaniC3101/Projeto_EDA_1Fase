@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="dir_fa0e1cf7d9239a62ad3e2bacd28e5d12" kind="dir">
+    <compoundname>Fase1/Fase1</compoundname>
+    <innerfile refid="Antena_8c">Antena.c</innerfile>
+    <innerfile refid="Antena_8h">Antena.h</innerfile>
+    <innerfile refid="Dados_8c">Dados.c</innerfile>
+    <innerfile refid="Dados_8h">Dados.h</innerfile>
+    <innerfile refid="ListaAntenas_8c">ListaAntenas.c</innerfile>
+    <innerfile refid="ListaAntenas_8h">ListaAntenas.h</innerfile>
+    <innerfile refid="ListaNefastas_8c">ListaNefastas.c</innerfile>
+    <innerfile refid="ListaNefastas_8h">ListaNefastas.h</innerfile>
+    <innerfile refid="LocalizacaoNefasta_8c">LocalizacaoNefasta.c</innerfile>
+    <innerfile refid="LocalizacaoNefasta_8h">LocalizacaoNefasta.h</innerfile>
+    <innerfile refid="main_8c">main.c</innerfile>
+    <innerfile refid="Matriz_8c">Matriz.c</innerfile>
+    <innerfile refid="Matriz_8h">Matriz.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Fase1/Fase1/"/>
+  </compounddef>
+</doxygen>

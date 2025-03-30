@@ -1,0 +1,199 @@
+\doxysection{Demo\+IRCommand\+Mapping.\+h}
+\hypertarget{DemoIRCommandMapping_8h_source}{}\label{DemoIRCommandMapping_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRDispatcherDemo/DemoIRCommandMapping.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRDispatcherDemo/DemoIRCommandMapping.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ DemoIRCommandMapping.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ IR\ remote\ button\ codes,\ strings,\ and\ functions\ to\ call}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2019-\/2022\ \ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ armin.joachimsmeyer@gmail.com}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_IR\_COMMAND\_MAPPING\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_IR\_COMMAND\_MAPPING\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\#include\ "{}Commands.h"{}\ //\ includes\ all\ the\ commands\ used\ in\ the\ mapping\ arrays\ below}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ !!!\ Choose\ your\ remote\ !!!}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\#define\ USE\_KEYES\_REMOTE\_CLONE\ With\ number\ pad\ and\ direction\ control\ switched,\ will\ be\ taken\ as\ default}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\#define\ USE\_KEYES\_REMOTE}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#if\ !defined(USE\_KEYES\_REMOTE)\ \&\&\ !defined(USE\_KEYES\_REMOTE\_CLONE)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ USE\_KEYES\_REMOTE\_CLONE\ }\textcolor{comment}{//\ the\ one\ you\ can\ buy\ at\ aliexpress}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#if\ (defined(USE\_KEYES\_REMOTE)\ \&\&\ defined(USE\_KEYES\_REMOTE\_CLONE))}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#error\ "{}Please\ choose\ only\ one\ remote\ for\ compile"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#if\ defined(USE\_KEYES\_REMOTE\_CLONE)}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ IR\_REMOTE\_NAME\ "{}KEYES\_CLONE"{}}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ Codes\ for\ the\ KEYES\ CLONE\ remote\ control\ with\ 17\ keys\ with\ number\ pad\ above\ direction\ control}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#if\ defined(USE\_IRMP\_LIBRARY)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ IR\_ADDRESS\ 0xFF00\ }\textcolor{comment}{//\ IRMP\ interprets\ NEC\ addresses\ always\ as\ 16\ bit}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ IR\_ADDRESS\ 0x00}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ IR\_UP\ \ \ \ 0x18}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ IR\_DOWN\ \ 0x52}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ IR\_RIGHT\ 0x5A}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ IR\_LEFT\ \ 0x08}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ IR\_OK\ \ \ \ 0x1C}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ IR\_1\ \ \ \ 0x45}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ IR\_2\ \ \ \ 0x46}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ IR\_3\ \ \ \ 0x47}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ IR\_4\ \ \ \ 0x44}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ IR\_5\ \ \ \ 0x40}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ IR\_6\ \ \ \ 0x43}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ IR\_7\ \ \ \ 0x07}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ IR\_8\ \ \ \ 0x15}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ IR\_9\ \ \ \ 0x09}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ IR\_0\ \ \ \ 0x19}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ IR\_STAR\ 0x16}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ IR\_HASH\ 0x0D}}
+\DoxyCodeLine{00058\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ SECOND:}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ *\ IR\ button\ to\ command\ mapping\ for\ better\ reading.\ IR\ buttons\ should\ only\ referenced\ here.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ COMMAND\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ \ IR\_UP}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ COMMAND\_OFF\ \ \ \ \ \ \ \ \ \ \ \ \ IR\_DOWN}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ COMMAND\_INCREASE\_BLINK\ \ IR\_RIGHT}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ COMMAND\_DECREASE\_BLINK\ \ IR\_LEFT}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ COMMAND\_START\ \ \ \ \ \ \ \ \ \ \ IR\_OK}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ COMMAND\_STOP\ \ \ \ \ \ \ \ \ \ \ \ IR\_HASH}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ COMMAND\_RESET\ \ \ \ \ \ \ \ \ \ \ IR\_STAR}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ COMMAND\_BLINK\ \ \ \ \ \ \ \ \ \ \ IR\_0}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE1\ \ \ \ \ \ \ \ \ \ \ IR\_1}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_2}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE3\ \ \ \ \ \ \ \ \ \ \ IR\_3}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_4}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_5}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_6}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_7}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_8}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\#define\ \ \ \ \ \ \ \ \ \ \ \ IR\_9}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#if\ defined(USE\_KEYES\_REMOTE)}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ IR\_REMOTE\_NAME\ "{}KEYES"{}}}
+\DoxyCodeLine{00086\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ *\ FIRST:}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ *\ IR\ code\ to\ button\ mapping\ for\ better\ reading.\ IR\ codes\ should\ only\ referenced\ here.}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ Codes\ for\ the\ KEYES\ remote\ control\ with\ 17\ keys\ and\ direction\ control\ above\ number\ pad}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#if\ defined(USE\_IRMP\_LIBRARY)}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ IR\_ADDRESS\ 0xFF00\ }\textcolor{comment}{//\ IRMP\ interprets\ NEC\ addresses\ always\ as\ 16\ bit}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ IR\_ADDRESS\ 0x00}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ IR\_UP\ \ \ \ 0x46}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ IR\_DOWN\ \ 0x15}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ IR\_RIGHT\ 0x43}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ IR\_LEFT\ \ 0x44}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ IR\_OK\ \ \ \ 0x40}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ IR\_1\ \ \ \ 0x16}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ IR\_2\ \ \ \ 0x19}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ IR\_3\ \ \ \ 0x0D}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ IR\_4\ \ \ \ 0x0C}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ IR\_5\ \ \ \ 0x18}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ IR\_6\ \ \ \ 0x5E}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ IR\_7\ \ \ \ 0x08}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ IR\_8\ \ \ \ 0x1C}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ IR\_9\ \ \ \ 0x5A}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ IR\_0\ \ \ \ 0x52}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ IR\_STAR\ 0x42}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ IR\_HASH\ 0x4A}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ *\ SECOND:}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ *\ IR\ button\ to\ command\ mapping\ for\ better\ reading.\ IR\ buttons\ should\ only\ referenced\ here.}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ COMMAND\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ \ IR\_UP}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#define\ COMMAND\_OFF\ \ \ \ \ \ \ \ \ \ \ \ \ IR\_DOWN}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ COMMAND\_INCREASE\_BLINK\ \ IR\_RIGHT}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ COMMAND\_DECREASE\_BLINK\ \ IR\_LEFT}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ COMMAND\_RESET\ \ \ \ \ \ \ \ \ \ \ IR\_OK}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ COMMAND\_STOP\ \ \ \ \ \ \ \ \ \ \ \ IR\_HASH}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ COMMAND\_STOP\ \ \ \ \ \ \ \ \ \ \ \ IR\_STAR}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ COMMAND\_BLINK\ \ \ \ \ \ \ \ \ \ \ IR\_0}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_1}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE1\ \ \ \ \ \ \ \ \ \ \ IR\_2}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_3}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_4}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_5}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_6}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_7}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_8}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ COMMAND\_TONE2\ \ \ \ \ \ \ \ \ \ \ IR\_9}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ *\ THIRD:}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ *\ Main\ mapping\ of\ commands\ to\ C\ functions}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ IR\ strings\ of\ functions\ for\ output}}
+\DoxyCodeLine{00148\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ LEDon[]\ PROGMEM\ =\textcolor{stringliteral}{"{}LED\ on"{}};}
+\DoxyCodeLine{00149\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ LEDoff[]\ PROGMEM\ =\textcolor{stringliteral}{"{}LED\ off"{}};}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ blink20times[]\ PROGMEM\ =\textcolor{stringliteral}{"{}blink\ 20\ times"{}};}
+\DoxyCodeLine{00152\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ blinkStart[]\ PROGMEM\ =\textcolor{stringliteral}{"{}blink\ start"{}};}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ increaseBlink[]\ PROGMEM\ =\textcolor{stringliteral}{"{}increase\ blink\ frequency"{}};}
+\DoxyCodeLine{00155\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ decreaseBlink[]\ PROGMEM\ =\textcolor{stringliteral}{"{}decrease\ blink\ frequency"{}};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ tone2200[]\ PROGMEM\ =\textcolor{stringliteral}{"{}tone\ 2200"{}};}
+\DoxyCodeLine{00158\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ tone1800[]\ PROGMEM\ =\textcolor{stringliteral}{"{}tone\ 1800"{}};}
+\DoxyCodeLine{00159\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ printMenu[]\ PROGMEM\ =\textcolor{stringliteral}{"{}printMenu"{}};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ reset[]\ PROGMEM\ =\textcolor{stringliteral}{"{}reset"{}};}
+\DoxyCodeLine{00162\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ stop[]\ PROGMEM\ =\textcolor{stringliteral}{"{}stop"{}};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ not\ used\ yet}}
+\DoxyCodeLine{00165\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ test[]\ PROGMEM\ =\textcolor{stringliteral}{"{}test"{}};}
+\DoxyCodeLine{00166\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ pattern[]\ PROGMEM\ =\textcolor{stringliteral}{"{}pattern"{}};}
+\DoxyCodeLine{00167\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ unknown[]\ PROGMEM\ =\textcolor{stringliteral}{"{}unknown"{}};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ *\ Main\ mapping\ array\ of\ commands\ to\ C\ functions\ and\ command\ strings}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00172\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRToCommandMappingStruct}{IRToCommandMappingStruct}}\ IRMapping[]\ =\ \{\ }
+\DoxyCodeLine{00173\ \{\ COMMAND\_BLINK,\ IR\_COMMAND\_FLAG\_BLOCKING,\ \&doLedBlink20times,\ blink20times\ \},\ }
+\DoxyCodeLine{00174\ \{\ COMMAND\_STOP,\ IR\_COMMAND\_FLAG\_BLOCKING,\ \&doStop,\ stop\ \},}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ *\ Short\ commands,\ which\ can\ be\ executed\ always}}
+\DoxyCodeLine{00178\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00179\ \{\ COMMAND\_TONE1,\ IR\_COMMAND\_FLAG\_BLOCKING,\ \&doTone1800,\ tone1800\ \},\ }
+\DoxyCodeLine{00180\ \{\ COMMAND\_TONE3,\ IR\_COMMAND\_FLAG\_BLOCKING,\ \&doPrintMenu,\ printMenu\ \},\ }
+\DoxyCodeLine{00181\ \{\ COMMAND\_ON,\ IR\_COMMAND\_FLAG\_NON\_BLOCKING,\ \&doLedOn,\ LEDon\ \},\ }
+\DoxyCodeLine{00182\ \{\ COMMAND\_OFF,\ IR\_COMMAND\_FLAG\_NON\_BLOCKING,\ \&doLedOff,\ LEDoff\ \},\ }
+\DoxyCodeLine{00183\ \{\ COMMAND\_START,\ IR\_COMMAND\_FLAG\_NON\_BLOCKING,\ \&doLedBlinkStart,\ blinkStart\ \},\ }
+\DoxyCodeLine{00184\ \{\ COMMAND\_RESET,\ IR\_COMMAND\_FLAG\_NON\_BLOCKING,\ \&doResetBlinkFrequency,\ reset\ \},}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00187\ \textcolor{comment}{\ *\ Repeatable\ short\ commands}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00189\ \{\ COMMAND\_TONE2,\ IR\_COMMAND\_FLAG\_REPEATABLE\_NON\_BLOCKING,\ \&doTone2200,\ tone2200\ \},\ }
+\DoxyCodeLine{00190\ \{\ COMMAND\_INCREASE\_BLINK,\ IR\_COMMAND\_FLAG\_REPEATABLE\_NON\_BLOCKING,\ \&doIncreaseBlinkFrequency,\ increaseBlink\ \},\ }
+\DoxyCodeLine{00191\ \{\ COMMAND\_DECREASE\_BLINK,\ IR\_COMMAND\_FLAG\_REPEATABLE\_NON\_BLOCKING,\ \&doDecreaseBlinkFrequency,\ decreaseBlink\ \}\ \};}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_COMMAND\_MAPPING\_H}}
+
+\end{DoxyCode}

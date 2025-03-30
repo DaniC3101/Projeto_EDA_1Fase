@@ -1,0 +1,1985 @@
+\doxysection{IRTimer.\+hpp}
+\hypertarget{IRTimer_8hpp_source}{}\label{IRTimer_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/private/IRTimer.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/private/IRTimer.hpp}}
+\mbox{\hyperlink{IRTimer_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#ifndef\ \_IR\_TIMER\_HPP}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ \_IR\_TIMER\_HPP}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ Functions\ declared\ here}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{void}\ timerConfigForReceive();\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Initialization\ of\ 50\ us\ timer,\ interrupts\ are\ still\ disabled}}
+\DoxyCodeLine{00048\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt();\ \ \ \ \ \textcolor{comment}{//\ Enable\ interrupts\ of\ an\ initialized\ timer}}
+\DoxyCodeLine{00049\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt();\ \ \ \ \textcolor{comment}{//\ Disable\ interrupts\ of\ an\ initialized\ timer}}
+\DoxyCodeLine{00050\ \textcolor{keywordtype}{void}\ timerResetInterruptPending();\ \ \ \ \ \ \textcolor{comment}{//\ ISR\ helper\ function\ for\ some\ architectures,\ which\ require\ a\ manual\ reset}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ of\ the\ pending\ interrupt\ (TIMER\_REQUIRES\_RESET\_INTR\_PENDING\ is\ defined).\ Otherwise\ empty.}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz);\ \textcolor{comment}{//\ Initialization\ of\ timer\ hardware\ generated\ PWM,\ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00054\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer();\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ on\ PWM\ generation}}
+\DoxyCodeLine{00055\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer();\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ off\ PWM\ generation}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ SEND\_PWM\_BY\_TIMER\ for\ different\ architectures\ is\ enabled\ /\ defined\ at\ IRremote.hpp\ line\ 195.}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#if\ \ defined(SEND\_PWM\_BY\_TIMER)\ \&\&\ (\ (defined(ESP32)\ ||\ defined(ARDUINO\_ARCH\_RP2040)\ ||\ defined(PARTICLE))\ ||\ defined(ARDUINO\_ARCH\_MBED)\ )}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ SEND\_PWM\_DOES\_NOT\_USE\_RECEIVE\_TIMER\ }\textcolor{comment}{//\ Receive\ timer\ and\ send\ generation\ timer\ are\ independent\ here.}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#if\ defined(IR\_SEND\_PIN)\ \&\&\ defined(SEND\_PWM\_BY\_TIMER)\ \&\&\ !defined(SEND\_PWM\_DOES\_NOT\_USE\_RECEIVE\_TIMER)\ }\textcolor{comment}{//\ For\ ESP32\ etc.\ IR\_SEND\_PIN\ definition\ is\ useful}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#undef\ IR\_SEND\_PIN\ }\textcolor{comment}{//\ To\ avoid\ "{}warning:\ "{}IR\_SEND\_PIN"{}\ redefined"{}.\ The\ user\ warning\ is\ done\ at\ IRremote.hpp\ line\ 202.}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ Macros\ for\ enabling\ timers\ for\ development}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\#define\ SEND\_PWM\_BY\_TIMER}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER2}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4\_HS}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER5}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_TINY0}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_TINY1}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_A}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_B}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_D}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\#define\ \_\_MK20DX128\_\_}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\#define\ \_\_MKL26Z64\_\_}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\#define\ \_\_IMXRT1062\_\_}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\#define\ ESP8266}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\#define\ ESP32}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\#define\ ARDUINO\_ARCH\_SAMD}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\#define\ ARDUINO\_ARCH\_MBED}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\#define\ ARDUINO\_ARCH\_RP2040}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\#define\ NRF5}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\#define\ \_\_STM32F1\_\_}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\#define\ STM32F1xx}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\#define\ PARTICLE}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\#define\ ARDUINO\_ARCH\_RENESAS}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#if\ defined\ (DOXYGEN)}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00105\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00106\ \}}
+\DoxyCodeLine{00110\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00111\ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00117\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00118\ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00129\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00130\ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00135\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00136\ \}}
+\DoxyCodeLine{00140\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00144\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ *\ Mapping\ of\ AVR\ boards\ to\ AVR\ timers}}
+\DoxyCodeLine{00146\ \textcolor{comment}{\ *\ For\ some\ CPU's\ you\ have\ the\ option\ to\ switch\ the\ timer\ and\ the\ hardware\ send\ pin}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{00148\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ *\ Plain\ AVR\ CPU's,\ no\ boards}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ Arduino\ Duemilanove,\ Diecimila,\ LilyPad,\ Mini,\ Fio,\ Nano,\ etc}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_ATmega328P\_\_)\ ||\ defined(\_\_AVR\_ATmega328PB\_\_)\ ||\ defined(\_\_AVR\_ATmega168\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\ \ \ \ ||\ defined(\_\_AVR\_ATmega88P\_\_)\ ||\ defined(\_\_AVR\_ATmega88PB\_\_)}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 9}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 3}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER4)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER5)}}
+\DoxyCodeLine{00162\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 11}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 9}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ //\ send\ pin\ =\ pin\ 5}}
+\DoxyCodeLine{00165\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4\ \ \ //\ send\ pin\ =\ pin\ 6}}
+\DoxyCodeLine{00166\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER5\ \ \ //\ send\ pin\ =\ pin\ 46}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ Leonardo}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega32U4\_\_)\ \&\&\ !\ defined(TEENSYDUINO)\ \&\&\ !\ defined(ARDUINO\_AVR\_PROMICRO)}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER4\_HS)}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ //\ send\ pin\ =\ pin\ 9}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER3\ \ \ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 5}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4\_HS\ \ //\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ Nano\ Every,\ Uno\ WiFi\ Rev2\ and\ similar}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega808\_\_)\ ||\ defined(\_\_AVR\_ATmega809\_\_)\ ||\ defined(\_\_AVR\_ATmega3208\_\_)\ ||\ defined(\_\_AVR\_ATmega3209\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\ \ \ \ \ ||\ defined(\_\_AVR\_ATmega1608\_\_)\ ||\ defined(\_\_AVR\_ATmega1609\_\_)\ ||\ defined(\_\_AVR\_ATmega4808\_\_)\ ||\ defined(\_\_AVR\_ATmega4809\_\_)\ ||\ defined(\_\_AVR\_ATtiny1604\_\_)}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER\_B)}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER\_B\ \ \ \ \ }\textcolor{comment}{//\ \ send\ pin\ =\ pin\ 6\ on\ ATmega4809\ 1\ on\ ATmega4809}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATtiny816\_\_)\ ||\ defined(\_\_AVR\_ATtiny1614\_\_)\ ||\ defined(\_\_AVR\_ATtiny1616\_\_)\ ||\ defined(\_\_AVR\_ATtiny3216\_\_)\ ||\ defined(\_\_AVR\_ATtiny3217\_\_)\ }\textcolor{comment}{//\ e.g.\ TinyCore\ boards}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER\_A)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER\_D)}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER\_A\ }\textcolor{comment}{//\ use\ this\ if\ you\ use\ megaTinyCore,\ Tone\ is\ on\ TCB\ and\ millis()\ on\ TCD}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER\_D\ //\ use\ this\ if\ you\ use\ TinyCore}}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{comment}{//\ ATmega8u2,\ ATmega16U2,\ ATmega32U2,\ ATmega8\ -\/\ Timer\ 2\ does\ not\ work\ with\ existing\ code\ below}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega8U2\_\_)\ ||\ defined(\_\_AVR\_ATmega16U2\_\_)\ \ ||\ defined(\_\_AVR\_ATmega32U2\_\_)\ ||\ defined(\_\_AVR\_ATmega8\_\_)}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ C6}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ ATtiny84}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATtiny84\_\_)\ ||\ defined(\_\_AVR\_ATtiny88\_\_)}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 6}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#elif\ \ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_)}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ PB1\ /\ 8}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#define\ USE\_TIMER\_CHANNEL\_B}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{comment}{//ATtiny85,\ 45,\ 25}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_)}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER\_TINY0)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER\_TINY1)}}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(ARDUINO\_AVR\_DIGISPARK)\ }\textcolor{comment}{//\ tested\ with\ 16\ and\ 8\ MHz}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER\_TINY0\ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 1}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ standard\ Digispark\ settings\ use\ timer\ 1\ for\ millis()\ and\ micros()}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00215\ \textcolor{comment}{//\ standard\ ATTinyCore\ settings\ use\ timer\ 0\ for\ millis()\ and\ micros()}}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER\_TINY1\ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 4}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ *\ SPARKFUN\ Pro\ Micro\ board}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_AVR\_PROMICRO)}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER4\_HS)}}
+\DoxyCodeLine{00225\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ //\ send\ pin\ =\ pin\ 9}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER3\ \ \ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 5}}
+\DoxyCodeLine{00227\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER4\_HS\ \ //\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ *\ TEENSY\ Boards}}
+\DoxyCodeLine{00232\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ Teensy\ 1.0}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_AT90USB162\_\_)}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 17}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{comment}{//\ Teensy++\ 1.0\ \&\ 2.0}}
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_AT90USB646\_\_)\ ||\ defined(\_\_AVR\_AT90USB1286\_\_)}}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)}}
+\DoxyCodeLine{00242\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 25}}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 1}}
+\DoxyCodeLine{00244\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ //\ send\ pin\ =\ pin\ 16}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{comment}{//\ Teensy\ 2.0}}
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega32U4\_\_)\ \&\&\ defined(TEENSYDUINO)}}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER4\_HS)}}
+\DoxyCodeLine{00250\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ //\ send\ pin\ =\ pin\ 14\ (Teensy\ 2.0\ -\/\ physical\ pin:\ B5)}}
+\DoxyCodeLine{00251\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ \ \ //\ send\ pin\ =\ pin\ 9\ \ (Teensy\ 2.0\ -\/\ physical\ pin:\ C6)}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER4\_HS\ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 10\ (Teensy\ 2.0\ -\/\ physical\ pin:\ C7)}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ *\ CPU's\ with\ MegaCore}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ MegaCore\ -\/\ ATmega64,\ ATmega128}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega64\_\_)\ ||\ defined(\_\_AVR\_ATmega128\_\_)\ ||\ defined(\_\_AVR\_ATmega1281\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00261\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00265\ \textcolor{comment}{\ *\ CPU's\ with\ MajorCore}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega8515\_\_)\ ||\ defined(\_\_AVR\_ATmega162\_\_)}}
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)}}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00270\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ //\ send\ pin\ =\ pin\ 12\ -\/\ ATmega162\ only}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ *\ CPU's\ with\ MightyCore}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{00276\ \textcolor{comment}{//\ MightyCore\ -\/\ ATmega1284}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega1284\_\_)\ ||\ defined(\_\_AVR\_ATmega1284P\_\_)}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER3)}}
+\DoxyCodeLine{00279\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 14}}
+\DoxyCodeLine{00281\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER3\ \ \ //\ send\ pin\ =\ pin\ 6}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \textcolor{comment}{//\ MightyCore\ -\/\ ATmega164,\ ATmega324,\ ATmega644}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega644\_\_)\ ||\ defined(\_\_AVR\_ATmega644P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324P\_\_)\ ||\ defined(\_\_AVR\_ATmega324A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324PA\_\_)\ ||\ defined(\_\_AVR\_ATmega164A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega164P\_\_)}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)\ \&\&\ !defined(IR\_USE\_AVR\_TIMER2)}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//\#define\ IR\_USE\_AVR\_TIMER1\ \ \ //\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER2\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 14}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \textcolor{comment}{//\ MightyCore\ -\/\ ATmega8535,\ ATmega16,\ ATmega32}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATmega8535\_\_)\ ||\ defined(\_\_AVR\_ATmega16\_\_)\ ||\ defined(\_\_AVR\_ATmega32\_\_)}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#define\ IR\_USE\_AVR\_TIMER1\ \ \ \ \ }\textcolor{comment}{//\ send\ pin\ =\ pin\ 13}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ AVR\ CPU's}}
+\DoxyCodeLine{00301\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{00302\ \textcolor{comment}{\ *\ End\ of\ AVR\ mapping,\ start\ of\ AVR\ timers}}
+\DoxyCodeLine{00303\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{00304\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ *\ AVR\ Timer1\ (16\ bits)}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#if\ defined(IR\_USE\_AVR\_TIMER1)}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \textcolor{preprocessor}{\#\ \ if\ defined(TIMSK1)}}
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#define\ TIMSK\ \ \ TIMSK1\ }\textcolor{comment}{//\ use\ the\ value\ of\ TIMSK1\ for\ the\ statements\ below}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ TIMSK\ |=\ \_BV(OCIE1A);}
+\DoxyCodeLine{00315\ \}}
+\DoxyCodeLine{00316\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ TIMSK\ \&=\ \string~\_BV(OCIE1A);}
+\DoxyCodeLine{00318\ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(TIMER1\_COMPB\_vect)}}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ TIMER1\_COMPB\_vect}}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(TIM1\_COMPB\_vect)}}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ TIM1\_COMPB\_vect}}
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00326\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(TIMER1\_COMPA\_vect)}}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ TIMER1\_COMPA\_vect}}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(TIM1\_COMPA\_vect)}}
+\DoxyCodeLine{00330\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ TIM1\_COMPA\_vect}}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00335\ \ \ \ \ TCCR1A\ =\ 0;}
+\DoxyCodeLine{00336\ \ \ \ \ TCCR1B\ =\ \_BV(WGM12)\ |\ \_BV(CS10);\ \textcolor{comment}{//\ CTC\ mode,\ no\ prescaling}}
+\DoxyCodeLine{00337\ \ \ \ \ OCR1A\ =\ (F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}})\ /\ MICROS\_IN\_ONE\_SECOND;\ \textcolor{comment}{//\ 16\ *\ 50\ =\ 800}}
+\DoxyCodeLine{00338\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00339\ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC1A\_PIN)}}
+\DoxyCodeLine{00343\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC1A\_PIN\ \ }\textcolor{comment}{//\ Teensy}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 11\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \textcolor{comment}{//\ MightyCore,\ MegaCore,\ MajorCore}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1284\_\_)\ ||\ defined(\_\_AVR\_ATmega1284P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega644\_\_)\ ||\ defined(\_\_AVR\_ATmega644P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324P\_\_)\ ||\ defined(\_\_AVR\_ATmega324A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324PA\_\_)\ ||\ defined(\_\_AVR\_ATmega164A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00353\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega164P\_\_)\ ||\ defined(\_\_AVR\_ATmega32\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00354\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega16\_\_)\ ||\ defined(\_\_AVR\_ATmega8535\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00355\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega64\_\_)\ ||\ defined(\_\_AVR\_ATmega128\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00356\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega1281\_\_)\ ||\ defined(\_\_AVR\_ATmega2561\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00357\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega8515\_\_)\ ||\ defined(\_\_AVR\_ATmega162\_\_)}}
+\DoxyCodeLine{00358\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 13}}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATtiny84\_\_)}}
+\DoxyCodeLine{00361\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 6}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATtiny88\_\_)}}
+\DoxyCodeLine{00364\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 8}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_)}}
+\DoxyCodeLine{00367\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00368\ \textcolor{comment}{\ *\ !!!\ IR\_SEND\_PIN\ value\ must\ correspond\ to\ ENABLE\_SEND\_PWM\_BY\_TIMER\ below\ !!!}}
+\DoxyCodeLine{00369\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00370\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ PIN\_PB1\ }\textcolor{comment}{//\ OC1BU\ /\ PB1\ /\ Pin9\ at\ ATTinyCore}}
+\DoxyCodeLine{00372\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB3\ //\ OC1BV\ /\ PB3\ /\ Pin11\ at\ ATTinyCore}}
+\DoxyCodeLine{00373\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB5\ //\ OC1BW\ /\ PB5\ /\ Pin13\ at\ ATTinyCore}}
+\DoxyCodeLine{00374\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB7\ //\ OC1BX\ /\ PB7\ /\ Pin15\ at\ ATTinyCore}}
+\DoxyCodeLine{00375\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{00376\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ PIN\_PB0\ }\textcolor{comment}{//\ OC1AU\ /\ PB1\ /\ Pin8\ at\ ATTinyCore}}
+\DoxyCodeLine{00377\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB2\ //\ OC1AV\ /\ PB3\ /\ Pin10\ at\ ATTinyCore}}
+\DoxyCodeLine{00378\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB4\ //\ OC1AW\ /\ PB5\ /\ Pin12\ at\ ATTinyCore}}
+\DoxyCodeLine{00379\ \textcolor{comment}{//\#define\ IR\_SEND\_PIN\ \ PIN\_PB6\ //\ OC1AX\ /\ PB6\ /\ Pin14\ at\ ATTinyCore}}
+\DoxyCodeLine{00380\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{00381\ }
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00383\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 9\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ OC1A\ Arduino\ Duemilanove,\ Diecimila,\ LilyPad,\ Sparkfun\ Pro\ Micro,\ Leonardo,\ MH-\/ET\ Tiny88\ etc.}}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#\ \ \ \ endif\ }\textcolor{comment}{//\ defined(CORE\_OC1A\_PIN)}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_)}}
+\DoxyCodeLine{00387\ \textcolor{comment}{//\ Clear\ OC1A/OC1B\ on\ Compare\ Match\ when\ up-\/counting.\ Set\ OC1A/OC1B\ on\ Compare\ Match\ when\ down\ counting.}}
+\DoxyCodeLine{00388\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00389\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00391\ \ \ \ \ TCCR1A\ |=\ \_BV(COM1B1);}
+\DoxyCodeLine{00392\ \ \ \ \ TCCR1D\ |=\ \_BV(OC1BU);\ \textcolor{comment}{//\ +\ enable\ OC1BU\ as\ output}}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1B1);\ TCCR1D\ |=\ \_BV(OC1BV);\ //\ +\ enable\ OC1BV\ as\ output}}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1B1);\ TCCR1D\ |=\ \_BV(OC1BW);\ //\ +\ enable\ OC1BW\ as\ output}}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1B1);\ TCCR1D\ |=\ \_BV(OC1BX);\ //\ +\ enable\ OC1BX\ as\ output}}
+\DoxyCodeLine{00396\ \}}
+\DoxyCodeLine{00397\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{00398\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00400\ \ \ \ \ TCCR1A\ |=\ \_BV(COM1A1);}
+\DoxyCodeLine{00401\ \ \ \ \ TCCR1D\ |=\ \_BV(OC1AU);\ \textcolor{comment}{//\ +\ enable\ OC1BU\ as\ output}}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1A1);\ TCCR1D\ |=\ \_BV(OC1AV);\ //\ +\ enable\ OC1BV\ as\ output}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1A1);\ TCCR1D\ |=\ \_BV(OC1AW);\ //\ +\ enable\ OC1BW\ as\ output}}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//TCNT1\ =\ 0;\ \ TCCR1A\ |=\ \_BV(COM1A1);\ TCCR1D\ |=\ \_BV(OC1AX);\ //\ +\ enable\ OC1BX\ as\ output}}
+\DoxyCodeLine{00405\ \}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{00408\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ TCCR1D\ =\ 0;}
+\DoxyCodeLine{00410\ \}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00413\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00415\ \ \ \ \ TCCR1A\ |=\ \_BV(COM1B1);\ \ \textcolor{comment}{//\ Clear\ OC1A/OC1B\ on\ Compare\ Match\ when\ up-\/counting.\ Set\ OC1A/OC1B\ on\ Compare\ Match\ when\ counting\ down.}}
+\DoxyCodeLine{00416\ \}}
+\DoxyCodeLine{00417\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ TCCR1A\ \&=\ \string~(\_BV(COM1B1));}
+\DoxyCodeLine{00419\ \}}
+\DoxyCodeLine{00420\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{00421\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00422\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00423\ \ \ \ \ TCCR1A\ |=\ \_BV(COM1A1);\ \textcolor{comment}{//\ Clear\ OC1A/OC1B\ on\ Compare\ Match\ when\ up-\/counting.\ Set\ OC1A/OC1B\ on\ Compare\ Match\ when\ downcounting.}}
+\DoxyCodeLine{00424\ \}}
+\DoxyCodeLine{00425\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ TCCR1A\ \&=\ \string~(\_BV(COM1A1));}
+\DoxyCodeLine{00427\ \}}
+\DoxyCodeLine{00428\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{00429\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00432\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00433\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00434\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00435\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00437\ }
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#\ \ if\ (((F\_CPU\ /\ 2000)\ /\ 38)\ <\ 256)}}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00440\ \ \ \ \ TCCR1A\ =\ \_BV(WGM11);\ \textcolor{comment}{//\ PWM,\ Phase\ Correct,\ Top\ is\ ICR1}}
+\DoxyCodeLine{00441\ \ \ \ \ TCCR1B\ =\ \_BV(WGM13)\ |\ \_BV(CS10);\ \textcolor{comment}{//\ CS10\ -\/>\ no\ prescaling}}
+\DoxyCodeLine{00442\ \ \ \ \ ICR1\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00443\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00444\ \ \ \ \ OCR1B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00445\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00446\ \ \ \ \ OCR1A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00448\ \ \ \ \ TCNT1\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00449\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ ((F\_CPU\ /\ 8)\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00451\ \ \ \ \ TCCR1A\ =\ \_BV(WGM11);\textcolor{comment}{//\ PWM,\ Phase\ Correct,\ Top\ is\ ICR1}}
+\DoxyCodeLine{00452\ \ \ \ \ TCCR1B\ =\ \_BV(WGM13)\ |\ \_BV(CS11);\textcolor{comment}{//\ CS11\ -\/>\ Prescaling\ by\ 8}}
+\DoxyCodeLine{00453\ \ \ \ \ ICR1\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00454\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(USE\_TIMER\_CHANNEL\_B)}}
+\DoxyCodeLine{00455\ \ \ \ \ OCR1A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00456\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00457\ \ \ \ \ OCR1A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00458\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00459\ \ \ \ \ TCNT1\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00460\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00461\ \}}
+\DoxyCodeLine{00462\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00463\ }
+\DoxyCodeLine{00464\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00465\ \textcolor{comment}{\ *\ AVR\ Timer2\ (8\ bits)\ //\ Tone\ timer\ on\ Uno}}
+\DoxyCodeLine{00466\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00467\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER2)}}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ TIMSK2\ =\ \_BV(OCIE2B);\ \ \ \textcolor{comment}{//\ Output\ Compare\ Match\ A\ Interrupt\ Enable}}
+\DoxyCodeLine{00471\ \}}
+\DoxyCodeLine{00472\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ TIMSK2\ =\ 0;}
+\DoxyCodeLine{00474\ \}}
+\DoxyCodeLine{00475\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER2\_COMPB\_vect\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ We\ use\ TIMER2\_COMPB\_vect\ to\ be\ compatible\ with\ tone()\ library}}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \textcolor{preprocessor}{\#define\ TIMER\_COUNT\_TOP\ \ (F\_CPU\ *\ MICROS\_PER\_TICK\ /\ MICROS\_IN\_ONE\_SECOND)}}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#\ \ if\ (TIMER\_COUNT\_TOP\ <\ 256)}}
+\DoxyCodeLine{00481\ \ \ \ \ TCCR2A\ =\ \_BV(WGM21);}
+\DoxyCodeLine{00482\ \ \ \ \ TCCR2B\ =\ \_BV(CS20);}
+\DoxyCodeLine{00483\ \ \ \ \ OCR2A\ =\ TIMER\_COUNT\_TOP;}
+\DoxyCodeLine{00484\ \ \ \ \ OCR2B\ =\ TIMER\_COUNT\_TOP;}
+\DoxyCodeLine{00485\ \ \ \ \ TCNT2\ =\ 0;}
+\DoxyCodeLine{00486\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00487\ \ \ \ \ TCCR2A\ =\ \_BV(WGM21);}
+\DoxyCodeLine{00488\ \ \ \ \ TCCR2B\ =\ \_BV(CS21);}
+\DoxyCodeLine{00489\ \ \ \ \ OCR2A\ =\ TIMER\_COUNT\_TOP\ /\ 8;}
+\DoxyCodeLine{00490\ \ \ \ \ OCR2B\ =\ TIMER\_COUNT\_TOP\ /\ 8;}
+\DoxyCodeLine{00491\ \ \ \ \ TCNT2\ =\ 0;}
+\DoxyCodeLine{00492\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00493\ \}}
+\DoxyCodeLine{00494\ }
+\DoxyCodeLine{00495\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00496\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC2B\_PIN)}}
+\DoxyCodeLine{00497\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC2B\_PIN\ \ }\textcolor{comment}{//\ Teensy}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00500\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 9\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1284\_\_)\ ||\ defined(\_\_AVR\_ATmega1284P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00503\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega644\_\_)\ ||\ defined(\_\_AVR\_ATmega644P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00504\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324P\_\_)\ ||\ defined(\_\_AVR\_ATmega324A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00505\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324PA\_\_)\ ||\ defined(\_\_AVR\_ATmega164A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00506\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega164P\_\_)}}
+\DoxyCodeLine{00507\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 14\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ MightyCore,\ MegaCore}}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00510\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 3\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Arduino\ Duemilanove,\ Diecimila,\ LilyPad,\ etc}}
+\DoxyCodeLine{00511\ \textcolor{preprocessor}{\#\ \ \ \ endif\ }\textcolor{comment}{//\ defined(CORE\_OC2B\_PIN)}}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00514\ \ \ \ \ TCNT2\ =\ 0;}
+\DoxyCodeLine{00515\ \ \ \ \ TCCR2A\ |=\ \_BV(COM2B1);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Clear\ OC2B\ on\ Compare\ Match}}
+\DoxyCodeLine{00516\ \}}
+\DoxyCodeLine{00517\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00518\ \ \ \ \ TCCR2A\ \&=\ \string~(\_BV(COM2B1));\ \ \ \ \ \ \textcolor{comment}{//\ Normal\ port\ operation,\ OC2B\ disconnected.}}
+\DoxyCodeLine{00519\ \}}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00521\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00522\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00523\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00524\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00525\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00526\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00528\ \textcolor{preprocessor}{\#\ \ if\ (((F\_CPU\ /\ 2000)\ /\ 38)\ <\ 256)}}
+\DoxyCodeLine{00529\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00530\ \textcolor{comment}{\ \ \ \ \ *\ tPWMWrapValue\ is\ 210.52\ for\ 38\ kHz,\ 17.58\ for\ 455\ kHz\ @16\ MHz\ clock.}}
+\DoxyCodeLine{00531\ \textcolor{comment}{\ \ \ \ \ *\ 210\ -\/>\ 38.095\ kHz,\ 17\ -\/>\ 470.588\ kHz\ @16\ MHz\ clock.}}
+\DoxyCodeLine{00532\ \textcolor{comment}{\ \ \ \ \ *\ We\ use\ 2000\ instead\ of\ 1000\ in\ the\ formula,\ because\ of\ Phase\ Correct\ PWM.}}
+\DoxyCodeLine{00533\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);}
+\DoxyCodeLine{00535\ \ \ \ \ TCCR2A\ =\ \_BV(WGM20);\ \textcolor{comment}{//\ PWM,\ Phase\ Correct,\ Top\ is\ OCR2A}}
+\DoxyCodeLine{00536\ \ \ \ \ TCCR2B\ =\ \_BV(WGM22)\ |\ \_BV(CS20);\ \textcolor{comment}{//\ CS20\ -\/>\ no\ prescaling}}
+\DoxyCodeLine{00537\ \ \ \ \ OCR2A\ =\ tPWMWrapValue\ -\/\ 1;\ \textcolor{comment}{//\ The\ top\ value\ for\ the\ timer.\ \ The\ modulation\ frequency\ will\ be\ F\_CPU\ /\ 2\ /\ (OCR2A\ +\ 1).}}
+\DoxyCodeLine{00538\ \ \ \ \ OCR2B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00539\ \ \ \ \ TCNT2\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00540\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ ((F\_CPU\ /\ 8)\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00542\ \ \ \ \ TCCR2A\ =\ \_BV(WGM20);\textcolor{comment}{//\ PWM,\ Phase\ Correct,\ Top\ is\ OCR2A}}
+\DoxyCodeLine{00543\ \ \ \ \ TCCR2B\ =\ \_BV(WGM22)\ |\ \_BV(CS21);\textcolor{comment}{//\ CS21\ -\/>\ Prescaling\ by\ 8}}
+\DoxyCodeLine{00544\ \ \ \ \ OCR2A\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00545\ \ \ \ \ OCR2B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00546\ \ \ \ \ TCNT2\ =\ 0;\textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00547\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00548\ \}}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00550\ }
+\DoxyCodeLine{00551\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00552\ \textcolor{comment}{\ *\ AVR\ Timer3\ (16\ bits)}}
+\DoxyCodeLine{00553\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00554\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER3)}}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00557\ \ \ \ \ TIMSK3\ =\ \_BV(OCIE3B);}
+\DoxyCodeLine{00558\ \}}
+\DoxyCodeLine{00559\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ TIMSK3\ =\ 0;}
+\DoxyCodeLine{00561\ \}}
+\DoxyCodeLine{00562\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER3\_COMPB\_vect}}
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00564\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00565\ \ \ \ \ TCCR3A\ =\ 0;}
+\DoxyCodeLine{00566\ \ \ \ \ TCCR3B\ =\ \_BV(WGM32)\ |\ \_BV(CS30);}
+\DoxyCodeLine{00567\ \ \ \ \ OCR3A\ =\ F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND;}
+\DoxyCodeLine{00568\ \ \ \ \ OCR3B\ =\ F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND;}
+\DoxyCodeLine{00569\ \ \ \ \ TCNT3\ =\ 0;}
+\DoxyCodeLine{00570\ \}}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00572\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00573\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC3A\_PIN)}}
+\DoxyCodeLine{00574\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC3A\_PIN\ \ }\textcolor{comment}{//\ Teensy}}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00577\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega32U4\_\_)\ ||\ defined(ARDUINO\_AVR\_PROMICRO)}}
+\DoxyCodeLine{00578\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 5\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Arduino\ Mega,\ Arduino\ Leonardo,\ Sparkfun\ Pro\ Micro}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1284\_\_)\ ||\ defined(\_\_AVR\_ATmega1284P\_\_)}}
+\DoxyCodeLine{00581\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 6\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ MightyCore,\ MegaCore}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00584\ \textcolor{preprocessor}{\#error\ Please\ add\ OC3A\ pin\ number\ here}}
+\DoxyCodeLine{00585\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00588\ \ \ \ \ TCNT3\ =\ 0;}
+\DoxyCodeLine{00589\ \ \ \ \ TCCR3A\ |=\ \_BV(COM3A1);}
+\DoxyCodeLine{00590\ \}}
+\DoxyCodeLine{00591\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ TCCR3A\ \&=\ \string~(\_BV(COM3A1));}
+\DoxyCodeLine{00593\ \}}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00596\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00597\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00598\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00599\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00600\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{00601\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ 3\ is\ not\ supported\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{00602\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00603\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00606\ \ \ \ \ TCCR3A\ =\ \_BV(WGM31);}
+\DoxyCodeLine{00607\ \ \ \ \ TCCR3B\ =\ \_BV(WGM33)\ |\ \_BV(CS30);\ \textcolor{comment}{//\ PWM,\ Phase\ Correct,\ ICRn\ as\ TOP,\ complete\ period\ is\ double\ of\ tPWMWrapValue}}
+\DoxyCodeLine{00608\ \ \ \ \ ICR3\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00609\ \ \ \ \ OCR3A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00610\ \ \ \ \ TCNT3\ =\ 0;\ \textcolor{comment}{//\ required,\ since\ we\ have\ an\ 16\ bit\ counter}}
+\DoxyCodeLine{00611\ \}}
+\DoxyCodeLine{00612\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00615\ \textcolor{comment}{\ *\ AVR\ Timer4\ (16\ bits)}}
+\DoxyCodeLine{00616\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00617\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER4)}}
+\DoxyCodeLine{00618\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00619\ \ \ \ \ TIMSK4\ =\ \_BV(OCIE4A);}
+\DoxyCodeLine{00620\ \}}
+\DoxyCodeLine{00621\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00622\ \ \ \ \ TIMSK4\ =\ 0;}
+\DoxyCodeLine{00623\ \}}
+\DoxyCodeLine{00624\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER4\_COMPA\_vect}}
+\DoxyCodeLine{00625\ }
+\DoxyCodeLine{00626\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00627\ \ \ \ \ TCCR4A\ =\ 0;}
+\DoxyCodeLine{00628\ \ \ \ \ TCCR4B\ =\ \_BV(WGM42)\ |\ \_BV(CS40);}
+\DoxyCodeLine{00629\ \ \ \ \ OCR4A\ =\ F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND;}
+\DoxyCodeLine{00630\ \ \ \ \ TCNT4\ =\ 0;}
+\DoxyCodeLine{00631\ \}}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00634\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC4A\_PIN)}}
+\DoxyCodeLine{00635\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC4A\_PIN}}
+\DoxyCodeLine{00636\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00637\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 6\ \ }\textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{00638\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00639\ \textcolor{preprocessor}{\#error\ Please\ add\ OC4A\ pin\ number\ here}}
+\DoxyCodeLine{00640\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00643\ \ \ \ \ TCNT4\ =\ 0;}
+\DoxyCodeLine{00644\ \ \ \ \ TCCR4A\ |=\ \_BV(COM4A1);}
+\DoxyCodeLine{00645\ \}}
+\DoxyCodeLine{00646\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00647\ \ \ \ \ TCCR4A\ \&=\ \string~(\_BV(COM4A1));}
+\DoxyCodeLine{00648\ \}}
+\DoxyCodeLine{00649\ }
+\DoxyCodeLine{00650\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00651\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{00652\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ 4\ is\ not\ supported\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{00653\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00654\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00656\ \ \ \ \ TCCR4A\ =\ \_BV(WGM41);}
+\DoxyCodeLine{00657\ \ \ \ \ TCCR4B\ =\ \_BV(WGM43)\ |\ \_BV(CS40);}
+\DoxyCodeLine{00658\ \ \ \ \ ICR4\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00659\ \ \ \ \ OCR4A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00660\ \ \ \ \ TCNT4\ =\ 0;\ \textcolor{comment}{//\ required,\ since\ we\ have\ an\ 16\ bit\ counter}}
+\DoxyCodeLine{00661\ \}}
+\DoxyCodeLine{00662\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00665\ \textcolor{comment}{\ *\ AVR\ Timer4\ (10\ bits,\ high\ speed\ option)}}
+\DoxyCodeLine{00666\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00667\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER4\_HS)}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00670\ \ \ \ \ TIMSK4\ =\ \_BV(TOIE4);}
+\DoxyCodeLine{00671\ \}}
+\DoxyCodeLine{00672\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00673\ \ \ \ \ TIMSK4\ =\ 0;}
+\DoxyCodeLine{00674\ \}}
+\DoxyCodeLine{00675\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER4\_OVF\_vect}}
+\DoxyCodeLine{00676\ }
+\DoxyCodeLine{00677\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00678\ \ \ \ \ TCCR4A\ =\ 0;}
+\DoxyCodeLine{00679\ \ \ \ \ TCCR4B\ =\ \_BV(CS40);}
+\DoxyCodeLine{00680\ \ \ \ \ TCCR4C\ =\ 0;}
+\DoxyCodeLine{00681\ \ \ \ \ TCCR4D\ =\ 0;}
+\DoxyCodeLine{00682\ \ \ \ \ TCCR4E\ =\ 0;}
+\DoxyCodeLine{00683\ \ \ \ \ TC4H\ =\ (F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND)\ >>\ 8;}
+\DoxyCodeLine{00684\ \ \ \ \ OCR4C\ =\ (F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND)\ \&\ 255;}
+\DoxyCodeLine{00685\ \ \ \ \ TC4H\ =\ 0;}
+\DoxyCodeLine{00686\ \ \ \ \ TCNT4\ =\ 0;}
+\DoxyCodeLine{00687\ \}}
+\DoxyCodeLine{00688\ }
+\DoxyCodeLine{00689\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00690\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC4A\_PIN)}}
+\DoxyCodeLine{00691\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC4A\_PIN\ \ }\textcolor{comment}{//\ Teensy\ 2.0}}
+\DoxyCodeLine{00692\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(ARDUINO\_AVR\_PROMICRO)}}
+\DoxyCodeLine{00693\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 5\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Sparkfun\ Pro\ Micro}}
+\DoxyCodeLine{00694\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega32U4\_\_)}}
+\DoxyCodeLine{00695\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 13\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Leonardo}}
+\DoxyCodeLine{00696\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00697\ \textcolor{preprocessor}{\#error\ Please\ add\ OC4A\ pin\ number\ here}}
+\DoxyCodeLine{00698\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(ARDUINO\_AVR\_PROMICRO)\ }\textcolor{comment}{//\ Sparkfun\ Pro\ Micro}}
+\DoxyCodeLine{00701\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00702\ \ \ \ \ TCNT4\ =\ 0;}
+\DoxyCodeLine{00703\ \ \ \ \ TCCR4A\ |=\ \_BV(COM4A0);\ \ \ \ \ \textcolor{comment}{//\ Use\ complementary\ OC4A\ output\ on\ pin\ 5}}
+\DoxyCodeLine{00704\ \}}
+\DoxyCodeLine{00705\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00706\ \ \ \ \ TCCR4A\ \&=\ \string~(\_BV(COM4A0));\ \ \textcolor{comment}{//\ (Pro\ Micro\ does\ not\ map\ PC7\ (32/ICP3/CLK0/OC4A)}}
+\DoxyCodeLine{00707\ \}}
+\DoxyCodeLine{00708\ \textcolor{comment}{//\ of\ ATmega32U4\ )}}
+\DoxyCodeLine{00709\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00710\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00711\ \ \ \ \ TCNT4\ =\ 0;}
+\DoxyCodeLine{00712\ \ \ \ \ TCCR4A\ |=\ \_BV(COM4A1);}
+\DoxyCodeLine{00713\ \ \ \ \ DDRC\ |=\ 1\ <<\ 7;}
+\DoxyCodeLine{00714\ \}}
+\DoxyCodeLine{00715\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00716\ \ \ \ \ TCCR4A\ \&=\ \string~(\_BV(COM4A1));}
+\DoxyCodeLine{00717\ \}}
+\DoxyCodeLine{00718\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00720\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00721\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00722\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00723\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00724\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00725\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{00726\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ 4\ HS\ is\ not\ supported\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{00727\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00728\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00729\ }
+\DoxyCodeLine{00730\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ ((F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz))\ -\/\ 1;\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00731\ \ \ \ \ TCCR4A\ =\ (1\ <<\ PWM4A);}
+\DoxyCodeLine{00732\ \ \ \ \ TCCR4B\ =\ \_BV(CS40);}
+\DoxyCodeLine{00733\ \ \ \ \ TCCR4C\ =\ 0;}
+\DoxyCodeLine{00734\ \ \ \ \ TCCR4D\ =\ (1\ <<\ WGM40);}
+\DoxyCodeLine{00735\ \ \ \ \ TCCR4E\ =\ 0;}
+\DoxyCodeLine{00736\ \ \ \ \ TC4H\ =\ tPWMWrapValue\ >>\ 8;}
+\DoxyCodeLine{00737\ \ \ \ \ OCR4C\ =\ tPWMWrapValue;}
+\DoxyCodeLine{00738\ \ \ \ \ TC4H\ =\ (tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ /\ 100)\ >>\ 8;}
+\DoxyCodeLine{00739\ \ \ \ \ OCR4A\ =\ (tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ /\ 100)\ \&\ 255;}
+\DoxyCodeLine{00740\ \ \ \ \ TCNT4\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00741\ \}}
+\DoxyCodeLine{00742\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00743\ }
+\DoxyCodeLine{00744\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00745\ \textcolor{comment}{\ *\ AVR\ Timer5\ (16\ bits)}}
+\DoxyCodeLine{00746\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00747\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER5)}}
+\DoxyCodeLine{00748\ }
+\DoxyCodeLine{00749\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00750\ \ \ \ \ TIMSK5\ =\ \_BV(OCIE5A);}
+\DoxyCodeLine{00751\ \}}
+\DoxyCodeLine{00752\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00753\ \ \ \ \ TIMSK5\ =\ 0;}
+\DoxyCodeLine{00754\ \}}
+\DoxyCodeLine{00755\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER5\_COMPA\_vect}}
+\DoxyCodeLine{00756\ }
+\DoxyCodeLine{00757\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00758\ \ \ \ \ TCCR5A\ =\ 0;}
+\DoxyCodeLine{00759\ \ \ \ \ TCCR5B\ =\ \_BV(WGM52)\ |\ \_BV(CS50);}
+\DoxyCodeLine{00760\ \ \ \ \ OCR5A\ =\ F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ /\ MICROS\_IN\_ONE\_SECOND;}
+\DoxyCodeLine{00761\ \ \ \ \ TCNT5\ =\ 0;}
+\DoxyCodeLine{00762\ \}}
+\DoxyCodeLine{00763\ }
+\DoxyCodeLine{00764\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00765\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(CORE\_OC5A\_PIN)}}
+\DoxyCodeLine{00766\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ CORE\_OC5A\_PIN}}
+\DoxyCodeLine{00767\ \textcolor{preprocessor}{\#\ \ \ \ elif\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)}}
+\DoxyCodeLine{00768\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 46\ \ }\textcolor{comment}{//\ Arduino\ Mega}}
+\DoxyCodeLine{00769\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00770\ \textcolor{preprocessor}{\#error\ Please\ add\ OC5A\ pin\ number\ here}}
+\DoxyCodeLine{00771\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00772\ }
+\DoxyCodeLine{00773\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00774\ \ \ \ \ TCNT5\ =\ 0;}
+\DoxyCodeLine{00775\ \ \ \ \ TCCR5A\ |=\ \_BV(COM5A1);}
+\DoxyCodeLine{00776\ \}}
+\DoxyCodeLine{00777\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00778\ \ \ \ \ TCCR5A\ \&=\ \string~(\_BV(COM5A1));}
+\DoxyCodeLine{00779\ \}}
+\DoxyCodeLine{00780\ }
+\DoxyCodeLine{00781\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00782\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00783\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00784\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00785\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00786\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{00787\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ 5\ is\ not\ supported\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{00788\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00789\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00790\ }
+\DoxyCodeLine{00791\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00792\ \ \ \ \ TCCR5A\ =\ \_BV(WGM51);}
+\DoxyCodeLine{00793\ \ \ \ \ TCCR5B\ =\ \_BV(WGM53)\ |\ \_BV(CS50);}
+\DoxyCodeLine{00794\ \ \ \ \ ICR5\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00795\ \ \ \ \ OCR5A\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00796\ \ \ \ \ TCNT5\ =\ 0;\ \textcolor{comment}{//\ required,\ since\ we\ have\ an\ 16\ bit\ counter}}
+\DoxyCodeLine{00797\ \}}
+\DoxyCodeLine{00798\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00799\ }
+\DoxyCodeLine{00800\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00801\ \textcolor{comment}{\ *\ AVR\ Timer0\ for\ ATtinies\ (8\ bits)}}
+\DoxyCodeLine{00802\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00803\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER\_TINY0)}}
+\DoxyCodeLine{00804\ }
+\DoxyCodeLine{00805\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00806\ \ \ \ \ TIMSK\ |=\ \_BV(OCIE0A);}
+\DoxyCodeLine{00807\ \}}
+\DoxyCodeLine{00808\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00809\ \ \ \ \ TIMSK\ \&=\ \string~(\_BV(OCIE0A));}
+\DoxyCodeLine{00810\ \}}
+\DoxyCodeLine{00811\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TIMER0\_COMPA\_vect}}
+\DoxyCodeLine{00812\ }
+\DoxyCodeLine{00813\ \textcolor{preprocessor}{\#define\ TIMER\_COUNT\_TOP\ \ (F\_CPU\ *\ MICROS\_PER\_TICK\ /\ MICROS\_IN\_ONE\_SECOND)}}
+\DoxyCodeLine{00814\ }
+\DoxyCodeLine{00815\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00816\ \textcolor{preprocessor}{\#\ \ if\ (TIMER\_COUNT\_TOP\ <\ 256)}}
+\DoxyCodeLine{00817\ \ \ \ \ TCCR0A\ =\ \_BV(WGM01);\ \textcolor{comment}{//\ CTC,\ Top\ is\ OCR0A}}
+\DoxyCodeLine{00818\ \ \ \ \ TCCR0B\ =\ \_BV(CS00);\textcolor{comment}{//\ No\ prescaling}}
+\DoxyCodeLine{00819\ \ \ \ \ OCR0A\ =\ TIMER\_COUNT\_TOP;}
+\DoxyCodeLine{00820\ \ \ \ \ TCNT0\ =\ 0;}
+\DoxyCodeLine{00821\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00822\ \ \ \ \ TCCR0A\ =\ \_BV(WGM01);}
+\DoxyCodeLine{00823\ \ \ \ \ TCCR0B\ =\ \_BV(CS01);\ \textcolor{comment}{//\ prescaling\ by\ 8}}
+\DoxyCodeLine{00824\ \ \ \ \ OCR0A\ =\ TIMER\_COUNT\_TOP\ /\ 8;}
+\DoxyCodeLine{00825\ \ \ \ \ TCNT0\ =\ 0;}
+\DoxyCodeLine{00826\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00827\ \}}
+\DoxyCodeLine{00828\ }
+\DoxyCodeLine{00829\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00830\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{00831\ }
+\DoxyCodeLine{00832\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00833\ \ \ \ \ TCNT0\ =\ 0;}
+\DoxyCodeLine{00834\ \ \ \ \ TCCR0A\ |=\ \_BV(COM0B1);}
+\DoxyCodeLine{00835\ \}}
+\DoxyCodeLine{00836\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00837\ \ \ \ \ TCCR0A\ \&=\ \string~(\_BV(COM0B1));}
+\DoxyCodeLine{00838\ \}}
+\DoxyCodeLine{00839\ }
+\DoxyCodeLine{00840\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00841\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00842\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00843\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00844\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00845\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{00846\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ TINY0\ is\ not\ supported\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{00847\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00848\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00849\ }
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ Phase\ Correct\ PWM}}
+\DoxyCodeLine{00851\ \ \ \ \ TCCR0A\ =\ \_BV(WGM00);\ \textcolor{comment}{//\ PWM,\ Phase\ Correct,\ Top\ is\ OCR0A}}
+\DoxyCodeLine{00852\ \ \ \ \ TCCR0B\ =\ \_BV(WGM02)\ |\ \_BV(CS00);\ \textcolor{comment}{//\ CS00\ -\/>\ no\ prescaling}}
+\DoxyCodeLine{00853\ \ \ \ \ OCR0A\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00854\ \ \ \ \ OCR0B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00855\ \ \ \ \ TCNT0\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00856\ \}}
+\DoxyCodeLine{00857\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00858\ }
+\DoxyCodeLine{00859\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00860\ \textcolor{comment}{\ *\ AVR\ Timer1\ for\ ATtinies\ (8\ bits)}}
+\DoxyCodeLine{00861\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00862\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER\_TINY1)}}
+\DoxyCodeLine{00863\ }
+\DoxyCodeLine{00864\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00865\ \ \ \ \ TIMSK\ |=\ \_BV(OCIE1B);}
+\DoxyCodeLine{00866\ \}}
+\DoxyCodeLine{00867\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00868\ \ \ \ \ TIMSK\ \&=\ \string~(\_BV(OCIE1B));}
+\DoxyCodeLine{00869\ \}}
+\DoxyCodeLine{00870\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TIMER1\_COMPB\_vect}}
+\DoxyCodeLine{00871\ }
+\DoxyCodeLine{00872\ \textcolor{preprocessor}{\#define\ TIMER\_COUNT\_TOP\ \ (F\_CPU\ *\ MICROS\_PER\_TICK\ /\ MICROS\_IN\_ONE\_SECOND)}}
+\DoxyCodeLine{00873\ }
+\DoxyCodeLine{00874\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00875\ \textcolor{preprocessor}{\#\ \ if\ (TIMER\_COUNT\_TOP\ <\ 256)}}
+\DoxyCodeLine{00876\ \ \ \ \ TCCR1\ =\ \_BV(CTC1)\ |\ \_BV(CS10);\ \textcolor{comment}{//\ Clear\ Timer/Counter\ on\ Compare\ Match,\ Top\ is\ OCR1C,\ No\ prescaling}}
+\DoxyCodeLine{00877\ \ \ \ \ GTCCR\ =\ 0;\textcolor{comment}{//\ normal,\ non-\/PWM\ mode}}
+\DoxyCodeLine{00878\ \ \ \ \ OCR1C\ =\ TIMER\_COUNT\_TOP;}
+\DoxyCodeLine{00879\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00880\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00881\ \ \ \ \ TCCR1\ =\ \_BV(CTC1)\ |\ \_BV(CS12);\ \textcolor{comment}{//\ Clear\ Timer/Counter\ on\ Compare\ Match,\ Top\ is\ OCR1C,\ prescaling\ by\ 8}}
+\DoxyCodeLine{00882\ \ \ \ \ GTCCR\ =\ 0;\ \textcolor{comment}{//\ normal,\ non-\/PWM\ mode}}
+\DoxyCodeLine{00883\ \ \ \ \ OCR1C\ =\ TIMER\_COUNT\_TOP\ /\ 8;}
+\DoxyCodeLine{00884\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00885\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00886\ \}}
+\DoxyCodeLine{00887\ }
+\DoxyCodeLine{00888\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00889\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00890\ }
+\DoxyCodeLine{00891\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00892\ \ \ \ \ TCNT1\ =\ 0;}
+\DoxyCodeLine{00893\ \ \ \ \ GTCCR\ |=\ \_BV(PWM1B)\ |\ \_BV(COM1B0);\ \textcolor{comment}{//\ Enable\ pin\ 4\ PWM\ output\ (PB4\ -\/\ Arduino\ D4)}}
+\DoxyCodeLine{00894\ \}}
+\DoxyCodeLine{00895\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00896\ \ \ \ \ GTCCR\ \&=\ \string~(\_BV(PWM1B)\ |\ \_BV(COM1B0));}
+\DoxyCodeLine{00897\ \}}
+\DoxyCodeLine{00898\ }
+\DoxyCodeLine{00899\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00900\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00901\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00902\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00903\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{00904\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{00905\ }
+\DoxyCodeLine{00906\ \textcolor{preprocessor}{\#\ \ if\ (((F\_CPU\ /\ 1000)\ /\ 38)\ <\ 256)}}
+\DoxyCodeLine{00907\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 1000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 421\ @16\ MHz,\ 26\ @1\ MHz\ and\ 38\ kHz}}
+\DoxyCodeLine{00908\ \ \ \ \ TCCR1\ =\ \_BV(CTC1)\ |\ \_BV(CS10);\textcolor{comment}{//\ CTC1\ =\ 1:\ TOP\ value\ set\ to\ OCR1C,\ CS10\ No\ Prescaling}}
+\DoxyCodeLine{00909\ \ \ \ \ OCR1C\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00910\ \ \ \ \ OCR1B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00911\ \ \ \ \ TCNT1\ =\ 0;\textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00912\ \ \ \ \ GTCCR\ =\ \_BV(PWM1B)\ |\ \_BV(COM1B0);\textcolor{comment}{//\ PWM1B\ =\ 1:\ Enable\ PWM\ for\ OCR1B,\ COM1B0\ Clear\ on\ compare\ match}}
+\DoxyCodeLine{00913\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00914\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ ((F\_CPU\ /\ 2)\ /\ 1000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210\ for\ 16\ MHz\ and\ 38\ kHz}}
+\DoxyCodeLine{00915\ \ \ \ \ TCCR1\ =\ \_BV(CTC1)\ |\ \_BV(CS11);\ \textcolor{comment}{//\ CTC1\ =\ 1:\ TOP\ value\ set\ to\ OCR1C,\ CS11\ Prescaling\ by\ 2}}
+\DoxyCodeLine{00916\ \ \ \ \ OCR1C\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{00917\ \ \ \ \ OCR1B\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;}
+\DoxyCodeLine{00918\ \ \ \ \ TCNT1\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{00919\ \ \ \ \ GTCCR\ =\ \_BV(PWM1B)\ |\ \_BV(COM1B0);\ \textcolor{comment}{//\ PWM1B\ =\ 1:\ Enable\ PWM\ for\ OCR1B,\ COM1B0\ Clear\ on\ compare\ match}}
+\DoxyCodeLine{00920\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00921\ \}}
+\DoxyCodeLine{00922\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00923\ }
+\DoxyCodeLine{00924\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00925\ \textcolor{comment}{\ *\ AVR\ TimerA\ for\ TinyCore\ 32\ (16\ bits)}}
+\DoxyCodeLine{00926\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00927\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER\_A)}}
+\DoxyCodeLine{00928\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{00929\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{00930\ \ \ \ \ TCA0.SINGLE.INTFLAGS\ =\ TCA\_SINGLE\_OVF\_bm;}
+\DoxyCodeLine{00931\ \}}
+\DoxyCodeLine{00932\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00933\ \ \ \ \ TCA0.SINGLE.INTCTRL\ =\ TCA\_SINGLE\_OVF\_bm;}
+\DoxyCodeLine{00934\ \}}
+\DoxyCodeLine{00935\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00936\ \ \ \ \ TCA0.SINGLE.INTCTRL\ \&=\ \string~(TCA\_SINGLE\_OVF\_bm);}
+\DoxyCodeLine{00937\ \}}
+\DoxyCodeLine{00938\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TCA0\_OVF\_vect}}
+\DoxyCodeLine{00939\ \textcolor{comment}{//\ For\ MegaTinyCore:}}
+\DoxyCodeLine{00940\ \textcolor{comment}{//\ TCB1\ is\ used\ by\ Tone()}}
+\DoxyCodeLine{00941\ \textcolor{comment}{//\ TCB2\ is\ used\ by\ Servo,\ but\ we\ cannot\ hijack\ the\ ISR,\ so\ we\ must\ use\ a\ dedicated\ timer\ for\ the\ 20\ ms\ interrupt}}
+\DoxyCodeLine{00942\ \textcolor{comment}{//\ TCB3\ is\ used\ by\ millis()}}
+\DoxyCodeLine{00943\ \textcolor{comment}{//\ Must\ use\ TCA0,\ since\ TCBx\ have\ only\ prescaler\ \%2.\ Use\ single\ (16bit)\ mode,\ because\ it\ seems\ to\ be\ easier\ :-\/)}}
+\DoxyCodeLine{00944\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00945\ \ \ \ \ TCA0.SINGLE.CTRLD\ =\ 0;\ \textcolor{comment}{//\ Single\ mode\ -\/\ required\ at\ least\ for\ MegaTinyCore}}
+\DoxyCodeLine{00946\ \ \ \ \ TCA0.SINGLE.CTRLB\ =\ TCA\_SINGLE\_WGMODE\_NORMAL\_gc;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Normal\ mode,\ top\ =\ PER}}
+\DoxyCodeLine{00947\ \ \ \ \ TCA0.SINGLE.PER\ =\ (F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND)\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};\ \ \ \ \ \textcolor{comment}{//\ 800\ at\ 16\ MHz}}
+\DoxyCodeLine{00948\ \ \ \ \ TCA0.SINGLE.CTRLA\ =\ TCA\_SINGLE\_CLKSEL\_DIV1\_gc\ |\ TCA\_SINGLE\_ENABLE\_bm;\ \ \ \textcolor{comment}{//\ set\ prescaler\ to\ 1\ and\ enable\ timer}}
+\DoxyCodeLine{00949\ \}}
+\DoxyCodeLine{00950\ }
+\DoxyCodeLine{00951\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00952\ \textcolor{preprocessor}{\#error\ "{}No\ support\ for\ hardware\ PWM\ generation\ for\ ATtiny3216/17\ etc."{}}}
+\DoxyCodeLine{00953\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00954\ }
+\DoxyCodeLine{00955\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00956\ \textcolor{comment}{\ *\ AVR\ TimerB\ \ (8\ bits)\ for\ ATmega4809\ (Nano\ Every,\ Uno\ WiFi\ Rev2)}}
+\DoxyCodeLine{00957\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00958\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER\_B)}}
+\DoxyCodeLine{00959\ }
+\DoxyCodeLine{00960\ \textcolor{comment}{//\ ATmega4809\ TCB0}}
+\DoxyCodeLine{00961\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{00962\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{00963\ \ \ \ \ TCB0.INTFLAGS\ =\ TCB\_CAPT\_bm;}
+\DoxyCodeLine{00964\ \}}
+\DoxyCodeLine{00965\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00966\ \ \ \ \ TCB0.INTCTRL\ =\ TCB\_CAPT\_bm;}
+\DoxyCodeLine{00967\ \}}
+\DoxyCodeLine{00968\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{00969\ \ \ \ \ TCB0.INTCTRL\ \&=\ \string~(TCB\_CAPT\_bm);}
+\DoxyCodeLine{00970\ \}}
+\DoxyCodeLine{00971\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TCB0\_INT\_vect}}
+\DoxyCodeLine{00972\ }
+\DoxyCodeLine{00973\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{00974\ \ \ \ \ TCB0.CTRLB\ =\ (TCB\_CNTMODE\_INT\_gc);\ \ \textcolor{comment}{//\ Periodic\ interrupt\ mode}}
+\DoxyCodeLine{00975\ \ \ \ \ TCB0.CCMP\ =\ ((F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}})\ /\ MICROS\_IN\_ONE\_SECOND);}
+\DoxyCodeLine{00976\ \ \ \ \ TCB0.INTFLAGS\ =\ TCB\_CAPT\_bm;\ \ \textcolor{comment}{//\ reset\ interrupt\ flags}}
+\DoxyCodeLine{00977\ \ \ \ \ TCB0.CTRLA\ =\ (TCB\_CLKSEL\_CLKDIV1\_gc)\ |\ (TCB\_ENABLE\_bm);}
+\DoxyCodeLine{00978\ \}}
+\DoxyCodeLine{00979\ }
+\DoxyCodeLine{00980\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00981\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(\_\_AVR\_ATmega4808\_\_)\ ||\ defined(\_\_AVR\_ATmega4809\_\_)}}
+\DoxyCodeLine{00982\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 6\ }\textcolor{comment}{//\ PF4\ on\ ATmega4809\ /\ Nano\ Every\ (see\ pins\_arduino.h\ digital\_pin\_to\_timer)}}
+\DoxyCodeLine{00983\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00984\ \textcolor{preprocessor}{\#error\ SEND\_PWM\_BY\_TIMER\ not\ yet\ supported\ for\ this\ CPU}}
+\DoxyCodeLine{00985\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00986\ }
+\DoxyCodeLine{00987\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00988\ \ \ \ \ TCB0.CNT\ =\ 0;}
+\DoxyCodeLine{00989\ \ \ \ \ TCB0.CTRLB\ |=\ TCB\_CCMPEN\_bm;\ \ \ \ \textcolor{comment}{//\ set\ Compare/Capture\ Output\ Enable}}
+\DoxyCodeLine{00990\ \}}
+\DoxyCodeLine{00991\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{00992\ \ \ \ \ TCB0.CTRLB\ \&=\ \string~(TCB\_CCMPEN\_bm);}
+\DoxyCodeLine{00993\ \}}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00995\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00996\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{00997\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{00998\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00999\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01000\ \textcolor{preprocessor}{\#if\ F\_CPU\ >\ 16000000}}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ have\ only\ prescaler\ 2\ or\ must\ take\ clock\ of\ timer\ A\ (which\ is\ non\ deterministic)}}
+\DoxyCodeLine{01002\ \textcolor{preprocessor}{\#error\ "{}Creating\ timer\ PWM\ with\ timer\ TCB0\ is\ not\ possible\ for\ F\_CPU\ >\ 16\ MHz"{}}}
+\DoxyCodeLine{01003\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01004\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{01005\ }
+\DoxyCodeLine{01006\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 2000)\ /\ (aFrequencyKHz);\ \textcolor{comment}{//\ 210,52\ for\ 38\ kHz\ @16\ MHz\ clock,\ 2000\ instead\ of\ 1000\ because\ of\ using\ CLK\ /\ 2}}
+\DoxyCodeLine{01007\ \ \ \ \ TCB0.CTRLB\ =\ TCB\_CNTMODE\_PWM8\_gc;\ \textcolor{comment}{//\ 8\ bit\ PWM\ mode}}
+\DoxyCodeLine{01008\ \ \ \ \ TCB0.CCMPL\ =\ tPWMWrapValue\ -\/\ 1;\ \textcolor{comment}{//\ Period\ of\ 8\ bit\ PWM}}
+\DoxyCodeLine{01009\ \ \ \ \ TCB0.CCMPH\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;\ \textcolor{comment}{//\ Duty\ cycle\ of\ waveform\ of\ 8\ bit\ PWM}}
+\DoxyCodeLine{01010\ \ \ \ \ TCB0.CTRLA\ =\ (TCB\_CLKSEL\_CLKDIV2\_gc)\ |\ (TCB\_ENABLE\_bm);\ \textcolor{comment}{//\ use\ CLK\ /\ 2}}
+\DoxyCodeLine{01011\ \ \ \ \ TCB0.CNT\ =\ 0;\ \textcolor{comment}{//\ not\ really\ required,\ since\ we\ have\ an\ 8\ bit\ counter,\ but\ makes\ the\ signal\ more\ reproducible}}
+\DoxyCodeLine{01012\ \}}
+\DoxyCodeLine{01013\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01014\ }
+\DoxyCodeLine{01015\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01016\ \textcolor{comment}{\ *\ AVR\ TimerD\ for\ TinyCore\ 32\ (16\ bits)}}
+\DoxyCodeLine{01017\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01018\ \textcolor{preprocessor}{\#elif\ defined(IR\_USE\_AVR\_TIMER\_D)}}
+\DoxyCodeLine{01019\ }
+\DoxyCodeLine{01020\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{01021\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{01022\ \ \ \ \ TCD0.INTFLAGS\ =\ TCD\_OVF\_bm;}
+\DoxyCodeLine{01023\ \}}
+\DoxyCodeLine{01024\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01025\ \ \ \ \ TCD0.INTCTRL\ =\ TCD\_OVF\_bm;}
+\DoxyCodeLine{01026\ \}}
+\DoxyCodeLine{01027\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01028\ \ \ \ \ TCD0.INTCTRL\ =\ 0;}
+\DoxyCodeLine{01029\ \}}
+\DoxyCodeLine{01030\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ TCD0\_OVF\_vect}}
+\DoxyCodeLine{01031\ }
+\DoxyCodeLine{01032\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01033\ \ \ \ \ TCD0.CTRLA\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ enable\ bit\ in\ order\ to\ unprotect\ the\ other\ bits}}
+\DoxyCodeLine{01034\ \ \ \ \ TCD0.CTRLB\ =\ TCD\_WGMODE\_ONERAMP\_gc;\ \textcolor{comment}{//\ must\ be\ set\ since\ it\ is\ used\ by\ PWM}}
+\DoxyCodeLine{01035\ \textcolor{comment}{//\ \ \ \ TCD0.CMPBSET\ =\ 80;}}
+\DoxyCodeLine{01036\ \ \ \ \ TCD0.CMPBCLR\ =\ ((F\_CPU\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}})\ /\ MICROS\_IN\_ONE\_SECOND)\ -\/\ 1;}
+\DoxyCodeLine{01037\ }
+\DoxyCodeLine{01038\ \ \ \ \ \_PROTECTED\_WRITE(TCD0.FAULTCTRL,\ 0);\ \textcolor{comment}{//\ must\ disable\ WOA\ output\ at\ pin\ 13/PA4}}
+\DoxyCodeLine{01039\ }
+\DoxyCodeLine{01040\ \ \ \ \ TCD0.INTFLAGS\ =\ TCD\_OVF\_bm;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ interrupt\ flags}}
+\DoxyCodeLine{01041\ \ \ \ \ \textcolor{comment}{//\ check\ enable\ ready}}
+\DoxyCodeLine{01042\ \textcolor{comment}{//\ \ \ \ while\ ((TCD0.STATUS\ \&\ TCD\_ENRDY\_bm)\ ==\ 0);\ //\ Wait\ for\ Enable\ Ready\ to\ be\ high\ -\/\ I\ guess\ it\ is\ not\ required}}
+\DoxyCodeLine{01043\ \ \ \ \ \textcolor{comment}{//\ enable\ timer\ -\/\ this\ locks\ the\ other\ bits\ and\ static\ registers\ and\ activates\ values\ in\ double\ buffered\ registers}}
+\DoxyCodeLine{01044\ \ \ \ \ TCD0.CTRLA\ =\ TCD\_ENABLE\_bm\ |\ TCD\_CLKSEL\_SYSCLK\_gc\ |\ TCD\_CNTPRES\_DIV1\_gc;\ \textcolor{comment}{//\ System\ clock,\ no\ prescale,\ no\ synchronization\ prescaler}}
+\DoxyCodeLine{01045\ \}}
+\DoxyCodeLine{01046\ }
+\DoxyCodeLine{01047\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01048\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ 13}}
+\DoxyCodeLine{01049\ }
+\DoxyCodeLine{01050\ \textcolor{keywordtype}{void}\ timerEnableSendPWM()\ \{}
+\DoxyCodeLine{01051\ \ \ \ \ TCD0.CTRLA\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ enable\ bit\ in\ order\ to\ unprotect\ the\ other\ bits}}
+\DoxyCodeLine{01052\ \ \ \ \ \_PROTECTED\_WRITE(TCD0.FAULTCTRL,\ FUSE\_CMPAEN\_bm);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ enable\ WOA\ output\ at\ pin\ 13/PA4}}
+\DoxyCodeLine{01053\ \textcolor{comment}{//\ \ \ \ \_PROTECTED\_WRITE(TCD0.FAULTCTRL,\ FUSE\_CMPAEN\_bm\ |\ FUSE\_CMPBEN\_bm);\ //\ enable\ WOA\ +\ WOB\ output\ pins\ at\ 13/PA4\ +\ 14/PA5}}
+\DoxyCodeLine{01054\ \ \ \ \ TCD0.CTRLA\ =\ TCD\_ENABLE\_bm\ |\ TCD\_CLKSEL\_SYSCLK\_gc\ |\ TCD\_CNTPRES\_DIV1\_gc;\ \textcolor{comment}{//\ System\ clock,\ no\ prescale,\ no\ synchronization\ prescaler}}
+\DoxyCodeLine{01055\ \}}
+\DoxyCodeLine{01056\ }
+\DoxyCodeLine{01057\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01058\ \ \ \ \ timerEnableSendPWM();}
+\DoxyCodeLine{01059\ \}}
+\DoxyCodeLine{01060\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01061\ \ \ \ \ TCD0.CTRLA\ =\ 0;\ \textcolor{comment}{//\ do\ not\ disable\ output,\ disable\ complete\ timer}}
+\DoxyCodeLine{01062\ \}}
+\DoxyCodeLine{01063\ }
+\DoxyCodeLine{01064\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01065\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01066\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01067\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01068\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01069\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{01070\ }
+\DoxyCodeLine{01071\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ tPWMWrapValue\ =\ (F\_CPU\ /\ 1000)\ /\ (aFrequencyKHz);\ \ \ \ \textcolor{comment}{//\ 526,31\ for\ 38\ kHz\ @20\ MHz\ clock}}
+\DoxyCodeLine{01072\ \ \ \ \ \textcolor{comment}{//\ use\ one\ ramp\ mode\ and\ overflow\ interrupt}}
+\DoxyCodeLine{01073\ \ \ \ \ TCD0.CTRLA\ =\ 0;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ enable\ bit\ in\ order\ to\ unprotect\ the\ other\ bits}}
+\DoxyCodeLine{01074\ \textcolor{comment}{//\ \ \ \ while\ ((TCD0.STATUS\ \&\ TCD\_ENRDY\_bm)\ ==\ 0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ Wait\ for\ Enable\ Ready\ to\ be\ high\ -\/\ I\ guess\ it\ is\ not\ required}}
+\DoxyCodeLine{01075\ \ \ \ \ TCD0.CTRLB\ =\ TCD\_WGMODE\_ONERAMP\_gc;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ must\ be\ set\ since\ it\ is\ used\ by\ PWM}}
+\DoxyCodeLine{01076\ \ \ \ \ TCD0.CTRLC\ =\ 0;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ WOx\ output\ settings}}
+\DoxyCodeLine{01077\ \textcolor{comment}{//\ \ \ \ TCD0.CMPBSET\ =\ 80;}}
+\DoxyCodeLine{01078\ \ \ \ \ TCD0.CMPBCLR\ =\ tPWMWrapValue\ -\/\ 1;}
+\DoxyCodeLine{01079\ }
+\DoxyCodeLine{01080\ \ \ \ \ \textcolor{comment}{//\ Generate\ duty\ cycle\ signal\ for\ debugging\ etc.}}
+\DoxyCodeLine{01081\ \ \ \ \ TCD0.CMPASET\ =\ 0;}
+\DoxyCodeLine{01082\ \ \ \ \ TCD0.CMPACLR\ =\ (tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ /\ 100)\ -\/\ 1;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ duty\ cycle\ for\ WOA}}
+\DoxyCodeLine{01083\ }
+\DoxyCodeLine{01084\ \ \ \ \ TCD0.INTFLAGS\ =\ TCD\_OVF\_bm;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ interrupt\ flags}}
+\DoxyCodeLine{01085\ \ \ \ \ TCD0.INTCTRL\ =\ TCD\_OVF\_bm;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ overflow\ interrupt}}
+\DoxyCodeLine{01086\ \ \ \ \ \textcolor{comment}{//\ Do\ not\ enable\ timer,\ this\ is\ done\ at\ timerEnablSendPWM()}}
+\DoxyCodeLine{01087\ \}}
+\DoxyCodeLine{01088\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01089\ }
+\DoxyCodeLine{01090\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01091\ \textcolor{preprocessor}{\#error\ Internal\ code\ configuration\ error,\ no\ timer\ functions\ implemented\ for\ this\ AVR\ CPU\ /\ board}}
+\DoxyCodeLine{01092\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//defined(IR\_USE\_AVR\_TIMER*)}}
+\DoxyCodeLine{01093\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{01094\ \textcolor{comment}{\ *\ End\ of\ AVR\ timers}}
+\DoxyCodeLine{01095\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{01096\ }
+\DoxyCodeLine{01097\ \textcolor{comment}{/**********************************************}}
+\DoxyCodeLine{01098\ \textcolor{comment}{\ *\ Uno\ R4\ boards}}
+\DoxyCodeLine{01099\ \textcolor{comment}{\ **********************************************/}}
+\DoxyCodeLine{01100\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_RENESAS)}}
+\DoxyCodeLine{01101\ \textcolor{preprocessor}{\#include\ "{}FspTimer.h"{}}}
+\DoxyCodeLine{01102\ FspTimer\ s50usTimer;}
+\DoxyCodeLine{01103\ }
+\DoxyCodeLine{01104\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01105\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01106\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01107\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01108\ }
+\DoxyCodeLine{01109\ \textcolor{comment}{//\ callback\ method\ used\ by\ timer}}
+\DoxyCodeLine{01110\ \textcolor{keywordtype}{void}\ IRTimerInterruptHandlerHelper(timer\_callback\_args\_t\ \_\_attribute((unused))\ *p\_args)\ \{}
+\DoxyCodeLine{01111\ \ \ \ \ IRReceiveTimerInterruptHandler();}
+\DoxyCodeLine{01112\ \}}
+\DoxyCodeLine{01113\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01114\ \textcolor{comment}{//\ \ \ \ s50usTimer.enable\_overflow\_irq();}}
+\DoxyCodeLine{01115\ \ \ \ \ s50usTimer.start();}
+\DoxyCodeLine{01116\ \}}
+\DoxyCodeLine{01117\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01118\ \textcolor{comment}{//\ \ \ \ s50usTimer.disable\_overflow\_irq();}}
+\DoxyCodeLine{01119\ \ \ \ \ s50usTimer.stop();\ \textcolor{comment}{//\ May\ save\ power}}
+\DoxyCodeLine{01120\ \}}
+\DoxyCodeLine{01121\ }
+\DoxyCodeLine{01122\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01123\ \ \ \ \ uint8\_t\ tTimerType\ =\ GPT\_TIMER;}
+\DoxyCodeLine{01124\ \ \ \ \ int8\_t\ tIndex\ =\ FspTimer::get\_available\_timer(tTimerType);\ \textcolor{comment}{//\ Get\ first\ unused\ channel.\ Here\ we\ need\ the\ address\ of\ tTimerType}}
+\DoxyCodeLine{01125\ \ \ \ \ \textcolor{keywordflow}{if}\ (tIndex\ <\ 0\ ||\ tTimerType\ !=\ GPT\_TIMER)\ \{}
+\DoxyCodeLine{01126\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ here\ we\ found\ no\ unused\ GPT\ channel}}
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ tIndex\ =\ FspTimer::get\_available\_timer(tTimerType,\ \textcolor{keyword}{true});\ \textcolor{comment}{//\ true\ to\ force\ use\ of\ already\ used\ PWM\ channel.\ Sets\ "{}force\_pwm\_reserved"{}\ if\ timer\ found}}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tIndex\ <\ 0)\ \{}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we\ already\ get\ an\ tIndex\ <\ 0\ we\ have\ an\ error,\ but\ do\ not\ know\ how\ to\ handle\ :-\/(}}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01132\ \ \ \ \ \}}
+\DoxyCodeLine{01133\ \ \ \ \ s50usTimer.begin(TIMER\_MODE\_PERIODIC,\ tTimerType,\ tIndex,\ MICROS\_IN\_ONE\_SECOND\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}},\ 0.0,}
+\DoxyCodeLine{01134\ \ \ \ \ \ \ \ \ \ \ \ \ IRTimerInterruptHandlerHelper);}
+\DoxyCodeLine{01135\ \ \ \ \ s50usTimer.setup\_overflow\_irq();}
+\DoxyCodeLine{01136\ \ \ \ \ s50usTimer.open();\ \textcolor{comment}{//\ In\ turn\ calls\ R\_GPT\_Enable()}}
+\DoxyCodeLine{01137\ \ \ \ \ s50usTimer.stop();\ \textcolor{comment}{//\ May\ save\ power}}
+\DoxyCodeLine{01138\ \}}
+\DoxyCodeLine{01139\ }
+\DoxyCodeLine{01140\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01141\ \textcolor{preprocessor}{\#error\ PWM\ generation\ by\ hardware\ not\ yet\ implemented\ for\ Arduino\ Uno\ R4}}
+\DoxyCodeLine{01142\ \textcolor{comment}{//\ Not\ yet\ implemented}}
+\DoxyCodeLine{01143\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01144\ \}}
+\DoxyCodeLine{01145\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01146\ \}}
+\DoxyCodeLine{01147\ }
+\DoxyCodeLine{01148\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01149\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01150\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01151\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01152\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01153\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01154\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01155\ \}}
+\DoxyCodeLine{01156\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01157\ }
+\DoxyCodeLine{01158\ \textcolor{comment}{/**********************************************}}
+\DoxyCodeLine{01159\ \textcolor{comment}{\ *\ Teensy\ 3.0\ /\ Teensy\ 3.1\ /\ Teensy\ 3.2\ boards}}
+\DoxyCodeLine{01160\ \textcolor{comment}{\ **********************************************/}}
+\DoxyCodeLine{01161\ \textcolor{preprocessor}{\#elif\ defined(\_\_MK20DX128\_\_)\ ||\ defined(\_\_MK20DX256\_\_)\ ||\ defined(\_\_MK64FX512\_\_)\ ||\ defined(\_\_MK66FX1M0\_\_)}}
+\DoxyCodeLine{01162\ }
+\DoxyCodeLine{01163\ \textcolor{comment}{//\ Special\ carrier\ modulator\ timer\ for\ Teensy\ 3.0\ /\ Teensy\ 3.1\ /\ Teensy\ 3.2}}
+\DoxyCodeLine{01164\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{01165\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{01166\ \ \ \ \ uint8\_t\ tmp\ \_\_attribute\_\_((unused))\ =\ CMT\_MSC;}
+\DoxyCodeLine{01167\ \ \ \ \ CMT\_CMD2\ =\ 30;}
+\DoxyCodeLine{01168\ \}}
+\DoxyCodeLine{01169\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01170\ \ \ \ \ NVIC\_ENABLE\_IRQ(IRQ\_CMT);}
+\DoxyCodeLine{01171\ \ \ \ \ NVIC\_SET\_PRIORITY(IRQ\_CMT,\ 48);}
+\DoxyCodeLine{01172\ \}}
+\DoxyCodeLine{01173\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01174\ \ \ \ \ NVIC\_DISABLE\_IRQ(IRQ\_CMT);}
+\DoxyCodeLine{01175\ \}}
+\DoxyCodeLine{01176\ }
+\DoxyCodeLine{01177\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ cmt\_isr}}
+\DoxyCodeLine{01178\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01179\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01180\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01181\ \textcolor{preprocessor}{\#define\ ISR(f)\ void\ f(void)}}
+\DoxyCodeLine{01182\ }
+\DoxyCodeLine{01183\ \textcolor{preprocessor}{\#define\ CMT\_PPS\_DIV\ \ ((F\_BUS\ +\ 7999999)\ /\ 8000000)}}
+\DoxyCodeLine{01184\ \textcolor{preprocessor}{\#\ \ if\ F\_BUS\ <\ 8000000}}
+\DoxyCodeLine{01185\ \textcolor{preprocessor}{\#error\ IRremote\ requires\ at\ least\ 8\ MHz\ on\ Teensy\ 3.x}}
+\DoxyCodeLine{01186\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01187\ }
+\DoxyCodeLine{01188\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01189\ \ \ \ \ SIM\_SCGC4\ |=\ SIM\_SCGC4\_CMT;}
+\DoxyCodeLine{01190\ \ \ \ \ CMT\_PPS\ =\ CMT\_PPS\_DIV\ -\/\ 1;}
+\DoxyCodeLine{01191\ \ \ \ \ CMT\_CGH1\ =\ 1;}
+\DoxyCodeLine{01192\ \ \ \ \ CMT\_CGL1\ =\ 1;}
+\DoxyCodeLine{01193\ \ \ \ \ CMT\_CMD1\ =\ 0;}
+\DoxyCodeLine{01194\ \ \ \ \ CMT\_CMD2\ =\ 30;}
+\DoxyCodeLine{01195\ \ \ \ \ CMT\_CMD3\ =\ 0;}
+\DoxyCodeLine{01196\ \ \ \ \ CMT\_CMD4\ =\ (F\_BUS\ /\ 160000\ +\ CMT\_PPS\_DIV\ /\ 2)\ /\ CMT\_PPS\_DIV\ -\/\ 31;}
+\DoxyCodeLine{01197\ \ \ \ \ CMT\_OC\ =\ 0;}
+\DoxyCodeLine{01198\ \ \ \ \ CMT\_MSC\ =\ 0x03;}
+\DoxyCodeLine{01199\ \}}
+\DoxyCodeLine{01200\ }
+\DoxyCodeLine{01201\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01202\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ 5}}
+\DoxyCodeLine{01203\ }
+\DoxyCodeLine{01204\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01205\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{01206\ \ \ \ \ \ \ \ \ CORE\_PIN5\_CONFIG\ =\ PORT\_PCR\_MUX(2)\ |\ PORT\_PCR\_DSE\ |\ PORT\_PCR\_SRE;}
+\DoxyCodeLine{01207\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (0);}
+\DoxyCodeLine{01208\ \}}
+\DoxyCodeLine{01209\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01210\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{01211\ \ \ \ \ \ \ \ \ CORE\_PIN5\_CONFIG\ =\ PORT\_PCR\_MUX(1)\ |\ PORT\_PCR\_DSE\ |\ PORT\_PCR\_SRE;}
+\DoxyCodeLine{01212\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (0);}
+\DoxyCodeLine{01213\ \}}
+\DoxyCodeLine{01214\ }
+\DoxyCodeLine{01215\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01216\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01217\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01218\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01219\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01220\ \ \ \ \ timerDisableReceiveInterrupt();\ \textcolor{comment}{//\ TODO\ really\ required\ here?\ Do\ we\ have\ a\ common\ resource\ for\ Teensy3.0,\ 3.1}}
+\DoxyCodeLine{01221\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01222\ \ \ \ \ pinMode(IR\_SEND\_PIN,\ OUTPUT);}
+\DoxyCodeLine{01223\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01224\ \ \ \ \ pinMode(IrSender.sendPin,\ OUTPUT);}
+\DoxyCodeLine{01225\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01226\ }
+\DoxyCodeLine{01227\ \ \ \ \ SIM\_SCGC4\ |=\ SIM\_SCGC4\_CMT;}
+\DoxyCodeLine{01228\ \ \ \ \ SIM\_SOPT2\ |=\ SIM\_SOPT2\_PTD7PAD;}
+\DoxyCodeLine{01229\ \ \ \ \ CMT\_PPS\ =\ CMT\_PPS\_DIV\ -\/\ 1;}
+\DoxyCodeLine{01230\ \ \ \ \ CMT\_CGH1\ =\ ((F\_BUS\ /\ CMT\_PPS\_DIV\ /\ 3000)\ +\ ((aFrequencyKHz)\ /\ 2))\ /\ (aFrequencyKHz);}
+\DoxyCodeLine{01231\ \ \ \ \ CMT\_CGL1\ =\ ((F\_BUS\ /\ CMT\_PPS\_DIV\ /\ 1500)\ +\ ((aFrequencyKHz)\ /\ 2))\ /\ (aFrequencyKHz);}
+\DoxyCodeLine{01232\ \ \ \ \ CMT\_CMD1\ =\ 0;}
+\DoxyCodeLine{01233\ \ \ \ \ CMT\_CMD2\ =\ 30;}
+\DoxyCodeLine{01234\ \ \ \ \ CMT\_CMD3\ =\ 0;}
+\DoxyCodeLine{01235\ \ \ \ \ CMT\_CMD4\ =\ 0;}
+\DoxyCodeLine{01236\ \ \ \ \ CMT\_OC\ =\ 0x60;}
+\DoxyCodeLine{01237\ \ \ \ \ CMT\_MSC\ =\ 0x01;}
+\DoxyCodeLine{01238\ \}}
+\DoxyCodeLine{01239\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01240\ }
+\DoxyCodeLine{01241\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01242\ \textcolor{comment}{\ *\ Teensy-\/LC\ board}}
+\DoxyCodeLine{01243\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01244\ \textcolor{preprocessor}{\#elif\ defined(\_\_MKL26Z64\_\_)}}
+\DoxyCodeLine{01245\ }
+\DoxyCodeLine{01246\ \textcolor{comment}{//\ defines\ for\ TPM1\ timer\ on\ Teensy-\/LC}}
+\DoxyCodeLine{01247\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{01248\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{01249\ \ \ \ \ FTM1\_SC\ |=\ FTM\_SC\_TOF;}
+\DoxyCodeLine{01250\ \}}
+\DoxyCodeLine{01251\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01252\ \ \ \ \ NVIC\_ENABLE\_IRQ(IRQ\_FTM1);}
+\DoxyCodeLine{01253\ \ \ \ \ NVIC\_SET\_PRIORITY(IRQ\_FTM1,\ 0);}
+\DoxyCodeLine{01254\ \}}
+\DoxyCodeLine{01255\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01256\ \ \ \ \ NVIC\_DISABLE\_IRQ(IRQ\_FTM1);}
+\DoxyCodeLine{01257\ \}}
+\DoxyCodeLine{01258\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ftm1\_isr}}
+\DoxyCodeLine{01259\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01260\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01261\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01262\ \textcolor{preprocessor}{\#define\ ISR(f)\ void\ f(void)}}
+\DoxyCodeLine{01263\ }
+\DoxyCodeLine{01264\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01265\ \ \ \ \ SIM\_SCGC6\ |=\ SIM\_SCGC6\_TPM1;}
+\DoxyCodeLine{01266\ \ \ \ \ FTM1\_SC\ =\ 0;}
+\DoxyCodeLine{01267\ \ \ \ \ FTM1\_CNT\ =\ 0;}
+\DoxyCodeLine{01268\ \ \ \ \ FTM1\_MOD\ =\ (F\_PLL\ /\ 40000)\ -\/\ 1;}
+\DoxyCodeLine{01269\ \ \ \ \ FTM1\_C0V\ =\ 0;}
+\DoxyCodeLine{01270\ \ \ \ \ FTM1\_SC\ =\ FTM\_SC\_CLKS(1)\ |\ FTM\_SC\_PS(0)\ |\ FTM\_SC\_TOF\ |\ FTM\_SC\_TOIE;}
+\DoxyCodeLine{01271\ \}}
+\DoxyCodeLine{01272\ }
+\DoxyCodeLine{01273\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01274\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 16}}
+\DoxyCodeLine{01275\ }
+\DoxyCodeLine{01276\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01277\ \ \ \ \ FTM1\_CNT\ =\ 0;}
+\DoxyCodeLine{01278\ \ \ \ \ CORE\_PIN16\_CONFIG\ =\ PORT\_PCR\_MUX(3)\ |\ PORT\_PCR\_DSE\ |\ PORT\_PCR\_SRE;}
+\DoxyCodeLine{01279\ \}}
+\DoxyCodeLine{01280\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01281\ \ \ \ \ CORE\_PIN16\_CONFIG\ =\ PORT\_PCR\_MUX(1)\ |\ PORT\_PCR\_SRE;}
+\DoxyCodeLine{01282\ \}}
+\DoxyCodeLine{01283\ }
+\DoxyCodeLine{01284\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01285\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01286\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01287\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01288\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01289\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{01290\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01291\ \ \ \ \ pinMode(IR\_SEND\_PIN,\ OUTPUT);}
+\DoxyCodeLine{01292\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01293\ \ \ \ \ pinMode(IrSender.sendPin,\ OUTPUT);}
+\DoxyCodeLine{01294\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01295\ }
+\DoxyCodeLine{01296\ \ \ \ \ SIM\_SCGC6\ |=\ SIM\_SCGC6\_TPM1;}
+\DoxyCodeLine{01297\ \ \ \ \ FTM1\_SC\ =\ 0;}
+\DoxyCodeLine{01298\ \ \ \ \ FTM1\_CNT\ =\ 0;}
+\DoxyCodeLine{01299\ \ \ \ \ FTM1\_MOD\ =\ ((F\_PLL\ /\ 2000)\ /\ aFrequencyKHz)\ -\/\ 1;}
+\DoxyCodeLine{01300\ \ \ \ \ FTM1\_C0V\ =\ ((F\_PLL\ /\ 6000)\ /\ aFrequencyKHz)\ -\/\ 1;}
+\DoxyCodeLine{01301\ \ \ \ \ FTM1\_SC\ =\ FTM\_SC\_CLKS(1)\ |\ FTM\_SC\_PS(0);}
+\DoxyCodeLine{01302\ \}}
+\DoxyCodeLine{01303\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01304\ }
+\DoxyCodeLine{01305\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01306\ \textcolor{comment}{\ *\ Teensy\ 4.0,\ 4.1,\ MicroMod\ boards}}
+\DoxyCodeLine{01307\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01308\ \textcolor{preprocessor}{\#elif\ defined(\_\_IMXRT1062\_\_)}}
+\DoxyCodeLine{01309\ \textcolor{comment}{//\ forward\ declare\ ISR\ function\ (will\ be\ implemented\ by\ IRReceive.hpp)}}
+\DoxyCodeLine{01310\ \textcolor{keywordtype}{void}\ pwm1\_3\_isr();}
+\DoxyCodeLine{01311\ }
+\DoxyCodeLine{01312\ \textcolor{comment}{//\ defines\ for\ FlexPWM1\ timer\ on\ Teensy\ 4}}
+\DoxyCodeLine{01313\ \textcolor{preprocessor}{\#define\ TIMER\_REQUIRES\_RESET\_INTR\_PENDING}}
+\DoxyCodeLine{01314\ \textcolor{keywordtype}{void}\ timerResetInterruptPending()\ \{}
+\DoxyCodeLine{01315\ \ \ \ \ FLEXPWM1\_SM3STS\ =\ FLEXPWM\_SMSTS\_RF;}
+\DoxyCodeLine{01316\ \}}
+\DoxyCodeLine{01317\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01318\ \ \ \ \ attachInterruptVector(IRQ\_FLEXPWM1\_3,\ pwm1\_3\_isr);}
+\DoxyCodeLine{01319\ \ \ \ \ FLEXPWM1\_SM3STS\ =\ FLEXPWM\_SMSTS\_RF;}
+\DoxyCodeLine{01320\ \ \ \ \ FLEXPWM1\_SM3INTEN\ =\ FLEXPWM\_SMINTEN\_RIE;}
+\DoxyCodeLine{01321\ \ \ \ \ NVIC\_ENABLE\_IRQ\ (IRQ\_FLEXPWM1\_3),\ NVIC\_SET\_PRIORITY(IRQ\_FLEXPWM1\_3,\ 48);}
+\DoxyCodeLine{01322\ \}}
+\DoxyCodeLine{01323\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01324\ \ \ \ \ NVIC\_DISABLE\_IRQ\ (IRQ\_FLEXPWM1\_3);}
+\DoxyCodeLine{01325\ \}}
+\DoxyCodeLine{01326\ \textcolor{preprocessor}{\#define\ TIMER\_INTR\_NAME\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pwm1\_3\_isr}}
+\DoxyCodeLine{01327\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01328\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01329\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01330\ \textcolor{preprocessor}{\#define\ ISR(f)\ void\ (f)(void)}}
+\DoxyCodeLine{01331\ }
+\DoxyCodeLine{01332\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01333\ \ \ \ \ uint32\_t\ period\ =\ (float)\ F\_BUS\_ACTUAL\ *\ (\textcolor{keywordtype}{float})\ (\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}})\ *\ 0.0000005f;}
+\DoxyCodeLine{01334\ \ \ \ \ uint32\_t\ prescale\ =\ 0;}
+\DoxyCodeLine{01335\ \ \ \ \ \textcolor{keywordflow}{while}\ (period\ >\ 32767)\ \{}
+\DoxyCodeLine{01336\ \ \ \ \ \ \ \ \ period\ =\ period\ >>\ 1;}
+\DoxyCodeLine{01337\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (prescale\ <\ 7)}
+\DoxyCodeLine{01338\ \ \ \ \ \ \ \ \ \ \ \ \ prescale++;}
+\DoxyCodeLine{01339\ \ \ \ \ \}}
+\DoxyCodeLine{01340\ \ \ \ \ FLEXPWM1\_FCTRL0\ |=\ FLEXPWM\_FCTRL0\_FLVL(8);}
+\DoxyCodeLine{01341\ \ \ \ \ FLEXPWM1\_FSTS0\ =\ 0x0008;}
+\DoxyCodeLine{01342\ \ \ \ \ FLEXPWM1\_MCTRL\ |=\ FLEXPWM\_MCTRL\_CLDOK(8);}
+\DoxyCodeLine{01343\ \ \ \ \ FLEXPWM1\_SM3CTRL2\ =\ FLEXPWM\_SMCTRL2\_INDEP;}
+\DoxyCodeLine{01344\ \ \ \ \ FLEXPWM1\_SM3CTRL\ =\ FLEXPWM\_SMCTRL\_HALF\ |\ FLEXPWM\_SMCTRL\_PRSC(prescale);}
+\DoxyCodeLine{01345\ \ \ \ \ FLEXPWM1\_SM3INIT\ =\ -\/period;}
+\DoxyCodeLine{01346\ \ \ \ \ FLEXPWM1\_SM3VAL0\ =\ 0;}
+\DoxyCodeLine{01347\ \ \ \ \ FLEXPWM1\_SM3VAL1\ =\ period;}
+\DoxyCodeLine{01348\ \ \ \ \ FLEXPWM1\_SM3VAL2\ =\ 0;}
+\DoxyCodeLine{01349\ \ \ \ \ FLEXPWM1\_SM3VAL3\ =\ 0;}
+\DoxyCodeLine{01350\ \ \ \ \ FLEXPWM1\_SM3VAL4\ =\ 0;}
+\DoxyCodeLine{01351\ \ \ \ \ FLEXPWM1\_SM3VAL5\ =\ 0;}
+\DoxyCodeLine{01352\ \ \ \ \ FLEXPWM1\_MCTRL\ |=\ FLEXPWM\_MCTRL\_LDOK(8)\ |\ FLEXPWM\_MCTRL\_RUN(8);}
+\DoxyCodeLine{01353\ \}}
+\DoxyCodeLine{01354\ }
+\DoxyCodeLine{01355\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01356\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 7}}
+\DoxyCodeLine{01357\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01358\ \ \ \ \ FLEXPWM1\_OUTEN\ |=\ FLEXPWM\_OUTEN\_PWMA\_EN(8);}
+\DoxyCodeLine{01359\ \ \ \ \ IOMUXC\_SW\_MUX\_CTL\_PAD\_GPIO\_B1\_00\ =\ 6;}
+\DoxyCodeLine{01360\ \}}
+\DoxyCodeLine{01361\ }
+\DoxyCodeLine{01362\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01363\ \ \ \ \ IOMUXC\_SW\_MUX\_CTL\_PAD\_GPIO\_B1\_00\ =\ 5;}
+\DoxyCodeLine{01364\ \ \ \ \ FLEXPWM1\_OUTEN\ \&=\ \string~FLEXPWM\_OUTEN\_PWMA\_EN(8);}
+\DoxyCodeLine{01365\ \}}
+\DoxyCodeLine{01366\ }
+\DoxyCodeLine{01367\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01368\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01369\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01370\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01371\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01372\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{01373\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01374\ \ \ \ \ pinMode(IR\_SEND\_PIN,\ OUTPUT);}
+\DoxyCodeLine{01375\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01376\ \ \ \ \ pinMode(IrSender.sendPin,\ OUTPUT);}
+\DoxyCodeLine{01377\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01378\ }
+\DoxyCodeLine{01379\ \ \ \ \ uint32\_t\ period\ =\ (float)\ F\_BUS\_ACTUAL\ /\ (\textcolor{keywordtype}{float})\ ((aFrequencyKHz)\ *\ 2000);}
+\DoxyCodeLine{01380\ \ \ \ \ uint32\_t\ prescale\ =\ 0;}
+\DoxyCodeLine{01381\ \ \ \ \ \textcolor{keywordflow}{while}\ (period\ >\ 32767)\ \{}
+\DoxyCodeLine{01382\ \ \ \ \ \ \ \ \ period\ =\ period\ >>\ 1;}
+\DoxyCodeLine{01383\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (prescale\ <\ 7)}
+\DoxyCodeLine{01384\ \ \ \ \ \ \ \ \ \ \ \ \ prescale++;}
+\DoxyCodeLine{01385\ \ \ \ \ \}}
+\DoxyCodeLine{01386\ \ \ \ \ FLEXPWM1\_FCTRL0\ |=\ FLEXPWM\_FCTRL0\_FLVL(8);}
+\DoxyCodeLine{01387\ \ \ \ \ FLEXPWM1\_FSTS0\ =\ 0x0008;}
+\DoxyCodeLine{01388\ \ \ \ \ FLEXPWM1\_MCTRL\ |=\ FLEXPWM\_MCTRL\_CLDOK(8);}
+\DoxyCodeLine{01389\ \ \ \ \ FLEXPWM1\_SM3CTRL2\ =\ FLEXPWM\_SMCTRL2\_INDEP;}
+\DoxyCodeLine{01390\ \ \ \ \ FLEXPWM1\_SM3CTRL\ =\ FLEXPWM\_SMCTRL\_HALF\ |\ FLEXPWM\_SMCTRL\_PRSC(prescale);}
+\DoxyCodeLine{01391\ \ \ \ \ FLEXPWM1\_SM3INIT\ =\ -\/period;}
+\DoxyCodeLine{01392\ \ \ \ \ FLEXPWM1\_SM3VAL0\ =\ 0;}
+\DoxyCodeLine{01393\ \ \ \ \ FLEXPWM1\_SM3VAL1\ =\ period;}
+\DoxyCodeLine{01394\ \ \ \ \ FLEXPWM1\_SM3VAL2\ =\ -\/(period\ /\ 3);}
+\DoxyCodeLine{01395\ \ \ \ \ FLEXPWM1\_SM3VAL3\ =\ period\ /\ 3;}
+\DoxyCodeLine{01396\ \ \ \ \ FLEXPWM1\_SM3VAL4\ =\ 0;}
+\DoxyCodeLine{01397\ \ \ \ \ FLEXPWM1\_SM3VAL5\ =\ 0;}
+\DoxyCodeLine{01398\ \ \ \ \ FLEXPWM1\_MCTRL\ |=\ FLEXPWM\_MCTRL\_LDOK(8)\ |\ FLEXPWM\_MCTRL\_RUN(8);}
+\DoxyCodeLine{01399\ \}}
+\DoxyCodeLine{01400\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01401\ }
+\DoxyCodeLine{01402\ \textcolor{comment}{/**********************************************************}}
+\DoxyCodeLine{01403\ \textcolor{comment}{\ *\ ESP8266\ boards}}
+\DoxyCodeLine{01404\ \textcolor{comment}{\ **********************************************************/}}
+\DoxyCodeLine{01405\ \textcolor{preprocessor}{\#elif\ defined(ESP8266)}}
+\DoxyCodeLine{01406\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01407\ \textcolor{preprocessor}{\#error\ "{}No\ support\ for\ hardware\ PWM\ generation\ for\ ESP8266"{}}}
+\DoxyCodeLine{01408\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01409\ }
+\DoxyCodeLine{01410\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01411\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01412\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01413\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01414\ }
+\DoxyCodeLine{01415\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01416\ \ \ \ \ timer1\_attachInterrupt(\&IRReceiveTimerInterruptHandler);\ \textcolor{comment}{//\ enables\ interrupt\ too}}
+\DoxyCodeLine{01417\ \}}
+\DoxyCodeLine{01418\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01419\ \ \ \ \ timer1\_detachInterrupt();\ \textcolor{comment}{//\ disables\ interrupt\ too}}
+\DoxyCodeLine{01420\ \}}
+\DoxyCodeLine{01421\ }
+\DoxyCodeLine{01422\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01423\ \ \ \ \ timer1\_isr\_init();}
+\DoxyCodeLine{01424\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{01425\ \textcolor{comment}{\ \ \ \ \ *\ TIM\_DIV1\ =\ 0,\ \ \ //80MHz\ (80\ ticks/us\ -\/\ 104857.588\ us\ max)}}
+\DoxyCodeLine{01426\ \textcolor{comment}{\ \ \ \ \ *\ TIM\_DIV16\ =\ 1,\ \ //5MHz\ (5\ ticks/us\ -\/\ 1677721.4\ us\ max)}}
+\DoxyCodeLine{01427\ \textcolor{comment}{\ \ \ \ \ *\ TIM\_DIV256\ =\ 3\ \ //312.5Khz\ (1\ tick\ =\ 3.2us\ -\/\ 26843542.4\ us\ max)}}
+\DoxyCodeLine{01428\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{01429\ \ \ \ \ timer1\_enable(TIM\_DIV16,\ TIM\_EDGE,\ TIM\_LOOP);}
+\DoxyCodeLine{01430\ \ \ \ \ timer1\_write((80\ /\ 16)\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});\ \textcolor{comment}{//\ 80\ for\ 80\ and\ 160!\ MHz\ clock,\ 16\ for\ TIM\_DIV16\ above}}
+\DoxyCodeLine{01431\ \}}
+\DoxyCodeLine{01432\ }
+\DoxyCodeLine{01433\ \textcolor{comment}{/**********************************************************}}
+\DoxyCodeLine{01434\ \textcolor{comment}{\ *\ ESP32\ boards\ -\/\ can\ use\ any\ pin\ for\ send\ PWM}}
+\DoxyCodeLine{01435\ \textcolor{comment}{\ *\ Receive\ timer\ and\ send\ generation\ are\ independent,}}
+\DoxyCodeLine{01436\ \textcolor{comment}{\ *\ so\ it\ is\ recommended\ to\ always\ define\ SEND\_PWM\_BY\_TIMER}}
+\DoxyCodeLine{01437\ \textcolor{comment}{\ **********************************************************/}}
+\DoxyCodeLine{01438\ \textcolor{preprocessor}{\#elif\ defined(ESP32)}}
+\DoxyCodeLine{01439\ \textcolor{preprocessor}{\#\ \ if\ !defined(ESP\_ARDUINO\_VERSION)}}
+\DoxyCodeLine{01440\ \textcolor{preprocessor}{\#define\ ESP\_ARDUINO\_VERSION\ 0}}
+\DoxyCodeLine{01441\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01442\ \textcolor{preprocessor}{\#\ \ if\ !defined(ESP\_ARDUINO\_VERSION\_VAL)}}
+\DoxyCodeLine{01443\ \textcolor{preprocessor}{\#define\ ESP\_ARDUINO\_VERSION\_VAL(major,\ minor,\ patch)\ 202}}
+\DoxyCodeLine{01444\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01445\ }
+\DoxyCodeLine{01446\ \textcolor{comment}{//\ Variables\ specific\ to\ the\ ESP32.}}
+\DoxyCodeLine{01447\ \textcolor{comment}{//\ the\ ledc\ functions\ behave\ like\ hardware\ timers\ for\ us\ :-\/),\ so\ we\ do\ not\ require\ our\ own\ soft\ PWM\ generation\ code.}}
+\DoxyCodeLine{01448\ hw\_timer\_t\ *s50usTimer\ =\ NULL;\ \textcolor{comment}{//\ set\ by\ timerConfigForReceive()}}
+\DoxyCodeLine{01449\ }
+\DoxyCodeLine{01450\ \textcolor{preprocessor}{\#\ \ if\ !defined(SEND\_LEDC\_CHANNEL)}}
+\DoxyCodeLine{01451\ \textcolor{preprocessor}{\#define\ SEND\_LEDC\_CHANNEL\ 0\ }\textcolor{comment}{//\ The\ channel\ used\ for\ PWM\ 0\ to\ 7\ are\ high\ speed\ PWM\ channels}}
+\DoxyCodeLine{01452\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01453\ }
+\DoxyCodeLine{01454\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01455\ \textcolor{preprocessor}{\#\ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01456\ \ \ \ \ timerStart(s50usTimer);}
+\DoxyCodeLine{01457\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{01458\ \ \ \ \ timerAlarmEnable(s50usTimer);}
+\DoxyCodeLine{01459\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01460\ \}}
+\DoxyCodeLine{01461\ }
+\DoxyCodeLine{01462\ \textcolor{preprocessor}{\#\ \ if\ ESP\_ARDUINO\_VERSION\ <\ ESP\_ARDUINO\_VERSION\_VAL(2,\ 0,\ 2)}}
+\DoxyCodeLine{01463\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01464\ \textcolor{comment}{\ *\ Special\ support\ for\ ESP\ core\ <\ 202}}
+\DoxyCodeLine{01465\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01466\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01467\ \ \ \ \ \textcolor{keywordflow}{if}\ (s50usTimer\ !=\ NULL)\ \{}
+\DoxyCodeLine{01468\ \ \ \ \ \ \ \ \ timerDetachInterrupt(s50usTimer);}
+\DoxyCodeLine{01469\ \ \ \ \ \ \ \ \ timerEnd(s50usTimer);}
+\DoxyCodeLine{01470\ \ \ \ \ \}}
+\DoxyCodeLine{01471\ \}}
+\DoxyCodeLine{01472\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{01473\ }
+\DoxyCodeLine{01474\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01475\ \ \ \ \ \textcolor{keywordflow}{if}\ (s50usTimer\ !=\ NULL)\ \{}
+\DoxyCodeLine{01476\ \textcolor{preprocessor}{\#\ \ \ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01477\ \ \ \ \ \ \ \ \ timerStop(s50usTimer);}
+\DoxyCodeLine{01478\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01479\ \ \ \ \ \ \ \ \ timerAlarmDisable(s50usTimer);}
+\DoxyCodeLine{01480\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01481\ \ \ \ \ \}}
+\DoxyCodeLine{01482\ \}}
+\DoxyCodeLine{01483\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01484\ }
+\DoxyCodeLine{01485\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01486\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01487\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01488\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01489\ }
+\DoxyCodeLine{01490\ \textcolor{preprocessor}{\#\ \ if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)\ }\textcolor{comment}{//\ Otherwise\ the\ \&IRReceiveTimerInterruptHandler\ is\ referenced,\ but\ not\ available}}
+\DoxyCodeLine{01491\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01492\ \ \ \ \ \textcolor{comment}{//\ ESP32\ has\ a\ proper\ API\ to\ setup\ timers,\ no\ weird\ chip\ macros\ needed}}
+\DoxyCodeLine{01493\ \ \ \ \ \textcolor{comment}{//\ simply\ call\ the\ readable\ API\ versions\ :)}}
+\DoxyCodeLine{01494\ \ \ \ \ \textcolor{comment}{//\ 3\ timers,\ choose\ \#1,\ 80\ divider\ for\ microsecond\ precision\ @80MHz\ clock,\ count\_up\ =\ true}}
+\DoxyCodeLine{01495\ \ \ \ \ \textcolor{keywordflow}{if}(s50usTimer\ ==\ NULL)\ \{}
+\DoxyCodeLine{01496\ \textcolor{preprocessor}{\#\ \ \ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01497\ \ \ \ \ \ \ \ \ s50usTimer\ =\ timerBegin(1000000);\ \ \ \textcolor{comment}{//\ Only\ 1\ parameter\ is\ required.\ 1000000\ corresponds\ to\ 1\ MHz\ /\ 1\ uSec.\ After\ successful\ setup\ the\ timer\ will\ automatically\ start.}}
+\DoxyCodeLine{01498\ \ \ \ \ \ \ \ \ timerStop(s50usTimer);\ \textcolor{comment}{//\ Stop\ it\ here,\ to\ avoid\ "{}error\ E\ (3447)\ gptimer:\ gptimer\_start(348):\ timer\ is\ not\ enabled\ yet"{}\ at\ timerEnableReceiveInterrupt()}}
+\DoxyCodeLine{01499\ \ \ \ \ \ \ \ \ timerAttachInterrupt(s50usTimer,\ \&IRReceiveTimerInterruptHandler);}
+\DoxyCodeLine{01500\ \ \ \ \ \ \ \ \ timerAlarm(s50usTimer,\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}},\ \textcolor{keyword}{true},\ 0);\ \ \ \textcolor{comment}{//\ 0\ in\ the\ last\ parameter\ is\ repeat\ forever}}
+\DoxyCodeLine{01501\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01502\ \ \ \ \ \ \ \ \ s50usTimer\ =\ timerBegin(1,\ 80,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{01503\ \ \ \ \ \ \ \ \ timerAttachInterrupt(s50usTimer,\ \&IRReceiveTimerInterruptHandler,\ \textcolor{keyword}{false});\ \textcolor{comment}{//\ false\ -\/>\ level\ interrupt,\ true\ -\/>\ edge\ interrupt,\ but\ this\ is\ not\ supported\ :-\/(}}
+\DoxyCodeLine{01504\ \ \ \ \ \ \ \ \ timerAlarmWrite(s50usTimer,\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{01505\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01506\ \ \ \ \ \}}
+\DoxyCodeLine{01507\ \ \ \ \ \textcolor{comment}{//\ every\ 50\ us,\ autoreload\ =\ true}}
+\DoxyCodeLine{01508\ \}}
+\DoxyCodeLine{01509\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01510\ }
+\DoxyCodeLine{01511\ }
+\DoxyCodeLine{01512\ uint8\_t\ sLastSendPin\ =\ 0;\ \textcolor{comment}{//\ Avoid\ multiple\ attach()\ or\ if\ pin\ changes,\ detach\ before\ attach}}
+\DoxyCodeLine{01513\ }
+\DoxyCodeLine{01514\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01515\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01516\ \textcolor{preprocessor}{\#\ \ \ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01517\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01518\ \ \ \ \ ledcWrite(IR\_SEND\_PIN,\ (\mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ *\ 256)\ /\ 100);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01519\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{01520\ \ \ \ \ ledcWrite(IrSender.sendPin,\ (\mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ *\ 256)\ /\ 100);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01521\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{01522\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01523\ \ \ \ \ \textcolor{comment}{//\ ESP\ version\ <\ 3.0}}
+\DoxyCodeLine{01524\ \ \ \ \ ledcWrite(SEND\_LEDC\_CHANNEL,\ (\mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}\ *\ 256)\ /\ 100);\ \textcolor{comment}{//\ \ *\ 256\ since\ we\ have\ 8\ bit\ resolution}}
+\DoxyCodeLine{01525\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01526\ \}}
+\DoxyCodeLine{01527\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01528\ \textcolor{preprocessor}{\#\ \ \ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01529\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01530\ \ \ \ \ ledcWrite(IR\_SEND\_PIN,\ 0);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01531\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{01532\ \ \ \ \ ledcWrite(IrSender.sendPin,\ 0);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01533\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{01534\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01535\ \ \ \ \ \textcolor{comment}{//\ ESP\ version\ <\ 3.0}}
+\DoxyCodeLine{01536\ \ \ \ \ ledcWrite(SEND\_LEDC\_CHANNEL,\ 0);}
+\DoxyCodeLine{01537\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01538\ \}}
+\DoxyCodeLine{01539\ }
+\DoxyCodeLine{01540\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01541\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()\ (or\ enableHighFrequencyIROut())}}
+\DoxyCodeLine{01542\ \textcolor{comment}{\ *\ ledcWrite\ since\ ESP\ 2.0.2\ does\ not\ work\ if\ pin\ mode\ is\ set.}}
+\DoxyCodeLine{01543\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01544\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01545\ \textcolor{preprocessor}{\#\ \ \ \ if\ ESP\_ARDUINO\_VERSION\ >=\ ESP\_ARDUINO\_VERSION\_VAL(3,\ 0,\ 0)}}
+\DoxyCodeLine{01546\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01547\ \ \ \ \ \textcolor{keywordflow}{if}(sLastSendPin\ ==\ 0)\{}
+\DoxyCodeLine{01548\ \ \ \ \ \ \ \ \ ledcAttach(IR\_SEND\_PIN,\ aFrequencyKHz\ *\ 1000,\ 8);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01549\ \ \ \ \ \ \ \ \ sLastSendPin\ =\ IR\_SEND\_PIN;}
+\DoxyCodeLine{01550\ \ \ \ \ \}}
+\DoxyCodeLine{01551\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{01552\ \ \ \ \ \textcolor{keywordflow}{if}(sLastSendPin\ !=\ 0\ \&\&\ sLastSendPin\ !=\ IrSender.sendPin)\{}
+\DoxyCodeLine{01553\ \ \ \ \ \ \ \ \ ledcDetach(IrSender.sendPin);\ \textcolor{comment}{//\ detach\ pin\ before\ new\ attaching\ see\ \#1194}}
+\DoxyCodeLine{01554\ \ \ \ \ \}}
+\DoxyCodeLine{01555\ \ \ \ \ ledcAttach(IrSender.sendPin,\ aFrequencyKHz\ *\ 1000,\ 8);\ \textcolor{comment}{//\ 3.x\ API}}
+\DoxyCodeLine{01556\ \ \ \ \ sLastSendPin\ =\ IrSender.sendPin;}
+\DoxyCodeLine{01557\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{01558\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01559\ \ \ \ \ \textcolor{comment}{//\ ESP\ version\ <\ 3.0}}
+\DoxyCodeLine{01560\ \ \ \ \ ledcSetup(SEND\_LEDC\_CHANNEL,\ aFrequencyKHz\ *\ 1000,\ 8);\ \ \textcolor{comment}{//\ 8\ bit\ PWM\ resolution}}
+\DoxyCodeLine{01561\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01562\ \ \ \ \ ledcAttachPin(IR\_SEND\_PIN,\ SEND\_LEDC\_CHANNEL);\ \ \textcolor{comment}{//\ attach\ pin\ to\ channel}}
+\DoxyCodeLine{01563\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{01564\ \ \ \ \ \textcolor{keywordflow}{if}(sLastSendPin\ !=\ 0\ \&\&\ sLastSendPin\ !=\ IrSender.sendPin)\{}
+\DoxyCodeLine{01565\ \ \ \ \ \ \ \ \ ledcDetachPin(IrSender.sendPin);\ \ \textcolor{comment}{//\ detach\ pin\ before\ new\ attaching\ see\ \#1194}}
+\DoxyCodeLine{01566\ \ \ \ \ \}}
+\DoxyCodeLine{01567\ \ \ \ \ ledcAttachPin(IrSender.sendPin,\ SEND\_LEDC\_CHANNEL);\ \ \textcolor{comment}{//\ attach\ pin\ to\ channel}}
+\DoxyCodeLine{01568\ \ \ \ \ sLastSendPin\ =\ IrSender.sendPin;}
+\DoxyCodeLine{01569\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif}}
+\DoxyCodeLine{01570\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01571\ \}}
+\DoxyCodeLine{01572\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01573\ }
+\DoxyCodeLine{01574\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01575\ \textcolor{comment}{\ *\ SAMD\ boards\ like\ DUE\ and\ Zero}}
+\DoxyCodeLine{01576\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01577\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_SAMD)}}
+\DoxyCodeLine{01578\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01579\ \textcolor{preprocessor}{\#error\ PWM\ generation\ by\ hardware\ is\ not\ yet\ implemented\ for\ SAMD}}
+\DoxyCodeLine{01580\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01581\ }
+\DoxyCodeLine{01582\ \textcolor{preprocessor}{\#\ \ if\ !defined(IR\_SAMD\_TIMER)}}
+\DoxyCodeLine{01583\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(\_\_SAMD51\_\_)}}
+\DoxyCodeLine{01584\ \textcolor{preprocessor}{\#define\ IR\_SAMD\_TIMER\ \ \ \ \ \ \ TC5}}
+\DoxyCodeLine{01585\ \textcolor{preprocessor}{\#define\ IR\_SAMD\_TIMER\_IRQ\ \ \ TC5\_IRQn}}
+\DoxyCodeLine{01586\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01587\ \textcolor{comment}{//\ SAMD21}}
+\DoxyCodeLine{01588\ \textcolor{preprocessor}{\#define\ IR\_SAMD\_TIMER\ \ \ \ \ \ \ TC3}}
+\DoxyCodeLine{01589\ \textcolor{preprocessor}{\#define\ IR\_SAMD\_TIMER\_ID\ \ \ \ GCLK\_CLKCTRL\_ID\_TCC2\_TC3}}
+\DoxyCodeLine{01590\ \textcolor{preprocessor}{\#define\ IR\_SAMD\_TIMER\_IRQ\ \ \ TC3\_IRQn}}
+\DoxyCodeLine{01591\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01592\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01593\ }
+\DoxyCodeLine{01594\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01595\ \ \ \ \ NVIC\_EnableIRQ\ (IR\_SAMD\_TIMER\_IRQ);}
+\DoxyCodeLine{01596\ \}}
+\DoxyCodeLine{01597\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01598\ \ \ \ \ NVIC\_DisableIRQ\ (IR\_SAMD\_TIMER\_IRQ);\ \textcolor{comment}{//\ or\ TC5-\/>INTENCLR.bit.MC0\ =\ 1;\ or\ TC5-\/>COUNT16.CTRLA.reg\ \&=\ \string~TC\_CTRLA\_ENABLE;}}
+\DoxyCodeLine{01599\ }
+\DoxyCodeLine{01600\ \}}
+\DoxyCodeLine{01601\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01602\ \textcolor{comment}{//\ The\ ISR\ is\ now\ TC3\_Handler()\ or\ TC5\_Handler()\ below}}
+\DoxyCodeLine{01603\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01604\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01605\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01606\ }
+\DoxyCodeLine{01615\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01616\ \ \ \ \ TcCount16\ *TC\ =\ (TcCount16*)\ IR\_SAMD\_TIMER;}
+\DoxyCodeLine{01617\ }
+\DoxyCodeLine{01618\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_SAMD51\_\_)}}
+\DoxyCodeLine{01619\ \ \ \ \ \textcolor{comment}{//\ Enable\ the\ TC5\ clock,\ use\ generic\ clock\ generator\ 0\ (F\_CPU)\ for\ TC5}}
+\DoxyCodeLine{01620\ \ \ \ \ GCLK-\/>PCHCTRL[TC5\_GCLK\_ID].reg\ =\ GCLK\_PCHCTRL\_GEN\_GCLK0\_Val\ |\ (1\ <<\ GCLK\_PCHCTRL\_CHEN\_Pos);}
+\DoxyCodeLine{01621\ }
+\DoxyCodeLine{01622\ \ \ \ \ \textcolor{comment}{//\ The\ TC\ should\ be\ disabled\ before\ the\ TC\ is\ reset\ in\ order\ to\ avoid\ undefined\ behavior.}}
+\DoxyCodeLine{01623\ \ \ \ \ TC-\/>CTRLA.reg\ \&=\ \string~TC\_CTRLA\_ENABLE;\ \textcolor{comment}{//\ Disable\ the\ Timer}}
+\DoxyCodeLine{01624\ \ \ \ \ \textcolor{keywordflow}{while}\ (TC-\/>SYNCBUSY.bit.ENABLE)}
+\DoxyCodeLine{01625\ \ \ \ \ \ \ \ \ ;\ \textcolor{comment}{//\ Wait\ for\ disabled}}
+\DoxyCodeLine{01626\ \ \ \ \ \textcolor{comment}{//\ Reset\ TCx}}
+\DoxyCodeLine{01627\ \ \ \ \ TC-\/>CTRLA.reg\ =\ TC\_CTRLA\_SWRST;}
+\DoxyCodeLine{01628\ \ \ \ \ \textcolor{comment}{//\ When\ writing\ a\ '1'\ to\ the\ CTRLA.SWRST\ bit\ it\ will\ immediately\ read\ as\ '1'.}}
+\DoxyCodeLine{01629\ \ \ \ \ \textcolor{keywordflow}{while}\ (TC-\/>SYNCBUSY.bit.SWRST)}
+\DoxyCodeLine{01630\ \ \ \ \ \ \ \ \ ;\ \textcolor{comment}{//\ CTRL.SWRST\ will\ be\ cleared\ by\ hardware\ when\ the\ peripheral\ has\ been\ reset.}}
+\DoxyCodeLine{01631\ }
+\DoxyCodeLine{01632\ \ \ \ \ \textcolor{comment}{//\ SAMD51\ has\ F\_CPU\ =\ 120\ MHz}}
+\DoxyCodeLine{01633\ \ \ \ \ TC-\/>CC[0].reg\ =\ ((\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ *\ (F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND))\ /\ 16)\ -\/\ 1;\ \ \ \textcolor{comment}{//\ (375\ -\/\ 1);}}
+\DoxyCodeLine{01634\ }
+\DoxyCodeLine{01635\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{01636\ \textcolor{comment}{\ \ \ \ \ *\ Set\ timer\ counter\ mode\ to\ 16\ bits,\ set\ mode\ as\ match\ frequency,\ prescaler\ is\ DIV16\ =>\ 7.5\ MHz\ clock,\ start\ counter}}
+\DoxyCodeLine{01637\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{01638\ \ \ \ \ TC-\/>CTRLA.reg\ |=\ TC\_CTRLA\_MODE\_COUNT16\ |\ TC\_WAVE\_WAVEGEN\_MFRQ\ |\ TC\_CTRLA\_PRESCALER\_DIV16\ |\ TC\_CTRLA\_ENABLE;}
+\DoxyCodeLine{01639\ \textcolor{comment}{//\ \ \ \ while\ (TC5-\/>COUNT16.STATUS.bit.SYNCBUSY\ ==\ 1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ The\ next\ commands\ do\ an\ implicit\ wait\ :-\/)}}
+\DoxyCodeLine{01640\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{01641\ \ \ \ \ \textcolor{comment}{//\ Enable\ GCLK\ and\ select\ GCLK0\ (F\_CPU)\ as\ clock\ for\ TC4\ and\ TC5}}
+\DoxyCodeLine{01642\ \ \ \ \ REG\_GCLK\_CLKCTRL\ =\ (uint16\_t)(GCLK\_CLKCTRL\_CLKEN\ |\ GCLK\_CLKCTRL\_GEN\_GCLK0\ |\ IR\_SAMD\_TIMER\_ID);}
+\DoxyCodeLine{01643\ \ \ \ \ \textcolor{keywordflow}{while}\ (GCLK-\/>STATUS.bit.SYNCBUSY\ ==\ 1)}
+\DoxyCodeLine{01644\ \ \ \ \ \ \ \ \ ;}
+\DoxyCodeLine{01645\ }
+\DoxyCodeLine{01646\ \ \ \ \ \textcolor{comment}{//\ The\ TC\ should\ be\ disabled\ before\ the\ TC\ is\ reset\ in\ order\ to\ avoid\ undefined\ behavior.}}
+\DoxyCodeLine{01647\ \ \ \ \ TC-\/>CTRLA.reg\ \&=\ \string~TC\_CTRLA\_ENABLE;}
+\DoxyCodeLine{01648\ \ \ \ \ \textcolor{comment}{//\ When\ write-\/synchronization\ is\ ongoing\ for\ a\ register,\ any\ subsequent\ write\ attempts\ to\ this\ register\ will\ be\ discarded,\ and\ an\ error\ will\ be\ reported.}}
+\DoxyCodeLine{01649\ \ \ \ \ \textcolor{keywordflow}{while}\ (TC-\/>STATUS.bit.SYNCBUSY\ ==\ 1)}
+\DoxyCodeLine{01650\ \ \ \ \ \ \ \ \ ;\ \textcolor{comment}{//\ wait\ for\ sync\ to\ ensure\ that\ we\ can\ write\ again\ to\ COUNT16.CTRLA.reg}}
+\DoxyCodeLine{01651\ \ \ \ \ \textcolor{comment}{//\ Reset\ TCx}}
+\DoxyCodeLine{01652\ \ \ \ \ TC-\/>CTRLA.reg\ =\ TC\_CTRLA\_SWRST;}
+\DoxyCodeLine{01653\ \ \ \ \ \textcolor{comment}{//\ When\ writing\ a\ 1\ to\ the\ CTRLA.SWRST\ bit\ it\ will\ immediately\ read\ as\ 1.}}
+\DoxyCodeLine{01654\ \ \ \ \ \textcolor{keywordflow}{while}\ (TC-\/>CTRLA.bit.SWRST)}
+\DoxyCodeLine{01655\ \ \ \ \ \ \ \ \ ;\ \textcolor{comment}{//\ CTRL.SWRST\ will\ be\ cleared\ by\ hardware\ when\ the\ peripheral\ has\ been\ reset.}}
+\DoxyCodeLine{01656\ }
+\DoxyCodeLine{01657\ \ \ \ \ \textcolor{comment}{//\ SAMD51\ has\ F\_CPU\ =\ 48\ MHz}}
+\DoxyCodeLine{01658\ \ \ \ \ TC-\/>CC[0].reg\ =\ ((\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}\ *\ (F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND))\ /\ 16)\ -\/\ 1;\ \ \ \textcolor{comment}{//\ (150\ -\/\ 1);}}
+\DoxyCodeLine{01659\ }
+\DoxyCodeLine{01660\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{01661\ \textcolor{comment}{\ \ \ \ \ *\ Set\ timer\ counter\ mode\ to\ 16\ bits,\ set\ mode\ as\ match\ frequency,\ prescaler\ is\ DIV16\ =>\ 3\ MHz\ clock,\ start\ counter}}
+\DoxyCodeLine{01662\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{01663\ \ \ \ \ TC-\/>CTRLA.reg\ |=\ TC\_CTRLA\_MODE\_COUNT16\ |\ TC\_CTRLA\_WAVEGEN\_MFRQ\ |\ TC\_CTRLA\_PRESCALER\_DIV16\ |\ TC\_CTRLA\_ENABLE;}
+\DoxyCodeLine{01664\ }
+\DoxyCodeLine{01665\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01666\ \ \ \ \ \textcolor{comment}{//\ Configure\ interrupt\ request}}
+\DoxyCodeLine{01667\ \ \ \ \ NVIC\_DisableIRQ\ (IR\_SAMD\_TIMER\_IRQ);}
+\DoxyCodeLine{01668\ \ \ \ \ NVIC\_ClearPendingIRQ(IR\_SAMD\_TIMER\_IRQ);}
+\DoxyCodeLine{01669\ \ \ \ \ NVIC\_SetPriority(IR\_SAMD\_TIMER\_IRQ,\ 0);}
+\DoxyCodeLine{01670\ \ \ \ \ NVIC\_EnableIRQ(IR\_SAMD\_TIMER\_IRQ);}
+\DoxyCodeLine{01671\ }
+\DoxyCodeLine{01672\ \ \ \ \ \textcolor{comment}{//\ Enable\ the\ compare\ interrupt}}
+\DoxyCodeLine{01673\ \ \ \ \ TC-\/>INTENSET.bit.MC0\ =\ 1;}
+\DoxyCodeLine{01674\ \}}
+\DoxyCodeLine{01675\ }
+\DoxyCodeLine{01676\ \textcolor{preprocessor}{\#\ \ if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{01677\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(\_\_SAMD51\_\_)}}
+\DoxyCodeLine{01678\ \textcolor{keywordtype}{void}\ TC5\_Handler(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{01679\ \ \ \ \ TcCount16\ *TC\ =\ (TcCount16*)\ IR\_SAMD\_TIMER;}
+\DoxyCodeLine{01680\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ right\ interrupt\ bit}}
+\DoxyCodeLine{01681\ \ \ \ \ \textcolor{keywordflow}{if}\ (TC-\/>INTFLAG.bit.MC0\ ==\ 1)\ \{}
+\DoxyCodeLine{01682\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ bit\ for\ next\ turn}}
+\DoxyCodeLine{01683\ \ \ \ \ \ \ \ \ TC-\/>INTFLAG.bit.MC0\ =\ 1;}
+\DoxyCodeLine{01684\ \ \ \ \ \ \ \ \ IRReceiveTimerInterruptHandler();}
+\DoxyCodeLine{01685\ \ \ \ \ \}}
+\DoxyCodeLine{01686\ \}}
+\DoxyCodeLine{01687\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01688\ \textcolor{keywordtype}{void}\ TC3\_Handler(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{01689\ \ \ \ \ TcCount16\ *TC\ =\ (TcCount16*)\ IR\_SAMD\_TIMER;}
+\DoxyCodeLine{01690\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ right\ interrupt\ bit}}
+\DoxyCodeLine{01691\ \ \ \ \ \textcolor{keywordflow}{if}\ (TC-\/>INTFLAG.bit.MC0\ ==\ 1)\ \{}
+\DoxyCodeLine{01692\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reset\ bit\ for\ next\ turn}}
+\DoxyCodeLine{01693\ \ \ \ \ \ \ \ \ TC-\/>INTFLAG.bit.MC0\ =\ 1;}
+\DoxyCodeLine{01694\ \ \ \ \ \ \ \ \ IRReceiveTimerInterruptHandler();}
+\DoxyCodeLine{01695\ \ \ \ \ \}}
+\DoxyCodeLine{01696\ \}}
+\DoxyCodeLine{01697\ \textcolor{preprocessor}{\#\ \ \ \ endif\ }\textcolor{comment}{//\ defined(\_\_SAMD51\_\_)}}
+\DoxyCodeLine{01698\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{01699\ }
+\DoxyCodeLine{01700\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01701\ \textcolor{comment}{\ *\ Mbed\ based\ boards}}
+\DoxyCodeLine{01702\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01703\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_MBED)\ }\textcolor{comment}{//\ Arduino\ Nano\ 33\ BLE\ +\ Sparkfun\ Apollo3\ +\ Nano\ RP2040\ Connect}}
+\DoxyCodeLine{01704\ \textcolor{preprocessor}{\#include\ "{}mbed.h"{}}}
+\DoxyCodeLine{01705\ mbed::Ticker\ s50usTimer;}
+\DoxyCodeLine{01706\ }
+\DoxyCodeLine{01707\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01708\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01709\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01710\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01711\ }
+\DoxyCodeLine{01712\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01713\ \ \ \ \ s50usTimer.attach(IRReceiveTimerInterruptHandler,\ std::chrono::microseconds(\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}));}
+\DoxyCodeLine{01714\ \}}
+\DoxyCodeLine{01715\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01716\ \ \ \ \ s50usTimer.detach();}
+\DoxyCodeLine{01717\ \}}
+\DoxyCodeLine{01718\ }
+\DoxyCodeLine{01719\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01720\ \ \ \ \ s50usTimer.attach(IRReceiveTimerInterruptHandler,\ std::chrono::microseconds(\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}));}
+\DoxyCodeLine{01721\ \}}
+\DoxyCodeLine{01722\ }
+\DoxyCodeLine{01723\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01724\ \textcolor{preprocessor}{\#include\ "{}pins\_arduino.h"{}}\ \textcolor{comment}{//\ for\ digitalPinToPinName()}}
+\DoxyCodeLine{01725\ }
+\DoxyCodeLine{01726\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01727\ mbed::PwmOut\ sPwmOutForSendPWM(digitalPinToPinName(IR\_SEND\_PIN));}
+\DoxyCodeLine{01728\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01729\ mbed::PwmOut\ sPwmOutForSendPWM(digitalPinToPinName(IrSender.sendPin));}
+\DoxyCodeLine{01730\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01731\ uint8\_t\ sIROutPuseWidth;}
+\DoxyCodeLine{01732\ }
+\DoxyCodeLine{01733\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01734\ \ \ \ \ sPwmOutForSendPWM.pulsewidth\_us(sIROutPuseWidth);}
+\DoxyCodeLine{01735\ \}}
+\DoxyCodeLine{01736\ \textcolor{comment}{//void\ enableSendPWMByTimer()\ \{\ \ \ \ sPwmOutForSendPWM.resume();\ sPwmOutForSendPWM.pulsewidth\_us(sIROutPuseWidth);\}}}
+\DoxyCodeLine{01737\ \textcolor{comment}{//void\ disableSendPWMByTimer()\ \{\ \ \ sPwmOutForSendPWM.suspend();\}\ //\ this\ kills\ pulsewidth\_us\ value\ and\ does\ not\ set\ output\ level\ to\ LOW}}
+\DoxyCodeLine{01738\ }
+\DoxyCodeLine{01739\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01740\ \ \ \ \ sPwmOutForSendPWM.pulsewidth\_us(0);\ \textcolor{comment}{//\ this\ also\ sets\ output\ level\ to\ LOW\ :-\/)}}
+\DoxyCodeLine{01741\ \}}
+\DoxyCodeLine{01742\ }
+\DoxyCodeLine{01743\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01744\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01745\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01746\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01747\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01748\ \ \ \ \ sPwmOutForSendPWM.period\_us(1000\ /\ aFrequencyKHz);\ \ \textcolor{comment}{//\ 26.315\ for\ 38\ kHz}}
+\DoxyCodeLine{01749\ \ \ \ \ sIROutPuseWidth\ =\ (1000\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ (aFrequencyKHz\ *\ 100);}
+\DoxyCodeLine{01750\ \}}
+\DoxyCodeLine{01751\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01752\ }
+\DoxyCodeLine{01753\ \textcolor{comment}{/*************************************************************************************************************************************}}
+\DoxyCodeLine{01754\ \textcolor{comment}{\ *\ RP2040\ based\ boards\ for\ pico\ core}}
+\DoxyCodeLine{01755\ \textcolor{comment}{\ *\ https://github.com/earlephilhower/arduino-\/pico}}
+\DoxyCodeLine{01756\ \textcolor{comment}{\ *\ https://github.com/earlephilhower/arduino-\/pico/releases/download/global/package\_rp2040\_index.json}}
+\DoxyCodeLine{01757\ \textcolor{comment}{\ *\ Can\ use\ any\ pin\ for\ PWM,\ no\ timer\ restrictions}}
+\DoxyCodeLine{01758\ \textcolor{comment}{\ *************************************************************************************************************************************/}}
+\DoxyCodeLine{01759\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_RP2040)\ }\textcolor{comment}{//\ Raspberry\ Pi\ Pico,\ Adafruit\ Feather\ RP2040,\ etc.}}
+\DoxyCodeLine{01760\ \textcolor{preprocessor}{\#include\ "{}pico/time.h"{}}}
+\DoxyCodeLine{01761\ }
+\DoxyCodeLine{01762\ repeating\_timer\_t\ s50usTimer;}
+\DoxyCodeLine{01763\ }
+\DoxyCodeLine{01764\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01765\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01766\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01767\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01768\ }
+\DoxyCodeLine{01769\ \textcolor{comment}{//\ The\ timer\ callback\ has\ a\ parameter\ and\ a\ return\ value}}
+\DoxyCodeLine{01770\ \textcolor{keywordtype}{bool}\ IRTimerInterruptHandlerHelper(repeating\_timer\_t*)\ \{}
+\DoxyCodeLine{01771\ \ \ \ \ IRReceiveTimerInterruptHandler();}
+\DoxyCodeLine{01772\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01773\ \}}
+\DoxyCodeLine{01774\ }
+\DoxyCodeLine{01775\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01776\ \ \ \ \ add\_repeating\_timer\_us(-\/(\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}),\ IRTimerInterruptHandlerHelper,\ NULL,\ \&s50usTimer);}
+\DoxyCodeLine{01777\ \}}
+\DoxyCodeLine{01778\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01779\ \ \ \ \ cancel\_repeating\_timer(\&s50usTimer);}
+\DoxyCodeLine{01780\ \}}
+\DoxyCodeLine{01781\ }
+\DoxyCodeLine{01782\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01783\ \ \ \ \ \textcolor{comment}{//\ no\ need\ for\ initializing\ timer\ at\ setup()}}
+\DoxyCodeLine{01784\ \}}
+\DoxyCodeLine{01785\ }
+\DoxyCodeLine{01786\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01787\ \textcolor{preprocessor}{\#include\ "{}hardware/pwm.h"{}}}
+\DoxyCodeLine{01788\ }
+\DoxyCodeLine{01789\ uint\ sSliceNumberForSendPWM;}
+\DoxyCodeLine{01790\ uint\ sChannelNumberForSendPWM;}
+\DoxyCodeLine{01791\ uint\ sIROutPuseWidth;}
+\DoxyCodeLine{01792\ }
+\DoxyCodeLine{01793\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01794\ \textcolor{comment}{\ *\ If\ we\ just\ disable\ the\ PWM,\ the\ counter\ stops\ and\ the\ output\ stays\ at\ the\ state\ is\ currently\ has}}
+\DoxyCodeLine{01795\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01796\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01797\ \ \ \ \ pwm\_set\_counter(sSliceNumberForSendPWM,\ 0);}
+\DoxyCodeLine{01798\ \ \ \ \ pwm\_set\_chan\_level(sSliceNumberForSendPWM,\ sChannelNumberForSendPWM,\ sIROutPuseWidth);}
+\DoxyCodeLine{01799\ \}}
+\DoxyCodeLine{01800\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01801\ \ \ \ \ pwm\_set\_chan\_level(sSliceNumberForSendPWM,\ sChannelNumberForSendPWM,\ 0);\ \textcolor{comment}{//\ this\ sets\ output\ also\ to\ LOW}}
+\DoxyCodeLine{01802\ \}}
+\DoxyCodeLine{01803\ }
+\DoxyCodeLine{01804\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01805\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{01806\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{01807\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01808\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{01809\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01810\ \ \ \ \ gpio\_set\_function(IR\_SEND\_PIN,\ GPIO\_FUNC\_PWM);}
+\DoxyCodeLine{01811\ \ \ \ \ \textcolor{comment}{//\ Find\ out\ which\ PWM\ slice\ is\ connected\ to\ IR\_SEND\_PIN}}
+\DoxyCodeLine{01812\ \ \ \ \ sSliceNumberForSendPWM\ =\ pwm\_gpio\_to\_slice\_num(IR\_SEND\_PIN);}
+\DoxyCodeLine{01813\ \ \ \ \ sChannelNumberForSendPWM\ =\ pwm\_gpio\_to\_channel(IR\_SEND\_PIN);}
+\DoxyCodeLine{01814\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01815\ \ \ \ \ gpio\_set\_function(IrSender.sendPin,\ GPIO\_FUNC\_PWM);}
+\DoxyCodeLine{01816\ \ \ \ \ \textcolor{comment}{//\ Find\ out\ which\ PWM\ slice\ is\ connected\ to\ IR\_SEND\_PIN}}
+\DoxyCodeLine{01817\ \ \ \ \ sSliceNumberForSendPWM\ =\ pwm\_gpio\_to\_slice\_num(IrSender.sendPin);}
+\DoxyCodeLine{01818\ \ \ \ \ sChannelNumberForSendPWM\ =\ pwm\_gpio\_to\_channel(IrSender.sendPin);}
+\DoxyCodeLine{01819\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{01820\ \ \ \ \ uint16\_t\ tPWMWrapValue\ =\ (clock\_get\_hz(clk\_sys))\ /\ (aFrequencyKHz\ *\ 1000);\ \textcolor{comment}{//\ 3289.473\ for\ 38\ kHz\ @125\ MHz\ clock.\ We\ have\ a\ 16\ bit\ counter\ and\ use\ system\ clock\ (125\ MHz)}}
+\DoxyCodeLine{01821\ }
+\DoxyCodeLine{01822\ \ \ \ \ pwm\_config\ tPWMConfig\ =\ pwm\_get\_default\_config();}
+\DoxyCodeLine{01823\ \ \ \ \ pwm\_config\_set\_wrap(\&tPWMConfig,\ tPWMWrapValue\ -\/\ 1);}
+\DoxyCodeLine{01824\ \ \ \ \ pwm\_init(sSliceNumberForSendPWM,\ \&tPWMConfig,\ \textcolor{keyword}{false});\ \textcolor{comment}{//\ we\ do\ not\ want\ to\ send\ now}}
+\DoxyCodeLine{01825\ \ \ \ \ sIROutPuseWidth\ =\ ((tPWMWrapValue\ *\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})\ /\ 100)\ -\/\ 1;\ \textcolor{comment}{//\ 985.84\ for\ 38\ kHz}}
+\DoxyCodeLine{01826\ \ \ \ \ pwm\_set\_chan\_level(sSliceNumberForSendPWM,\ sChannelNumberForSendPWM,\ 0);}
+\DoxyCodeLine{01827\ \ \ \ \ pwm\_set\_enabled(sSliceNumberForSendPWM,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{01828\ \}}
+\DoxyCodeLine{01829\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01830\ }
+\DoxyCodeLine{01831\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01832\ \textcolor{comment}{\ *\ NRF5\ boards\ like\ the\ BBC:Micro}}
+\DoxyCodeLine{01833\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01834\ \textcolor{preprocessor}{\#elif\ defined(NRF5)\ ||\ defined(ARDUINO\_ARCH\_NRF52840)\ ||\ defined(ARDUINO\_ARCH\_NRF52)}}
+\DoxyCodeLine{01835\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01836\ \textcolor{preprocessor}{\#error\ PWM\ generation\ by\ hardware\ not\ implemented\ for\ NRF5}}
+\DoxyCodeLine{01837\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01838\ }
+\DoxyCodeLine{01839\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01840\ \ \ \ \ NVIC\_EnableIRQ\ (TIMER2\_IRQn);}
+\DoxyCodeLine{01841\ \}}
+\DoxyCodeLine{01842\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01843\ \ \ \ \ NVIC\_DisableIRQ\ (TIMER2\_IRQn);}
+\DoxyCodeLine{01844\ \}}
+\DoxyCodeLine{01845\ }
+\DoxyCodeLine{01846\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01847\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01848\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01849\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01850\ }
+\DoxyCodeLine{01851\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01852\ \ \ \ \ NRF\_TIMER2-\/>MODE\ =\ TIMER\_MODE\_MODE\_Timer;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Set\ the\ timer\ in\ Timer\ Mode}}
+\DoxyCodeLine{01853\ \ \ \ \ NRF\_TIMER2-\/>TASKS\_CLEAR\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ clear\ the\ task\ first\ to\ be\ usable\ for\ later}}
+\DoxyCodeLine{01854\ \ \ \ \ NRF\_TIMER2-\/>PRESCALER\ =\ 4;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ f\ TIMER\ =\ 16\ MHz\ /\ (2\ \string^\ PRESCALER\ )\ :\ 4\ -\/>\ 1\ MHz,\ 1\ uS}}
+\DoxyCodeLine{01855\ \ \ \ \ NRF\_TIMER2-\/>BITMODE\ =\ TIMER\_BITMODE\_BITMODE\_16Bit;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Set\ counter\ to\ 16\ bit\ resolution}}
+\DoxyCodeLine{01856\ \ \ \ \ NRF\_TIMER2-\/>CC[0]\ =\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Set\ value\ for\ TIMER2\ compare\ register\ 0,\ to\ trigger\ every\ 50\ uS}}
+\DoxyCodeLine{01857\ \ \ \ \ NRF\_TIMER2-\/>CC[1]\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Set\ value\ for\ TIMER2\ compare\ register\ 1}}
+\DoxyCodeLine{01858\ }
+\DoxyCodeLine{01859\ \ \ \ \ \textcolor{comment}{//\ Enable\ interrupt\ on\ Timer\ 2,\ for\ CC[0]\ compare\ match\ events}}
+\DoxyCodeLine{01860\ \ \ \ \ NRF\_TIMER2-\/>INTENSET\ =\ (TIMER\_INTENSET\_COMPARE0\_Enabled\ <<\ TIMER\_INTENSET\_COMPARE0\_Pos);}
+\DoxyCodeLine{01861\ \ \ \ \ NRF\_TIMER2-\/>TASKS\_START\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ TIMER2}}
+\DoxyCodeLine{01862\ }
+\DoxyCodeLine{01863\ \ \ \ \ \textcolor{comment}{//\ timerAttachInterrupt(timer,\ \&IRTimerInterruptHandler,\ 1);}}
+\DoxyCodeLine{01864\ \}}
+\DoxyCodeLine{01865\ }
+\DoxyCodeLine{01866\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{01870\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{01871\ \textcolor{keywordtype}{void}\ TIMER2\_IRQHandler(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{01872\ \ \ \ \ \textcolor{comment}{//\ Interrupt\ Service\ Routine\ -\/\ Fires\ every\ 50uS}}
+\DoxyCodeLine{01873\ \ \ \ \ \textcolor{keywordflow}{if}\ ((NRF\_TIMER2-\/>EVENTS\_COMPARE[0]\ !=\ 0)\ \&\&\ ((NRF\_TIMER2-\/>INTENSET\ \&\ TIMER\_INTENSET\_COMPARE0\_Msk)\ !=\ 0))\ \{}
+\DoxyCodeLine{01874\ \ \ \ \ \ \ \ \ NRF\_TIMER2-\/>EVENTS\_COMPARE[0]\ =\ 0;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Clear\ compare\ register\ 0\ event}}
+\DoxyCodeLine{01875\ \ \ \ \ \ \ \ \ IRReceiveTimerInterruptHandler();\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ call\ the\ IR-\/receive\ function}}
+\DoxyCodeLine{01876\ \ \ \ \ \ \ \ \ NRF\_TIMER2-\/>CC[0]\ +=\ 50;}
+\DoxyCodeLine{01877\ \ \ \ \ \}}
+\DoxyCodeLine{01878\ \}}
+\DoxyCodeLine{01879\ \}}
+\DoxyCodeLine{01880\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01881\ }
+\DoxyCodeLine{01882\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{01883\ \textcolor{comment}{\ *\ BluePill\ in\ 2\ flavors\ see\ https://samuelpinches.com.au/3d-\/printer/cutting-\/through-\/some-\/confusion-\/on-\/stm32-\/and-\/arduino/}}
+\DoxyCodeLine{01884\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{01885\ \textcolor{comment}{\ *\ Recommended\ original\ Arduino\_STM32\ by\ Roger\ Clark.}}
+\DoxyCodeLine{01886\ \textcolor{comment}{\ *\ http://dan.drown.org/stm32duino/package\_STM32duino\_index.json}}
+\DoxyCodeLine{01887\ \textcolor{comment}{\ *\ STM32F1\ architecture\ for\ "{}Generic\ STM32F103C\ series"{}\ from\ "{}STM32F1\ Boards\ (Arduino\_STM32)"{}\ of\ Arduino\ Board\ manager}}
+\DoxyCodeLine{01888\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{01889\ \textcolor{preprocessor}{\#elif\ defined(\_\_STM32F1\_\_)\ ||\ defined(ARDUINO\_ARCH\_STM32F1)}}
+\DoxyCodeLine{01890\ \textcolor{preprocessor}{\#include\ <HardwareTimer.h>}\ \textcolor{comment}{//\ 4\ timers\ and\ 4.\ timer\ (4.channel)\ is\ used\ for\ tone()}}
+\DoxyCodeLine{01891\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01892\ \textcolor{preprocessor}{\#error\ PWM\ generation\ by\ hardware\ not\ implemented\ for\ STM32}}
+\DoxyCodeLine{01893\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01894\ }
+\DoxyCodeLine{01895\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01896\ \textcolor{comment}{\ *\ Use\ timer\ 3\ as\ IR\ timer.}}
+\DoxyCodeLine{01897\ \textcolor{comment}{\ *\ Timer\ 3\ blocks\ PA6,\ PA7,\ PB0,\ PB1,\ so\ if\ you\ require\ one\ of\ them\ as\ tone()\ or\ Servo\ output,\ you\ must\ choose\ another\ timer.}}
+\DoxyCodeLine{01898\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01899\ HardwareTimer\ s50usTimer(3);}
+\DoxyCodeLine{01900\ }
+\DoxyCodeLine{01901\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01902\ \ \ \ \ s50usTimer.resume();}
+\DoxyCodeLine{01903\ \}}
+\DoxyCodeLine{01904\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01905\ \ \ \ \ s50usTimer.pause();}
+\DoxyCodeLine{01906\ \}}
+\DoxyCodeLine{01907\ }
+\DoxyCodeLine{01908\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01909\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01910\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01911\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01912\ }
+\DoxyCodeLine{01913\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01914\ \ \ \ \ s50usTimer.setMode(TIMER\_CH1,\ TIMER\_OUTPUT\_COMPARE);}
+\DoxyCodeLine{01915\ \ \ \ \ s50usTimer.setPrescaleFactor(1);}
+\DoxyCodeLine{01916\ \ \ \ \ s50usTimer.setOverflow((F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND)\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{01917\ \ \ \ \ s50usTimer.attachInterrupt(TIMER\_CH1,\ IRReceiveTimerInterruptHandler);}
+\DoxyCodeLine{01918\ \ \ \ \ s50usTimer.refresh();}
+\DoxyCodeLine{01919\ \}}
+\DoxyCodeLine{01920\ }
+\DoxyCodeLine{01921\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{01922\ \textcolor{comment}{\ *\ STM32duino\ by\ ST\ Microsystems.}}
+\DoxyCodeLine{01923\ \textcolor{comment}{\ *\ https://github.com/stm32duino/Arduino\_Core\_STM32}}
+\DoxyCodeLine{01924\ \textcolor{comment}{\ *\ https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package\_stm\_index.json}}
+\DoxyCodeLine{01925\ \textcolor{comment}{\ *\ stm32\ architecture\ for\ "{}Generic\ STM32F1\ series"{}\ from\ "{}STM32\ Boards\ (selected\ from\ submenu)"{}\ of\ Arduino\ Board\ manager}}
+\DoxyCodeLine{01926\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{01927\ \textcolor{preprocessor}{\#elif\ defined(STM32F1xx)\ ||\ defined(ARDUINO\_ARCH\_STM32)}}
+\DoxyCodeLine{01928\ \textcolor{preprocessor}{\#include\ <HardwareTimer.h>}\ \textcolor{comment}{//\ 4\ timers\ and\ 3.\ timer\ is\ used\ for\ tone(),\ 2.\ for\ Servo}}
+\DoxyCodeLine{01929\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01930\ \textcolor{preprocessor}{\#error\ PWM\ generation\ by\ hardware\ not\ implemented\ for\ STM32}}
+\DoxyCodeLine{01931\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01932\ }
+\DoxyCodeLine{01933\ \textcolor{comment}{/*}}
+\DoxyCodeLine{01934\ \textcolor{comment}{\ *\ Use\ timer\ 4\ as\ IR\ timer.}}
+\DoxyCodeLine{01935\ \textcolor{comment}{\ *\ Timer\ 4\ blocks\ PB6,\ PB7,\ PB8,\ PB9,\ so\ if\ you\ need\ one\ them\ as\ tone()\ or\ Servo\ output,\ you\ must\ choose\ another\ timer.}}
+\DoxyCodeLine{01936\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{01937\ \textcolor{preprocessor}{\#\ \ if\ defined(TIM4)}}
+\DoxyCodeLine{01938\ HardwareTimer\ s50usTimer(TIM4);}
+\DoxyCodeLine{01939\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{01940\ HardwareTimer\ s50usTimer(TIM2);}
+\DoxyCodeLine{01941\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01942\ }
+\DoxyCodeLine{01943\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01944\ \ \ \ \ s50usTimer.resume();}
+\DoxyCodeLine{01945\ \}}
+\DoxyCodeLine{01946\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01947\ \ \ \ \ s50usTimer.pause();}
+\DoxyCodeLine{01948\ \}}
+\DoxyCodeLine{01949\ }
+\DoxyCodeLine{01950\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01951\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01952\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01953\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01954\ }
+\DoxyCodeLine{01955\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01956\ \ \ \ \ s50usTimer.setOverflow(\mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}},\ MICROSEC\_FORMAT);\ \textcolor{comment}{//\ 50\ uS}}
+\DoxyCodeLine{01957\ \ \ \ \ s50usTimer.attachInterrupt(IRReceiveTimerInterruptHandler);}
+\DoxyCodeLine{01958\ \ \ \ \ s50usTimer.resume();}
+\DoxyCodeLine{01959\ \}}
+\DoxyCodeLine{01960\ }
+\DoxyCodeLine{01961\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{01962\ \textcolor{comment}{\ *\ Particle\ special\ IntervalTimer}}
+\DoxyCodeLine{01963\ \textcolor{comment}{\ *\ !!!UNTESTED!!!}}
+\DoxyCodeLine{01964\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{01965\ \textcolor{preprocessor}{\#elif\ defined(PARTICLE)}}
+\DoxyCodeLine{01966\ \textcolor{preprocessor}{\#\ \ ifndef\ \_\_INTERVALTIMER\_H\_\_}}
+\DoxyCodeLine{01967\ \textcolor{preprocessor}{\#include\ "{}SparkIntervalTimer.h"{}}\ \textcolor{comment}{//\ SparkIntervalTimer.h\ is\ required\ if\ PARTICLE\ is\ defined.}}
+\DoxyCodeLine{01968\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01969\ }
+\DoxyCodeLine{01970\ \textcolor{keyword}{extern}\ IntervalTimer\ timer;}
+\DoxyCodeLine{01971\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ ir\_out\_kHz;}
+\DoxyCodeLine{01972\ }
+\DoxyCodeLine{01973\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01974\ \ \ \ \ timer.begin(IRReceiveTimerInterruptHandler,\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}},\ uSec);}
+\DoxyCodeLine{01975\ \}}
+\DoxyCodeLine{01976\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{}
+\DoxyCodeLine{01977\ \ \ \ \ timer.end();}
+\DoxyCodeLine{01978\ \}}
+\DoxyCodeLine{01979\ }
+\DoxyCodeLine{01980\ \textcolor{comment}{//\ Undefine\ ISR,\ because\ we\ register/call\ the\ plain\ function\ IRReceiveTimerInterruptHandler()}}
+\DoxyCodeLine{01981\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{01982\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{01983\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{01984\ }
+\DoxyCodeLine{01985\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{01986\ \}}
+\DoxyCodeLine{01987\ }
+\DoxyCodeLine{01988\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{01989\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{01990\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01991\ \ \ \ \ analogWrite(IR\_SEND\_PIN,\ ((256L\ *\ 100)\ /\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}})),\ ir\_out\_kHz*1000);}
+\DoxyCodeLine{01992\ \}}
+\DoxyCodeLine{01993\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01994\ \ \ \ \ analogWrite(IR\_SEND\_PIN,\ 0,\ ir\_out\_kHz*1000);}
+\DoxyCodeLine{01995\ \}}
+\DoxyCodeLine{01996\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{01997\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{01998\ \ \ \ \ analogWrite(IrSender.sendPin,\ ((256L\ *\ 100)\ /\ \mbox{\hyperlink{IRremote_8hpp_a6be706039d9083db8cb072478e0a09f8}{IR\_SEND\_DUTY\_CYCLE\_PERCENT}}),\ ir\_out\_kHz\ *\ 1000);}
+\DoxyCodeLine{01999\ \}}
+\DoxyCodeLine{02000\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{02001\ \ \ \ \ analogWrite(IrSender.sendPin,\ 0,\ ir\_out\_kHz\ *\ 1000);}
+\DoxyCodeLine{02002\ \}}
+\DoxyCodeLine{02003\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{02004\ }
+\DoxyCodeLine{02005\ }
+\DoxyCodeLine{02006\ \textcolor{comment}{/*}}
+\DoxyCodeLine{02007\ \textcolor{comment}{\ *\ timerConfigForSend()\ is\ used\ exclusively\ by\ IRsend::enableIROut()}}
+\DoxyCodeLine{02008\ \textcolor{comment}{\ *\ Set\ output\ pin\ mode\ and\ disable\ receive\ interrupt\ if\ it\ uses\ the\ same\ resource}}
+\DoxyCodeLine{02009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{02010\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{02011\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{02012\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{02013\ \ \ \ \ pinMode(IR\_SEND\_PIN,\ OUTPUT);}
+\DoxyCodeLine{02014\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{02015\ \ \ \ \ pinMode(IrSender.sendPin,\ OUTPUT);}
+\DoxyCodeLine{02016\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{02017\ \ \ \ \ ir\_out\_kHz\ =\ aFrequencyKHz;}
+\DoxyCodeLine{02018\ \}}
+\DoxyCodeLine{02019\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{02020\ }
+\DoxyCodeLine{02021\ \textcolor{comment}{/***************************************}}
+\DoxyCodeLine{02022\ \textcolor{comment}{\ *\ Unknown\ CPU\ board}}
+\DoxyCodeLine{02023\ \textcolor{comment}{\ ***************************************/}}
+\DoxyCodeLine{02024\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{02025\ \textcolor{preprocessor}{\#error\ Internal\ code\ configuration\ error,\ no\ timer\ functions\ implemented\ for\ this\ CPU\ /\ board}}
+\DoxyCodeLine{02026\ \textcolor{comment}{/*}}
+\DoxyCodeLine{02027\ \textcolor{comment}{\ *\ Dummy\ definitions\ to\ avoid\ more\ irritating\ compile\ errors}}
+\DoxyCodeLine{02028\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{02029\ }
+\DoxyCodeLine{02030\ \textcolor{keywordtype}{void}\ timerEnableReceiveInterrupt()\ \{\};}
+\DoxyCodeLine{02031\ \textcolor{keywordtype}{void}\ timerDisableReceiveInterrupt()\ \{\};}
+\DoxyCodeLine{02032\ }
+\DoxyCodeLine{02033\ \textcolor{preprocessor}{\#\ \ if\ defined(ISR)}}
+\DoxyCodeLine{02034\ \textcolor{preprocessor}{\#undef\ ISR}}
+\DoxyCodeLine{02035\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{02036\ \textcolor{preprocessor}{\#define\ ISR()\ void\ notImplemented(void)}}
+\DoxyCodeLine{02037\ }
+\DoxyCodeLine{02038\ \textcolor{keywordtype}{void}\ timerConfigForReceive()\ \{}
+\DoxyCodeLine{02039\ \}}
+\DoxyCodeLine{02040\ }
+\DoxyCodeLine{02041\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{02042\ \textcolor{keywordtype}{void}\ enableSendPWMByTimer()\ \{}
+\DoxyCodeLine{02043\ \}}
+\DoxyCodeLine{02044\ \textcolor{keywordtype}{void}\ disableSendPWMByTimer()\ \{}
+\DoxyCodeLine{02045\ \}}
+\DoxyCodeLine{02046\ }
+\DoxyCodeLine{02047\ \textcolor{keywordtype}{void}\ timerConfigForSend(uint16\_t\ aFrequencyKHz)\ \{}
+\DoxyCodeLine{02048\ \ \ \ \ timerDisableReceiveInterrupt();}
+\DoxyCodeLine{02049\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{02050\ \ \ \ \ pinMode(IR\_SEND\_PIN,\ OUTPUT);}
+\DoxyCodeLine{02051\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{02052\ \ \ \ \ pinMode(IrSender.sendPin,\ OUTPUT);}
+\DoxyCodeLine{02053\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{02054\ \ \ \ \ (void)\ aFrequencyKHz;}
+\DoxyCodeLine{02055\ \}}
+\DoxyCodeLine{02056\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{02057\ }
+\DoxyCodeLine{02058\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ defined(DOXYGEN\ /\ CPU\_TYPES)}}
+\DoxyCodeLine{02059\ }
+\DoxyCodeLine{02062\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_TIMER\_HPP}}
+
+\end{DoxyCode}

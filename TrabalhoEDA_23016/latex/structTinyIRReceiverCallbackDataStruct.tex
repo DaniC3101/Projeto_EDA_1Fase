@@ -1,0 +1,29 @@
+\doxysection{Tiny\+IRReceiver\+Callback\+Data\+Struct Struct Reference}
+\hypertarget{structTinyIRReceiverCallbackDataStruct}{}\label{structTinyIRReceiverCallbackDataStruct}\index{TinyIRReceiverCallbackDataStruct@{TinyIRReceiverCallbackDataStruct}}
+
+
+{\ttfamily \#include $<$Tiny\+IR.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structTinyIRReceiverCallbackDataStruct_a749532d9fcee171290bbfbe7859e6ba7}\label{structTinyIRReceiverCallbackDataStruct_a749532d9fcee171290bbfbe7859e6ba7} 
+uint16\+\_\+t {\bfseries Address}
+\item 
+\Hypertarget{structTinyIRReceiverCallbackDataStruct_a06d145d57cc48b7ff62a931022f7c690}\label{structTinyIRReceiverCallbackDataStruct_a06d145d57cc48b7ff62a931022f7c690} 
+uint16\+\_\+t {\bfseries Command}
+\item 
+\Hypertarget{structTinyIRReceiverCallbackDataStruct_aeb3f0fed7dd127f81565f62281a7ae41}\label{structTinyIRReceiverCallbackDataStruct_aeb3f0fed7dd127f81565f62281a7ae41} 
+uint8\+\_\+t {\bfseries Flags}
+\item 
+\Hypertarget{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe}\label{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe} 
+bool {\bfseries just\+Written}
+\begin{DoxyCompactList}\small\item\em Is set true if new data is available. Used by the main loop / Tiny\+Receiver\+Decode(), to avoid multiple evaluations of the same IR frame. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Is filled before calling the user callback to transfer received data to main loop for further processing. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/src/Tiny\+IR.\+h\end{DoxyCompactItemize}

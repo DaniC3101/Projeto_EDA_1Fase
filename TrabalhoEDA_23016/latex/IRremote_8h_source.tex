@@ -1,0 +1,59 @@
+\doxysection{IRremote.\+h}
+\hypertarget{IRremote_8h_source}{}\label{IRremote_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremote.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremote.h}}
+\mbox{\hyperlink{IRremote_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ IRremote\_h}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ IRremote\_h}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRremote_8hpp}{IRremote.hpp}}"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#warning\ Thank\ you\ for\ using\ the\ IRremote\ library!}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#warning\ It\ seems,\ that\ you\ are\ using\ a\ old\ version\ 2.0\ code\ /\ example.}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#warning\ This\ version\ is\ no\ longer\ supported!}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#warning\ Please\ use\ one\ of\ the\ new\ code\ examples\ from\ the\ library\ \ available\ at\ "{}File\ >\ Examples\ >\ Examples\ from\ Custom\ Libraries\ /\ IRremote"{}.}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#warning\ Or\ downgrade\ your\ library\ to\ version\ 2.6.0.}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#warning\ Start\ with\ the\ SimpleReceiver\ or\ SimpleSender\ example.}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#warning\ The\ examples\ are\ documented\ here:\ https:}\textcolor{comment}{//github.com/Arduino-\/IRremote/Arduino-\/IRremote\#examples-\/for-\/this-\/library}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#warning\ A\ guide\ how\ to\ convert\ your\ 2.0\ program\ is\ here:\ https:}\textcolor{comment}{//github.com/Arduino-\/IRremote/Arduino-\/IRremote\#converting-\/your-\/2x-\/program-\/to-\/the-\/4x-\/version}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ The\ OLD\ and\ DEPRECATED\ decode\ function\ with\ parameter\ aResults,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ This\ function\ calls\ the\ old\ MSB\ first\ decoders\ and\ fills\ only\ the\ 3\ variables:}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ aResults-\/>value}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ aResults-\/>bits}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ aResults-\/>decode\_type}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ It\ prints\ a\ message\ on\ the\ first\ call.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga74a663ea70562d1a7edb853c0ef9394b}{IRrecv::decode}}(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ sMessageWasSent\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (!sMessageWasSent)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}**************************************************************************************************"{}}));}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Thank\ you\ for\ using\ the\ IRremote\ library!"{}}));}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}It\ seems,\ that\ you\ are\ using\ a\ old\ version\ 2.0\ code\ /\ example."{}}));}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}This\ version\ is\ no\ longer\ supported!"{}}));}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Please\ use\ one\ of\ the\ new\ code\ examples\ from\ the\ library,"{}}));}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}\ available\ at\ \(\backslash\)"{}File\ >\ Examples\ >\ Examples\ from\ Custom\ Libraries\ /\ IRremote\(\backslash\)"{}."{}}));}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Or\ downgrade\ your\ library\ to\ version\ 2.6.0."{}}));}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Start\ with\ the\ SimpleReceiver\ or\ SimpleSender\ example."{}}));}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}The\ examples\ are\ documented\ here:"{}}));}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote\#examples-\/for-\/this-\/library"{}}));}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}A\ guide\ how\ to\ convert\ your\ 2.0\ program\ is\ here:"{}}));}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote\#converting-\/your-\/2x-\/program-\/to-\/the-\/4x-\/version"{}}));}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Thanks"{}}));}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}**************************************************************************************************"{}}));}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ sMessageWasSent\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ decode\_old(aResults);}
+\DoxyCodeLine{00054\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ IRremote\_h}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00058\ }
+
+\end{DoxyCode}

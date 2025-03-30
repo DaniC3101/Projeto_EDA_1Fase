@@ -1,0 +1,23 @@
+\doxysection{IRVersion.\+h}
+\hypertarget{IRVersion_8h_source}{}\label{IRVersion_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRVersion.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRVersion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#ifndef\ \_IR\_VERSION\_HPP}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ \_IR\_VERSION\_HPP}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ VERSION\_IRREMOTE\ "{}4.4.1"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ VERSION\_IRREMOTE\_MAJOR\ 4}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ VERSION\_IRREMOTE\_MINOR\ 4}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ VERSION\_IRREMOTE\_PATCH\ 1}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ Macro\ to\ convert\ 3\ version\ parts\ into\ an\ integer}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ To\ be\ used\ in\ preprocessor\ comparisons,\ such\ as\ \#if\ VERSION\_IRREMOTE\_HEX\ >=\ VERSION\_HEX\_VALUE(3,\ 7,\ 0)}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ VERSION\_HEX\_VALUE(major,\ minor,\ patch)\ ((major\ <<\ 16)\ |\ (minor\ <<\ 8)\ |\ (patch))}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ VERSION\_IRREMOTE\_HEX\ \ VERSION\_HEX\_VALUE(VERSION\_IRREMOTE\_MAJOR,\ VERSION\_IRREMOTE\_MINOR,\ VERSION\_IRREMOTE\_PATCH)}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_VERSION\_HPP}}
+
+\end{DoxyCode}

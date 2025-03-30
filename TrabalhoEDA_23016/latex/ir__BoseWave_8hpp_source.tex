@@ -1,0 +1,125 @@
+\doxysection{ir\+\_\+\+Bose\+Wave.\+hpp}
+\hypertarget{ir__BoseWave_8hpp_source}{}\label{ir__BoseWave_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_BoseWave.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_BoseWave.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_BoseWave.cpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ Bose\ IR\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ \_IR\_BOSEWAVE\_HPP}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ \_IR\_BOSEWAVE\_HPP}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BBBB\ \ \ \ OOO\ \ \ \ SSSS\ \ EEEEE}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\ \ \ B\ \ O\ \ \ O\ \ S\ \ \ \ \ \ E}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BB\ B\ \ \ O\ \ \ O\ \ \ SSS\ \ \ EEEE}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\ \ \ B\ \ O\ \ \ O\ \ \ \ \ \ S\ \ E}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BBBB\ \ \ \ OOO\ \ \ SSSS\ \ \ EEEEE}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ see\ http://lirc.sourceforge.net/remotes/bose/WAVERADIO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ see:\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#BOSE}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ Support\ for\ Bose\ Wave\ Radio\ CD\ initially\ provided\ by\ https://github.com/uvotguy.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ As\ seen\ on\ my\ oscilloscope,\ there\ is\ no\ repeat\ code.\ Instead,\ when\ I}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ press\ and\ hold\ a\ button\ on\ my\ remote,\ it\ sends\ a\ command,\ makes\ a\ 51.2ms\ space,}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ and\ resends\ the\ command\ again,\ and\ so\ on.}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ 38\ kHz,\ LSB\ first,\ 1\ start\ bit\ +\ 8\ bit\ data\ +\ 8\ bit\ inverted\ data\ +\ 1\ stop\ bit.}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ Command\ and\ inverted\ command}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_HEADER\_MARK\ \ \ \ 1014\ \ \ \ }\textcolor{comment}{//\ 1014\ are\ 39\ clock\ periods\ (I\ counted\ 3\ times!)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_HEADER\_SPACE\ \ \ 1468\ \ \ \ }\textcolor{comment}{//\ 1468(measured),\ 1456\ are\ 56\ clock\ periods}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_BIT\_MARK\ \ \ \ \ \ \ \ 520\ \ \ \ }\textcolor{comment}{//\ 520\ are\ 20\ clock\ periods}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_ZERO\_SPACE\ \ \ \ \ \ 468\ \ \ \ }\textcolor{comment}{//\ 468\ are\ 18\ clock\ periods}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_ONE\_SPACE\ \ \ \ \ \ 1468\ \ \ \ }\textcolor{comment}{//\ 1468(measured),\ 1456\ are\ 56\ clock\ periods}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_REPEAT\_PERIOD\ \ \ \ \ \ \ \ \ \ \ \ \ \ 75000}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_REPEAT\_DISTANCE\ \ \ \ \ \ \ \ \ \ \ \ 50000}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_MAXIMUM\_REPEAT\_DISTANCE\ \ \ \ 62000}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ BoseWaveProtocolConstants\ =\ \{\ BOSEWAVE,\ BOSEWAVE\_KHZ,\ BOSEWAVE\_HEADER\_MARK,}
+\DoxyCodeLine{00050\ BOSEWAVE\_HEADER\_SPACE,\ BOSEWAVE\_BIT\_MARK,\ BOSEWAVE\_ONE\_SPACE,\ BOSEWAVE\_BIT\_MARK,\ BOSEWAVE\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ ,\ (BOSEWAVE\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keywordtype}{void}\ IRsend::sendBoseWave(uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ send\ 8\ command\ bits\ and\ then\ 8\ inverted\ command\ bits\ LSB\ first}}
+\DoxyCodeLine{00060\ \ \ \ \ uint16\_t\ tData\ =\ ((\string~aCommand)\ <<\ 8)\ |\ aCommand;}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&BoseWaveProtocolConstants,\ tData,\ BOSEWAVE\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{bool}\ IRrecv::decodeBoseWave()\ \{}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&BoseWaveProtocolConstants))\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ enough\ data\ +4\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ BOSEWAVE\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Bose:\ "{}}));}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 36"{}}));}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&BoseWaveProtocolConstants,\ BOSEWAVE\_BITS))\ \{}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Bose:\ "{}}));}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ Stop\ bit}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3\ +\ (2\ *\ BOSEWAVE\_BITS)],\ BOSEWAVE\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Bose:\ "{}}));}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00098\ \ \ \ \ uint16\_t\ tDecodedValue\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00099\ \ \ \ \ uint8\_t\ tCommandNotInverted\ =\ tDecodedValue\ \&\ 0xFF;\ \textcolor{comment}{//\ comes\ first\ and\ is\ in\ the\ lower\ bits\ (LSB\ first\ :-\/))}}
+\DoxyCodeLine{00100\ \ \ \ \ uint8\_t\ tCommandInverted\ =\ tDecodedValue\ >>\ 8;}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ parity\ check\ for\ command.\ Use\ this\ variant\ to\ avoid\ compiler\ warning\ "{}comparison\ of\ promoted\ \string~unsigned\ with\ unsigned\ [-\/Wsign-\/compare]"{}}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ ((tCommandNotInverted\ \string^\ tCommandInverted)\ !=\ 0xFF)\ \{}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Bose:\ "{}}));}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Command\ and\ inverted\ command\ check\ failed"{}}));}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tCommandNotInverted;}
+\DoxyCodeLine{00110\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ BOSEWAVE\_BITS;}
+\DoxyCodeLine{00111\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ BOSEWAVE;}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ check\ for\ repeat}}
+\DoxyCodeLine{00114\ \ \ \ \ checkForRepeatSpaceTicksAndSetFlag(BOSEWAVE\_MAXIMUM\_REPEAT\_DISTANCE\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00117\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_BOSEWAVE\_HPP}}
+
+\end{DoxyCode}

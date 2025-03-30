@@ -1,0 +1,248 @@
+\doxysection{ir\+\_\+\+JVC.\+hpp}
+\hypertarget{ir__JVC_8hpp_source}{}\label{ir__JVC_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_JVC.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_JVC.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_JVC.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ JVC\ IR\ Protocol\ in\ "{}raw"{}\ and\ standard\ format\ with\ 8\ bit\ address\ and\ 8\ bit\ command}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2017-\/2023\ Kristian\ Lauszus,\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_JVC\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_JVC\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ JJJJJ\ \ V\ \ \ V\ \ \ CCCC}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J\ \ \ \ V\ \ \ V\ \ C}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J\ \ \ \ \ V\ V\ \ \ C}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J\ J\ \ \ \ \ V\ V\ \ \ C}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J\ \ \ \ \ \ \ V\ \ \ \ \ CCCC}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00051\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ +8400,-\/4150}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ +\ 550,-\/1550\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ +\ 550,-\/1500\ +\ 600,-\/1500\ +\ 600,-\/1500\ +\ 550,-\/1550}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ +\ 550,-\/\ 500\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ +\ 500,-\/1600\ +\ 550,-\/1550\ +\ 550,-\/1500\ +\ 600,-\/\ 500}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ +\ 550}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ Sum:\ 40350}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ https://www.sbprojects.net/knowledge/ir/jvc.php}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ http://www.hifi-\/remote.com/johnsfine/DecodeIR.html\#JVC}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ IRP:\ \{38k,525\}<1,-\/1|1,-\/3>(16,-\/8,(D:8,F:8,1,-\/45)+)}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ LSB\ first,\ 1\ start\ bit\ +\ 8\ bit\ address\ +\ 8\ bit\ command\ +\ 1\ stop\ bit.}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ The\ JVC\ protocol\ repeats\ by\ skipping\ the\ header\ mark\ and\ space\ -\/>\ this\ leads\ to\ a\ poor\ repeat\ detection\ for\ JVC\ protocol.}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ Some\ JVC\ devices\ require\ to\ send\ 3\ repeats.\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/issues/21}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ JVC\_ADDRESS\_BITS\ \ \ \ \ \ 8\ }\textcolor{comment}{//\ 8\ bit\ address}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ JVC\_COMMAND\_BITS\ \ \ \ \ \ 8\ }\textcolor{comment}{//\ Command}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ JVC\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ (JVC\_ADDRESS\_BITS\ +\ JVC\_COMMAND\_BITS)\ }\textcolor{comment}{//\ 16\ -\/\ The\ number\ of\ bits\ in\ the\ protocol}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ JVC\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ 526\ }\textcolor{comment}{//\ 20\ periods\ of\ 38\ kHz\ (526.315789)}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ JVC\_HEADER\_MARK\ \ \ \ \ \ \ (16\ *\ JVC\_UNIT)\ }\textcolor{comment}{//\ 8400}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ JVC\_HEADER\_SPACE\ \ \ \ \ \ (8\ *\ JVC\_UNIT)\ \ }\textcolor{comment}{//\ 4200}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ JVC\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ JVC\_UNIT\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Mark}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ JVC\_ONE\_SPACE\ \ \ \ \ \ \ \ \ (3\ *\ JVC\_UNIT)\ \ }\textcolor{comment}{//\ 1578\ -\/\ The\ length\ of\ a\ Bit:Space\ for\ 1's}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ JVC\_ZERO\_SPACE\ \ \ \ \ \ \ \ JVC\_UNIT\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Space\ for\ 0's}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ JVC\_REPEAT\_DISTANCE\ \ \ (uint16\_t)(45\ *\ JVC\_UNIT)\ \ }\textcolor{comment}{//\ 23625\ -\/\ Commands\ are\ repeated\ with\ a\ distance\ of\ 23\ ms\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ JVC\_REPEAT\_PERIOD\ \ \ \ \ 65000\ }\textcolor{comment}{//\ assume\ around\ 40\ ms\ for\ a\ JVC\ frame.\ JVC\ IR\ Remotes:\ RM-\/SA911U,\ RM-\/SX463U\ have\ 45\ ms\ period}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ JVCProtocolConstants\ =\ \{\ JVC,\ JVC\_KHZ,\ JVC\_HEADER\_MARK,\ JVC\_HEADER\_SPACE,\ JVC\_BIT\_MARK,}
+\DoxyCodeLine{00083\ JVC\_ONE\_SPACE,\ JVC\_BIT\_MARK,\ JVC\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (JVC\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00092\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaa6c28eb6a3ac255064c4a4d8827d77d7}{IRsend::sendJVC}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (JVC\_KHZ);\ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (aNumberOfRepeats\ <\ 0)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ JVC\ protocol\ repeats\ by\ skipping\ the\ header.}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ aNumberOfRepeats\ =\ 0;}
+\DoxyCodeLine{00099\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(JVC\_HEADER\_MARK);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(JVC\_HEADER\_SPACE);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Address\ +\ command}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&JVCProtocolConstants,\ aAddress\ |\ (aCommand\ <<\ JVC\_ADDRESS\_BITS),\ JVC\_BITS);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ repeated\ command\ in\ a\ fixed\ raster}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ delay(JVC\_REPEAT\_DISTANCE\ /\ MICROS\_IN\_ONE\_MILLI);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keywordtype}{bool}\ IRrecv::decodeJVC()\ \{}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ \ \ \ uint\_fast8\_t\ tRawlen\ =\ decodedIRData.rawlen;\ //\ Using\ a\ local\ variable\ does\ not\ improve\ code\ size}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (36\ or\ 34).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark.}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ +4\ is\ for\ first\ frame,\ +2\ is\ for\ repeats}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ ((2\ *\ JVC\_BITS)\ +\ 2)\ \&\&\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ ((2\ *\ JVC\_BITS)\ +\ 4))\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}JVC:\ "{}}));}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 34\ or\ 36"{}}));}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ ==\ ((2\ *\ JVC\_BITS)\ +\ 2))\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00135\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Check\ for\ repeat}}
+\DoxyCodeLine{00136\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Check\ leading\ space\ and\ first\ and\ last\ mark\ length}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}}\ <\ ((JVC\_REPEAT\_DISTANCE\ +\ (JVC\_REPEAT\_DISTANCE\ /\ 4)\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}))}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ JVC\_BIT\_MARK)}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 1],\ JVC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ We\ have\ a\ repeat\ here,\ so\ do\ not\ check\ for\ start\ bit}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}}\ |\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ lastDecodedAddress;}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ lastDecodedCommand;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ JVC;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&JVCProtocolConstants))\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&JVCProtocolConstants,\ JVC\_BITS))\ \{}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}JVC:\ "{}}));}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ JVC\_ADDRESS\_BITS;\ \ \textcolor{comment}{//\ upper\ 8\ bits\ of\ LSB\ first\ value}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0xFF;\ \ \ \ \textcolor{comment}{//\ lowest\ 8\ bit\ of\ LSB\ first\ value}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ JVC\_BITS;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ JVC;}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00172\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00177\ \textcolor{keywordtype}{bool}\ IRrecv::decodeJVCMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ offset\ =\ 1;\ \textcolor{comment}{//\ Skip\ first\ space}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ repeat}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{if}\ ((aResults-\/>rawlen\ -\/\ 1\ ==\ 33)\ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ JVC\_BIT\_MARK)}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[aResults-\/>rawlen\ -\/\ 1],\ JVC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ aResults-\/>bits\ =\ 0;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ aResults-\/>value\ =\ 0xFFFFFFFF;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ JVC;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{comment}{//\ Initial\ mark}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ JVC\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ offset++;}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ enough\ data\ -\/\ +3\ for\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{if}\ (aResults-\/>rawlen\ <=\ (2\ *\ JVC\_BITS)\ +\ 3)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(aResults-\/>rawlen);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ too\ small.\ >=\ 36\ is\ required."{}}));}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00202\ \ \ \ \ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{//\ Initial\ space}}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[offset],\ JVC\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ offset++;}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(JVC\_BITS,\ offset,\ JVC\_BIT\_MARK,\ JVC\_ONE\_SPACE,\ 0,\ PROTOCOL\_IS\_MSB\_FIRST))\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{comment}{//\ Stop\ bit}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset\ +\ (2\ *\ JVC\_BITS)],\ JVC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00223\ \ \ \ \ aResults-\/>value\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00224\ \ \ \ \ aResults-\/>bits\ =\ JVC\_BITS;}
+\DoxyCodeLine{00225\ \ \ \ \ aResults-\/>decode\_type\ =\ JVC;}
+\DoxyCodeLine{00226\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ JVC;}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00229\ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00242\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gac85d4b3ebee8ccaff8c32b1ac1ef47a8}{IRsend::sendJVCMSB}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits,\ \textcolor{keywordtype}{bool}\ repeat)\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00244\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (JVC\_KHZ);}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{comment}{//\ Only\ send\ the\ Header\ if\ this\ is\ NOT\ a\ repeat\ command}}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (!repeat)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(JVC\_HEADER\_MARK);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(JVC\_HEADER\_SPACE);}
+\DoxyCodeLine{00250\ \ \ \ \ \}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{comment}{//\ Old\ version\ with\ MSB\ first\ Data}}
+\DoxyCodeLine{00253\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(JVC\_BIT\_MARK,\ JVC\_ONE\_SPACE,\ JVC\_BIT\_MARK,\ JVC\_ZERO\_SPACE,\ data,\ nbits,\ PROTOCOL\_IS\_MSB\_FIRST);}
+\DoxyCodeLine{00254\ \}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_JVC\_HPP}}
+
+\end{DoxyCode}

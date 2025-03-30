@@ -1,0 +1,114 @@
+\doxysection{ir\+\_\+\+Others.\+hpp}
+\hypertarget{ir__Others_8hpp_source}{}\label{ir__Others_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Others.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Others.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_Others.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ miscellaneous\ protocols}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#ifndef\ \_IR\_OTHERS\_HPP}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ \_IR\_OTHERS\_HPP}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DDDD\ \ \ IIIII\ \ \ SSSS\ \ H\ \ \ H}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ \ \ I\ \ \ \ S\ \ \ \ \ \ H\ \ \ H}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ \ \ I\ \ \ \ \ SSS\ \ \ HHHHH}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ \ \ I\ \ \ \ \ \ \ \ S\ \ H\ \ \ H}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DDDD\ \ \ IIIII\ \ SSSS\ \ \ H\ \ \ H}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ DISH\ support\ by\ Todd\ Treece}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ The\ send\ function\ needs\ to\ be\ repeated\ 4\ times}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ Only\ send\ the\ last\ for\ characters\ of\ the\ hex.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ I.E.\ \ Use\ 0x1C10\ instead\ of\ 0x0000000000001C10\ as\ listed\ in\ the\ LIRC\ file.}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Here\ is\ the\ LIRC\ file\ I\ found\ that\ seems\ to\ match\ the\ remote\ codes\ from\ the}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ oscilloscope:\ DISH\ NETWORK\ (echostar\ 301):}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ http://lirc.sourceforge.net/remotes/echostar/301\_501\_3100\_5100\_58xx\_59xx}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ DISH\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ 16}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ DISH\_HEADER\_MARK\ \ \ \ \ 400}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ DISH\_HEADER\_SPACE\ \ \ 6100}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ DISH\_BIT\_MARK\ \ \ \ \ \ \ \ 400}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ DISH\_ONE\_SPACE\ \ \ \ \ \ 1700}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ DISH\_ZERO\_SPACE\ \ \ \ \ 2800}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ DISH\_REPEAT\_SPACE\ \ \ 6200\ }\textcolor{comment}{//\ really?}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ DishProtocolConstants\ =\ \{\ UNKNOWN,\ 56,\ DISH\_HEADER\_MARK,\ DISH\_HEADER\_SPACE,}
+\DoxyCodeLine{00062\ DISH\_BIT\_MARK,\ DISH\_ONE\_SPACE,\ DISH\_BIT\_MARK,\ DISH\_ZERO\_SPACE,\ PROTOCOL\_IS\_MSB\_FIRST,\ 40,\ NULL\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{void}\ IRsend::sendDish(uint16\_t\ aData)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&DishProtocolConstants,\ aData,\ DISH\_BITS,\ 4);}
+\DoxyCodeLine{00066\ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ W\ \ \ W\ \ H\ \ \ H\ \ Y\ \ \ Y\ N\ \ \ N\ TTTTT\ EEEEE\ \ RRRRR}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ W\ \ \ W\ \ H\ \ \ H\ \ \ Y\ Y\ \ NN\ \ N\ \ \ T\ \ \ E\ \ \ \ \ \ R\ \ \ R}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ W\ W\ W\ \ HHHHH\ \ \ \ Y\ \ \ N\ N\ N\ \ \ T\ \ \ EEE\ \ \ \ RRRR}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ W\ W\ W\ \ H\ \ \ H\ \ \ \ Y\ \ \ N\ \ NN\ \ \ T\ \ \ E\ \ \ \ \ \ R\ \ R}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WWW\ \ \ H\ \ \ H\ \ \ \ Y\ \ \ N\ \ \ N\ \ \ T\ \ \ EEEEE\ \ R\ \ \ R}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ Whynter\ A/C\ ARC-\/110WD\ added\ by\ Francesco\ Meschia}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ see\ https://docs.google.com/spreadsheets/d/1dsr4Jh-\/nzC6xvSKGpLlPBF0NRwvlpyw-\/ozg8eZU813w/edit\#gid=0}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ Looking\ at\ the\ code\ table\ the\ protocol\ is\ LSB\ first\ with\ start\ and\ stop\ bit.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ 4\ bit\ checksum,\ constant\ address\ 0xAA00,\ 8\ bit\ Command\ and\ 4\ bit\ Command\ group}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ but\ we\ use\ MSB\ first\ to\ be\ backwards\ compatible}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ WHYNTER\_BITS\ \ \ \ \ \ \ \ \ \ \ \ 32}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ WHYNTER\_HEADER\_MARK\ \ \ 2850}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ WHYNTER\_HEADER\_SPACE\ \ 2850}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ WHYNTER\_BIT\_MARK\ \ \ \ \ \ \ 750}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ WHYNTER\_ONE\_SPACE\ \ \ \ \ 2150}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ WHYNTER\_ZERO\_SPACE\ \ \ \ \ 750}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ WhynterProtocolConstants\ =\ \{\ WHYNTER,\ 38,\ WHYNTER\_HEADER\_MARK,\ WHYNTER\_HEADER\_SPACE,}
+\DoxyCodeLine{00088\ WHYNTER\_BIT\_MARK,\ WHYNTER\_ONE\_SPACE,\ WHYNTER\_BIT\_MARK,\ WHYNTER\_ZERO\_SPACE,\ PROTOCOL\_IS\_MSB\_FIRST,\ 110,\ NULL\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{keywordtype}{void}\ IRsend::sendWhynter(uint32\_t\ aData,\ uint8\_t\ aNumberOfBitsToSend)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&WhynterProtocolConstants,\ aData,\ NEC\_BITS,\ aNumberOfBitsToSend);}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keywordtype}{bool}\ IRrecv::decodeWhynter()\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (68).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark.}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ WHYNTER\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&WhynterProtocolConstants))\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&WhynterProtocolConstants,\ WHYNTER\_BITS))\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00106\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00107\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ WHYNTER\_BITS;}
+\DoxyCodeLine{00108\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ WHYNTER;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00110\ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_OTHERS\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,47 @@
+\doxysection{C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/src/private/\+IRTimer.hpp File Reference}
+\hypertarget{IRTimer_8hpp}{}\label{IRTimer_8hpp}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/private/IRTimer.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/private/IRTimer.hpp}}
+
+
+All timer specific definitions are contained in this file. Sets IR\+\_\+\+SEND\+\_\+\+PIN if required, e.\+g. if SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER for AVR is defined, which restricts the output to a dedicated pin number.  
+
+
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__Timer_ga301c12193509807588b4db8e1b4ad5e7}{ISR}}()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__Timer_ga8cca92581b5452eaac5b3075227c6c56}{timer\+Config\+For\+Receive}} ()
+\item 
+void \mbox{\hyperlink{group__Timer_gae0ec21c275dd13fff83445ce6cc900d7}{timer\+Enable\+Receive\+Interrupt}} ()
+\item 
+void \mbox{\hyperlink{group__Timer_ga0b0e97d0a44ceb967a83b44aa88c6bd2}{timer\+Disable\+Receive\+Interrupt}} ()
+\item 
+void {\bfseries timer\+Reset\+Interrupt\+Pending} ()
+\item 
+void {\bfseries timer\+Config\+For\+Send} (uint16\+\_\+t a\+Frequency\+KHz)
+\item 
+void {\bfseries enable\+Send\+PWMBy\+Timer} ()
+\item 
+void {\bfseries disable\+Send\+PWMBy\+Timer} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+All timer specific definitions are contained in this file. Sets IR\+\_\+\+SEND\+\_\+\+PIN if required, e.\+g. if SEND\+\_\+\+PWM\+\_\+\+BY\+\_\+\+TIMER for AVR is defined, which restricts the output to a dedicated pin number. 
+
+timer\+Config\+For\+Send(a\+Frequency\+KHz) must set output pin mode and disable receive interrupt if it uses the same resource
+
+This file is part of Arduino-\/\+IRremote \href{https://github.com/Arduino-IRremote/Arduino-IRremote}{\texttt{ https\+://github.\+com/\+Arduino-\/\+IRremote/\+Arduino-\/\+IRremote}}.
+
+MIT License
+
+Copyright (c) 2021-\/2023 Armin Joachimsmeyer
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "{}\+Software"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "{}\+AS IS"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 

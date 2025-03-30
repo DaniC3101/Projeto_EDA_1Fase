@@ -1,0 +1,324 @@
+\doxysection{ac\+\_\+\+LG.\+hpp}
+\hypertarget{ac__LG_8hpp_source}{}\label{ac__LG_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ac\_LG.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ac\_LG.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ac\_LG.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ sending\ LG\ air\ conditioner\ IR\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ There\ is\ no\ state\ plausibility\ check,\ e.g.\ you\ can\ send\ fan\ speed\ in\ Mode\ D\ and\ change\ temperature\ in\ mode\ F}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2021-\/2022\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifndef\ \_AC\_LG\_HPP}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ \_AC\_LG\_HPP}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#if\ defined(INFO)\ \&\&\ !defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ LOCAL\_INFO}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\#define\ LOCAL\_INFO\ //\ This\ enables\ info\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\#define\ DEBUG\ //\ for\ more\ output\ from\ the\ LG-\/AC\ driver.}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRremoteInt_8h}{IRremoteInt.h}}"{}}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ "{}ac\_LG.h"{}}\ \textcolor{comment}{//\ useful\ constants}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ "{}LongUnion.h"{}}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00050\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *\ LG\ remote\ measurements:\ Type\ AKB73315611,\ Ver1.1\ from\ 2011.03.01}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ Internal\ crystal:\ 4\ MHz}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ *\ Header:\ \ 8.9\ ms\ mark\ 4.15\ ms\ space}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ Data:\ \ \ \ 500\ /\ 540\ and\ 500\ /\ 1580;}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *\ Clock\ is\ nor\ synchronized\ with\ gate\ so\ you\ have\ 19\ and\ sometimes\ 19\ and\ a\ spike\ pulses\ for\ mark}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *\ Duty:\ \ \ \ 9\ us\ on\ 17\ us\ off\ =>\ around\ 33\ \%\ duty}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ NO\ REPEAT:\ If\ value\ like\ temperature\ has\ changed\ during\ long\ press,\ the\ last\ value\ is\ send\ at\ button\ release}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ *\ If\ you\ do\ a\ double\ press\ -\/tested\ with\ the\ fan\ button-\/,\ the\ next\ value\ can\ be\ sent\ after\ 118\ ms}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ SIZE\_OF\_FAN\_SPEED\_MAPPING\_TABLE\ \ \ \ \ 4}}
+\DoxyCodeLine{00061\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ AC\_FAN\_TOWER[SIZE\_OF\_FAN\_SPEED\_MAPPING\_TABLE]\ =\ \{\ 0,\ 4,\ 6,\ 6\ \};\ \textcolor{comment}{//\ last\ dummy\ entry\ to\ avoid\ out\ of\ bounds\ access}}
+\DoxyCodeLine{00062\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ AC\_FAN\_WALL[SIZE\_OF\_FAN\_SPEED\_MAPPING\_TABLE]\ =\ \{\ 0,\ 2,\ 4,\ 5\ \};\ \textcolor{comment}{//\ 0\ -\/>\ low,\ 4\ high,\ 5\ -\/>\ cycle}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{void}\ Aircondition\_LG::setType(\textcolor{keywordtype}{bool}\ aIsWallType)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ ACIsWallType\ =\ aIsWallType;}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00067\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Set\ wall\ type\ to\ "{}}));}
+\DoxyCodeLine{00068\ \ \ \ \ Serial.println(aIsWallType);}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{keywordtype}{void}\ Aircondition\_LG::printMenu(Print\ *aSerial)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00074\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00075\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}Type\ command\ and\ optional\ parameter\ without\ a\ separator"{}}));}
+\DoxyCodeLine{00076\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}0\ Off"{}}));}
+\DoxyCodeLine{00077\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}1\ On"{}}));}
+\DoxyCodeLine{00078\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}s\ Swing\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00079\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}a\ Auto\ clean\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00080\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}j\ Jet\ on"{}}));}
+\DoxyCodeLine{00081\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}e\ Energy\ saving\ <0\ or\ 1>"{}}));}
+\DoxyCodeLine{00082\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}l\ Lights\ toggle"{}}));}
+\DoxyCodeLine{00083\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}f\ Fan\ speed\ <0\ to\ 2\ or\ 3\ for\ cycle>"{}}));}
+\DoxyCodeLine{00084\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}t\ Temperature\ <18\ to\ 30>\ degree"{}}));}
+\DoxyCodeLine{00085\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}+\ Temperature\ +\ 1"{}}));}
+\DoxyCodeLine{00086\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}-\/\ Temperature\ -\/\ 1"{}}));}
+\DoxyCodeLine{00087\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}m\ <c(ool)\ or\ a(uto)\ or\ d(ehumidifying)\ or\ h(eating)\ or\ f(an)\ mode>"{}}));}
+\DoxyCodeLine{00088\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}S\ Sleep\ after\ <0\ to\ 420>\ minutes"{}}));}
+\DoxyCodeLine{00089\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}T\ Timer\ on\ after\ <0\ to\ 1439>\ minutes"{}}));}
+\DoxyCodeLine{00090\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}O\ Timer\ off\ after\ <0\ to\ 1439>\ minutes"{}}));}
+\DoxyCodeLine{00091\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}C\ Clear\ all\ timer\ and\ sleep"{}}));}
+\DoxyCodeLine{00092\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}e.g.\ \(\backslash\)"{}s1\(\backslash\)"{}\ or\ \(\backslash\)"{}t23\(\backslash\)"{}\ or\ \(\backslash\)"{}mc\(\backslash\)"{}\ or\ \(\backslash\)"{}O60\(\backslash\)"{}\ or\ \(\backslash\)"{}+\(\backslash\)"{}"{}}));}
+\DoxyCodeLine{00093\ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}No\ plausibility\ check\ is\ made!"{}}));}
+\DoxyCodeLine{00094\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ *\ Send\ repeat}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ *\ Repeat\ commands\ should\ be\ sent\ in\ a\ 110\ ms\ raster.}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ *\ @param\ aCommand\ one\ of\ LG\_COMMAND\_OFF,\ LG\_COMMAND\_ON\ etc.}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00102\ \textcolor{keywordtype}{bool}\ Aircondition\_LG::sendCommandAndParameter(\textcolor{keywordtype}{char}\ aCommand,\ \textcolor{keywordtype}{int}\ aParameter)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//\ Commands\ without\ parameter}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{switch}\ (aCommand)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_OFF:\ \textcolor{comment}{//\ off}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_POWER\_DOWN);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_ON:\ \textcolor{comment}{//\ on}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ set\ to\ false\ in\ order\ to\ suppress\ on\ bit}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_JET:}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}Send\ jet\ on"{}}));}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_JET\_ON);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_LIGHT:}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_LIGHT);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_CLEAR\_ALL:}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ sendIRCommand(LG\_CLEAR\_ALL);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE\_PLUS:}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (18\ <=\ Temperature\ \&\&\ Temperature\ <=\ 29)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature++;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE\_MINUS:}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (19\ <=\ Temperature\ \&\&\ Temperature\ <=\ 30)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature-\/-\/;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ \ \ \ *\ Now\ the\ commands\ which\ require\ a\ parameter}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <\ 0)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Error:\ Parameter\ is\ less\ than\ 0"{}}));}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{switch}\ (aCommand)\ \{}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_MODE:}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ Mode\ =\ aParameter\ +\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_SWING:}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ air\ swing="{}}));}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ACIsWallType)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_WALL\_SWING\_ON);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_WALL\_SWING\_OFF);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SWING\_ON);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SWING\_OFF);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_AUTO\_CLEAN:}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ auto\ clean="{}}));}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_AUTO\_CLEAN\_ON);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_AUTO\_CLEAN\_OFF);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_ENERGY:}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Send\ energy\ saving\ on="{}}));}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(aParameter);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_ENERGY\_SAVING\_ON);}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_ENERGY\_SAVING\_OFF);}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_FAN\_SPEED:}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <\ SIZE\_OF\_FAN\_SPEED\_MAPPING\_TABLE)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ FanIntensity\ =\ aParameter;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TEMPERATURE:}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (18\ <=\ aParameter\ \&\&\ aParameter\ <=\ 30)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ Temperature\ =\ aParameter;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_SLEEP:}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 420\ =\ maximum\ I\ have\ recorded}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 420)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_SLEEP\ +\ aParameter);}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TIMER\_ON:}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1440\ =\ minutes\ of\ a\ day}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 1439)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_TIMER\_ON\ +\ aParameter);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{case}\ LG\_COMMAND\_TIMER\_OFF:}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aParameter\ <=\ 1439)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ sendIRCommand(LG\_TIMER\_OFF\ +\ aParameter);}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00250\ \}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \textcolor{keywordtype}{void}\ Aircondition\_LG::sendIRCommand(uint16\_t\ aCommand)\ \{}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00255\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Send\ code=0x"{}}));}
+\DoxyCodeLine{00256\ \ \ \ \ Serial.print(aCommand,\ HEX);}
+\DoxyCodeLine{00257\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ |\ 0b"{}}));}
+\DoxyCodeLine{00258\ \ \ \ \ Serial.println(aCommand,\ BIN);}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Decoder_ga1c3823c3e57516f35c94fa1fd875880f}{sendLG2}}((uint8\_t)\ LG\_ADDRESS,\ aCommand,\ 0);}
+\DoxyCodeLine{00262\ \}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00265\ \textcolor{comment}{\ *\ Takes\ values\ from\ static\ variables}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00267\ \textcolor{keywordtype}{void}\ Aircondition\_LG::sendTemperatureFanSpeedAndMode()\ \{}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ uint8\_t\ tTemperature\ =\ Temperature;}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00271\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Send\ temperature="{}}));}
+\DoxyCodeLine{00272\ \ \ \ \ Serial.print(tTemperature);}
+\DoxyCodeLine{00273\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ fan\ intensity="{}}));}
+\DoxyCodeLine{00274\ \ \ \ \ Serial.print(FanIntensity);}
+\DoxyCodeLine{00275\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ mode="{}}));}
+\DoxyCodeLine{00276\ \ \ \ \ Serial.println((\textcolor{keywordtype}{char}\ )Mode);}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ tIRCommand;}
+\DoxyCodeLine{00280\ \ \ \ \ tIRCommand.UWord\ =\ 0;}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//\ Temperature\ is\ coded\ in\ the\ upper\ nibble\ of\ the\ LowByte}}
+\DoxyCodeLine{00283\ \ \ \ \ tIRCommand.UByte.LowByte\ =\ ((tTemperature\ -\/\ 15)\ <<\ 4);\ \textcolor{comment}{//\ 16\ -\/>\ 0x00,\ 18\ -\/>\ 0x30,\ 30\ -\/>\ 0xF0}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//\ Fan\ intensity\ is\ coded\ in\ the\ lower\ nibble\ of\ the\ LowByte}}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{if}\ (ACIsWallType)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ tIRCommand.UByte.LowByte\ |=\ AC\_FAN\_WALL[FanIntensity];}
+\DoxyCodeLine{00288\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ tIRCommand.UByte.LowByte\ |=\ AC\_FAN\_TOWER[FanIntensity];}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{switch}\ (Mode)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_COOLING:}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_COOLING\ >>\ 8;}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_HEATING:}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_HEATING\ >>\ 8;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_AUTO:}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_AUTO\ >>\ 8;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_FAN:}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ tTemperature\ =\ 18;}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ =\ LG\_MODE\_FAN\ >>\ 8;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{case}\ AC\_MODE\_DEHUMIDIFIYING:}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ tIRCommand.UWord\ =\ LG\_MODE\_DEHUMIDIFIYING;}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{if}\ (!PowerIsOn)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ switch\ on\ requires\ masked\ bit}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ tIRCommand.UByte.HighByte\ \&=\ \string~(LG\_SWITCH\_ON\_MASK\ >>\ 8);}
+\DoxyCodeLine{00315\ \ \ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \ \ PowerIsOn\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \ \ sendIRCommand(tIRCommand.UWord);}
+\DoxyCodeLine{00319\ \}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_AC\_LG\_HPP}}
+
+\end{DoxyCode}

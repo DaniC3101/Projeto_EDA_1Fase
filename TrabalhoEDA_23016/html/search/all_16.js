@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['nec_20and_20fast_20protocol_0',['NEC and FAST protocol',['../group__TinyReceiver.html',1,'Minimal receiver for NEC and FAST protocol'],['../group__TinySender.html',1,'Minimal sender for NEC and FAST protocol']]],
+  ['nec_20encoding_20diagrams_1',['NEC encoding diagrams',['../index.html#autotoc_md161',1,'']]],
+  ['nec_20extended_20nec_20onkyo_2',['NEC, Extended NEC, ONKYO',['../index.html#autotoc_md91',1,'']]],
+  ['nec_20nec2_3',['NEC, NEC2',['../index.html#autotoc_md92',1,'']]],
+  ['nec_20onkyo_4',['NEC, Extended NEC, ONKYO',['../index.html#autotoc_md91',1,'']]],
+  ['nec_20protocol_20and_20tinyreceiver_5',['Use NEC protocol and TinyReceiver',['../index.html#autotoc_md155',1,'']]],
+  ['nec_20receiver_20and_20sender_6',['Tiny NEC receiver and sender',['../index.html#autotoc_md109',1,'']]],
+  ['nec2_7',['NEC, NEC2',['../index.html#autotoc_md92',1,'']]],
+  ['nec_5faddress_5fbits_8',['NEC_ADDRESS_BITS',['../group__TinyReceiver.html#ga2ab110e480a4b16fe516c2afd16a1ea2',1,'TinyIR.h']]],
+  ['neopixels_20fastled_20etc_9',['Problems with Neopixels, FastLed etc.',['../index.html#autotoc_md119',1,'']]],
+  ['new_204_20x_20program_3a_10',['New 4.x program:',['../index.html#autotoc_md70',1,'']]],
+  ['new_20features_20with_20version_203_20x_11',['New features with version 3.x',['../index.html#autotoc_md66',1,'']]],
+  ['new_20features_20with_20version_204_20x_12',['New features with version 4.x',['../index.html#autotoc_md64',1,'']]],
+  ['new_20hpp_20files_13',['Using the new *.hpp files',['../index.html#autotoc_md77',1,'']]],
+  ['new_20lsb_20first_2032_20bit_20ir_20data_20codes_14',['How to convert old MSB first 32 bit IR data codes to new LSB first 32 bit IR data codes',['../index.html#autotoc_md71',1,'']]],
+  ['new_20protocols_15',['Adding new protocols',['../md_C_1_2Users_2danib_2Documents_2Arduino_2libraries_2IRremote_2Contributing.html#autotoc_md55',1,'']]],
+  ['nibble_20reverse_20map_3a_16',['Nibble reverse map:',['../index.html#autotoc_md72',1,'']]],
+  ['no_20timer_20required_20for_20sending_17',['No timer required for sending',['../index.html#autotoc_md153',1,'']]],
+  ['no_5frepeats_18',['NO_REPEATS',['../IRremoteInt_8h.html#a5d35fb37031b53f0083f8b88ae3cf2c2',1,'IRremoteInt.h']]],
+  ['not_20supported_20by_20irremote_19',['How to deal with protocols not supported by IRremote',['../index.html#autotoc_md103',1,'']]],
+  ['not_20work_20compile_20with_20another_20library_20',['Does not work/compile with another library',['../index.html#autotoc_md120',1,'']]],
+  ['not_20working_21',['Not Working',['../md_C_1_2Users_2danib_2Documents_2Arduino_2libraries_2IRremote_2changelog.html#autotoc_md48',1,'']]],
+  ['numberofbits_22',['numberOfBits',['../structIRData.html#a58f82df7fae70a5783ea69a445eaa43c',1,'IRData']]]
+];

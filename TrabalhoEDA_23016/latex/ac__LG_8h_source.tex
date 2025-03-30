@@ -1,0 +1,139 @@
+\doxysection{ac\+\_\+\+LG.\+h}
+\hypertarget{ac__LG_8h_source}{}\label{ac__LG_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ac\_LG.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ac\_LG.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ac\_LG.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ definitions\ for\ receiving\ and\ sending\ LG\ air\ conditioner\ IR\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2021\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ see\ also:\ https://github.com/crankyoldgit/IRremoteESP8266/blob/master/src/ir\_LG.h}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifndef\ \_AC\_LG\_H}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ \_AC\_LG\_H}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ LG\_ADDRESS\ \ 0x88}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ The\ basic\ IR\ command\ codes}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ Parts\ of\ the\ codes\ (especially\ the\ lower\ nibbles)\ may\ be\ modified\ to\ contain}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ additional\ information\ like\ temperature,\ fan\ speed\ and\ minutes.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ LG\_SWITCH\_ON\_MASK\ \ \ \ \ \ \ 0x0800\ \ }\textcolor{comment}{//\ This\ bit\ is\ masked\ if\ we\ switch\ Power\ on}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ LG\_MODE\_COOLING\ \ \ \ \ \ \ \ \ 0x0800\ \ }\textcolor{comment}{//\ Temperature\ and\ fan\ speed\ in\ lower\ nibbles}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ LG\_MODE\_DEHUMIDIFIYING\ \ 0x0990\ \ }\textcolor{comment}{//\ sets\ also\ temperature\ to\ 24\ and\ fan\ speed\ to\ 0}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ LG\_MODE\_FAN\ \ \ \ \ \ \ \ \ \ \ \ \ 0x0A30\ \ }\textcolor{comment}{//\ sets\ also\ temperature\ to\ 18}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ LG\_MODE\_AUTO\ \ \ \ \ \ \ \ \ \ \ \ 0x0B00\ \ }\textcolor{comment}{//\ The\ remote\ initially\ sets\ also\ temperature\ to\ 22\ and\ fan\ speed\ to\ 4}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ LG\_MODE\_HEATING\ \ \ \ \ \ \ \ \ 0x0C00\ \ }\textcolor{comment}{//\ Temperature\ and\ fan\ speed\ in\ lower\ nibbles}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ LG\_ENERGY\_SAVING\_ON\ \ \ \ \ 0x1004}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ LG\_ENERGY\_SAVING\_OFF\ \ \ \ 0x1005}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ LG\_JET\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1008}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ LG\_WALL\_SWING\_ON\ \ \ \ \ \ \ \ 0x1314}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ LG\_WALL\_SWING\_OFF\ \ \ \ \ \ \ 0x1315}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ LG\_SWING\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ 0x1316\ \ }\textcolor{comment}{//\ not\ verified,\ for\ AKB73757604}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ LG\_SWING\_OFF\ \ \ \ \ \ \ \ \ \ \ \ 0x1317\ \ }\textcolor{comment}{//\ not\ verified,\ for\ AKB73757604}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ LG\_TIMER\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ 0x8000\ \ }\textcolor{comment}{//\ relative\ minutes\ in\ lower\ nibbles}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ LG\_TIMER\_OFF\ \ \ \ \ \ \ \ \ \ \ \ 0x9000\ \ }\textcolor{comment}{//\ relative\ minutes\ in\ lower\ nibbles}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ LG\_SLEEP\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xA000\ \ }\textcolor{comment}{//\ relative\ minutes\ in\ lower\ nibbles}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ LG\_CLEAR\_ALL\ \ \ \ \ \ \ \ \ \ \ \ 0xB000\ \ }\textcolor{comment}{//\ Timers\ and\ sleep}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ LG\_POWER\_DOWN\ \ \ \ \ \ \ \ \ \ \ 0xC005}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ LG\_LIGHT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xC00A}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ LG\_AUTO\_CLEAN\_ON\ \ \ \ \ \ \ \ 0xC00B}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ LG\_AUTO\_CLEAN\_OFF\ \ \ \ \ \ \ 0xC00C}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *\ Commands\ as\ printed\ in\ menu\ and\ uses\ as\ first\ parameter\ for\ sendCommandAndParameter}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_OFF\ \ \ \ \ \ \ \ \ \ '0'}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_ON\ \ \ \ \ \ \ \ \ \ \ '1'}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_SWING\ \ \ \ \ \ \ \ 's'}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_AUTO\_CLEAN\ \ \ 'a'}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_JET\ \ \ \ \ \ \ \ \ \ 'j'}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_ENERGY\ \ \ \ \ \ \ 'e'}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_LIGHT\ \ \ \ \ \ \ \ 'l'}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_FAN\_SPEED\ \ \ \ 'f'}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_TEMPERATURE\ \ 't'}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_TEMPERATURE\_PLUS\ '+'}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_TEMPERATURE\_MINUS\ '-\/'}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_MODE\ \ \ \ \ \ \ \ \ 'm'}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_SLEEP\ \ \ \ \ \ \ \ 'S'}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_TIMER\_ON\ \ \ \ \ 'T'}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_TIMER\_OFF\ \ \ \ 'O'}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_CLEAR\_ALL\ \ \ \ 'C'}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ *\ The\ modes\ are\ encoded\ as\ character\ values\ for\ easy\ printing\ :-\/)}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ AC\_MODE\_COOLING\ \ \ \ \ \ \ \ \ 'c'}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ AC\_MODE\_DEHUMIDIFIYING\ \ 'd'}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ AC\_MODE\_FAN\ \ \ \ \ \ \ \ \ \ \ \ \ 'f'}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ AC\_MODE\_AUTO\ \ \ \ \ \ \ \ \ \ \ \ 'a'}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ AC\_MODE\_HEATING\ \ \ \ \ \ \ \ \ 'h'}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ see\ https://github.com/crankyoldgit/IRremoteESP8266/blob/master/src/ir\_LG.h}}
+\DoxyCodeLine{00101\ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionLGProtocol}{LGProtocol}}\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{unionLGProtocol_a0a595268561edc58e347ca8387000bc6}{raw}};\ \ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ uint32\_t\ Checksum\ :4;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ uint32\_t\ Fan\ :3;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ uint32\_t\ FanExt\ :1;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ uint32\_t\ Temp\ :4;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ uint32\_t\ Mode\ :4;\ \textcolor{comment}{//\ highest\ bit\ 1\ =>\ Set\ temperature\ and\ ventilation\ by\ mode}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ uint32\_t\ Function\ :3;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ uint32\_t\ SwitchOnMask\ :1;\ \textcolor{comment}{/*\ Content\ is\ 0\ when\ switching\ from\ off\ to\ on\ */}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ uint32\_t\ Signature\ :8;\ \textcolor{comment}{/*\ Content\ is\ 0x88,\ LG\_ADDRESS\ */}}
+\DoxyCodeLine{00112\ \ \ \ \ \};}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAircondition__LG}{Aircondition\_LG}}\ \{}
+\DoxyCodeLine{00116\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{bool}\ sendCommandAndParameter(\textcolor{keywordtype}{char}\ aCommand,\ \textcolor{keywordtype}{int}\ aParameter);}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{void}\ setType(\textcolor{keywordtype}{bool}\ aIsWallType);}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ printMenu(Print\ *aSerial);}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ sendIRCommand(uint16\_t\ aCommand);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ sendTemperatureFanSpeedAndMode();}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ \ \ \ *\ Internal\ state\ of\ the\ air\ condition}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#define\ LG\_IS\_WALL\_TYPE\ true}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ LG\_IS\_TOWER\_TYPE\ false}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{bool}\ ACIsWallType;\ \ \ \ \ \ \textcolor{comment}{//\ false\ :\ TOWER,\ true\ :\ WALL}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{bool}\ PowerIsOn;}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ These\ value\ are\ encoded\ and\ sent\ by\ AC\_LG\_SendCommandAndParameter()}}
+\DoxyCodeLine{00131\ \ \ \ \ uint8\_t\ FanIntensity\ =\ 1;\ \ \ \ \textcolor{comment}{//\ 0\ -\/>\ low,\ 4\ high,\ 5\ -\/>\ cycle}}
+\DoxyCodeLine{00132\ \ \ \ \ uint8\_t\ Temperature\ =\ 22;\ \ \ \ \textcolor{comment}{//\ temperature\ :\ 18\ \string~\ 30}}
+\DoxyCodeLine{00133\ \ \ \ \ uint8\_t\ Mode\ =\ AC\_MODE\_COOLING;}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{bool}\ useLG2Protocol\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00135\ \};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_AC\_LG\_H}}
+
+\end{DoxyCode}

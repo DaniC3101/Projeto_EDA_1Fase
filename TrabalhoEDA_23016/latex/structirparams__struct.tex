@@ -1,0 +1,41 @@
+\doxysection{irparams\+\_\+struct Struct Reference}
+\hypertarget{structirparams__struct}{}\label{structirparams__struct}\index{irparams\_struct@{irparams\_struct}}
+
+
+{\ttfamily \#include $<$IRremote\+Int.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structirparams__struct_ac2bf9470f5360f16d4f5488b74375c9d}\label{structirparams__struct_ac2bf9470f5360f16d4f5488b74375c9d} 
+volatile uint8\+\_\+t {\bfseries State\+For\+ISR}
+\begin{DoxyCompactList}\small\item\em State Machine state. \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_a05989093e40cab0450f33e76eab822d5}\label{structirparams__struct_a05989093e40cab0450f33e76eab822d5} 
+uint\+\_\+fast8\+\_\+t {\bfseries IRReceive\+Pin}
+\begin{DoxyCompactList}\small\item\em Pin connected to IR data from detector. \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_aa4a9954a9151a1f61f6f072df6f07618}\label{structirparams__struct_aa4a9954a9151a1f61f6f072df6f07618} 
+volatile uint\+\_\+fast16\+\_\+t {\bfseries Tick\+Counter\+For\+ISR}
+\begin{DoxyCompactList}\small\item\em Counts 50uS ticks. The value is copied into the rawbuf array on every transition. Counting is independent of state or resume(). \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_af973296c2c6711e3109d17a43c15ec7e}\label{structirparams__struct_af973296c2c6711e3109d17a43c15ec7e} 
+void(\texorpdfstring{$\ast$}{*} {\bfseries Receive\+Complete\+Callback\+Function} )(void)
+\begin{DoxyCompactList}\small\item\em The function to call if a protocol message has arrived, i.\+e. State\+For\+ISR changed to IR\+\_\+\+REC\+\_\+\+STATE\+\_\+\+STOP. \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_aadd1758e29a80490dae5ff4cd5941444}\label{structirparams__struct_aadd1758e29a80490dae5ff4cd5941444} 
+bool {\bfseries Overflow\+Flag}
+\begin{DoxyCompactList}\small\item\em Raw buffer Overflow\+Flag occurred. \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_af0ff3ead4410762ce9340337452a2520}\label{structirparams__struct_af0ff3ead4410762ce9340337452a2520} 
+IRRawlen\+Type {\bfseries rawlen}
+\begin{DoxyCompactList}\small\item\em counter of entries in rawbuf \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_a2cb445f10b0ed8b2a14b7d474883a242}\label{structirparams__struct_a2cb445f10b0ed8b2a14b7d474883a242} 
+uint16\+\_\+t {\bfseries initial\+Gap\+Ticks}
+\begin{DoxyCompactList}\small\item\em Tick counts of the length of the gap between previous and current IR frame. Pre 4.\+4\+: rawbuf\mbox{[}0\mbox{]}. \end{DoxyCompactList}\item 
+\Hypertarget{structirparams__struct_ae0891646d6c275153dd88915072185d0}\label{structirparams__struct_ae0891646d6c275153dd88915072185d0} 
+IRRawbuf\+Type {\bfseries rawbuf} \mbox{[}\mbox{\hyperlink{IRremoteInt_8h_a589aa40429eeb37b6e83a2c09854a47b}{RAW\+\_\+\+BUFFER\+\_\+\+LENGTH}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em raw data / tick counts per mark/space. With 8 bit we can only store up to 12.\+7 ms. First entry is empty to be backwards compatible. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This struct contains the data and control used for receiver static functions and the ISR (interrupt service routine) Only State\+For\+ISR needs to be volatile. All the other fields are not written by ISR after data available and before start/resume. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/src/\mbox{\hyperlink{IRremoteInt_8h}{IRremote\+Int.\+h}}\end{DoxyCompactItemize}

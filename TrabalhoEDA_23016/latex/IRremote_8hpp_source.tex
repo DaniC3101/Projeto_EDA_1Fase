@@ -1,0 +1,237 @@
+\doxysection{IRremote.\+hpp}
+\hypertarget{IRremote_8hpp_source}{}\label{IRremote_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremote.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremote.hpp}}
+\mbox{\hyperlink{IRremote_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ This\ library\ can\ be\ configured\ at\ compile\ time\ by\ the\ following\ options\ /\ macros:}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ For\ more\ details\ see:\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote\#compile-\/options-\/-\/macros-\/for-\/this-\/library}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ -\/\ RAW\_BUFFER\_LENGTH\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Buffer\ size\ of\ raw\ input\ buffer.\ Must\ be\ even!\ 100\ is\ sufficient\ for\ *regular*\ protocols\ of\ up\ to\ 48\ bits.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ -\/\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ If\ specified\ (as\ constant),\ reduces\ program\ size\ and\ improves\ send\ timing\ for\ AVR.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ -\/\ SEND\_PWM\_BY\_TIMER\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Disable\ carrier\ PWM\ generation\ in\ software\ and\ use\ (restricted)\ hardware\ PWM.}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *\ -\/\ USE\_NO\_SEND\_PWM\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Use\ no\ carrier\ PWM,\ just\ simulate\ an\ **active\ low**\ receiver\ signal.\ Overrides\ SEND\_PWM\_BY\_TIMER\ definition.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *\ -\/\ USE\_OPEN\_DRAIN\_OUTPUT\_FOR\_SEND\_PIN\ Use\ or\ simulate\ open\ drain\ output\ mode\ at\ send\ pin.\ Attention,\ active\ state\ of\ open\ drain\ is\ LOW,\ so\ connect\ the\ send\ LED\ between\ positive\ supply\ and\ send\ pin!}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ -\/\ EXCLUDE\_EXOTIC\_PROTOCOLS\ \ \ \ \ \ \ \ \ \ \ If\ activated,\ BANG\_OLUFSEN,\ BOSEWAVE,\ WHYNTER,\ FAST\ and\ LEGO\_PF\ are\ excluded\ in\ decode()\ and\ in\ sending\ with\ IrSender.write().}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ *\ -\/\ EXCLUDE\_UNIVERSAL\_PROTOCOLS\ \ \ \ \ \ \ \ If\ activated,\ the\ universal\ decoder\ for\ pulse\ distance\ protocols\ and\ decodeHash\ (special\ decoder\ for\ all\ protocols)\ are\ excluded\ in\ decode().}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ -\/\ DECODE\_*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Selection\ of\ individual\ protocols\ to\ be\ decoded.\ See\ below.}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *\ -\/\ MARK\_EXCESS\_MICROS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Value\ is\ subtracted\ from\ all\ marks\ and\ added\ to\ all\ spaces\ before\ decoding,\ to\ compensate\ for\ the\ signal\ forming\ of\ different\ IR\ receiver\ modules.}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *\ -\/\ RECORD\_GAP\_MICROS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Minimum\ gap\ between\ IR\ transmissions,\ to\ detect\ the\ end\ of\ a\ protocol.}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ -\/\ FEEDBACK\_LED\_IS\_ACTIVE\_LOW\ \ \ \ \ \ \ \ \ Required\ on\ some\ boards\ (like\ my\ BluePill\ and\ my\ ESP8266\ board),\ where\ the\ feedback\ LED\ is\ active\ low.}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ *\ -\/\ NO\_LED\_FEEDBACK\_CODE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ This\ completely\ disables\ the\ LED\ feedback\ code\ for\ send\ and\ receive.}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ -\/\ IR\_INPUT\_IS\_ACTIVE\_HIGH\ \ \ \ \ \ \ \ \ \ \ \ Enable\ it\ if\ you\ use\ a\ RF\ receiver,\ which\ has\ an\ active\ HIGH\ output\ signal.}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ *\ -\/\ IR\_SEND\_DUTY\_CYCLE\_PERCENT\ \ \ \ \ \ \ \ \ Duty\ cycle\ of\ IR\ send\ signal.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ *\ -\/\ MICROS\_PER\_TICK\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Resolution\ of\ the\ raw\ input\ buffer\ data.\ Corresponds\ to\ 2\ pulses\ of\ each\ 26.3\ us\ at\ 38\ kHz.}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ *\ -\/\ IR\_USE\_AVR\_TIMER*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Selection\ of\ timer\ to\ be\ used\ for\ generating\ IR\ receiving\ sample\ interval.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#ifndef\ \_IR\_REMOTE\_HPP}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ \_IR\_REMOTE\_HPP}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#include\ "{}IRVersion.h"{}}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ activate\ it\ for\ all\ cores\ that\ does\ not\ use\ the\ -\/flto\ flag,\ if\ you\ get\ false\ error\ messages\ regarding\ begin()\ during\ compilation.}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\#define\ SUPPRESS\_ERROR\_MESSAGE\_FOR\_BEGIN}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ *\ If\ activated,\ BANG\_OLUFSEN,\ BOSEWAVE,\ MAGIQUEST,\ WHYNTER,\ FAST\ and\ LEGO\_PF\ are\ excluded\ in\ decoding\ and\ in\ sending\ with\ IrSender.write}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\#define\ EXCLUDE\_EXOTIC\_PROTOCOLS}}
+\DoxyCodeLine{00077\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PROTOCOLS}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00080\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *\ Supported\ IR\ protocols}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ Each\ protocol\ you\ include\ costs\ memory\ and,\ during\ decode,\ costs\ time}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ Copy\ the\ lines\ with\ the\ protocols\ you\ need\ in\ your\ program\ before\ the\ \ \#include\ <IRremote.hpp>\ line}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ See\ also\ SimpleReceiver\ example}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#if\ !defined(NO\_DECODER)\ }\textcolor{comment}{//\ for\ sending\ raw\ only}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#\ \ if\ (!(defined(DECODE\_DENON)\ ||\ defined(DECODE\_JVC)\ ||\ defined(DECODE\_KASEIKYO)\ \(\backslash\)}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{||\ defined(DECODE\_PANASONIC)\ ||\ defined(DECODE\_LG)\ ||\ defined(DECODE\_NEC)\ ||\ defined(DECODE\_ONKYO)\ ||\ defined(DECODE\_SAMSUNG)\ \(\backslash\)}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{||\ defined(DECODE\_SONY)\ ||\ defined(DECODE\_RC5)\ ||\ defined(DECODE\_RC6)\ \(\backslash\)}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{||\ defined(DECODE\_DISTANCE\_WIDTH)\ ||\ defined(DECODE\_HASH)\ ||\ defined(DECODE\_BOSEWAVE)\ \(\backslash\)}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{||\ defined(DECODE\_LEGO\_PF)\ ||\ defined(DECODE\_MAGIQUEST)\ ||\ defined(DECODE\_FAST)\ ||\ defined(DECODE\_WHYNTER)))}}
+\DoxyCodeLine{00093\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ *\ If\ no\ protocol\ is\ explicitly\ enabled,\ we\ enable\ all\ protocols}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ DECODE\_DENON\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Includes\ Sharp}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ DECODE\_JVC}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ DECODE\_KASEIKYO}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ DECODE\_PANASONIC\ \ \ \ }\textcolor{comment}{//\ alias\ for\ DECODE\_KASEIKYO}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ DECODE\_LG}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ DECODE\_NEC\ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Includes\ Apple\ and\ Onkyo}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ DECODE\_SAMSUNG}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ DECODE\_SONY}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ DECODE\_RC5}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ DECODE\_RC6}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#\ \ \ \ if\ !defined(EXCLUDE\_EXOTIC\_PROTOCOLS)\ }\textcolor{comment}{//\ saves\ around\ 2000\ bytes\ program\ memory}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ DECODE\_BOSEWAVE}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ DECODE\_LEGO\_PF}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ DECODE\_MAGIQUEST}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ DECODE\_WHYNTER}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ DECODE\_FAST}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#\ \ \ \ if\ !defined(EXCLUDE\_UNIVERSAL\_PROTOCOLS)}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ DECODE\_DISTANCE\_WIDTH\ \ \ \ \ }\textcolor{comment}{//\ universal\ decoder\ for\ pulse\ distance\ width\ protocols\ -\/\ requires\ up\ to\ 750\ bytes\ additional\ program\ memory}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#define\ DECODE\_HASH\ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ special\ decoder\ for\ all\ protocols\ -\/\ requires\ up\ to\ 250\ bytes\ additional\ program\ memory}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !defined(NO\_DECODER)}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\#define\ DECODE\_BEO\ //\ Bang\ \&\ Olufsen\ protocol\ always\ must\ be\ enabled\ explicitly.\ It\ prevents\ decoding\ of\ SONY!}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#if\ defined(DECODE\_NEC)\ \&\&\ !(\string~(\string~DECODE\_NEC\ +\ 0)\ ==\ 0\ \&\&\ \string~(\string~DECODE\_NEC\ +\ 1)\ ==\ 1)}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#warning\ "{}The\ macros\ DECODE\_XXX\ no\ longer\ require\ a\ value.\ Decoding\ is\ now\ switched\ by\ defining\ /\ non\ defining\ the\ macro."{}}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \textcolor{comment}{//\#define\ DEBUG\ //\ Activate\ this\ for\ lots\ of\ lovely\ debug\ output\ from\ the\ IRremote\ core.}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RECEIVING}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#if\ !defined(MARK\_EXCESS\_MICROS)}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ To\ change\ this\ value,\ you\ simply\ can\ add\ a\ line\ \#define\ "{}MARK\_EXCESS\_MICROS\ <My\_new\_value>"{}\ in\ your\ ino\ file\ before\ the\ line\ "{}\#include\ <IRremote.hpp>"{}}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ MARK\_EXCESS\_MICROS\ \ \ \ 20}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#if\ !defined(RECORD\_GAP\_MICROS)}}
+\DoxyCodeLine{00160\ \textcolor{comment}{//\ To\ change\ this\ value,\ you\ simply\ can\ add\ a\ line\ \#define\ "{}RECORD\_GAP\_MICROS\ <My\_new\_value>"{}\ in\ your\ *.ino\ file\ before\ the\ line\ "{}\#include\ <IRremote.hpp>"{}}}
+\DoxyCodeLine{00161\ \textcolor{comment}{//\ Maximum\ value\ for\ RECORD\_GAP\_MICROS,\ which\ fit\ into\ 8\ bit\ buffer,\ using\ 50\ us\ as\ tick,\ is\ 12750}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#define\ RECORD\_GAP\_MICROS\ \ \ 8000\ }\textcolor{comment}{//\ RECS80\ (https://www.mikrocontroller.net/articles/IRMP\#RECS80)\ 1\ bit\ space\ is\ 7500µs\ ,\ NEC\ header\ space\ is\ 4500}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#if\ !defined(RECORD\_GAP\_MICROS\_WARNING\_THRESHOLD)}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//\ To\ change\ this\ value,\ you\ simply\ can\ add\ a\ line\ \#define\ "{}RECORD\_GAP\_MICROS\_WARNING\_THRESHOLD\ <My\_new\_value>"{}\ in\ your\ *.ino\ file\ before\ the\ line\ "{}\#include\ <IRremote.hpp>"{}}}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#define\ RECORD\_GAP\_MICROS\_WARNING\_THRESHOLD\ \ \ 15000}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#define\ RECORD\_GAP\_TICKS\ \ \ \ (RECORD\_GAP\_MICROS\ /\ MICROS\_PER\_TICK)}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ *\ Activate\ this\ line\ if\ your\ receiver\ has\ an\ external\ output\ driver\ transistor\ /\ "{}inverted"{}\ output}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//\#define\ IR\_INPUT\_IS\_ACTIVE\_HIGH}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#if\ defined(IR\_INPUT\_IS\_ACTIVE\_HIGH)}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ IR\ detector\ output\ is\ active\ high}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#define\ INPUT\_MARK\ \ \ 1\ }}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ IR\ detector\ output\ is\ active\ low}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#define\ INPUT\_MARK\ \ \ 0\ }}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00186\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00187\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SENDING}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00192\ \textcolor{comment}{//\#define\ SEND\_PWM\_BY\_TIMER\ //\ restricts\ send\ pin\ on\ many\ platforms\ to\ fixed\ pin\ numbers}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#if\ (defined(ESP32)\ ||\ defined(ARDUINO\_ARCH\_RP2040)\ ||\ defined(PARTICLE))\ ||\ defined(ARDUINO\_ARCH\_MBED)}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#\ \ if\ !defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#define\ SEND\_PWM\_BY\_TIMER\ \ \ \ \ \ \ }\textcolor{comment}{//\ the\ best\ and\ default\ method\ for\ ESP32\ etc.}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#warning\ INFO:\ For\ ESP32,\ RP2040,\ mbed\ and\ particle\ boards\ SEND\_PWM\_BY\_TIMER\ is\ enabled\ by\ default,\ since\ we\ have\ the\ resources\ and\ timing\ is\ more\ exact\ than\ the\ software\ generated\ one.\ If\ this\ is\ not\ intended,\ deactivate\ the\ line\ in\ IRremote.hpp\ over\ this\ warning\ message\ in\ file\ IRremote.hpp.}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#\ \ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\#undef\ IR\_SEND\_PIN\ }\textcolor{comment}{//\ to\ avoid\ warning\ 3\ lines\ later}}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#warning\ Since\ SEND\_PWM\_BY\_TIMER\ is\ defined,\ the\ existing\ value\ of\ IR\_SEND\_PIN\ is\ discarded\ and\ replaced\ by\ the\ value\ determined\ by\ timer\ used\ for\ PWM\ generation}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ DeterminedByTimer\ }\textcolor{comment}{//\ must\ be\ set\ here,\ since\ it\ is\ evaluated\ at\ IRremoteInt.h,\ before\ the\ include\ of\ private/IRTimer.hpp}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00211\ \textcolor{comment}{//\#define\ USE\_NO\_SEND\_PWM}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#if\ defined(SEND\_PWM\_BY\_TIMER)\ \&\&\ defined(USE\_NO\_SEND\_PWM)}}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#warning\ "{}SEND\_PWM\_BY\_TIMER\ and\ USE\_NO\_SEND\_PWM\ are\ both\ defined\ -\/>\ undefine\ SEND\_PWM\_BY\_TIMER\ now!"{}}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#undef\ SEND\_PWM\_BY\_TIMER\ }\textcolor{comment}{//\ USE\_NO\_SEND\_PWM\ overrides\ SEND\_PWM\_BY\_TIMER}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00221\ \textcolor{comment}{//\#define\ USE\_OPEN\_DRAIN\_OUTPUT\_FOR\_SEND\_PIN}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#if\ defined(USE\_OPEN\_DRAIN\_OUTPUT\_FOR\_SEND\_PIN)\ \&\&\ !defined(OUTPUT\_OPEN\_DRAIN)}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#warning\ Pin\ mode\ OUTPUT\_OPEN\_DRAIN\ is\ not\ supported\ on\ this\ platform\ -\/>\ mimick\ open\ drain\ mode\ by\ switching\ between\ INPUT\ and\ OUTPUT\ mode.}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#if\ !defined(PULSE\_CORRECTION\_NANOS)}}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#\ \ if\ defined(F\_CPU)}}
+\DoxyCodeLine{00232\ \textcolor{comment}{//\ To\ change\ this\ value,\ you\ simply\ can\ add\ a\ line\ \#define\ "{}PULSE\_CORRECTION\_NANOS\ <My\_new\_value>"{}\ in\ your\ ino\ file\ before\ the\ line\ "{}\#include\ <IRremote.hpp>"{}}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#define\ PULSE\_CORRECTION\_NANOS\ (48000L\ /\ (F\_CPU/MICROS\_IN\_ONE\_SECOND))\ }\textcolor{comment}{//\ 3000\ @16MHz,\ 666\ @72MHz}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#define\ PULSE\_CORRECTION\_NANOS\ 600}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\#if\ !\ defined(IR\_SEND\_DUTY\_CYCLE\_PERCENT)}}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#define\ IR\_SEND\_DUTY\_CYCLE\_PERCENT\ 30\ }\textcolor{comment}{//\ 30\ saves\ power\ and\ is\ compatible\ to\ the\ old\ existing\ code}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#if\ !\ defined(MICROS\_PER\_TICK)}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#define\ MICROS\_PER\_TICK\ \ \ \ 50L\ }\textcolor{comment}{//\ must\ be\ with\ L\ to\ get\ 32\ bit\ results\ if\ multiplied\ with\ rawbuf[]\ content.}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#define\ MILLIS\_IN\_ONE\_SECOND\ 1000L}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#define\ MICROS\_IN\_ONE\_SECOND\ 1000000L}}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#define\ MICROS\_IN\_ONE\_MILLI\ 1000L}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRremoteInt_8h}{IRremoteInt.h}}"{}}}
+\DoxyCodeLine{00258\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ *\ We\ always\ use\ digitalWriteFast()\ and\ digitalReadFast()\ functions\ to\ have\ a\ consistent\ mapping\ for\ pins.}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ *\ For\ most\ non\ AVR\ cpu's,\ it\ is\ just\ a\ mapping\ to\ digitalWrite()\ and\ digitalRead()\ functions.}}
+\DoxyCodeLine{00261\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#include\ "{}digitalWriteFast.h"{}}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#if\ !defined(USE\_IRREMOTE\_HPP\_AS\_PLAIN\_INCLUDE)}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRTimer_8hpp}{private/IRTimer.hpp}}"{}}\ \ \textcolor{comment}{//\ defines\ IR\_SEND\_PIN\ for\ AVR\ and\ SEND\_PWM\_BY\_TIMER}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#\ \ if\ !defined(NO\_LED\_FEEDBACK\_CODE)}}
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#\ \ \ \ if\ !defined(LED\_BUILTIN)}}
+\DoxyCodeLine{00269\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ *\ print\ a\ warning}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#warning\ INFO:\ No\ definition\ for\ LED\_BUILTIN\ found\ -\/>\ default\ LED\ feedback\ is\ disabled.}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRFeedbackLED_8hpp}{IRFeedbackLED.hpp}}"{}}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00276\ \textcolor{keywordtype}{void}\ disableLEDFeedback()\ \{\};\ \textcolor{comment}{//\ dummy\ function\ for\ examples}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#include\ "{}LongUnion.h"{}}\ \textcolor{comment}{//\ used\ in\ most\ decoders}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00282\ \textcolor{comment}{\ *\ Include\ the\ sources\ here\ to\ enable\ compilation\ with\ macro\ values\ set\ by\ user\ program.}}
+\DoxyCodeLine{00283\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#include\ "{}IRProtocol.hpp"{}}\ \textcolor{comment}{//\ must\ be\ first,\ it\ includes\ definition\ for\ PrintULL\ (unsigned\ long\ long)}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#include\ "{}IRReceive.hpp"{}}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#include\ "{}IRSend.hpp"{}}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00291\ \textcolor{comment}{\ *\ Include\ the\ sources\ of\ all\ decoders\ here\ to\ enable\ compilation\ with\ macro\ values\ set\ by\ user\ program.}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#include\ "{}ir\_BangOlufsen.hpp"{}}}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#include\ "{}ir\_BoseWave.hpp"{}}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#include\ "{}ir\_Denon.hpp"{}}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#include\ "{}ir\_JVC.hpp"{}}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#include\ "{}ir\_Kaseikyo.hpp"{}}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#include\ "{}ir\_Lego.hpp"{}}}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#include\ "{}ir\_LG.hpp"{}}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#include\ "{}ir\_MagiQuest.hpp"{}}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#include\ "{}ir\_NEC.hpp"{}}}
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#include\ "{}ir\_RC5\_RC6.hpp"{}}}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#include\ "{}ir\_Samsung.hpp"{}}}
+\DoxyCodeLine{00304\ \textcolor{preprocessor}{\#include\ "{}ir\_Sony.hpp"{}}}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#include\ "{}ir\_FAST.hpp"{}}}
+\DoxyCodeLine{00306\ \textcolor{preprocessor}{\#include\ "{}ir\_Others.hpp"{}}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#include\ "{}ir\_Pronto.hpp"{}}\ \textcolor{comment}{//\ pronto\ is\ an\ universal\ decoder\ and\ encoder}}
+\DoxyCodeLine{00308\ \textcolor{preprocessor}{\#\ \ if\ defined(DECODE\_DISTANCE\_WIDTH)\ \ \ \ \ }\textcolor{comment}{//\ universal\ decoder\ for\ pulse\ distance\ width\ protocols\ -\/\ requires\ up\ to\ 750\ bytes\ additional\ program\ memory}}
+\DoxyCodeLine{00309\ \textcolor{preprocessor}{\#include\ <ir\_DistanceWidthProtocol.hpp>}}
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \#if\ !defined(USE\_IRREMOTE\_HPP\_AS\_PLAIN\_INCLUDE)}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\#define\ RAWBUF\ \ 101\ \ }\textcolor{comment}{//\ Maximum\ length\ of\ raw\ duration\ buffer}}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#define\ REPEAT\ 0xFFFFFFFF}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\#define\ USECPERTICK\ MICROS\_PER\_TICK}}
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{\#define\ MARK\_EXCESS\ MARK\_EXCESS\_MICROS}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_REMOTE\_HPP}}
+
+\end{DoxyCode}

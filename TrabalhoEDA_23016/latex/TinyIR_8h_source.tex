@@ -1,0 +1,266 @@
+\doxysection{Tiny\+IR.\+h}
+\hypertarget{TinyIR_8h_source}{}\label{TinyIR_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIR.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIR.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ \ TinyIR.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2021-\/2023\ \ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ armin.joachimsmeyer@gmail.com}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ IRMP\ https://github.com/IRMP-\/org/IRMP.}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ \ TinyIRReceiver\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ \ See\ the\ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/gpl.html>.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifndef\ \_TINY\_IR\_H}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ \_TINY\_IR\_H}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}LongUnion.h"{}}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ VERSION\_TINYIR\ "{}2.2.0"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ VERSION\_TINYIR\_MAJOR\ 2}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ VERSION\_TINYIR\_MINOR\ 2}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ VERSION\_TINYIR\_PATCH\ 0}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ The\ change\ log\ is\ at\ the\ bottom\ of\ the\ file}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#if\ !defined(NEC\_ADDRESS\_BITS)}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ NEC\_ADDRESS\_BITS\ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ 16\ bit\ address\ or\ 8\ bit\ address\ and\ 8\ bit\ inverted\ address}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ NEC\_COMMAND\_BITS\ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ Command\ and\ inverted\ command}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ NEC\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (NEC\_ADDRESS\_BITS\ +\ NEC\_COMMAND\_BITS)}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ NEC\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 560}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ NEC\_HEADER\_MARK\ \ \ \ \ \ \ \ \ (16\ *\ NEC\_UNIT)\ }\textcolor{comment}{//\ 9000}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ NEC\_HEADER\_SPACE\ \ \ \ \ \ \ \ (8\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 4500}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ NEC\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ NEC\_UNIT}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ NEC\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ (3\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 1690}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ NEC\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ NEC\_UNIT}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_HEADER\_SPACE\ (4\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 2250}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_PERIOD\ \ \ \ \ \ \ 110000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 110\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ NEC\_MINIMAL\_DURATION\ \ \ \ \ 49900\ }\textcolor{comment}{//\ NEC\_HEADER\_MARK\ +\ NEC\_HEADER\_SPACE\ +\ 32\ *\ 2\ *\ NEC\_UNIT\ +\ NEC\_UNIT\ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ NEC\_MAXIMUM\_REPEAT\_DISTANCE\ (NEC\_REPEAT\_PERIOD\ -\/\ NEC\_MINIMAL\_DURATION\ +\ 10000)\ }\textcolor{comment}{//\ 70\ ms}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ Protocol=FAST\ Address=0x0\ Command=0x76\ Raw-\/Data=0x8976\ 16\ bits\ LSB\ first}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ +2100,-\/1050}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ +\ 550,-\/\ 500\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ +\ 550,-\/1550\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/1550}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/1550}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ +\ 550}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ Sum:\ 28900}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ FAST\_KHZ\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 38}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ FAST\_ADDRESS\_BITS\ \ \ \ \ \ \ \ \ \ 0\ }\textcolor{comment}{//\ No\ address}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ FAST\_COMMAND\_BITS\ \ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ Command\ and\ inverted\ command\ (parity)}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ FAST\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (FAST\_ADDRESS\_BITS\ +\ FAST\_COMMAND\_BITS)}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ FAST\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 526\ }\textcolor{comment}{//\ 20\ periods\ of\ 38\ kHz\ (526.315789)}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ FAST\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ \ FAST\_UNIT}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ FAST\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ (3\ *\ FAST\_UNIT)\ \ \ \ \ }\textcolor{comment}{//\ 1578\ -\/>\ bit\ period\ =\ 2104}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ FAST\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ \ FAST\_UNIT\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ \ 526\ -\/>\ bit\ period\ =\ 1052}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ FAST\_HEADER\_MARK\ \ \ \ \ \ \ \ \ \ (4\ *\ FAST\_UNIT)\ \ \ \ \ }\textcolor{comment}{//\ 2104}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ FAST\_HEADER\_SPACE\ \ \ \ \ \ \ \ \ (2\ *\ FAST\_UNIT)\ \ \ \ \ }\textcolor{comment}{//\ 1052}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ FAST\_REPEAT\_PERIOD\ \ \ \ \ \ \ \ 50000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 50\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ FAST\_REPEAT\_DISTANCE\ \ \ \ \ \ (FAST\_REPEAT\_PERIOD\ -\/\ (55\ *\ FAST\_UNIT))\ }\textcolor{comment}{//\ 19\ ms}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ FAST\_MAXIMUM\_REPEAT\_DISTANCE\ (FAST\_REPEAT\_DISTANCE\ +\ 10000)\ }\textcolor{comment}{//\ 29\ ms}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ *\ Definitions\ to\ switch\ between\ FAST\ and\ NEC/ONKYO\ timing\ with\ the\ same\ code.}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#if\ defined(USE\_FAST\_PROTOCOL)}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ ENABLE\_NEC2\_REPEATS\ \ \ \ }\textcolor{comment}{//\ Disables\ detection\ of\ special\ short\ frame\ NEC\ repeats.\ Saves\ 40\ bytes\ program\ memory.}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ADDRESS\_BITS\ \ \ \ \ \ \ \ \ \ FAST\_ADDRESS\_BITS}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_COMMAND\_BITS\ \ \ \ \ \ \ \ \ \ FAST\_COMMAND\_BITS}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#if\ !defined(TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY)}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY\ \ true\ \ \ \ \ }\textcolor{comment}{//\ 8\ bit\ and\ 8\ bit\ parity}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\#define\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY\ \ false\ \ \ \ //\ \ 16\ bit\ command\ without\ parity\ -\/\ not\ tested}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FAST\_BITS}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FAST\_UNIT}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_HEADER\_MARK\ \ \ \ \ \ \ \ \ \ \ FAST\_HEADER\_MARK}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_HEADER\_SPACE\ \ \ \ \ \ \ \ \ \ FAST\_HEADER\_SPACE}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ \ \ FAST\_BIT\_MARK}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ \ FAST\_ONE\_SPACE}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ FAST\_ZERO\_SPACE}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_MAXIMUM\_REPEAT\_DISTANCE\ \ FAST\_MAXIMUM\_REPEAT\_DISTANCE\ }\textcolor{comment}{//\ for\ repeat\ detection}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ADDRESS\_BITS\ \ \ \ \ \ \ \ \ \ NEC\_ADDRESS\_BITS\ }\textcolor{comment}{//\ the\ address\ bits\ +\ parity}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_ONKYO\_PROTOCOL)}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY\ \ false\ \ \ \ \ }\textcolor{comment}{//\ 16\ bit\ address\ without\ parity}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_EXTENDED\_NEC\_PROTOCOL)}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY\ \ false\ \ \ \ \ }\textcolor{comment}{//\ 16\ bit\ address\ without\ parity}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY\ \ true\ \ \ \ \ }\textcolor{comment}{//\ 8\ bit\ and\ 8\ bit\ parity}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_COMMAND\_BITS\ \ \ \ \ \ \ \ \ \ NEC\_COMMAND\_BITS\ }\textcolor{comment}{//\ the\ command\ bits\ +\ parity}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_ONKYO\_PROTOCOL)}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY\ \ false\ \ \ \ }\textcolor{comment}{//\ 16\ bit\ command\ without\ parity}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY\ \ true\ \ \ \ \ }\textcolor{comment}{//\ 8\ bit\ and\ 8\ bit\ parity}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NEC\_BITS}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NEC\_UNIT}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_HEADER\_MARK\ \ \ \ \ \ \ \ \ \ \ NEC\_HEADER\_MARK}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_HEADER\_SPACE\ \ \ \ \ \ \ \ \ \ NEC\_HEADER\_SPACE}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ \ \ NEC\_BIT\_MARK}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ \ NEC\_ONE\_SPACE}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ NEC\_ZERO\_SPACE}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_MAXIMUM\_REPEAT\_DISTANCE\ \ NEC\_MAXIMUM\_REPEAT\_DISTANCE}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#if\ defined(USE\_CALLBACK\_FOR\_TINY\_RECEIVER)}}
+\DoxyCodeLine{00164\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ *\ This\ function\ is\ called,\ if\ a\ complete\ command\ was\ received\ and\ must\ be\ implemented\ in\ the\ file\ (user\ code)}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ *\ which\ includes\ this\ library\ if\ USE\_CALLBACK\_FOR\_TINY\_RECEIVER\ is\ activated.}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00168\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ handleReceivedTinyIRData();}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#if\ !defined(MICROS\_IN\_ONE\_SECOND)}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#define\ MICROS\_IN\_ONE\_SECOND\ 1000000L}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#if\ !defined(MICROS\_IN\_ONE\_MILLI)}}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#define\ MICROS\_IN\_ONE\_MILLI\ 1000L}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ *\ Macros\ for\ comparing\ timing\ values}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#define\ lowerValue25Percent(aDuration)\ \ \ (aDuration\ -\/\ (aDuration\ /\ 4))}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\#define\ upperValue25Percent(aDuration)\ \ \ (aDuration\ +\ (aDuration\ /\ 4))}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#define\ lowerValue50Percent(aDuration)\ \ \ (aDuration\ /\ 2)\ }\textcolor{comment}{//\ (aDuration\ -\/\ (aDuration\ /\ 2))}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#define\ upperValue50Percent(aDuration)\ \ \ (aDuration\ +\ (aDuration\ /\ 2))}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ *\ The\ states\ for\ the\ state\ machine}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK\ \ \ \ \ \ \ \ 0}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_SPACE\ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_FIRST\_DATA\_MARK\ \ \ 2}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_SPACE\ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_MARK\ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#define\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_STOP\_MARK\ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTinyIRReceiverStruct}{TinyIRReceiverStruct}}\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ \ \ \ *\ State\ machine}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00203\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_ad7b6f95e5a153384b352d09bb84a2444}{LastChangeMicros}};\ \ \ \ \ \ }
+\DoxyCodeLine{00204\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_a04a9f384aca34cc05024a4a2bfe0c646}{IRReceiverState}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00205\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_a880e6b24e5109e97c390fd936dc252ee}{IRRawDataBitCounter}};\ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ \ \ \ *\ Data}}
+\DoxyCodeLine{00208\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_BITS\ >\ 16)}}
+\DoxyCodeLine{00210\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ \mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00213\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00214\ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ \mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00216\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}};\ \ }
+\DoxyCodeLine{00217\ \};}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ *\ Definitions\ for\ member\ TinyIRReceiverCallbackDataStruct.Flags}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ *\ From\ IRremoteInt.h}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_EMPTY\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x00}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_REPEAT\ \ \ \ \ \ \ \ \ \ 0x01}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_AUTO\_REPEAT\ \ \ \ \ 0x02\ }\textcolor{comment}{//\ not\ used\ here,\ overwritten\ with\ \_IRDATA\_FLAGS\_IS\_SHORT\_REPEAT}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_PARITY\_FAILED\ \ \ \ \ \ 0x04\ }}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00231\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct}{TinyIRReceiverCallbackDataStruct}}\ \{}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_ADDRESS\_BITS\ >\ 0)}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#\ \ if\ (TINY\_RECEIVER\_ADDRESS\_BITS\ ==\ 16)\ \&\&\ !TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00234\ \ \ \ \ uint16\_t\ Address;}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00236\ \ \ \ \ uint8\_t\ Address;}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#\ \ if\ (TINY\_RECEIVER\_COMMAND\_BITS\ ==\ 16)\ \&\&\ !TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00241\ \ \ \ \ uint16\_t\ Command;}
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00243\ \ \ \ \ uint8\_t\ Command;}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00245\ \ \ \ \ uint8\_t\ Flags;\ \textcolor{comment}{//\ Bit\ coded\ flags.\ Can\ contain\ one\ of\ the\ bits:\ IRDATA\_FLAGS\_IS\_REPEAT\ and\ IRDATA\_FLAGS\_PARITY\_FAILED}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe}{justWritten}};\ }
+\DoxyCodeLine{00247\ \};}
+\DoxyCodeLine{00248\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct}{TinyIRReceiverCallbackDataStruct}}\ TinyIRReceiverData;}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \textcolor{keywordtype}{bool}\ isIRReceiverAttachedForTinyReceiver();}
+\DoxyCodeLine{00251\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__TinyReceiver_gaafb51bc656ba199129d261afa3f950c2}{initPCIInterruptForTinyReceiver}}();}
+\DoxyCodeLine{00252\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__TinyReceiver_gacc1eec5de7563e88aa73d16aa9e60a10}{enablePCIInterruptForTinyReceiver}}();}
+\DoxyCodeLine{00253\ \textcolor{keywordtype}{void}\ disablePCIInterruptForTinyReceiver();}
+\DoxyCodeLine{00254\ \textcolor{keywordtype}{bool}\ isTinyReceiverIdle();}
+\DoxyCodeLine{00255\ \textcolor{keywordtype}{bool}\ TinyReceiverDecode();}
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ printTinyReceiverResultMinimal(Print\ *aSerial);}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \textcolor{keywordtype}{void}\ sendFAST(uint8\_t\ aSendPin,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0);}
+\DoxyCodeLine{00259\ \textcolor{keywordtype}{void}\ sendFast8BitAndParity(uint8\_t\ aSendPin,\ uint8\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0);}
+\DoxyCodeLine{00260\ \textcolor{keywordtype}{void}\ sendONKYO(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats\ =\ \textcolor{keyword}{false});\ \textcolor{comment}{//\ Send\ NEC\ with\ 16\ bit\ command,\ even\ if\ aCommand\ <\ 0x100}}
+\DoxyCodeLine{00261\ \textcolor{keywordtype}{void}\ sendNECMinimal(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0)}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ ("{}Renamed\ to\ sendNEC()."{})));}
+\DoxyCodeLine{00263\ \textcolor{keywordtype}{void}\ sendNEC(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats\ =\ false);}
+\DoxyCodeLine{00264\ \textcolor{keywordtype}{void}\ sendExtendedNEC(uint8\_t\ aSendPin,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ uint\_fast8\_t\ aNumberOfRepeats\ =\ 0,\ \textcolor{keywordtype}{bool}\ aSendNEC2Repeats\ =\ false);}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00267\ \textcolor{comment}{\ *\ \ Version\ 2.2.0\ -\/\ 7/2024}}
+\DoxyCodeLine{00268\ \textcolor{comment}{\ *\ \ -\/\ New\ TinyReceiverDecode()\ function\ to\ be\ used\ as\ drop\ in\ for\ IrReceiver.decode().}}
+\DoxyCodeLine{00269\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ *\ \ Version\ 2.1.0\ -\/\ 2/2024}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ *\ \ -\/\ New\ sendExtendedNEC()\ function\ and\ new\ parameter\ aSendNEC2Repeats.}}
+\DoxyCodeLine{00272\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00273\ \textcolor{comment}{\ *\ \ Version\ 2.0.0\ -\/\ 10/2023}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ *\ \ -\/\ New\ TinyIRReceiverData\ which\ is\ filled\ with\ address,\ command\ and\ flags.}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ *\ \ -\/\ Removed\ parameters\ address,\ command\ and\ flags\ from\ callback\ handleReceivedTinyIRData()\ and\ printTinyReceiverResultMinimal().}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ *\ \ -\/\ Callback\ function\ now\ only\ enabled\ if\ USE\_CALLBACK\_FOR\_TINY\_RECEIVER\ is\ activated.}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ *\ \ Version\ 1.2.0\ -\/\ 01/2023}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ *\ -\/\ Added\ ONKYO\ protocol,\ NEC\ with\ 16\ bit\ address\ and\ command,\ instead\ of\ 8\ bit\ +\ 8\ bit\ parity\ address\ and\ command.}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ *\ -\/\ Renamed\ functions\ and\ macros.}}
+\DoxyCodeLine{00281\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00282\ \textcolor{comment}{\ *\ Version\ 1.1.0\ -\/\ 01/2023}}
+\DoxyCodeLine{00283\ \textcolor{comment}{\ *\ -\/\ FAST\ protocol\ added.}}
+\DoxyCodeLine{00284\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_TINY\_IR\_H}}
+
+\end{DoxyCode}

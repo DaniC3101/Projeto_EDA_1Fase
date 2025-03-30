@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="Antena_8h" kind="file" language="C++">
+    <compoundname>Antena.h</compoundname>
+    <includes refid="ListaNefastas_8h" local="yes">ListaNefastas.h</includes>
+    <includedby refid="Antena_8c" local="yes">Fase1/Fase1/Antena.c</includedby>
+    <includedby refid="ListaAntenas_8c" local="yes">Fase1/Fase1/ListaAntenas.c</includedby>
+    <includedby refid="ListaAntenas_8h" local="yes">Fase1/Fase1/ListaAntenas.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Fase1/Fase1/Antena.h</label>
+        <link refid="Antena_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>Fase1/Fase1/Antena.h</label>
+        <link refid="Antena_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Fase1/Fase1/Dados.h</label>
+        <link refid="Dados_8h_source"/>
+      </node>
+      <node id="2">
+        <label>Fase1/Fase1/ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structAntena" prot="public">Antena</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="Antena_8h_1a82814d0bcb94ce9d6a5705a9b85f6806" prot="public" static="no">
+        <name>ANTENA_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="3" column="9" bodyfile="Fase1/Fase1/Antena.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="Antena_8h_1acd3f62ab7ff84cac5daf55876deaa34b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>Antena * AdicionarAntena</definition>
+        <argsstring>(int linha, int coluna, int frequencia)</argsstring>
+        <name>AdicionarAntena</name>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>frequencia</declname>
+        </param>
+        <briefdescription>
+<para>Adiciona uma nova antena numa posição específica da matriz. A antena recebe a posição, a frequência e um apontador para a próxima antena (inicialmente NULL). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna onde a antena será colocada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>frequencia</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Frequência da antena.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna um apontador para a antena criada.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="22" column="8" bodyfile="Fase1/Fase1/Antena.c" bodystart="13" bodyend="22" declfile="Fase1/Fase1/Antena.h" declline="22" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8h_1af7f8fae0aab327dc1827e3d052c02775" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int VerificarAntenaAnterior</definition>
+        <argsstring>(Antena *listaAntena, Antena *auxAntenaAtual, int linhas, int colunas)</argsstring>
+        <name>VerificarAntenaAnterior</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>listaAntena</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>auxAntenaAtual</declname>
+          <defname>antenaAtual</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linhas</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>colunas</declname>
+        </param>
+        <briefdescription>
+<para>Verifica se uma antena com a mesma frequência já existe na lista de antenas. Se encontrar, verifica se há interferência (zona nefasta) entre as antenas. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>listaAntena</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a lista de antenas.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>antenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena que está a ser verificada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linhas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de linhas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>colunas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número de colunas da matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna 0.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="32" column="5" bodyfile="Fase1/Fase1/Antena.c" bodystart="55" bodyend="71" declfile="Fase1/Fase1/Antena.h" declline="32" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8h_1ac9e072c3770d3bac14dc128856f0ca13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void InserirNefasta</definition>
+        <argsstring>(int *auxAntenaAnterior, Antena *auxAntenaAntes, int *auxAntenaAtual, Antena *AntenaAtual)</argsstring>
+        <name>InserirNefasta</name>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAnterior</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>auxAntenaAntes</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAtual</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>AntenaAtual</declname>
+        </param>
+        <briefdescription>
+<para>Insere uma posição de interferência (zona nefasta) para uma antena. Adiciona a posição à lista de zonas nefastas de ambas as antenas envolvidas. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAntes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena atual.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena atual.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="41" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="108" bodyend="153" declfile="Fase1/Fase1/Antena.h" declline="41" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8h_1a8e8d7cc11d0b777fad2bfa1b97106a59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void NefastaAntena</definition>
+        <argsstring>(Antena *antenaAnterior, Antena *antenaAtual, int *auxAntenaAnterior, int *auxAntenaAtual)</argsstring>
+        <name>NefastaAntena</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antenaAnterior</declname>
+        </param>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>antenaAtual</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAnterior</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>auxAntenaAtual</declname>
+        </param>
+        <briefdescription>
+<para>Marca as zonas de interferência (zonas nefastas) entre duas antenas. A interferência ocorre se as antenas partilharem a mesma frequência e estiverem na mesma área. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>antenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>antenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a antena atual.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAnterior</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena anterior.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>auxAntenaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena atual.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="50" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="81" bodyend="98" declfile="Fase1/Fase1/Antena.h" declline="50" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="Antena_8h_1a5584a4686813f3f1b3d0c4eff27ea313" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ApagarAntena</definition>
+        <argsstring>(Antena *listaAntenas, int linha, int coluna)</argsstring>
+        <name>ApagarAntena</name>
+        <param>
+          <type><ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+          <declname>listaAntenas</declname>
+          <defname>listaAntena</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linha</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>coluna</declname>
+        </param>
+        <briefdescription>
+<para>Apaga uma antena da lista de antenas, procurando pela sua posição na matriz. Caso a antena seja encontrada, ela é removida da lista. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>listaAntena</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Apontador para a lista de antenas.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linha da antena a ser apagada.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coluna</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coluna da antena a ser apagada.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="58" column="6" bodyfile="Fase1/Fase1/Antena.c" bodystart="31" bodyend="44" declfile="Fase1/Fase1/Antena.h" declline="58" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ANTENA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ANTENA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;ListaNefastas.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="structAntena" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posAntena[2];</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frequencia;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>proxAntena;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref>*<sp/>listaNefasta;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">}<ref refid="structAntena" kindref="compound">Antena</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>AdicionarAntena(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frequencia);</highlight></codeline>
+<codeline lineno="32"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>VerificarAntenaAnterior(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>listaAntena,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntenaAtual,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linhas,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colunas);</highlight></codeline>
+<codeline lineno="41"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>InserirNefasta(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAnterior,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>auxAntenaAntes,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAtual,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>AntenaAtual);</highlight></codeline>
+<codeline lineno="50"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NefastaAntena(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antenaAnterior,<sp/><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>antenaAtual,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAnterior,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>auxAntenaAtual);</highlight></codeline>
+<codeline lineno="58"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ApagarAntena(<ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>listaAntenas,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linha,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>coluna);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/Antena.h"/>
+  </compounddef>
+</doxygen>

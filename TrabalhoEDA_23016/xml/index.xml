@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.12.0" xml:lang="en-US">
+  <compound refid="structAntena" kind="struct"><name>Antena</name>
+    <member refid="structAntena_1aaf2b40e9737e60c9c9b4453e77bd9137" kind="variable"><name>posAntena</name></member>
+    <member refid="structAntena_1ac63b1f52fef39d625481adee7d69f268" kind="variable"><name>frequencia</name></member>
+    <member refid="structAntena_1a297ad4954ce86dafc5243344b72c219d" kind="variable"><name>proxAntena</name></member>
+    <member refid="structAntena_1a6c3a0df4a6167ce8614696592cc936fe" kind="variable"><name>listaNefasta</name></member>
+  </compound>
+  <compound refid="structListaAntenas" kind="struct"><name>ListaAntenas</name>
+    <member refid="structListaAntenas_1a4cd008d60f3498a2b352d2d216aece97" kind="variable"><name>tamMatriz</name></member>
+    <member refid="structListaAntenas_1a7da4d8f323c52e06f2ce59937e17e462" kind="variable"><name>primAntena</name></member>
+  </compound>
+  <compound refid="structListaNefastas" kind="struct"><name>ListaNefastas</name>
+    <member refid="structListaNefastas_1af17ffd3508b88760748985621dc15736" kind="variable"><name>locNefasta</name></member>
+  </compound>
+  <compound refid="structLocalizaoNefasta" kind="struct"><name>LocalizaoNefasta</name>
+    <member refid="structLocalizaoNefasta_1ac87548a870a566682fcaed2e70f1f3df" kind="variable"><name>posNefasta</name></member>
+    <member refid="structLocalizaoNefasta_1a5814b555cc3264ea3eb962bc31af913d" kind="variable"><name>proxNefasta</name></member>
+  </compound>
+  <compound refid="structMatriz" kind="struct"><name>Matriz</name>
+    <member refid="structMatriz_1a4cd008d60f3498a2b352d2d216aece97" kind="variable"><name>tamMatriz</name></member>
+    <member refid="structMatriz_1ac75fe17bbd2c59cbb04fa71ee7b739c9" kind="variable"><name>listaAntenas</name></member>
+  </compound>
+  <compound refid="_8_8_8_8_8_8_0g_8_8_8_8_8_0g_8txt" kind="file"><name>......#.....#.txt</name>
+  </compound>
+  <compound refid="Antena_8c" kind="file"><name>Antena.c</name>
+    <member refid="Antena_8c_1acd3f62ab7ff84cac5daf55876deaa34b" kind="function"><name>AdicionarAntena</name></member>
+    <member refid="Antena_8c_1ad155ed5c5f9a3eb4b42ddcfe5bc1cd9d" kind="function"><name>ApagarAntena</name></member>
+    <member refid="Antena_8c_1a8f26b6f71f8984ef8fb5fda61376a9ab" kind="function"><name>VerificarAntenaAnterior</name></member>
+    <member refid="Antena_8c_1a8e8d7cc11d0b777fad2bfa1b97106a59" kind="function"><name>NefastaAntena</name></member>
+    <member refid="Antena_8c_1ac9e072c3770d3bac14dc128856f0ca13" kind="function"><name>InserirNefasta</name></member>
+  </compound>
+  <compound refid="Antena_8h" kind="file"><name>Antena.h</name>
+    <member refid="Antena_8h_1a82814d0bcb94ce9d6a5705a9b85f6806" kind="define"><name>ANTENA_H</name></member>
+    <member refid="Antena_8h_1acd3f62ab7ff84cac5daf55876deaa34b" kind="function"><name>AdicionarAntena</name></member>
+    <member refid="Antena_8h_1af7f8fae0aab327dc1827e3d052c02775" kind="function"><name>VerificarAntenaAnterior</name></member>
+    <member refid="Antena_8h_1ac9e072c3770d3bac14dc128856f0ca13" kind="function"><name>InserirNefasta</name></member>
+    <member refid="Antena_8h_1a8e8d7cc11d0b777fad2bfa1b97106a59" kind="function"><name>NefastaAntena</name></member>
+    <member refid="Antena_8h_1a5584a4686813f3f1b3d0c4eff27ea313" kind="function"><name>ApagarAntena</name></member>
+  </compound>
+  <compound refid="Dados_8c" kind="file"><name>Dados.c</name>
+    <member refid="Dados_8c_1a88d01ddf43f88c9d027750afc7574bce" kind="define"><name>TAMANHO_NOME_FICHEIRO</name></member>
+    <member refid="Dados_8c_1aa9af6cf828862620583719ffbc2ebe7e" kind="function"><name>CarregarMatriz</name></member>
+  </compound>
+  <compound refid="Dados_8h" kind="file"><name>Dados.h</name>
+    <member refid="Dados_8h_1a88d01ddf43f88c9d027750afc7574bce" kind="define"><name>TAMANHO_NOME_FICHEIRO</name></member>
+    <member refid="Dados_8h_1aa9af6cf828862620583719ffbc2ebe7e" kind="function"><name>CarregarMatriz</name></member>
+  </compound>
+  <compound refid="ListaAntenas_8c" kind="file"><name>ListaAntenas.c</name>
+  </compound>
+  <compound refid="ListaAntenas_8h" kind="file"><name>ListaAntenas.h</name>
+    <member refid="ListaAntenas_8h_1a76440711b7b06aebbc40f36c84bbe183" kind="define"><name>LISTAANTENA_H</name></member>
+    <member refid="ListaAntenas_8h_1a661a6e02efc979539211ae7ee8b5c7e0" kind="typedef"><name>ListaAntenas</name></member>
+  </compound>
+  <compound refid="ListaNefastas_8c" kind="file"><name>ListaNefastas.c</name>
+  </compound>
+  <compound refid="ListaNefastas_8h" kind="file"><name>ListaNefastas.h</name>
+    <member refid="ListaNefastas_8h_1abcc06fe8d23700227b68ea67f1442480" kind="define"><name>LISTANEFASTA_H</name></member>
+    <member refid="ListaNefastas_8h_1a54b8207ce83f7a6bdd12abb0d5b84be2" kind="typedef"><name>ListaNefastas</name></member>
+  </compound>
+  <compound refid="LocalizacaoNefasta_8c" kind="file"><name>LocalizacaoNefasta.c</name>
+    <member refid="LocalizacaoNefasta_8c_1a3df9f96d35d90b7e86870c0d07cf7816" kind="function"><name>VerificarNefasta</name></member>
+    <member refid="LocalizacaoNefasta_8c_1aa44ff6f729e77748335ca1ecd675f6bd" kind="function"><name>Abs</name></member>
+  </compound>
+  <compound refid="LocalizacaoNefasta_8h" kind="file"><name>LocalizacaoNefasta.h</name>
+    <member refid="LocalizacaoNefasta_8h_1a375953279dc0aaef809b34e9a21b5d26" kind="define"><name>LOCALIZACAONEFASTA_H</name></member>
+    <member refid="LocalizacaoNefasta_8h_1abd3b894270cde59e62268e92f86c1bbc" kind="typedef"><name>LocalizaoNefasta</name></member>
+    <member refid="LocalizacaoNefasta_8h_1a3df9f96d35d90b7e86870c0d07cf7816" kind="function"><name>VerificarNefasta</name></member>
+  </compound>
+  <compound refid="main_8c" kind="file"><name>main.c</name>
+    <member refid="main_8c_1ae66f6b31b5ad750f1fe042a706a4e3d4" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="Matriz_8c" kind="file"><name>Matriz.c</name>
+    <member refid="Matriz_8c_1a75c2b9c0a41f11ffbd59a5b42cc73e77" kind="function"><name>CriarMatriz</name></member>
+    <member refid="Matriz_8c_1a336fd74f5743f44d16c885124bfd3aa5" kind="function"><name>CriarAntena</name></member>
+    <member refid="Matriz_8c_1a4bdab159f7c02d224cd6395cdb64467e" kind="function"><name>EliminarAntena</name></member>
+    <member refid="Matriz_8c_1a43f150bfdd45f0465f49488546b5ba9c" kind="function"><name>AdiconarAntenaMatriz</name></member>
+    <member refid="Matriz_8c_1a3e4b15202ffa92238154a330d4fdb3f1" kind="function"><name>MostrarMatriz</name></member>
+  </compound>
+  <compound refid="Matriz_8h" kind="file"><name>Matriz.h</name>
+    <member refid="Matriz_8h_1a39457bb5dd70f810b107a2b43aede415" kind="define"><name>MATRIZ_H</name></member>
+    <member refid="Matriz_8h_1a75c2b9c0a41f11ffbd59a5b42cc73e77" kind="function"><name>CriarMatriz</name></member>
+    <member refid="Matriz_8h_1a336fd74f5743f44d16c885124bfd3aa5" kind="function"><name>CriarAntena</name></member>
+    <member refid="Matriz_8h_1a43f150bfdd45f0465f49488546b5ba9c" kind="function"><name>AdiconarAntenaMatriz</name></member>
+    <member refid="Matriz_8h_1a3e4b15202ffa92238154a330d4fdb3f1" kind="function"><name>MostrarMatriz</name></member>
+    <member refid="Matriz_8h_1a4bdab159f7c02d224cd6395cdb64467e" kind="function"><name>EliminarAntena</name></member>
+  </compound>
+  <compound refid="Matriz_8txt" kind="file"><name>Matriz.txt</name>
+  </compound>
+  <compound refid="dir_f96b9d1b40af0bf329f57f6f896d1bd1" kind="dir"><name>Fase1</name>
+  </compound>
+  <compound refid="dir_fa0e1cf7d9239a62ad3e2bacd28e5d12" kind="dir"><name>Fase1/Fase1</name>
+  </compound>
+</doxygenindex>

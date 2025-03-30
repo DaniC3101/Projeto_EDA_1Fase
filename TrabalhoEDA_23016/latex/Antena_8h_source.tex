@@ -1,0 +1,25 @@
+\doxysection{Antena.\+h}
+\hypertarget{Antena_8h_source}{}\label{Antena_8h_source}\index{Fase1/Fase1/Antena.h@{Fase1/Fase1/Antena.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ ANTENA\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ ANTENA\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}ListaNefastas.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{int}\ posAntena[2];}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{int}\ frequencia;}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAntena}{Antena}}*\ proxAntena;}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structListaNefastas}{ListaNefastas}}*\ listaNefasta;}
+\DoxyCodeLine{00013\ \}\mbox{\hyperlink{structAntena}{Antena}};}
+\DoxyCodeLine{00022\ \mbox{\hyperlink{structAntena}{Antena}}*\ AdicionarAntena(\textcolor{keywordtype}{int}\ linha,\ \textcolor{keywordtype}{int}\ coluna,\ \textcolor{keywordtype}{int}\ frequencia);}
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{int}\ VerificarAntenaAnterior(\mbox{\hyperlink{structAntena}{Antena}}*\ listaAntena,\ \mbox{\hyperlink{structAntena}{Antena}}*\ auxAntenaAtual,\ \textcolor{keywordtype}{int}\ linhas,\ \textcolor{keywordtype}{int}\ colunas);}
+\DoxyCodeLine{00041\ \textcolor{keywordtype}{void}\ InserirNefasta(\textcolor{keywordtype}{int}*\ auxAntenaAnterior,\ \mbox{\hyperlink{structAntena}{Antena}}*\ auxAntenaAntes,\ \textcolor{keywordtype}{int}*\ auxAntenaAtual,\ \mbox{\hyperlink{structAntena}{Antena}}*\ AntenaAtual);}
+\DoxyCodeLine{00050\ \textcolor{keywordtype}{void}\ NefastaAntena(\mbox{\hyperlink{structAntena}{Antena}}*\ antenaAnterior,\ \mbox{\hyperlink{structAntena}{Antena}}*\ antenaAtual,\ \textcolor{keywordtype}{int}*\ auxAntenaAnterior,\ \textcolor{keywordtype}{int}*\ auxAntenaAtual);}
+\DoxyCodeLine{00058\ \textcolor{keywordtype}{void}\ ApagarAntena(\mbox{\hyperlink{structAntena}{Antena}}*\ listaAntenas,\textcolor{keywordtype}{int}\ linha,\ \textcolor{keywordtype}{int}\ coluna);}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

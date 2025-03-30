@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="LocalizacaoNefasta_8h" kind="file" language="C++">
+    <compoundname>LocalizacaoNefasta.h</compoundname>
+    <includedby refid="ListaNefastas_8c" local="yes">Fase1/Fase1/ListaNefastas.c</includedby>
+    <includedby refid="ListaNefastas_8h" local="yes">Fase1/Fase1/ListaNefastas.h</includedby>
+    <includedby refid="LocalizacaoNefasta_8c" local="yes">Fase1/Fase1/LocalizacaoNefasta.c</includedby>
+    <invincdepgraph>
+      <node id="3">
+        <label>Fase1/Fase1/Antena.h</label>
+        <link refid="Antena_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Fase1/Fase1/Dados.h</label>
+        <link refid="Dados_8h_source"/>
+      </node>
+      <node id="4">
+        <label>Fase1/Fase1/ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Fase1/Fase1/ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structLocalizaoNefasta" prot="public">LocalizaoNefasta</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="LocalizacaoNefasta_8h_1a375953279dc0aaef809b34e9a21b5d26" prot="public" static="no">
+        <name>LOCALIZACAONEFASTA_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/LocalizacaoNefasta.h" line="3" column="9" bodyfile="Fase1/Fase1/LocalizacaoNefasta.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="LocalizacaoNefasta_8h_1abd3b894270cde59e62268e92f86c1bbc" prot="public" static="no">
+        <type>struct LocalizaoNefasta</type>
+        <definition>typedef struct LocalizaoNefasta LocalizaoNefasta</definition>
+        <argsstring></argsstring>
+        <name>LocalizaoNefasta</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/LocalizacaoNefasta.h" line="8" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="LocalizacaoNefasta_8h_1a3df9f96d35d90b7e86870c0d07cf7816" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VerificarNefasta</definition>
+        <argsstring>(int posNefastaAntes[], int posNefastaAtual[], int linhas, int colunas)</argsstring>
+        <name>VerificarNefasta</name>
+        <param>
+          <type>int</type>
+          <declname>posNefastaAntes</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>posNefastaAtual</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linhas</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>colunas</declname>
+        </param>
+        <briefdescription>
+<para>Verifica se existe uma interferência (zona nefasta) entre duas posições especificadas nas variáveis <computeroutput>posNefastaAntes</computeroutput> e <computeroutput>posNefastaAtual</computeroutput>. A interferência é calculada com base na diferença das posições e ajusta as posições de forma a garantir que a zona nefasta seja criada corretamente. Caso a nova posição ultrapasse os limites da matriz, a posição é anulada. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>posNefastaAntes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena ou local antes da interferência.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>posNefastaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena ou local após a interferência.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linhas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número total de linhas na matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>colunas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número total de colunas na matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/LocalizacaoNefasta.h" line="9" column="6" bodyfile="Fase1/Fase1/LocalizacaoNefasta.c" bodystart="15" bodyend="74" declfile="Fase1/Fase1/LocalizacaoNefasta.h" declline="9" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>LOCALIZACAONEFASTA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LOCALIZACAONEFASTA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="structLocalizaoNefasta" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posNefasta[2];</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>proxNefasta;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">}<ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>VerificarNefasta(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posNefastaAntes[],<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posNefastaAtual[],<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linhas,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colunas);</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/LocalizacaoNefasta.h"/>
+  </compounddef>
+</doxygen>

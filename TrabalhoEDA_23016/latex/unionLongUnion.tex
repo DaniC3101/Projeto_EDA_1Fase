@@ -1,0 +1,87 @@
+\doxysection{Long\+Union Union Reference}
+\hypertarget{unionLongUnion}{}\label{unionLongUnion}\index{LongUnion@{LongUnion}}
+
+
+{\ttfamily \#include $<$Long\+Union.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{unionLongUnion_ada82f3edcb2dcb5331c00325da9f0ac9}\label{unionLongUnion_ada82f3edcb2dcb5331c00325da9f0ac9} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint8\_t {\bfseries LowByte}\\
+\>uint8\_t {\bfseries MidLowByte}\\
+\>uint8\_t {\bfseries MidHighByte}\\
+\>uint8\_t {\bfseries HighByte}\\
+\} {\bfseries UByte}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionLongUnion_a6403366278af3e1fbe7b1e7c7015ef23}\label{unionLongUnion_a6403366278af3e1fbe7b1e7c7015ef23} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int8\_t {\bfseries LowByte}\\
+\>int8\_t {\bfseries MidLowByte}\\
+\>int8\_t {\bfseries MidHighByte}\\
+\>int8\_t {\bfseries HighByte}\\
+\} {\bfseries Byte}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionLongUnion_a399a285ce8296fa1479346449e02dafb}\label{unionLongUnion_a399a285ce8296fa1479346449e02dafb} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint16\_t {\bfseries LowWord}\\
+\>uint16\_t {\bfseries HighWord}\\
+\} {\bfseries UWord}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionLongUnion_a3f7f721e01ace2ddca87d14c454a7c72}\label{unionLongUnion_a3f7f721e01ace2ddca87d14c454a7c72} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int16\_t {\bfseries LowWord}\\
+\>int16\_t {\bfseries HighWord}\\
+\} {\bfseries Word}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionLongUnion_aeb440aef58eb648958d3b2dcea59ac3b}\label{unionLongUnion_aeb440aef58eb648958d3b2dcea59ac3b} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{unionWordUnion}{WordUnion}} {\bfseries LowWord}\\
+\>\mbox{\hyperlink{unionWordUnion}{WordUnion}} {\bfseries HighWord}\\
+\} {\bfseries TwoWordUnions}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionLongUnion_a61c14f5cb90345a27d52117bd21cca1e}\label{unionLongUnion_a61c14f5cb90345a27d52117bd21cca1e} 
+uint8\+\_\+t {\bfseries UBytes} \mbox{[}4\mbox{]}
+\item 
+\Hypertarget{unionLongUnion_abf3ad148c08c74a77c0c6bcf7441393a}\label{unionLongUnion_abf3ad148c08c74a77c0c6bcf7441393a} 
+int8\+\_\+t {\bfseries Bytes} \mbox{[}4\mbox{]}
+\item 
+\Hypertarget{unionLongUnion_ae8f4cfcd92fdb0b32cf130080beafc9c}\label{unionLongUnion_ae8f4cfcd92fdb0b32cf130080beafc9c} 
+uint16\+\_\+t {\bfseries UWords} \mbox{[}2\mbox{]}
+\item 
+\Hypertarget{unionLongUnion_a3b7efdfe82b26a35ad146fc5fff3e7e0}\label{unionLongUnion_a3b7efdfe82b26a35ad146fc5fff3e7e0} 
+int16\+\_\+t {\bfseries Words} \mbox{[}2\mbox{]}
+\item 
+\Hypertarget{unionLongUnion_af677ac66211a6529a78c91bafdd80b68}\label{unionLongUnion_af677ac66211a6529a78c91bafdd80b68} 
+uint32\+\_\+t {\bfseries ULong}
+\item 
+\Hypertarget{unionLongUnion_a75fefa57415e8fc3538c5c8bb0369ad2}\label{unionLongUnion_a75fefa57415e8fc3538c5c8bb0369ad2} 
+int32\+\_\+t {\bfseries Long}
+\item 
+\Hypertarget{unionLongUnion_a00c3b491c1db9c4ac2e31f31aea8c9eb}\label{unionLongUnion_a00c3b491c1db9c4ac2e31f31aea8c9eb} 
+float {\bfseries Float}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Union to specify parts / manifestations of a 32 bit Long without casts and shifts. It also supports the compiler generating small code. 
+
+The documentation for this union was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/src/Long\+Union.\+h\end{DoxyCompactItemize}

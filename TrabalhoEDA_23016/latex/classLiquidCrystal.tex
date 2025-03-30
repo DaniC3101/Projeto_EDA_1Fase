@@ -1,0 +1,523 @@
+\doxysection{Liquid\+Crystal Class Reference}
+\hypertarget{classLiquidCrystal}{}\label{classLiquidCrystal}\index{LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLiquidCrystal_a5431f9419eb43a81a79786550b6208bb}{Liquid\+Crystal}} (uint8\+\_\+t rs, uint8\+\_\+t enable, uint8\+\_\+t d0, uint8\+\_\+t d1, uint8\+\_\+t d2, uint8\+\_\+t d3, uint8\+\_\+t d4, uint8\+\_\+t d5, uint8\+\_\+t d6, uint8\+\_\+t d7)
+\item 
+\mbox{\hyperlink{classLiquidCrystal_a960f2e95fefa18c6bffca2a45bd30d2e}{Liquid\+Crystal}} (uint8\+\_\+t rs, uint8\+\_\+t rw, uint8\+\_\+t enable, uint8\+\_\+t d0, uint8\+\_\+t d1, uint8\+\_\+t d2, uint8\+\_\+t d3, uint8\+\_\+t d4, uint8\+\_\+t d5, uint8\+\_\+t d6, uint8\+\_\+t d7)
+\item 
+\mbox{\hyperlink{classLiquidCrystal_a08b598946dca922cfb97c8ae144a7cf5}{Liquid\+Crystal}} (uint8\+\_\+t rs, uint8\+\_\+t rw, uint8\+\_\+t enable, uint8\+\_\+t d0, uint8\+\_\+t d1, uint8\+\_\+t d2, uint8\+\_\+t d3)
+\item 
+\mbox{\hyperlink{classLiquidCrystal_abd1248089074fb5ccbb2fa60b1529f97}{Liquid\+Crystal}} (uint8\+\_\+t rs, uint8\+\_\+t enable, uint8\+\_\+t d0, uint8\+\_\+t d1, uint8\+\_\+t d2, uint8\+\_\+t d3)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_ad4eba570ef51dfb0ff4447f7efd4325c}{init}} (uint8\+\_\+t fourbitmode, uint8\+\_\+t rs, uint8\+\_\+t rw, uint8\+\_\+t enable, uint8\+\_\+t d0, uint8\+\_\+t d1, uint8\+\_\+t d2, uint8\+\_\+t d3, uint8\+\_\+t d4, uint8\+\_\+t d5, uint8\+\_\+t d6, uint8\+\_\+t d7)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a740cfc267b3736222f19316b28a96901}{begin}} (uint8\+\_\+t cols, uint8\+\_\+t rows, uint8\+\_\+t charsize=LCD\+\_\+5x8\+DOTS)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_ac8bb3912a3ce86b15842e79d0b421204}{clear}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a0da5d9617e961b8c9430815ce7dba80f}{home}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a7442e94b84097f0ac945d3209b789bfe}{no\+Display}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a1e5b20fed15743656bb6d2e6a6ea6269}{display}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a7c524ccde03edf1f576337e06d811ae2}{no\+Blink}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a5664bd38fc668253a0152e6b319aafbb}{blink}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a660628c03e0460a81f0970d32ffb34ed}{no\+Cursor}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_afdf8b11048d012d36e1bc5b975bff017}{cursor}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a105576b9890de18b5ef227223ae2ab52}{scroll\+Display\+Left}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_ac56c28936aad0d0ba2f2b3140d119b70}{scroll\+Display\+Right}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a4fcc7eefb8001246e0e8309b3e800494}{left\+To\+Right}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a03f4a60565bb781cf3c0221c60fb0535}{right\+To\+Left}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a64203ced3c4b406ee07cac9fa17e798e}{autoscroll}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a12d5cd7257128d74a9ba52881e2dce54}{no\+Autoscroll}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_ad10531a7ff2ad4b4b4216e07f06e6508}{set\+Row\+Offsets}} (int row1, int row2, int row3, int row4)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a5cb3a36ea41f4a5e0a5b2df062021168}{create\+Char}} (uint8\+\_\+t, uint8\+\_\+t\mbox{[}$\,$\mbox{]})
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a47ac87bf6b94b962349966a54dc5a199}{set\+Cursor}} (uint8\+\_\+t, uint8\+\_\+t)
+\item 
+virtual size\+\_\+t \mbox{\hyperlink{classLiquidCrystal_a4921dd89e0f14a9b77dfb3d7960401ca}{write}} (uint8\+\_\+t)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal_a49f9ea91f01bde872d58941e9b68ea1e}{command}} (uint8\+\_\+t)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classLiquidCrystal_a5431f9419eb43a81a79786550b6208bb}\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{LiquidCrystal()}{LiquidCrystal()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a5431f9419eb43a81a79786550b6208bb} 
+\mbox{\hyperlink{classLiquidCrystal}{Liquid\+Crystal}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{rs}{, }\item[{uint8\+\_\+t}]{enable}{, }\item[{uint8\+\_\+t}]{d0}{, }\item[{uint8\+\_\+t}]{d1}{, }\item[{uint8\+\_\+t}]{d2}{, }\item[{uint8\+\_\+t}]{d3}{, }\item[{uint8\+\_\+t}]{d4}{, }\item[{uint8\+\_\+t}]{d5}{, }\item[{uint8\+\_\+t}]{d6}{, }\item[{uint8\+\_\+t}]{d7}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00037\ \{}
+\DoxyCodeLine{00038\ \ \ init(0,\ rs,\ 255,\ enable,\ d0,\ d1,\ d2,\ d3,\ d4,\ d5,\ d6,\ d7);}
+\DoxyCodeLine{00039\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a960f2e95fefa18c6bffca2a45bd30d2e}\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{LiquidCrystal()}{LiquidCrystal()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a960f2e95fefa18c6bffca2a45bd30d2e} 
+\mbox{\hyperlink{classLiquidCrystal}{Liquid\+Crystal}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{rs}{, }\item[{uint8\+\_\+t}]{rw}{, }\item[{uint8\+\_\+t}]{enable}{, }\item[{uint8\+\_\+t}]{d0}{, }\item[{uint8\+\_\+t}]{d1}{, }\item[{uint8\+\_\+t}]{d2}{, }\item[{uint8\+\_\+t}]{d3}{, }\item[{uint8\+\_\+t}]{d4}{, }\item[{uint8\+\_\+t}]{d5}{, }\item[{uint8\+\_\+t}]{d6}{, }\item[{uint8\+\_\+t}]{d7}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00030\ \{}
+\DoxyCodeLine{00031\ \ \ init(0,\ rs,\ rw,\ enable,\ d0,\ d1,\ d2,\ d3,\ d4,\ d5,\ d6,\ d7);}
+\DoxyCodeLine{00032\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a08b598946dca922cfb97c8ae144a7cf5}\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{LiquidCrystal()}{LiquidCrystal()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a08b598946dca922cfb97c8ae144a7cf5} 
+\mbox{\hyperlink{classLiquidCrystal}{Liquid\+Crystal}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{rs}{, }\item[{uint8\+\_\+t}]{rw}{, }\item[{uint8\+\_\+t}]{enable}{, }\item[{uint8\+\_\+t}]{d0}{, }\item[{uint8\+\_\+t}]{d1}{, }\item[{uint8\+\_\+t}]{d2}{, }\item[{uint8\+\_\+t}]{d3}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00043\ \{}
+\DoxyCodeLine{00044\ \ \ init(1,\ rs,\ rw,\ enable,\ d0,\ d1,\ d2,\ d3,\ 0,\ 0,\ 0,\ 0);}
+\DoxyCodeLine{00045\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_abd1248089074fb5ccbb2fa60b1529f97}\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\index{LiquidCrystal@{LiquidCrystal}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{LiquidCrystal()}{LiquidCrystal()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_abd1248089074fb5ccbb2fa60b1529f97} 
+\mbox{\hyperlink{classLiquidCrystal}{Liquid\+Crystal}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{rs}{, }\item[{uint8\+\_\+t}]{enable}{, }\item[{uint8\+\_\+t}]{d0}{, }\item[{uint8\+\_\+t}]{d1}{, }\item[{uint8\+\_\+t}]{d2}{, }\item[{uint8\+\_\+t}]{d3}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \{}
+\DoxyCodeLine{00050\ \ \ init(1,\ rs,\ 255,\ enable,\ d0,\ d1,\ d2,\ d3,\ 0,\ 0,\ 0,\ 0);}
+\DoxyCodeLine{00051\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classLiquidCrystal_a64203ced3c4b406ee07cac9fa17e798e}\index{LiquidCrystal@{LiquidCrystal}!autoscroll@{autoscroll}}
+\index{autoscroll@{autoscroll}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{autoscroll()}{autoscroll()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a64203ced3c4b406ee07cac9fa17e798e} 
+void autoscroll (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00253\ \ \ \_displaymode\ |=\ LCD\_ENTRYSHIFTINCREMENT;}
+\DoxyCodeLine{00254\ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00255\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a740cfc267b3736222f19316b28a96901}\index{LiquidCrystal@{LiquidCrystal}!begin@{begin}}
+\index{begin@{begin}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a740cfc267b3736222f19316b28a96901} 
+void begin (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cols}{, }\item[{uint8\+\_\+t}]{rows}{, }\item[{uint8\+\_\+t}]{charsize}{ = {\ttfamily LCD\+\_\+5x8DOTS}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordflow}{if}\ (lines\ >\ 1)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \_displayfunction\ |=\ LCD\_2LINE;}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \_numlines\ =\ lines;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ setRowOffsets(0x00,\ 0x40,\ 0x00\ +\ cols,\ 0x40\ +\ cols);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ for\ some\ 1\ line\ displays\ you\ can\ select\ a\ 10\ pixel\ high\ font}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{if}\ ((dotsize\ !=\ LCD\_5x8DOTS)\ \&\&\ (lines\ ==\ 1))\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \_displayfunction\ |=\ LCD\_5x10DOTS;}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ pinMode(\_rs\_pin,\ OUTPUT);}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ we\ can\ save\ 1\ pin\ by\ not\ using\ RW.\ Indicate\ by\ passing\ 255\ instead\ of\ pin\#}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordflow}{if}\ (\_rw\_pin\ !=\ 255)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ pinMode(\_rw\_pin,\ OUTPUT);}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ pinMode(\_enable\_pin,\ OUTPUT);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ Do\ these\ once,\ instead\ of\ every\ time\ a\ character\ is\ drawn\ for\ speed\ reasons.}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i<((\_displayfunction\ \&\ LCD\_8BITMODE)\ ?\ 8\ :\ 4);\ ++i)}
+\DoxyCodeLine{00100\ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ pinMode(\_data\_pins[i],\ OUTPUT);}
+\DoxyCodeLine{00102\ \ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ SEE\ PAGE\ 45/46\ FOR\ INITIALIZATION\ SPECIFICATION!}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ according\ to\ datasheet,\ we\ need\ at\ least\ 40ms\ after\ power\ rises\ above\ 2.7V}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ before\ sending\ commands.\ Arduino\ can\ turn\ on\ way\ before\ 4.5V\ so\ we'll\ wait\ 50}}
+\DoxyCodeLine{00107\ \ \ delayMicroseconds(50000);}
+\DoxyCodeLine{00108\ \ \ \textcolor{comment}{//\ Now\ we\ pull\ both\ RS\ and\ R/W\ low\ to\ begin\ commands}}
+\DoxyCodeLine{00109\ \ \ digitalWrite(\_rs\_pin,\ LOW);}
+\DoxyCodeLine{00110\ \ \ digitalWrite(\_enable\_pin,\ LOW);}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{if}\ (\_rw\_pin\ !=\ 255)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ digitalWrite(\_rw\_pin,\ LOW);}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//put\ the\ LCD\ into\ 4\ bit\ or\ 8\ bit\ mode}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordflow}{if}\ (!\ (\_displayfunction\ \&\ LCD\_8BITMODE))\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ this\ is\ according\ to\ the\ hitachi\ HD44780\ datasheet}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ figure\ 24,\ pg\ 46}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//\ we\ start\ in\ 8bit\ mode,\ try\ to\ set\ 4\ bit\ mode}}
+\DoxyCodeLine{00121\ \ \ \ \ write4bits(0x03);}
+\DoxyCodeLine{00122\ \ \ \ \ delayMicroseconds(4500);\ \textcolor{comment}{//\ wait\ min\ 4.1ms}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ second\ try}}
+\DoxyCodeLine{00125\ \ \ \ \ write4bits(0x03);}
+\DoxyCodeLine{00126\ \ \ \ \ delayMicroseconds(4500);\ \textcolor{comment}{//\ wait\ min\ 4.1ms}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ third\ go!}}
+\DoxyCodeLine{00129\ \ \ \ \ write4bits(0x03);}
+\DoxyCodeLine{00130\ \ \ \ \ delayMicroseconds(150);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ finally,\ set\ to\ 4-\/bit\ interface}}
+\DoxyCodeLine{00133\ \ \ \ \ write4bits(0x02);}
+\DoxyCodeLine{00134\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ this\ is\ according\ to\ the\ hitachi\ HD44780\ datasheet}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{comment}{//\ page\ 45\ figure\ 23}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{comment}{//\ Send\ function\ set\ command\ sequence}}
+\DoxyCodeLine{00139\ \ \ \ \ command(LCD\_FUNCTIONSET\ |\ \_displayfunction);}
+\DoxyCodeLine{00140\ \ \ \ \ delayMicroseconds(4500);\ \ \textcolor{comment}{//\ wait\ more\ than\ 4.1ms}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{comment}{//\ second\ try}}
+\DoxyCodeLine{00143\ \ \ \ \ command(LCD\_FUNCTIONSET\ |\ \_displayfunction);}
+\DoxyCodeLine{00144\ \ \ \ \ delayMicroseconds(150);}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ third\ go}}
+\DoxyCodeLine{00147\ \ \ \ \ command(LCD\_FUNCTIONSET\ |\ \_displayfunction);}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//\ finally,\ set\ \#\ lines,\ font\ size,\ etc.}}
+\DoxyCodeLine{00151\ \ \ command(LCD\_FUNCTIONSET\ |\ \_displayfunction);}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{comment}{//\ turn\ the\ display\ on\ with\ no\ cursor\ or\ blinking\ default}}
+\DoxyCodeLine{00154\ \ \ \_displaycontrol\ =\ LCD\_DISPLAYON\ |\ LCD\_CURSOROFF\ |\ LCD\_BLINKOFF;}
+\DoxyCodeLine{00155\ \ \ display();}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ clear\ it\ off}}
+\DoxyCodeLine{00158\ \ \ clear();}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ Initialize\ to\ default\ text\ direction\ (for\ romance\ languages)}}
+\DoxyCodeLine{00161\ \ \ \_displaymode\ =\ LCD\_ENTRYLEFT\ |\ LCD\_ENTRYSHIFTDECREMENT;}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ set\ the\ entry\ mode}}
+\DoxyCodeLine{00163\ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a5664bd38fc668253a0152e6b319aafbb}\index{LiquidCrystal@{LiquidCrystal}!blink@{blink}}
+\index{blink@{blink}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{blink()}{blink()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a5664bd38fc668253a0152e6b319aafbb} 
+void blink (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00227\ \ \ \_displaycontrol\ |=\ LCD\_BLINKON;}
+\DoxyCodeLine{00228\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00229\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_ac8bb3912a3ce86b15842e79d0b421204}\index{LiquidCrystal@{LiquidCrystal}!clear@{clear}}
+\index{clear@{clear}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_ac8bb3912a3ce86b15842e79d0b421204} 
+void clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00177\ \{}
+\DoxyCodeLine{00178\ \ \ command(LCD\_CLEARDISPLAY);\ \ \textcolor{comment}{//\ clear\ display,\ set\ cursor\ position\ to\ zero}}
+\DoxyCodeLine{00179\ \ \ delayMicroseconds(2000);\ \ \textcolor{comment}{//\ this\ command\ takes\ a\ long\ time!}}
+\DoxyCodeLine{00180\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a49f9ea91f01bde872d58941e9b68ea1e}\index{LiquidCrystal@{LiquidCrystal}!command@{command}}
+\index{command@{command}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{command()}{command()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a49f9ea91f01bde872d58941e9b68ea1e} 
+void command (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00276\ \ \ send(value,\ LOW);}
+\DoxyCodeLine{00277\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a5cb3a36ea41f4a5e0a5b2df062021168}\index{LiquidCrystal@{LiquidCrystal}!createChar@{createChar}}
+\index{createChar@{createChar}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{createChar()}{createChar()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a5cb3a36ea41f4a5e0a5b2df062021168} 
+void create\+Char (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{location}{, }\item[{uint8\+\_\+t}]{charmap}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00266\ \ \ location\ \&=\ 0x7;\ \textcolor{comment}{//\ we\ only\ have\ 8\ locations\ 0-\/7}}
+\DoxyCodeLine{00267\ \ \ command(LCD\_SETCGRAMADDR\ |\ (location\ <<\ 3));}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i<8;\ i++)\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ write(charmap[i]);}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_afdf8b11048d012d36e1bc5b975bff017}\index{LiquidCrystal@{LiquidCrystal}!cursor@{cursor}}
+\index{cursor@{cursor}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{cursor()}{cursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_afdf8b11048d012d36e1bc5b975bff017} 
+void cursor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00217\ \ \ \_displaycontrol\ |=\ LCD\_CURSORON;}
+\DoxyCodeLine{00218\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00219\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a1e5b20fed15743656bb6d2e6a6ea6269}\index{LiquidCrystal@{LiquidCrystal}!display@{display}}
+\index{display@{display}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a1e5b20fed15743656bb6d2e6a6ea6269} 
+void display (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00207\ \ \ \_displaycontrol\ |=\ LCD\_DISPLAYON;}
+\DoxyCodeLine{00208\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00209\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a0da5d9617e961b8c9430815ce7dba80f}\index{LiquidCrystal@{LiquidCrystal}!home@{home}}
+\index{home@{home}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{home()}{home()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a0da5d9617e961b8c9430815ce7dba80f} 
+void home (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00183\ \{}
+\DoxyCodeLine{00184\ \ \ command(LCD\_RETURNHOME);\ \ \textcolor{comment}{//\ set\ cursor\ position\ to\ zero}}
+\DoxyCodeLine{00185\ \ \ delayMicroseconds(2000);\ \ \textcolor{comment}{//\ this\ command\ takes\ a\ long\ time!}}
+\DoxyCodeLine{00186\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_ad4eba570ef51dfb0ff4447f7efd4325c}\index{LiquidCrystal@{LiquidCrystal}!init@{init}}
+\index{init@{init}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_ad4eba570ef51dfb0ff4447f7efd4325c} 
+void init (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{fourbitmode}{, }\item[{uint8\+\_\+t}]{rs}{, }\item[{uint8\+\_\+t}]{rw}{, }\item[{uint8\+\_\+t}]{enable}{, }\item[{uint8\+\_\+t}]{d0}{, }\item[{uint8\+\_\+t}]{d1}{, }\item[{uint8\+\_\+t}]{d2}{, }\item[{uint8\+\_\+t}]{d3}{, }\item[{uint8\+\_\+t}]{d4}{, }\item[{uint8\+\_\+t}]{d5}{, }\item[{uint8\+\_\+t}]{d6}{, }\item[{uint8\+\_\+t}]{d7}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00056\ \{}
+\DoxyCodeLine{00057\ \ \ \_rs\_pin\ =\ rs;}
+\DoxyCodeLine{00058\ \ \ \_rw\_pin\ =\ rw;}
+\DoxyCodeLine{00059\ \ \ \_enable\_pin\ =\ enable;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \_data\_pins[0]\ =\ d0;}
+\DoxyCodeLine{00062\ \ \ \_data\_pins[1]\ =\ d1;}
+\DoxyCodeLine{00063\ \ \ \_data\_pins[2]\ =\ d2;}
+\DoxyCodeLine{00064\ \ \ \_data\_pins[3]\ =\ d3;}
+\DoxyCodeLine{00065\ \ \ \_data\_pins[4]\ =\ d4;}
+\DoxyCodeLine{00066\ \ \ \_data\_pins[5]\ =\ d5;}
+\DoxyCodeLine{00067\ \ \ \_data\_pins[6]\ =\ d6;}
+\DoxyCodeLine{00068\ \ \ \_data\_pins[7]\ =\ d7;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordflow}{if}\ (fourbitmode)}
+\DoxyCodeLine{00071\ \ \ \ \ \_displayfunction\ =\ LCD\_4BITMODE\ |\ LCD\_1LINE\ |\ LCD\_5x8DOTS;}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00073\ \ \ \ \ \_displayfunction\ =\ LCD\_8BITMODE\ |\ LCD\_1LINE\ |\ LCD\_5x8DOTS;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ begin(16,\ 1);}
+\DoxyCodeLine{00076\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a4fcc7eefb8001246e0e8309b3e800494}\index{LiquidCrystal@{LiquidCrystal}!leftToRight@{leftToRight}}
+\index{leftToRight@{leftToRight}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{leftToRight()}{leftToRight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a4fcc7eefb8001246e0e8309b3e800494} 
+void left\+To\+Right (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00241\ \ \ \_displaymode\ |=\ LCD\_ENTRYLEFT;}
+\DoxyCodeLine{00242\ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00243\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a12d5cd7257128d74a9ba52881e2dce54}\index{LiquidCrystal@{LiquidCrystal}!noAutoscroll@{noAutoscroll}}
+\index{noAutoscroll@{noAutoscroll}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{noAutoscroll()}{noAutoscroll()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a12d5cd7257128d74a9ba52881e2dce54} 
+void no\+Autoscroll (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00259\ \ \ \_displaymode\ \&=\ \string~LCD\_ENTRYSHIFTINCREMENT;}
+\DoxyCodeLine{00260\ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00261\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a7c524ccde03edf1f576337e06d811ae2}\index{LiquidCrystal@{LiquidCrystal}!noBlink@{noBlink}}
+\index{noBlink@{noBlink}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{noBlink()}{noBlink()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a7c524ccde03edf1f576337e06d811ae2} 
+void no\+Blink (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \_displaycontrol\ \&=\ \string~LCD\_BLINKON;}
+\DoxyCodeLine{00224\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00225\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a660628c03e0460a81f0970d32ffb34ed}\index{LiquidCrystal@{LiquidCrystal}!noCursor@{noCursor}}
+\index{noCursor@{noCursor}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{noCursor()}{noCursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a660628c03e0460a81f0970d32ffb34ed} 
+void no\+Cursor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \_displaycontrol\ \&=\ \string~LCD\_CURSORON;}
+\DoxyCodeLine{00214\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00215\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a7442e94b84097f0ac945d3209b789bfe}\index{LiquidCrystal@{LiquidCrystal}!noDisplay@{noDisplay}}
+\index{noDisplay@{noDisplay}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{noDisplay()}{noDisplay()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a7442e94b84097f0ac945d3209b789bfe} 
+void no\+Display (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00203\ \ \ \_displaycontrol\ \&=\ \string~LCD\_DISPLAYON;}
+\DoxyCodeLine{00204\ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00205\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a03f4a60565bb781cf3c0221c60fb0535}\index{LiquidCrystal@{LiquidCrystal}!rightToLeft@{rightToLeft}}
+\index{rightToLeft@{rightToLeft}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{rightToLeft()}{rightToLeft()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a03f4a60565bb781cf3c0221c60fb0535} 
+void right\+To\+Left (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00247\ \ \ \_displaymode\ \&=\ \string~LCD\_ENTRYLEFT;}
+\DoxyCodeLine{00248\ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00249\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a105576b9890de18b5ef227223ae2ab52}\index{LiquidCrystal@{LiquidCrystal}!scrollDisplayLeft@{scrollDisplayLeft}}
+\index{scrollDisplayLeft@{scrollDisplayLeft}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{scrollDisplayLeft()}{scrollDisplayLeft()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a105576b9890de18b5ef227223ae2ab52} 
+void scroll\+Display\+Left (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00233\ \ \ command(LCD\_CURSORSHIFT\ |\ LCD\_DISPLAYMOVE\ |\ LCD\_MOVELEFT);}
+\DoxyCodeLine{00234\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_ac56c28936aad0d0ba2f2b3140d119b70}\index{LiquidCrystal@{LiquidCrystal}!scrollDisplayRight@{scrollDisplayRight}}
+\index{scrollDisplayRight@{scrollDisplayRight}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{scrollDisplayRight()}{scrollDisplayRight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_ac56c28936aad0d0ba2f2b3140d119b70} 
+void scroll\+Display\+Right (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00236\ \ \ command(LCD\_CURSORSHIFT\ |\ LCD\_DISPLAYMOVE\ |\ LCD\_MOVERIGHT);}
+\DoxyCodeLine{00237\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a47ac87bf6b94b962349966a54dc5a199}\index{LiquidCrystal@{LiquidCrystal}!setCursor@{setCursor}}
+\index{setCursor@{setCursor}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{setCursor()}{setCursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a47ac87bf6b94b962349966a54dc5a199} 
+void set\+Cursor (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{col}{, }\item[{uint8\+\_\+t}]{row}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00189\ \{}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ max\_lines\ =\ \textcolor{keyword}{sizeof}(\_row\_offsets)\ /\ \textcolor{keyword}{sizeof}(*\_row\_offsets);}
+\DoxyCodeLine{00191\ \ \ \textcolor{keywordflow}{if}\ (\ row\ >=\ max\_lines\ )\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ row\ =\ max\_lines\ -\/\ 1;\ \ \ \ \textcolor{comment}{//\ we\ count\ rows\ starting\ w/0}}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordflow}{if}\ (\ row\ >=\ \_numlines\ )\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ row\ =\ \_numlines\ -\/\ 1;\ \ \ \ \textcolor{comment}{//\ we\ count\ rows\ starting\ w/0}}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ command(LCD\_SETDDRAMADDR\ |\ (col\ +\ \_row\_offsets[row]));}
+\DoxyCodeLine{00199\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_ad10531a7ff2ad4b4b4216e07f06e6508}\index{LiquidCrystal@{LiquidCrystal}!setRowOffsets@{setRowOffsets}}
+\index{setRowOffsets@{setRowOffsets}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{setRowOffsets()}{setRowOffsets()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_ad10531a7ff2ad4b4b4216e07f06e6508} 
+void set\+Row\+Offsets (\begin{DoxyParamCaption}\item[{int}]{row1}{, }\item[{int}]{row2}{, }\item[{int}]{row3}{, }\item[{int}]{row4}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00168\ \{}
+\DoxyCodeLine{00169\ \ \ \_row\_offsets[0]\ =\ row0;}
+\DoxyCodeLine{00170\ \ \ \_row\_offsets[1]\ =\ row1;}
+\DoxyCodeLine{00171\ \ \ \_row\_offsets[2]\ =\ row2;}
+\DoxyCodeLine{00172\ \ \ \_row\_offsets[3]\ =\ row3;}
+\DoxyCodeLine{00173\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal_a4921dd89e0f14a9b77dfb3d7960401ca}\index{LiquidCrystal@{LiquidCrystal}!write@{write}}
+\index{write@{write}!LiquidCrystal@{LiquidCrystal}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal_a4921dd89e0f14a9b77dfb3d7960401ca} 
+size\+\_\+t write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00280\ \ \ send(value,\ HIGH);}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ assume\ sucess}}
+\DoxyCodeLine{00282\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+All\+Protocols\+On\+LCD/Liquid\+Crystal.\+h\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+All\+Protocols\+On\+LCD/Liquid\+Crystal.\+cpp\end{DoxyCompactItemize}

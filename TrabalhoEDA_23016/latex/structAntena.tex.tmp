@@ -1,0 +1,26 @@
+\doxysection{Antena Struct Reference}
+\hypertarget{structAntena}{}\label{structAntena}\index{Antena@{Antena}}
+
+
+Collaboration diagram for Antena\+:
+% FIG 0
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structAntena_aaf2b40e9737e60c9c9b4453e77bd9137}\label{structAntena_aaf2b40e9737e60c9c9b4453e77bd9137} 
+int {\bfseries pos\+Antena} \mbox{[}2\mbox{]}
+\item 
+\Hypertarget{structAntena_ac63b1f52fef39d625481adee7d69f268}\label{structAntena_ac63b1f52fef39d625481adee7d69f268} 
+int {\bfseries frequencia}
+\item 
+\Hypertarget{structAntena_a297ad4954ce86dafc5243344b72c219d}\label{structAntena_a297ad4954ce86dafc5243344b72c219d} 
+struct \mbox{\hyperlink{structAntena}{Antena}} \texorpdfstring{$\ast$}{*} {\bfseries prox\+Antena}
+\item 
+\Hypertarget{structAntena_a6c3a0df4a6167ce8614696592cc936fe}\label{structAntena_a6c3a0df4a6167ce8614696592cc936fe} 
+struct \mbox{\hyperlink{structListaNefastas}{Lista\+Nefastas}} \texorpdfstring{$\ast$}{*} {\bfseries lista\+Nefasta}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Fase1/\+Fase1/Antena.\+h\end{DoxyCompactItemize}

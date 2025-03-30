@@ -1,0 +1,12 @@
+digraph "Fase1/Fase1"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_f96b9d1b40af0bf329f57f6f896d1bd1 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="Fase1", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_f96b9d1b40af0bf329f57f6f896d1bd1.html",tooltip=""]
+  dir_fa0e1cf7d9239a62ad3e2bacd28e5d12 [label="Fase1", fillcolor="#edf0f7", color="grey25", style="filled,bold", URL="dir_fa0e1cf7d9239a62ad3e2bacd28e5d12.html",tooltip=""];
+  }
+}

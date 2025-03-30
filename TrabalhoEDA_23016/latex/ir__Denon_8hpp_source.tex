@@ -1,0 +1,315 @@
+\doxysection{ir\+\_\+\+Denon.\+hpp}
+\hypertarget{ir__Denon_8hpp_source}{}\label{ir__Denon_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Denon.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Denon.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_Denon.cpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ Denon/Sharp\ IR\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2020-\/2023\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_DENON\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_DENON\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DDDD\ \ \ EEEEE\ \ N\ \ \ N\ \ \ OOO\ \ \ N\ \ \ N}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ E\ \ \ \ \ \ NN\ \ N\ \ O\ \ \ O\ \ NN\ \ N}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ EEE\ \ \ \ N\ N\ N\ \ O\ \ \ O\ \ N\ N\ N}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ D\ \ E\ \ \ \ \ \ N\ \ NN\ \ O\ \ \ O\ \ N\ \ NN}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DDDD\ \ \ EEEEE\ \ N\ \ \ N\ \ \ OOO\ \ \ N\ \ \ N}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSSS\ \ H\ \ \ H\ \ \ AAA\ \ \ RRRR\ \ \ PPPP}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S\ \ \ \ \ \ H\ \ \ H\ \ A\ \ \ A\ \ R\ \ \ R\ \ P\ \ \ P}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSS\ \ \ HHHHH\ \ AAAAA\ \ RRRR\ \ \ PPPP}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S\ \ H\ \ \ H\ \ A\ \ \ A\ \ R\ \ R\ \ \ P}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSSS\ \ \ H\ \ \ H\ \ A\ \ \ A\ \ R\ \ \ R\ \ P}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00057\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ Protocol=Denon\ Address=0x11\ Command=0x76\ Raw-\/Data=0xED1\ 15\ bits\ LSB\ first}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ +\ 200,-\/1800\ +\ 300,-\/\ 750\ +\ 300,-\/\ 800\ +\ 200,-\/\ 800}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ +\ 250,-\/1800\ +\ 250,-\/\ 800\ +\ 250,-\/1800\ +\ 300,-\/1750}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ +\ 300,-\/\ 750\ +\ 300,-\/1800\ +\ 250,-\/1800\ +\ 250,-\/1850}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ +\ 250,-\/\ 750\ +\ 300,-\/\ 800\ +\ 250,-\/\ 800\ +\ 250}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ Sum:\ 23050}}
+\DoxyCodeLine{00064\ \textcolor{comment}{}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ Denon/Sharp\ variant}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ Protocol=Denon\ Address=0x11\ Command=0x76\ Raw-\/Data=0x4ED1\ 15\ bits\ LSB\ first}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ +\ 200,-\/1800\ +\ 300,-\/\ 750\ +\ 250,-\/\ 800\ +\ 250,-\/\ 750}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ +\ 300,-\/1800\ +\ 250,-\/\ 800\ +\ 250,-\/1800\ +\ 300,-\/1750}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ +\ 300,-\/\ 750\ +\ 300,-\/1800\ +\ 250,-\/1800\ +\ 250,-\/1800}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ +\ 300,-\/\ 750\ +\ 300,-\/\ 750\ +\ 300,-\/1800\ +\ 250}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ Sum:\ 23050}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00073\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ *\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#DENON}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ *\ Denon\ published\ all\ their\ IR\ codes:}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ *\ http://assets.denon.com/documentmaster/us/denon\%20master\%20ir\%20hex.xls}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ *\ Example:}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *\ 0000\ 006D\ 0000\ 0020\ 000A\ 001E\ 000A\ 0046\ 000A\ 001E\ 000A\ 001E\ 000A\ 001E\ //\ 5\ address\ bits}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 000A\ 001E\ 000A\ 001E\ 000A\ 0046\ 000A\ 0046\ 000A\ 0046\ 000A\ 001E\ 000A\ 0046\ 000A\ 0046\ //\ 8\ command\ bits}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 000A\ 001E\ 000A\ 001E\ 000A\ 0679\ //\ 2\ frame\ bits\ 0,0\ +\ stop\ bit\ +\ space\ for\ AutoRepeat}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 000A\ 001E\ 000A\ 0046\ 000A\ 001E\ 000A\ 001E\ 000A\ 001E\ //\ 5\ address\ bits}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 000A\ 0046\ 000A\ 0046\ 000A\ 001E\ 000A\ 001E\ 000A\ 001E\ 000A\ 0046\ 000A\ 001E\ 000A\ 001E\ //\ 8\ inverted\ command\ bits}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 000A\ 0046\ 000A\ 0046\ 000A\ 0679\ //\ 2\ frame\ bits\ 1,1\ +\ stop\ bit\ +\ space\ for\ Repeat}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ From\ analyzing\ the\ codes\ for\ Tuner\ preset\ 1\ to\ 8\ in\ tab\ Main\ Zone\ ID\#1\ it\ is\ obvious,\ that\ the\ protocol\ is\ LSB\ first\ at\ least\ for\ command.}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ *\ All\ Denon\ codes\ with\ 32\ as\ 3.\ value\ use\ the\ Kaseyikyo\ Denon\ variant.}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ LSB\ first,\ no\ start\ bit,\ 5\ address\ +\ 8\ command\ +\ 2\ frame\ (0,0)\ +\ 1\ stop\ bit\ -\/\ each\ frame\ 2\ times}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ Every\ frame\ is\ auto\ repeated\ with\ a\ space\ period\ of\ 45\ ms\ and\ the\ command\ and\ frame\ inverted\ to\ (1,1)\ or\ (0,1)\ for\ SHARP.}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ DENON\_ADDRESS\_BITS\ \ \ \ \ \ 5}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ DENON\_COMMAND\_BITS\ \ \ \ \ \ 8}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ DENON\_FRAME\_BITS\ \ \ \ \ \ \ \ 2\ }\textcolor{comment}{//\ 00/10\ for\ 1.\ frame\ Denon/Sharp,\ inverted\ for\ autorepeat\ frame}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ DENON\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ (DENON\_ADDRESS\_BITS\ +\ DENON\_COMMAND\_BITS\ +\ DENON\_FRAME\_BITS)\ }\textcolor{comment}{//\ 15\ -\/\ The\ number\ of\ bits\ in\ the\ command}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ DENON\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ 260}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ DENON\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ DENON\_UNIT\ \ }\textcolor{comment}{//\ The\ length\ of\ a\ Bit:Mark}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ DENON\_ONE\_SPACE\ \ \ \ \ \ \ \ \ (7\ *\ DENON\_UNIT)\ }\textcolor{comment}{//\ 1820\ //\ The\ length\ of\ a\ Bit:Space\ for\ 1's}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ DENON\_ZERO\_SPACE\ \ \ \ \ \ \ \ (3\ *\ DENON\_UNIT)\ }\textcolor{comment}{//\ 780\ //\ The\ length\ of\ a\ Bit:Space\ for\ 0's}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ DENON\_AUTO\_REPEAT\_DISTANCE\ \ 45000\ }\textcolor{comment}{//\ Every\ frame\ is\ auto\ repeated\ with\ a\ space\ period\ of\ 45\ ms\ and\ the\ command\ and\ frame\ inverted.}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ DENON\_REPEAT\_PERIOD\ \ \ \ \ \ \ \ 110000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 110\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ for\ old\ decoder}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ DENON\_HEADER\_MARK\ \ \ \ \ \ \ DENON\_UNIT\ }\textcolor{comment}{//\ The\ length\ of\ the\ Header:Mark}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ DENON\_HEADER\_SPACE\ \ \ \ \ \ (3\ *\ DENON\_UNIT)\ }\textcolor{comment}{//\ 780\ //\ The\ length\ of\ the\ Header:Space}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ DenonProtocolConstants\ =\ \{\ DENON,\ DENON\_KHZ,\ DENON\_HEADER\_MARK,\ DENON\_HEADER\_SPACE,}
+\DoxyCodeLine{00109\ DENON\_BIT\_MARK,\ DENON\_ONE\_SPACE,\ DENON\_BIT\_MARK,\ DENON\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ (DENON\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{keywordtype}{void}\ IRsend::sendSharp(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ sendDenon(aAddress,\ aCommand,\ aNumberOfRepeats,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00118\ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{keywordtype}{void}\ IRsend::sendDenon(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aSendSharp)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (DENON\_KHZ);\ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ Add\ frame\ marker\ for\ sharp}}
+\DoxyCodeLine{00125\ \ \ \ \ uint16\_t\ tCommand\ =\ aCommand;}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{if}\ (aSendSharp)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ tCommand\ |=\ 0x0200;\ \textcolor{comment}{//\ the\ 2\ upper\ bits\ are\ 00\ for\ Denon\ and\ 10\ for\ Sharp}}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ uint16\_t\ tData\ =\ aAddress\ |\ ((uint16\_t)\ tCommand\ <<\ DENON\_ADDRESS\_BITS);}
+\DoxyCodeLine{00130\ \ \ \ \ uint16\_t\ tInvertedData\ =\ (tData\ \string^\ 0x7FE0);\ \textcolor{comment}{//\ Command\ and\ frame\ (upper\ 10\ bits)\ are\ inverted}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Data}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&DenonProtocolConstants,\ tData,\ DENON\_BITS);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inverted\ autorepeat\ frame}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ delay(DENON\_AUTO\_REPEAT\_DISTANCE\ /\ MICROS\_IN\_ONE\_MILLI);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&DenonProtocolConstants,\ tInvertedData,\ DENON\_BITS);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ repeated\ command\ with\ a\ fixed\ space\ gap}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ delay(\ DENON\_AUTO\_REPEAT\_DISTANCE\ /\ MICROS\_IN\_ONE\_MILLI);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \textcolor{keywordtype}{bool}\ IRrecv::decodeSharp()\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ decodeDenon();}
+\DoxyCodeLine{00153\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{keywordtype}{bool}\ IRrecv::decodeDenon()\ \{}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{comment}{//\ we\ have\ no\ start\ bit,\ so\ check\ for\ the\ exact\ amount\ of\ data\ bits}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (32).\ The\ +\ 2\ is\ for\ initial\ gap\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ DENON\_BITS)\ +\ 2)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Denon:\ "{}}));}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 32"{}}));}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ decode\ as\ Denon\ protocol}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&DenonProtocolConstants,\ DENON\_BITS,\ 1))\ \{}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Denon:\ "{}}));}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ stop\ mark}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[(2\ *\ DENON\_BITS)\ +\ 1],\ DENON\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Denon:\ "{}}));}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00186\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0x1F;}
+\DoxyCodeLine{00187\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ DENON\_ADDRESS\_BITS;}
+\DoxyCodeLine{00188\ \ \ \ \ uint8\_t\ tFrameBits\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ >>\ 8)\ \&\ 0x03;}
+\DoxyCodeLine{00189\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ \&=\ 0xFF;}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ (auto)\ repeat}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}}\ <\ ((DENON\_AUTO\_REPEAT\_DISTANCE\ +\ (DENON\_AUTO\_REPEAT\_DISTANCE\ /\ 4))\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}))\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ repeatCount++;}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (repeatCount\ >\ 1)\ \{\ \textcolor{comment}{//\ skip\ first\ auto\ repeat}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tFrameBits\ \&\ 0x01)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Here\ we\ are\ in\ the\ auto\ repeated\ frame\ with\ the\ inverted\ command}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Denon:\ "{}}));}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Autorepeat\ received="{}}));}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a5c5e6ae69aa440bfa132550d120ace08}{IRDATA\_FLAGS\_IS\_AUTO\_REPEAT}};}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ parity\ of\ consecutive\ received\ commands.\ There\ is\ no\ parity\ in\ one\ data\ set.}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((uint8\_t)\ lastDecodedCommand\ !=\ (uint8\_t)(\string~decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}))\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Denon:\ "{}}));}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Parity\ check\ for\ repeat\ failed.\ Last\ command="{}}));}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(lastDecodedCommand,\ HEX);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ current="{}}));}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(\string~decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}},\ HEX);}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ always\ take\ non\ inverted\ command}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ lastDecodedCommand;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ repeated\ command\ here}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tFrameBits\ ==\ 1\ ||\ tFrameBits\ ==\ 2)\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ SHARP;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ DENON;}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ repeatCount\ =\ 0;}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ first\ command\ here}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tFrameBits\ ==\ 2)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ SHARP;}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ DENON;}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ DENON\_BITS;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00241\ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00246\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ *\ Only\ for\ backwards\ compatibility}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00249\ \textcolor{keywordtype}{void}\ IRsend::sendDenonRaw(uint16\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ sendDenon(aRawData\ >>\ (DENON\_COMMAND\_BITS\ +\ DENON\_FRAME\_BITS),\ (aRawData\ >>\ DENON\_FRAME\_BITS)\ \&\ 0xFF,\ aNumberOfRepeats);}
+\DoxyCodeLine{00251\ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ *\ Old\ function\ with\ parameter\ data}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ IRsend::sendDenon(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00258\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (DENON\_KHZ);}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#if\ !(defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_)\ ||\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_))}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//\ \ \ \ Serial.println(}}
+\DoxyCodeLine{00261\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ "{}The\ function\ sendDenon(data,\ nbits)\ is\ deprecated\ and\ may\ not\ work\ as\ expected!\ Use\ sendDenonRaw(data,\ NumberOfRepeats)\ or\ better\ sendDenon(Address,\ Command,\ NumberOfRepeats)."{});}}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{comment}{//\ Header}}
+\DoxyCodeLine{00265\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(DENON\_HEADER\_MARK);}
+\DoxyCodeLine{00266\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(DENON\_HEADER\_SPACE);}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{//\ Data}}
+\DoxyCodeLine{00269\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(DENON\_BIT\_MARK,\ DENON\_ONE\_SPACE,\ DENON\_BIT\_MARK,\ DENON\_ZERO\_SPACE,\ data,\ nbits,}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ PROTOCOL\_IS\_MSB\_FIRST);}
+\DoxyCodeLine{00271\ \}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ *\ Old\ function\ without\ parameter\ aNumberOfRepeats}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00276\ \textcolor{keywordtype}{void}\ IRsend::sendSharp(uint16\_t\ aAddress,\ uint16\_t\ aCommand)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ sendDenon(aAddress,\ aCommand,\ \textcolor{keyword}{true},\ 0);}
+\DoxyCodeLine{00278\ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{keywordtype}{bool}\ IRrecv::decodeDenonOld(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data}}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ 1\ +\ 2\ +\ (2\ *\ DENON\_BITS)\ +\ 1)\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00285\ \ \ \ \ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{comment}{//\ Check\ initial\ Mark+Space\ match}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[1],\ DENON\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[2],\ DENON\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ decode\ as\ Denon\ protocol.}}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(DENON\_BITS,\ 3,\ DENON\_BIT\_MARK,\ DENON\_ONE\_SPACE,\ 0,\ PROTOCOL\_IS\_MSB\_FIRST))\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00299\ \ \ \ \ \}}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00302\ \ \ \ \ aResults-\/>value\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00303\ \ \ \ \ aResults-\/>bits\ =\ DENON\_BITS;}
+\DoxyCodeLine{00304\ \ \ \ \ aResults-\/>decode\_type\ =\ DENON;}
+\DoxyCodeLine{00305\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ DENON;}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00307\ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_DENON\_HPP}}
+
+\end{DoxyCode}

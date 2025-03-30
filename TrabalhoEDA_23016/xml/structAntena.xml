@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="structAntena" kind="struct" language="C++" prot="public">
+    <compoundname>Antena</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structAntena_1aaf2b40e9737e60c9c9b4453e77bd9137" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int posAntena[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>posAntena</name>
+        <qualifiedname>Antena::posAntena</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="9" column="5" bodyfile="Fase1/Fase1/Antena.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structAntena_1ac63b1f52fef39d625481adee7d69f268" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int frequencia</definition>
+        <argsstring></argsstring>
+        <name>frequencia</name>
+        <qualifiedname>Antena::frequencia</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="10" column="5" bodyfile="Fase1/Fase1/Antena.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structAntena_1a297ad4954ce86dafc5243344b72c219d" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>struct Antena* proxAntena</definition>
+        <argsstring></argsstring>
+        <name>proxAntena</name>
+        <qualifiedname>Antena::proxAntena</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="11" column="14" bodyfile="Fase1/Fase1/Antena.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structAntena_1a6c3a0df4a6167ce8614696592cc936fe" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref> *</type>
+        <definition>struct ListaNefastas* listaNefasta</definition>
+        <argsstring></argsstring>
+        <name>listaNefasta</name>
+        <qualifiedname>Antena::listaNefasta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/Antena.h" line="12" column="21" bodyfile="Fase1/Fase1/Antena.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Antena</label>
+        <link refid="structAntena"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>proxAntena</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>listaNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ListaNefastas</label>
+        <link refid="structListaNefastas"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>locNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>LocalizaoNefasta</label>
+        <link refid="structLocalizaoNefasta"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>proxNefasta</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Fase1/Fase1/Antena.h" line="7" column="1" bodyfile="Fase1/Fase1/Antena.h" bodystart="8" bodyend="13"/>
+    <listofallmembers>
+      <member refid="structAntena_1ac63b1f52fef39d625481adee7d69f268" prot="public" virt="non-virtual"><scope>Antena</scope><name>frequencia</name></member>
+      <member refid="structAntena_1a6c3a0df4a6167ce8614696592cc936fe" prot="public" virt="non-virtual"><scope>Antena</scope><name>listaNefasta</name></member>
+      <member refid="structAntena_1aaf2b40e9737e60c9c9b4453e77bd9137" prot="public" virt="non-virtual"><scope>Antena</scope><name>posAntena</name></member>
+      <member refid="structAntena_1a297ad4954ce86dafc5243344b72c219d" prot="public" virt="non-virtual"><scope>Antena</scope><name>proxAntena</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

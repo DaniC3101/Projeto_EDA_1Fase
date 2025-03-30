@@ -1,0 +1,386 @@
+\doxysection{ir\+\_\+\+NEC.\+hpp}
+\hypertarget{ir__NEC_8hpp_source}{}\label{ir__NEC_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_NEC.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_NEC.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_NEC.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ NEC\ IR\ Protocol\ in\ "{}raw"{}\ and\ standard\ format\ with\ 16\ or\ 8\ bit\ address\ and\ 8\ bit\ command}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2020-\/2023\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_NEC\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_NEC\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG\ }\textcolor{comment}{//\ IR\_DEBUG\_PRINT\ is\ a\ real\ print\ function\ here.\ Add\ local\ debug\ output.}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file.\ IR\_DEBUG\_PRINT\ is\ still\ a\ void\ function\ here.}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ N\ \ \ N\ \ EEEEE\ \ \ CCCC}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NN\ \ N\ \ E\ \ \ \ \ \ C}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ N\ N\ N\ \ EEE\ \ \ \ C}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ N\ \ NN\ \ E\ \ \ \ \ \ C}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ N\ \ \ N\ \ EEEEE\ \ \ CCCC}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00051\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ Protocol=NEC\ Address=0x4\ Command=0x8\ Raw-\/Data=0xF708FB04\ 32\ bits\ LSB\ first}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ +8950,-\/4450}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ +\ 600,-\/\ 500\ +\ 650,-\/\ 500\ +\ 600,-\/1650\ +\ 600,-\/\ 550}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ +\ 600,-\/\ 500\ +\ 600,-\/\ 500\ +\ 650,-\/\ 500\ +\ 600,-\/\ 500}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ +\ 650,-\/1650\ +\ 600,-\/1600\ +\ 650,-\/\ 500\ +\ 600,-\/1650}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ +\ 600,-\/1650\ +\ 600,-\/1650\ +\ 600,-\/1600\ +\ 650,-\/1600}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ +\ 650,-\/\ 500\ +\ 600,-\/\ 550\ +\ 600,-\/\ 500\ +\ 600,-\/1650}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ +\ 600,-\/\ 550\ +\ 600,-\/\ 500\ +\ 600,-\/\ 550\ +\ 600,-\/\ 500}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ +\ 600,-\/1650\ +\ 600,-\/1650\ +\ 600,-\/1650\ +\ 600,-\/\ 550}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ +\ 600,-\/1650\ +\ 600,-\/1650\ +\ 600,-\/1650\ +\ 600,-\/1600}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ +\ 650}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ Sum:\ 68000}}
+\DoxyCodeLine{00064\ \textcolor{comment}{}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ Protocol=NEC\ Address=0x8\ Command=0x7\ Repeat\ gap=40900us}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ rawData[4]:}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ -\/40900}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ +10450,-\/2250}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ +\ 700}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ Sum:\ 13400}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ http://www.hifi-\/remote.com/wiki/index.php/NEC}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ https://www.sbprojects.net/knowledge/ir/nec.php}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ NEC:\ LSB\ first,\ <start\ bit><address:16>\ (or\ <address:8><inverted\ address:8>)\ <command:16><command:8><inverted\ command:8><stop\ bit>.}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ ONKYO:\ like\ NEC\ but\ force\ to\ 16\ independent\ address\ and\ 16\ bit\ command\ bits:\ <start\ bit><address:16><command:16><stop\ bit>}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ Standard\ NEC\ sends\ a\ special\ fixed\ repeat\ frame.}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ NEC2:\ like\ NEC,\ but\ for\ repeat,\ the\ same\ full\ frame\ is\ sent\ after\ the\ 110\ ms.\ I\ have\ a\ DVD\ remote\ with\ NEC2.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ NEC\ and\ NEC\ 2\ only\ differ\ in\ the\ repeat\ frames,\ so\ the\ protocol\ can\ only\ be\ detected\ correctly\ after\ the\ first\ repeat.}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ PIONEER\ (not\ implemented)\ is\ NEC2\ with\ 40\ kHz}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ For\ Apple\ see\ https://en.wikipedia.org/wiki/Apple\_Remote\ -\/\ <start\ bit><0x87EE:16><device\ ID:8><command:7><parity><stop\ bit>\ -\/\ not\ implemented!}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ The\ parity\ is\ not\ implemented,\ so\ we\ get:\ <start\ bit><0x87EE:16><device\ ID:8><command:8><stop\ bit>}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ IRP\ notation:}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ IRP:\ NEC\ \ \{38.0k,564\}<1,-\/1|1,-\/3>(16,-\/8,D:8,S:8,F:8,\string~F:8,1,\string^108m,(16,-\/4,1,\string^108m)*)\ \ ==>\ "{}*"{}\ means\ send\ special\ repeat\ frames\ o\ ore\ more\ times}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ IRP:\ NEC2\ \{38.0k,564\}<1,-\/1|1,-\/3>(16,-\/8,D:8,S:8,F:8,\string~F:8,1,\string^108m)+\ \ \ ==>\ "{}+"{}\ means\ send\ frame\ 1\ or\ more\ times\ (special\ repeat\ is\ missing\ here!)}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ Interpretation\ of\ IRP\ notation:}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ \{38.0k,564\}\ ==>\ 38.0k\ -\/>\ Frequency\ ,\ 564\ -\/>\ unit\ in\ microseconds\ (we\ use\ 560),\ no\ "{}msb"{},\ so\ "{}lsb"{}\ is\ assumed}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ <1,-\/1|1,-\/3>\ ==>\ Zero\ is\ 1\ unit\ mark\ and\ space\ |\ One\ is\ 1\ unit\ mark\ and\ 3\ units\ space}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ 16,-\/8\ ==>\ Start\ bit\ durations}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ D:8,S:8,F:8,\string~F:8\ ==>\ D:8\ -\/>\ 8\ bit\ bitfield\ for\ Device,\ S:8\ -\/>\ 8\ bit\ bitfield\ for\ Subdevice,\ F:8\ -\/>\ 8\ bit\ bitfield\ for\ Function,\ \string~F:8\ -\/>\ 8\ bit\ inverted\ bitfield\ for\ Function}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ 1,\string^108m\ ==>\ 1\ -\/>\ unit\ mark\ Stop\ bit,\ \string^108m\ -\/>\ wait\ until\ 108\ milliseconds\ after\ start\ of\ protocol\ (we\ use\ 110)}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ NEC\_ADDRESS\_BITS\ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ 16\ bit\ address\ or\ 8\ bit\ address\ and\ 8\ bit\ inverted\ address}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ NEC\_COMMAND\_BITS\ \ \ \ \ \ \ \ 16\ }\textcolor{comment}{//\ Command\ and\ inverted\ command}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ NEC\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (NEC\_ADDRESS\_BITS\ +\ NEC\_COMMAND\_BITS)}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ NEC\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 560\ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ 21.28\ periods\ of\ 38\ kHz,\ 11.2\ ticks\ TICKS\_LOW\ =\ 8.358\ TICKS\_HIGH\ =\ 15.0}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ NEC\_HEADER\_MARK\ \ \ \ \ \ \ \ \ (16\ *\ NEC\_UNIT)\ }\textcolor{comment}{//\ 9000\ |\ 180}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ NEC\_HEADER\_SPACE\ \ \ \ \ \ \ \ (8\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 4500\ |\ 90}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ NEC\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ NEC\_UNIT}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ NEC\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ (3\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 1690\ |\ 33.8\ \ TICKS\_LOW\ =\ 25.07\ TICKS\_HIGH\ =\ 45.0}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ NEC\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ NEC\_UNIT}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_HEADER\_SPACE\ (4\ *\ NEC\_UNIT)\ \ }\textcolor{comment}{//\ 2250}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ NEC\_AVERAGE\_DURATION\ \ \ \ 62000\ }\textcolor{comment}{//\ NEC\_HEADER\_MARK\ +\ NEC\_HEADER\_SPACE\ +\ 32\ *\ 2,5\ *\ NEC\_UNIT\ +\ NEC\_UNIT\ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ NEC\_MINIMAL\_DURATION\ \ \ \ 49900\ }\textcolor{comment}{//\ NEC\_HEADER\_MARK\ +\ NEC\_HEADER\_SPACE\ +\ 32\ *\ 2\ *\ NEC\_UNIT\ +\ NEC\_UNIT\ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_DURATION\ \ \ \ \ (NEC\_HEADER\_MARK\ \ +\ NEC\_REPEAT\_HEADER\_SPACE\ +\ NEC\_BIT\_MARK)\ }\textcolor{comment}{//\ 12\ ms}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_PERIOD\ \ \ \ \ \ \ 110000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 110\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ NEC\_REPEAT\_DISTANCE\ \ \ \ \ \ \ \ \ (NEC\_REPEAT\_PERIOD\ -\/\ NEC\_AVERAGE\_DURATION)\ }\textcolor{comment}{//\ 48\ ms}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ NEC\_MAXIMUM\_REPEAT\_DISTANCE\ (NEC\_REPEAT\_PERIOD\ -\/\ NEC\_MINIMAL\_DURATION\ +\ 10000)\ }\textcolor{comment}{//\ 70\ ms}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ APPLE\_ADDRESS\ \ \ \ \ \ \ \ \ \ \ 0x87EE}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ NECProtocolConstants\ =}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \{\ NEC,\ NEC\_KHZ,\ NEC\_HEADER\_MARK,\ NEC\_HEADER\_SPACE,\ NEC\_BIT\_MARK,}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ NEC\_ONE\_SPACE,\ NEC\_BIT\_MARK,\ NEC\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (NEC\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\mbox{\hyperlink{group__Decoder_ga7c4ddfbbbe38d11709d079dee617f2b2}{sendNECSpecialRepeat}}\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ Like\ NEC\ but\ repeats\ are\ full\ frames\ instead\ of\ special\ NEC\ repeats}}
+\DoxyCodeLine{00124\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ NEC2ProtocolConstants\ =\ \{\ NEC2,\ NEC\_KHZ,\ NEC\_HEADER\_MARK,\ NEC\_HEADER\_SPACE,\ NEC\_BIT\_MARK,}
+\DoxyCodeLine{00125\ NEC\_ONE\_SPACE,\ NEC\_BIT\_MARK,\ NEC\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (NEC\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00135\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga81e3e03f6a18a2a87715e351d67d3fa8}{IRsend::sendNECRepeat}}()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (NEC\_KHZ);\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(NEC\_HEADER\_MARK);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 9000}}
+\DoxyCodeLine{00138\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(NEC\_REPEAT\_HEADER\_SPACE);\ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00139\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(NEC\_BIT\_MARK);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 560}}
+\DoxyCodeLine{00140\ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00146\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga7c4ddfbbbe38d11709d079dee617f2b2}{sendNECSpecialRepeat}}()\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}(NEC\_KHZ);\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00148\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(NEC\_HEADER\_MARK);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 9000}}
+\DoxyCodeLine{00149\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(NEC\_REPEAT\_HEADER\_SPACE);\ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00150\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(NEC\_BIT\_MARK);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 560}}
+\DoxyCodeLine{00151\ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00160\ uint32\_t\ \mbox{\hyperlink{group__Decoder_ga35cb54636e53721f2305beb769686bf7}{IRsend::computeNECRawDataAndChecksum}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tRawData;}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//\ Address\ 16\ bit\ LSB\ first}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{if}\ ((aAddress\ \&\ 0xFF00)\ ==\ 0)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ assume\ 8\ bit\ address\ -\/>\ send\ 8\ address\ bits\ and\ then\ 8\ inverted\ address\ bits\ LSB\ first}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ tRawData.UByte.LowByte\ =\ aAddress;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ tRawData.UByte.MidLowByte\ =\ \string~tRawData.UByte.LowByte;}
+\DoxyCodeLine{00168\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ tRawData.UWord.LowWord\ =\ aAddress;}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{comment}{//\ send\ 8\ command\ bits\ and\ then\ 8\ inverted\ command\ bits\ LSB\ first}}
+\DoxyCodeLine{00173\ \ \ \ \ tRawData.UByte.MidHighByte\ =\ aCommand;}
+\DoxyCodeLine{00174\ \ \ \ \ tRawData.UByte.HighByte\ =\ \string~aCommand;}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ tRawData.ULong;}
+\DoxyCodeLine{00176\ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00183\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga78112c5ae382a3d32dc37a4a4d79cab7}{IRsend::sendNEC}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&NECProtocolConstants,\ \mbox{\hyperlink{group__Decoder_ga35cb54636e53721f2305beb769686bf7}{computeNECRawDataAndChecksum}}(aAddress,\ aCommand),\ NEC\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00185\ \}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00192\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gabef0f59ad36a25a35126172b62c97474}{IRsend::sendOnkyo}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&NECProtocolConstants,\ (uint32\_t)\ aCommand\ <<\ 16\ |\ aAddress,\ NEC\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00194\ \}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00201\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga49e141ad8314836cbe0c564227b6d543}{IRsend::sendNEC2}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&NEC2ProtocolConstants,\ \mbox{\hyperlink{group__Decoder_ga35cb54636e53721f2305beb769686bf7}{computeNECRawDataAndChecksum}}(aAddress,\ aCommand),\ NEC\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00203\ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00213\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga043e7f3939e3832071bd83748f0232bf}{IRsend::sendApple}}(uint8\_t\ aDeviceId,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tRawData;}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{comment}{//\ Address\ 16\ bit\ LSB\ first\ fixed\ value\ of\ 0x87EE}}
+\DoxyCodeLine{00217\ \ \ \ \ tRawData.UWord.LowWord\ =\ APPLE\_ADDRESS;}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{//\ send\ Apple\ code\ and\ then\ 8\ command\ bits\ LSB\ first}}
+\DoxyCodeLine{00220\ \ \ \ \ tRawData.UByte.MidHighByte\ =\ aCommand;}
+\DoxyCodeLine{00221\ \ \ \ \ tRawData.UByte.HighByte\ =\ aDeviceId;\ \textcolor{comment}{//\ e.g.\ 0xD7}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&NECProtocolConstants,\ tRawData.ULong,\ NEC\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00224\ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00231\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga78dee8a4463654ca502406a590fd0648}{IRsend::sendNECRaw}}(uint32\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&NECProtocolConstants,\ aRawData,\ NEC\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00233\ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00238\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Decoder_ga455defc31639b9cc247a8e75829cb259}{IRrecv::decodeNEC}}()\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00240\ \textcolor{comment}{\ \ \ \ \ *\ First\ check\ for\ right\ data\ length}}
+\DoxyCodeLine{00241\ \textcolor{comment}{\ \ \ \ \ *\ Next\ check\ start\ bit}}
+\DoxyCodeLine{00242\ \textcolor{comment}{\ \ \ \ \ *\ Next\ try\ the\ decode}}
+\DoxyCodeLine{00243\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (68).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark.}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ ((2\ *\ NEC\_BITS)\ +\ 4)\ \&\&\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ 4))\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}NEC:\ "{}}));}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 68\ or\ 4"{}}));}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{comment}{//\ Check\ header\ "{}mark"{}\ this\ must\ be\ done\ for\ repeat\ and\ data}}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ NEC\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ repeat\ -\/\ here\ we\ have\ another\ header\ space\ length}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ ==\ 4)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2],\ NEC\_REPEAT\_HEADER\_SPACE)}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3],\ NEC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}}\ |\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ lastDecodedAddress;}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ lastDecodedCommand;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ lastDecodedProtocol;}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{comment}{//\ Check\ command\ header\ space}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2],\ NEC\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}NEC:\ "{}}));}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Header\ space\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00278\ \ \ \ \ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ decode\ as\ NEC\ protocol}}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&NECProtocolConstants,\ NEC\_BITS))\ \{}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}NEC:\ "{}}));}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00287\ \ \ \ \ \}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00291\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tValue;}
+\DoxyCodeLine{00292\ \ \ \ \ tValue.ULong\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00293\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tValue.UByte.MidHighByte;\ \textcolor{comment}{//\ 8\ bit}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#if\ defined(DECODE\_ONKYO)}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//\ Here\ only\ Onkyo\ protocol\ is\ supported\ -\/>\ force\ 16\ bit\ address\ and\ command\ decoding}}
+\DoxyCodeLine{00297\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tValue.UWord.LowWord;\ \textcolor{comment}{//\ first\ 16\ bit}}
+\DoxyCodeLine{00298\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ ONKYO;}
+\DoxyCodeLine{00299\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tValue.UWord.HighWord;\ \textcolor{comment}{//\ 16\ bit\ command}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{comment}{//\ Address}}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordflow}{if}\ (tValue.UWord.LowWord\ ==\ APPLE\_ADDRESS)\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00304\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Apple}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ APPLE;}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tValue.UByte.HighByte;}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00311\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ NEC\ LSB\ first,\ so\ first\ sent\ bit\ is\ also\ LSB\ of\ decodedIRData.decodedRawData}}
+\DoxyCodeLine{00312\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tValue.UByte.LowByte\ ==\ (uint8\_t)(\string~tValue.UByte.MidLowByte))\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ standard\ 8\ bit\ address\ NEC\ protocol}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tValue.UByte.LowByte;\ \textcolor{comment}{//\ first\ 8\ bit}}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ extended\ NEC\ protocol}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tValue.UWord.LowWord;\ \textcolor{comment}{//\ first\ 16\ bit}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ command\ if\ it\ is\ 8\ bit\ NEC\ or\ 16\ bit\ ONKYO}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tValue.UByte.MidHighByte\ ==\ (uint8\_t)(\string~tValue.UByte.HighByte))\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ NEC;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ ONKYO;}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tValue.UWord.HighWord;\ \textcolor{comment}{//\ 16\ bit\ command}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ NEC\_BITS;}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{comment}{//\ check\ for\ NEC2\ repeat,\ do\ not\ check\ for\ same\ content\ ;-\/)}}
+\DoxyCodeLine{00333\ \ \ \ \ checkForRepeatSpaceTicksAndSetFlag(NEC\_MAXIMUM\_REPEAT\_DISTANCE\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}})\ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ NEC2;}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_ab0aefeb2bf89e81593b0ae4af274e81a}{IRDATA\_FLAGS\_IS\_PROTOCOL\_WITH\_DIFFERENT\_REPEAT}};}
+\DoxyCodeLine{00337\ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00339\ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00342\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00343\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \textcolor{keywordtype}{bool}\ IRrecv::decodeNECMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ offset\ =\ 1;\ \ \textcolor{comment}{//\ Index\ in\ to\ results;\ Skip\ first\ space.}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \textcolor{comment}{//\ Check\ header\ "{}mark"{}}}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ NEC\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00351\ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ offset++;}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \textcolor{comment}{//\ Check\ for\ repeat}}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keywordflow}{if}\ ((aResults-\/>rawlen\ ==\ 4)\ \&\&\ \mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[offset],\ NEC\_REPEAT\_HEADER\_SPACE)}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset\ +\ 1],\ NEC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ aResults-\/>bits\ =\ 0;}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ aResults-\/>value\ =\ 0xFFFFFFFF;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ NEC;}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00362\ \ \ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (32).\ +4\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{if}\ (aResults-\/>rawlen\ !=\ (2\ *\ NEC\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}NEC\ MSB:\ "{}}));}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(aResults-\/>rawlen);}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 68"{}}));}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00371\ \ \ \ \ \}}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ \textcolor{comment}{//\ Check\ header\ "{}space"{}}}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[offset],\ NEC\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00375\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}NEC\ MSB:\ "{}}));}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Header\ space\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00378\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00380\ \ \ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \ \ offset++;}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(NEC\_BITS,\ offset,\ NEC\_BIT\_MARK,\ NEC\_ONE\_SPACE,\ 0,\ PROTOCOL\_IS\_MSB\_FIRST))\ \{}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}NEC\ MSB:\ "{}}));}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00387\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00389\ \ \ \ \ \}}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{comment}{//\ Stop\ bit}}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset\ +\ (2\ *\ NEC\_BITS)],\ NEC\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00393\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}NEC\ MSB:\ "{}}));}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00396\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00398\ \ \ \ \ \}}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00401\ \ \ \ \ aResults-\/>value\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00402\ \ \ \ \ aResults-\/>bits\ =\ NEC\_BITS;}
+\DoxyCodeLine{00403\ \ \ \ \ aResults-\/>decode\_type\ =\ NEC;}
+\DoxyCodeLine{00404\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ NEC;}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00407\ \}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00420\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga86fb63d8460828c733054381576affca}{IRsend::sendNECMSB}}(uint32\_t\ data,\ uint8\_t\ nbits,\ \textcolor{keywordtype}{bool}\ repeat)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00422\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (NEC\_KHZ);}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ ==\ 0xFFFFFFFF\ ||\ repeat)\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Decoder_ga81e3e03f6a18a2a87715e351d67d3fa8}{sendNECRepeat}}();}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00427\ \ \ \ \ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{comment}{//\ Header}}
+\DoxyCodeLine{00430\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(NEC\_HEADER\_MARK);}
+\DoxyCodeLine{00431\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(NEC\_HEADER\_SPACE);}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{comment}{//\ Old\ version\ with\ MSB\ first\ Data\ +\ stop\ bit}}
+\DoxyCodeLine{00434\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(NEC\_BIT\_MARK,\ NEC\_ONE\_SPACE,\ NEC\_BIT\_MARK,\ NEC\_ZERO\_SPACE,\ data,\ nbits,\ PROTOCOL\_IS\_MSB\_FIRST);}
+\DoxyCodeLine{00435\ \}}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00439\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00440\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00441\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_NEC\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,109 @@
+\doxysection{IRFeedback\+LED.\+hpp}
+\hypertarget{IRFeedbackLED_8hpp_source}{}\label{IRFeedbackLED_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRFeedbackLED.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRFeedbackLED.hpp}}
+\mbox{\hyperlink{IRFeedbackLED_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_FEEDBACK\_LED\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_FEEDBACK\_LED\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFeedbackLEDControlStruct}{FeedbackLEDControlStruct}}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00044\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}};\ }
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFeedbackLEDControlStruct}{FeedbackLEDControlStruct}}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}};\ }
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00056\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(uint8\_t\ aFeedbackLEDPin,\ uint8\_t\ aEnableLEDFeedback)\ \{}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}}\ =\ aFeedbackLEDPin;\ \textcolor{comment}{//\ default\ is\ 0\ -\/>\ use\ LED\_BUILTIN\ if\ available,\ else\ disable\ feedback}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (aEnableLEDFeedback\ !=\ DO\_NOT\_ENABLE\_LED\_FEEDBACK)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ |=\ aEnableLEDFeedback;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aFeedbackLEDPin\ !=\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ pinModeFast(aFeedbackLEDPin,\ OUTPUT);}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#if\ defined(LED\_BUILTIN)}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ pinModeFast(LED\_BUILTIN,\ OUTPUT);}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ =\ LED\_FEEDBACK\_DISABLED\_COMPLETELY;\ \textcolor{comment}{//\ we\ have\ no\ LED\_BUILTIN\ available}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ *\ Direct\ replacement\ for\ blink13()}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00077\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(\textcolor{keywordtype}{bool}\ aEnableLEDFeedback)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ tEnableLEDFeedback\ =\ LED\_FEEDBACK\_DISABLED\_COMPLETELY;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (aEnableLEDFeedback)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ tEnableLEDFeedback\ =\ LED\_FEEDBACK\_ENABLED\_FOR\_SEND\ |\ LED\_FEEDBACK\_ENABLED\_FOR\_RECEIVE;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ tEnableLEDFeedback);}
+\DoxyCodeLine{00083\ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{keywordtype}{void}\ enableLEDFeedback()\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ |=\ LED\_FEEDBACK\_ENABLED\_FOR\_RECEIVE;}
+\DoxyCodeLine{00087\ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keywordtype}{void}\ disableLEDFeedback()\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ \&=\ \string~(LED\_FEEDBACK\_ENABLED\_FOR\_RECEIVE);}
+\DoxyCodeLine{00091\ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keywordtype}{void}\ enableLEDFeedbackForSend()\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ |=\ LED\_FEEDBACK\_ENABLED\_FOR\_SEND;}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{keywordtype}{void}\ disableLEDFeedbackForSend()\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}}\ \&=\ \string~(LED\_FEEDBACK\_ENABLED\_FOR\_SEND);}
+\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#if\ defined(ESP32)\ ||\ defined(ESP8266)}}
+\DoxyCodeLine{00106\ IRAM\_ATTR}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00108\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga072624eeba964d8aa105822da00090ba}{setFeedbackLED}}(\textcolor{keywordtype}{bool}\ aSwitchLedOn)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{if}\ (aSwitchLedOn)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}}\ !=\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN)\ \{}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#if\ defined(FEEDBACK\_LED\_IS\_ACTIVE\_LOW)}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ LOW);\ \textcolor{comment}{//\ Turn\ user\ defined\ pin\ LED\ on}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ HIGH);\ \textcolor{comment}{//\ Turn\ user\ defined\ pin\ LED\ on}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#if\ defined(LED\_BUILTIN)\ }\textcolor{comment}{//\ use\ fast\ macros\ here}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#\ \ if\ defined(FEEDBACK\_LED\_IS\_ACTIVE\_LOW)}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(LED\_BUILTIN,\ LOW);\ \textcolor{comment}{//\ For\ AVR,\ this\ generates\ a\ single\ cbi\ command}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(LED\_BUILTIN,\ HIGH);\ \textcolor{comment}{//\ For\ AVR,\ this\ generates\ a\ single\ sbi\ command}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}}\ !=\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN)\ \{}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#if\ defined(FEEDBACK\_LED\_IS\_ACTIVE\_LOW)}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ HIGH);\ \textcolor{comment}{//\ Turn\ user\ defined\ pin\ LED\ off}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ LOW);\ \textcolor{comment}{//\ Turn\ user\ defined\ pin\ LED\ off}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#if\ defined(LED\_BUILTIN)}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#\ \ if\ defined(FEEDBACK\_LED\_IS\_ACTIVE\_LOW)}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(LED\_BUILTIN,\ HIGH);\ \textcolor{comment}{//\ For\ AVR,\ this\ generates\ a\ single\ sbi\ command}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ digitalWriteFast(LED\_BUILTIN,\ LOW);\ \textcolor{comment}{//\ For\ AVR,\ this\ generates\ a\ single\ cbi\ command}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00147\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga3743b8e9fc9f7bea699f6e89cd5aae41}{IRrecv::blink13}}(uint8\_t\ aEnableLEDFeedback)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(\mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a813c4534a25df46531efe838968d121e}{FeedbackLEDPin}},\ aEnableLEDFeedback);}
+\DoxyCodeLine{00149\ \}}
+\DoxyCodeLine{00153\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga5f1d479f43dcd56febf146e97a3904db}{setBlinkPin}}(uint8\_t\ aBlinkPin)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(aBlinkPin,\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga456f04616e9881e7d85eb56c941942d2}{FeedbackLEDControl}}.\mbox{\hyperlink{structFeedbackLEDControlStruct_a291be39fb15ec3fe2ca5e888775bd25c}{LedFeedbackEnabled}});}
+\DoxyCodeLine{00155\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_FEEDBACK\_LED\_HPP}}
+
+\end{DoxyCode}

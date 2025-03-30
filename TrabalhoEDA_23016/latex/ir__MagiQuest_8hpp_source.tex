@@ -1,0 +1,253 @@
+\doxysection{ir\+\_\+\+Magi\+Quest.\+hpp}
+\hypertarget{ir__MagiQuest_8hpp_source}{}\label{ir__MagiQuest_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_MagiQuest.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_MagiQuest.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_MagiQuest.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ MagiQuest\ Protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Based\ off\ the\ Magiquest\ fork\ of\ Arduino-\/IRremote\ by\ mpflaga\ https://github.com/mpflaga/Arduino-\/IRremote/}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ RESULT:}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ The\ 31\ bit\ wand\ ID\ is\ available\ in\ decodedRawData.}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ \ The\ lower\ 16\ bit\ of\ the\ ID\ is\ available\ in\ address.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ \ The\ magnitude\ is\ available\ in\ command.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2017-\/2024\ E.\ Stuart\ Hicks\ <ehicks@binarymagi.com>,\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#ifndef\ \_IR\_MAGIQUEST\_HPP}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ \_IR\_MAGIQUEST\_HPP}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ M\ \ \ M\ \ \ AA\ \ \ \ GGG\ \ \ III\ \ \ QQQ\ \ \ \ U\ \ \ U\ \ EEEE\ \ \ SSS\ \ TTTTTT}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ \ \ \ \ MM\ MM\ \ A\ \ A\ \ G\ \ \ \ \ \ \ I\ \ \ Q\ \ \ Q\ \ \ U\ \ \ U\ \ E\ \ \ \ \ S\ \ \ \ \ \ \ TT}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ \ \ \ \ \ \ M\ M\ M\ \ AAAA\ \ G\ \ GG\ \ \ I\ \ \ Q\ \ \ Q\ \ \ U\ \ \ U\ \ EEE\ \ \ \ SSS\ \ \ \ TT}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ \ \ \ \ M\ \ \ M\ \ A\ \ A\ \ G\ \ \ G\ \ \ I\ \ \ Q\ \ QQ\ \ \ U\ \ \ U\ \ E\ \ \ \ \ \ \ \ \ S\ \ \ TT}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ \ \ \ \ M\ \ \ M\ \ A\ \ A\ \ \ GGG\ \ \ III\ \ \ QQQQ\ \ \ \ UUU\ \ \ EEEE\ \ SSSS\ \ \ \ TT}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Q}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00056\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ https://github.com/kitlaan/Arduino-\/IRremote/blob/master/ir\_Magiquest.cpp}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ *\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/discussions/1027\#discussioncomment-\/3636857}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/issues/1015\#issuecomment-\/1222247231}}
+\DoxyCodeLine{00060\ \textcolor{comment}{}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ Protocol=MagiQuest\ Address=0xFF00\ Command=0x176\ Raw-\/Data=0x6BCDFF00\ 56\ bits\ MSB\ first}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ +\ 250,-\/\ 800\ +\ 250,-\/\ 850\ +\ 250,-\/\ 850\ +\ 250,-\/\ 850\ //\ 8\ zero\ start\ bits}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ +\ 250,-\/\ 850\ +\ 300,-\/\ 800\ +\ 250,-\/\ 850\ +\ 250,-\/\ 850}}
+\DoxyCodeLine{00064\ \textcolor{comment}{}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ //\ 31\ ID\ bits}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ +\ 550,-\/\ 600\ +\ 550,-\/\ 550\ +\ 350,-\/\ 800\ +\ 600,-\/\ 600\ //\ 110\ 1\ 6}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ +\ 200,-\/\ 950\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ //\ 011\ 1\ B\ -\/\ 1(from\ above)011\ =>\ B}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ +\ 550,-\/\ 600\ +\ 250,-\/\ 900\ +\ 300,-\/\ 850\ +\ 550,-\/\ 600\ //\ 100\ 1\ C}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ +\ 550,-\/\ 600\ +\ 300,-\/\ 850\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 300,-\/\ 800}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ +\ 350,-\/\ 850\ +\ 300,-\/\ 850\ +\ 300,-\/\ 850\ +\ 300,-\/\ 850}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ +\ 300,-\/\ 850\ +\ 300,-\/\ 850\ +\ 300,-\/\ 850\ +\ 550,-\/\ 600\ //\ 000\ 1\ -\/\ 3\ LSB\ ID\ bits\ 000\ +\ 1\ MSB\ magnitude\ bit\ 1}}
+\DoxyCodeLine{00074\ \textcolor{comment}{}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ //\ 8\ bit\ magnitude}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ +\ 300,-\/\ 850\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ +\ 300,-\/\ 850\ +\ 550,-\/\ 600\ +\ 550,-\/\ 600\ +\ 250,-\/\ 900}}
+\DoxyCodeLine{00078\ \textcolor{comment}{}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ //\ Checksum\ (+\ sum\ of\ the\ 5\ bytes\ before\ ==\ 0)}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ +\ 250,-\/\ 900\ +\ 300,-\/\ 900\ +\ 250,-\/\ 850\ +\ 550,-\/\ 600}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ +\ 600,-\/\ 550\ +\ 300,-\/\ 900\ +\ 250,-\/\ 850\ +\ 550}}
+\DoxyCodeLine{00082\ \textcolor{comment}{}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ //\ No\ stop\ bit!}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ MSB\ first,\ 8\ start\ bits\ (zero),\ 31\ wand\ id\ bits,\ 9\ magnitude\ bits\ 8\ checksum\ bits\ and\ no\ stop\ bit\ =>\ 56\ bits}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_CHECKSUM\_BITS\ \ \ \ \ 8\ \ \ }\textcolor{comment}{//\ magiquest\_t.cmd.checksum}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_MAGNITUDE\_BITS\ \ \ \ 9\ \ \ }\textcolor{comment}{//\ magiquest\_t.cmd.magnitude}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_WAND\_ID\_BITS\ \ \ \ \ 31\ \ \ }\textcolor{comment}{//\ magiquest\_t.cmd.wand\_id\ -\/>\ wand-\/id\ is\ handled\ as\ 32\ bit\ and\ always\ even}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_START\_BITS\ \ \ \ \ \ \ \ 8\ \ \ \ }\textcolor{comment}{//\ magiquest\_t.cmd.StartBits}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_PERIOD\ \ \ \ \ \ \ \ \ 1150\ \ \ }\textcolor{comment}{//\ Time\ for\ a\ full\ MagiQuest\ "{}bit"{}\ (1100\ -\/\ 1200\ usec)}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_DATA\_BITS\ \ \ \ \ (MAGIQUEST\_CHECKSUM\_BITS\ +\ MAGIQUEST\_MAGNITUDE\_BITS\ +\ MAGIQUEST\_WAND\_ID\_BITS)\ }\textcolor{comment}{//\ 48\ Size\ of\ the\ command\ without\ the\ start\ bits}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_BITS\ \ \ \ \ \ \ \ \ \ (MAGIQUEST\_CHECKSUM\_BITS\ +\ MAGIQUEST\_MAGNITUDE\_BITS\ +\ MAGIQUEST\_WAND\_ID\_BITS\ +\ MAGIQUEST\_START\_BITS)\ }\textcolor{comment}{//\ 56\ Size\ of\ the\ command\ with\ the\ start\ bits}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ *\ 0\ =\ 25\%\ mark\ \&\ 75\%\ space\ across\ 1\ period}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ *\ \ \ \ \ 1150\ *\ 0.25\ =\ 288\ usec\ mark}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ *\ \ \ \ \ 1150\ -\/\ 288\ =\ 862\ usec\ space}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ *\ 1\ =\ 50\%\ mark\ \&\ 50\%\ space\ across\ 1\ period}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ *\ \ \ \ \ 1150\ *\ 0.5\ =\ 575\ usec\ mark}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ *\ \ \ \ \ 1150\ -\/\ 575\ =\ 575\ usec\ space}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_UNIT\ \ \ \ \ \ \ \ \ \ (MAGIQUEST\_PERIOD\ /\ 4)\ }\textcolor{comment}{//\ 287.5}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_ONE\_MARK\ \ \ \ \ \ (2\ *\ MAGIQUEST\_UNIT)\ }\textcolor{comment}{//\ 576}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_ONE\_SPACE\ \ \ \ \ (2\ *\ MAGIQUEST\_UNIT)\ }\textcolor{comment}{//\ 576}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_ZERO\_MARK\ \ \ \ \ MAGIQUEST\_UNIT\ \ \ \ \ \ \ }\textcolor{comment}{//\ 287.5}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ MAGIQUEST\_ZERO\_SPACE\ \ \ \ (3\ *\ MAGIQUEST\_UNIT)\ }\textcolor{comment}{//\ 864}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ assume\ 110\ as\ repeat\ period}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ MagiQuestProtocolConstants\ =\ \{\ MAGIQUEST,\ 38,\ MAGIQUEST\_ZERO\_MARK,\ MAGIQUEST\_ZERO\_SPACE,}
+\DoxyCodeLine{00113\ MAGIQUEST\_ONE\_MARK,\ MAGIQUEST\_ONE\_SPACE,\ MAGIQUEST\_ZERO\_MARK,\ MAGIQUEST\_ZERO\_SPACE,\ PROTOCOL\_IS\_MSB\_FIRST\ |\ SUPPRESS\_STOP\_BIT,\ 110,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ NULL\ \};}
+\DoxyCodeLine{00115\ \textcolor{comment}{//+=============================================================================}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//}}
+\DoxyCodeLine{00121\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classIRsend_aaac3581931579c22a0e750ec1b8c3045}{IRsend::sendMagiQuest}}(uint32\_t\ aWandId,\ uint16\_t\ aMagnitude)\ \{}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}(38);}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ aMagnitude\ \&=\ 0x1FF;\ \textcolor{comment}{//\ we\ have\ 9\ bit}}
+\DoxyCodeLine{00127\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tWandId;}
+\DoxyCodeLine{00128\ \ \ \ \ tWandId.ULong\ =\ aWandId\ <<\ 1;}
+\DoxyCodeLine{00129\ \ \ \ \ uint8\_t\ tChecksum\ =\ (tWandId.Bytes[0])\ +\ tWandId.Bytes[1]\ +\ tWandId.Bytes[2]\ +\ tWandId.Bytes[3];}
+\DoxyCodeLine{00130\ \ \ \ \ tChecksum\ +=\ aMagnitude\ +\ (aMagnitude\ >>\ 8);}
+\DoxyCodeLine{00131\ \ \ \ \ tChecksum\ =\ \string~tChecksum\ +\ 1;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ 8\ start\ bits}}
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ 0,\ 8);}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ 48\ bit\ data}}
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ aWandId,\ MAGIQUEST\_WAND\_ID\_BITS);\ \textcolor{comment}{//\ send\ only\ 31\ bit,\ do\ not\ send\ MSB\ here}}
+\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ aMagnitude,\ MAGIQUEST\_MAGNITUDE\_BITS);}
+\DoxyCodeLine{00138\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ tChecksum,\ MAGIQUEST\_CHECKSUM\_BITS);}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//\ must\ be\ after\ sending,\ in\ order\ not\ to\ destroy\ the\ send\ timing}}
+\DoxyCodeLine{00141\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}MagiQuest\ checksum=0x"{}}));}
+\DoxyCodeLine{00142\ \ \ \ \ Serial.println(tChecksum,\ HEX);}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00144\ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{comment}{//+=============================================================================}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//}}
+\DoxyCodeLine{00148\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ *\ decodes\ a\ 56\ bit\ result,\ which\ is\ not\ really\ compatible\ with\ standard\ decoder\ layout}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ *\ magnitude\ is\ stored\ in\ command}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ *\ 31\ bit\ wand\_id\ is\ stored\ in\ decodedRawData}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ *\ lower\ 16\ bit\ of\ wand\_id\ is\ stored\ in\ address}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00154\ \textcolor{keywordtype}{bool}\ IRrecv::decodeMagiQuest()\ \{}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data,\ magnitude\ and\ ID\ bits\ and\ 8\ start\ bits\ +\ 0\ stop\ bit}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ MAGIQUEST\_BITS))\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}MagiQuest:\ "{}}));}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 112"{}}));}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ \ \ *\ Check\ for\ 8\ zero\ header\ bits}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ MAGIQUEST\_START\_BITS,\ 1))\ \{}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}MagiQuest:\ "{}}));}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Start\ bit\ decode\ failed"{}}));}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ !=\ 0)\ \{}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}MagiQuest:\ "{}}));}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Not\ 8\ leading\ zero\ start\ bits\ received,\ RawData=0x"{}}));}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ Serial.println(decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ \ \ \ *\ Decode\ the\ 31\ bit\ ID}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ MAGIQUEST\_WAND\_ID\_BITS,\ (MAGIQUEST\_START\_BITS\ *\ 2)\ +\ 1))\ \{}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}MagiQuest:\ "{}}));}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}ID\ decode\ failed"{}}));}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tDecodedRawData;}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00196\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}31\ bit\ WandId=0x"{}}));}
+\DoxyCodeLine{00197\ \ \ \ \ Serial.println(decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00199\ \ \ \ \ uint32\_t\ tWandId\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};\ \textcolor{comment}{//\ save\ tWandId\ for\ later\ use}}
+\DoxyCodeLine{00200\ \ \ \ \ tDecodedRawData.ULong\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ <<\ 1;\ \textcolor{comment}{//\ shift\ for\ checksum\ computation}}
+\DoxyCodeLine{00201\ \ \ \ \ uint8\_t\ tChecksum\ =\ tDecodedRawData.Bytes[0]\ +\ tDecodedRawData.Bytes[1]\ +\ tDecodedRawData.Bytes[2]\ +\ tDecodedRawData.Bytes[3];}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00203\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}31\ bit\ WandId=0x"{}}));}
+\DoxyCodeLine{00204\ \ \ \ \ Serial.print(decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00205\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ shifted=0x"{}}));}
+\DoxyCodeLine{00206\ \ \ \ \ Serial.println(tDecodedRawData.ULong,\ HEX);}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ \ \ \ *\ Decode\ the\ 9\ bit\ Magnitude\ +\ 8\ bit\ checksum}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&MagiQuestProtocolConstants,\ MAGIQUEST\_MAGNITUDE\_BITS\ +\ MAGIQUEST\_CHECKSUM\_BITS,}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ ((MAGIQUEST\_WAND\_ID\_BITS\ +\ MAGIQUEST\_START\_BITS)\ *\ 2)\ +\ 1))\ \{}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}MagiQuest:\ "{}}));}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Magnitude\ +\ checksum\ decode\ failed"{}}));}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00221\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Magnitude\ +\ checksum=0x"{}}));}
+\DoxyCodeLine{00222\ \ \ \ \ Serial.println(decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00224\ \ \ \ \ tDecodedRawData.ULong\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00225\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tDecodedRawData.UBytes[1]\ |\ tDecodedRawData.UBytes[2]\ <<\ 8;\ \textcolor{comment}{//\ Values\ observed\ are\ 0x102,01,04,37,05,38,2D|\ 02,06,04|03,103,12,18,0E|09}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ tChecksum\ +=\ tDecodedRawData.UBytes[2]\ \textcolor{comment}{/*\ only\ one\ bit\ */}+\ tDecodedRawData.UBytes[1]\ +\ tDecodedRawData.UBytes[0];}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{if}\ (tChecksum\ !=\ 0)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Checksum\ 0x"{}}));}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ Serial.print(tChecksum,\ HEX);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}\ is\ not\ 0"{}}));}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00238\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ =\ tWandId;\ \ \ \ \ \textcolor{comment}{//\ 31\ bit\ wand\_id}}
+\DoxyCodeLine{00239\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ tWandId;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ lower\ 16\ bit\ of\ wand\_id}}
+\DoxyCodeLine{00240\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a08a6d5eaf26fbbcc3271bcc930d6e331}{extra}}\ =\ tWandId\ >>\ 16;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ upper\ 15\ bit\ of\ wand\_id}}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ MAGIQUEST;}
+\DoxyCodeLine{00243\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ MAGIQUEST\_BITS;}
+\DoxyCodeLine{00244\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00247\ \}}
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_MAGIQUEST\_HPP}}
+
+\end{DoxyCode}

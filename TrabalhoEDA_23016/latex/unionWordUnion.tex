@@ -1,0 +1,50 @@
+\doxysection{Word\+Union Union Reference}
+\hypertarget{unionWordUnion}{}\label{unionWordUnion}\index{WordUnion@{WordUnion}}
+
+
+{\ttfamily \#include $<$Long\+Union.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{unionWordUnion_a04b499669dbd020890958ce0c436e9a6}\label{unionWordUnion_a04b499669dbd020890958ce0c436e9a6} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint8\_t {\bfseries LowByte}\\
+\>uint8\_t {\bfseries HighByte}\\
+\} {\bfseries UByte}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionWordUnion_a0e6103f41d289b7f83e35ad781ff6349}\label{unionWordUnion_a0e6103f41d289b7f83e35ad781ff6349} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int8\_t {\bfseries LowByte}\\
+\>int8\_t {\bfseries HighByte}\\
+\} {\bfseries Byte}\\
+
+\end{tabbing}\item 
+\Hypertarget{unionWordUnion_a5c4862e7adfc9620da2a0d72a7778a9e}\label{unionWordUnion_a5c4862e7adfc9620da2a0d72a7778a9e} 
+uint8\+\_\+t {\bfseries UBytes} \mbox{[}2\mbox{]}
+\item 
+\Hypertarget{unionWordUnion_af1c81b827ad2c97f9a5e873b99b1d549}\label{unionWordUnion_af1c81b827ad2c97f9a5e873b99b1d549} 
+int8\+\_\+t {\bfseries Bytes} \mbox{[}2\mbox{]}
+\item 
+\Hypertarget{unionWordUnion_a2a4180394cc215e925f9860dfb904c2e}\label{unionWordUnion_a2a4180394cc215e925f9860dfb904c2e} 
+uint16\+\_\+t {\bfseries UWord}
+\item 
+\Hypertarget{unionWordUnion_a59c0a781540944068eb987072c99b2b2}\label{unionWordUnion_a59c0a781540944068eb987072c99b2b2} 
+int16\+\_\+t {\bfseries Word}
+\item 
+\Hypertarget{unionWordUnion_a29da77ddc7b56f6a2d0eed5760acdddf}\label{unionWordUnion_a29da77ddc7b56f6a2d0eed5760acdddf} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries Byte\+Pointer}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Union to specify parts / manifestations of a 16 bit Word without casts and shifts. It also supports the compiler generating small code. Usage\+: \doxylink{unionWordUnion}{Word\+Union} t\+Word; t\+Word.\+UByte.\+High\+Byte = 0x12; 
+
+The documentation for this union was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/src/Long\+Union.\+h\end{DoxyCompactItemize}

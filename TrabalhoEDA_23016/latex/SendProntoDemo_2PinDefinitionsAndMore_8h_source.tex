@@ -1,0 +1,355 @@
+\doxysection{Pin\+Definitions\+And\+More.\+h}
+\hypertarget{SendProntoDemo_2PinDefinitionsAndMore_8h_source}{}\label{SendProntoDemo_2PinDefinitionsAndMore_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/SendProntoDemo/PinDefinitionsAndMore.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/SendProntoDemo/PinDefinitionsAndMore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ \ PinDefinitionsAndMore.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ pin\ definitions\ for\ IRremote\ examples\ for\ various\ platforms}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ as\ well\ as\ definitions\ for\ feedback\ LED\ and\ tone()\ and\ includes}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2021-\/2023\ \ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ armin.joachimsmeyer@gmail.com}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ Arduino-\/IRremote\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ \ See\ the\ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/gpl.html>.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ Pin\ mapping\ table\ for\ different\ platforms}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ Platform\ \ \ \ \ IR\ input\ \ \ \ IR\ output\ \ \ Tone\ \ \ \ \ \ Core/Pin\ schema}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ DEFAULT/AVR\ \ 2\ \ \ \ \ \ \ \ \ \ \ 3\ \ \ \ \ \ \ \ \ \ \ 4\ \ \ \ \ \ \ \ \ Arduino}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *\ ATtinyX5\ \ \ \ \ 0|PB0\ \ \ \ \ \ \ 4|PB4\ \ \ \ \ \ \ 3|PB3\ \ \ \ \ ATTinyCore}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ ATtiny167\ \ \ \ 3|PA3\ \ \ \ \ \ \ 2|PA2\ \ \ \ \ \ \ 7|PA7\ \ \ \ \ ATTinyCore}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ ATtiny167\ \ \ \ 9|PA3\ \ \ \ \ \ \ 8|PA2\ \ \ \ \ \ \ 5|PA7\ \ \ \ \ Digispark\ original\ core}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ ATtiny84\ \ \ \ \ \ |PB2\ \ \ \ \ \ \ \ |PA4\ \ \ \ \ \ \ \ |PA3\ \ \ \ \ ATTinyCore}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ ATtiny88\ \ \ \ \ 3|PD3\ \ \ \ \ \ \ 4|PD4\ \ \ \ \ \ \ 9|PB1\ \ \ \ \ ATTinyCore}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *\ ATtiny3217\ \ 18|PA1\ \ \ \ \ \ 19|PA2\ \ \ \ \ \ 20|PA3\ \ \ \ \ MegaTinyCore}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ ATtiny1604\ \ \ 2\ \ \ \ \ \ \ \ \ \ \ 3|PA5\ \ \ \ \ \ \ \%}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ ATtiny816\ \ \ 14|PA1\ \ \ \ \ \ 16|PA3\ \ \ \ \ \ \ 1|PA5\ \ \ \ \ MegaTinyCore}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ ATtiny1614\ \ \ 8|PA1\ \ \ \ \ \ 10|PA3\ \ \ \ \ \ \ 1|PA5\ \ \ \ \ MegaTinyCore}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *\ SAMD21\ \ \ \ \ \ \ 3\ \ \ \ \ \ \ \ \ \ \ 4\ \ \ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ ESP8266\ \ \ \ \ \ 14|D5\ \ \ \ \ \ \ 12|D6\ \ \ \ \ \ \ \%}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ ESP32\ \ \ \ \ \ \ \ 15\ \ \ \ \ \ \ \ \ \ 4\ \ \ \ \ \ \ \ \ \ 27}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ ESP32-\/C3\ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \ \ 3\ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ BluePill\ \ \ \ \ PA6\ \ \ \ \ \ \ \ \ PA7\ \ \ \ \ \ \ PA3}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ APOLLO3\ \ \ \ \ \ 11\ \ \ \ \ \ \ \ \ \ 12\ \ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ RP2040\ \ \ \ \ \ \ 3|GPIO15\ \ \ \ 4|GPIO16\ \ \ \ 5|GPIO17}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\#define\ \_IR\_MEASURE\_TIMING\ //\ For\ debugging\ purposes.}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_)\ }\textcolor{comment}{//\ Digispark\ board.\ For\ use\ with\ ATTinyCore.}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}ATtinySerialOut.hpp"{}}\ \textcolor{comment}{//\ TX\ is\ at\ pin\ 2\ -\/\ Available\ as\ Arduino\ library\ "{}ATtinySerialOut"{}.\ Saves\ 700\ bytes\ program\ memory\ and\ 70\ bytes\ RAM\ for\ ATtinyCore.}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ PIN\_PB0}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ PIN\_PB4\ }\textcolor{comment}{//\ Pin\ 2\ is\ serial\ output\ with\ ATtinySerialOut.\ Pin\ 1\ is\ internal\ LED\ and\ Pin3\ is\ USB+\ with\ pullup\ on\ Digispark\ board.}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ PIN\_PB3}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ PIN\_PB3}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_)\ }\textcolor{comment}{//\ Digispark\ pro\ board}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#include\ "{}ATtinySerialOut.hpp"{}}\ \textcolor{comment}{//\ Available\ as\ Arduino\ library\ "{}ATtinySerialOut"{}}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ For\ ATtiny167\ Pins\ PB6\ and\ PA3\ are\ usable\ as\ interrupt\ source.}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#\ \ if\ defined(ARDUINO\_AVR\_DIGISPARKPRO)}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ For\ use\ with\ Digispark\ original\ core}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ 9\ }\textcolor{comment}{//\ PA3\ -\/\ on\ Digispark\ board\ labeled\ as\ pin\ 9}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\#define\ IR\_RECEIVE\_PIN\ \ 14\ //\ PB6\ /\ INT0\ is\ connected\ to\ USB+\ on\ DigisparkPro\ boards}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ 8\ }\textcolor{comment}{//\ PA2\ -\/\ on\ Digispark\ board\ labeled\ as\ pin\ 8}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ 5\ }\textcolor{comment}{//\ PA7\ -\/\ on\ Digispark\ board\ labeled\ as\ pin\ 5}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 10\ }\textcolor{comment}{//\ PA4}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ For\ use\ with\ ATTinyCore}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ PIN\_PA3\ }\textcolor{comment}{//\ On\ Digispark\ board\ labeled\ as\ pin\ 9\ -\/\ INT0\ is\ connected\ to\ USB+\ on\ DigisparkPro\ boards}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ PIN\_PA2\ }\textcolor{comment}{//\ On\ Digispark\ board\ labeled\ as\ pin\ 8}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ PIN\_PA7\ }\textcolor{comment}{//\ On\ Digispark\ board\ labeled\ as\ pin\ 5}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny84\_\_)\ }\textcolor{comment}{//\ For\ use\ with\ ATTinyCore}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#include\ "{}ATtinySerialOut.hpp"{}}\ \textcolor{comment}{//\ Available\ as\ Arduino\ library\ "{}ATtinySerialOut"{}.\ Saves\ 128\ bytes\ program\ memory.}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ PIN\_PB2\ }\textcolor{comment}{//\ INT0}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ PIN\_PA4}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ PIN\_PA3}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ PIN\_PA5}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny88\_\_)\ }\textcolor{comment}{//\ MH-\/ET\ Tiny88\ board.\ For\ use\ with\ ATTinyCore.}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#include\ "{}ATtinySerialOut.hpp"{}}\ \textcolor{comment}{//\ Available\ as\ Arduino\ library\ "{}ATtinySerialOut"{}.\ Saves\ 128\ bytes\ program\ memory.}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ Pin\ 6\ is\ TX,\ pin\ 7\ is\ RX}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ PIN\_PD3\ }\textcolor{comment}{//\ 3\ -\/\ INT1}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ PIN\_PD4\ }\textcolor{comment}{//\ 4}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ PIN\_PB1\ }\textcolor{comment}{//\ 9}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ PIN\_PB0\ }\textcolor{comment}{//\ 8}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny1616\_\_)\ \ ||\ defined(\_\_AVR\_ATtiny3216\_\_)\ ||\ defined(\_\_AVR\_ATtiny3217\_\_)\ }\textcolor{comment}{//\ For\ use\ with\ megaTinyCore}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ Tiny\ Core\ Dev\ board}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ https://www.tindie.com/products/xkimi/tiny-\/core-\/16-\/dev-\/board-\/attiny1616/\ -\/\ Out\ of\ Stock}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ https://www.tindie.com/products/xkimi/tiny-\/core-\/32-\/dev-\/board-\/attiny3217/\ -\/\ Out\ of\ Stock}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ PIN\_PA1\ }\textcolor{comment}{//\ use\ 18\ instead\ of\ PIN\_PA1\ for\ TinyCore32}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ PIN\_PA2\ }\textcolor{comment}{//\ 19}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ PIN\_PA3\ }\textcolor{comment}{//\ 20}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ PIN\_PA0\ }\textcolor{comment}{//\ 0}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#undef\ LED\_BUILTIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ No\ LED\ available\ on\ the\ TinyCore\ 32\ board,\ take\ the\ one\ on\ the\ programming\ board\ which\ is\ connected\ to\ the\ DAC\ output}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ LED\_BUILTIN\ \ \ \ \ \ PIN\_PA6\ }\textcolor{comment}{//\ use\ 2\ instead\ of\ PIN\_PA6\ for\ TinyCore32}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny816\_\_)\ }\textcolor{comment}{//\ For\ use\ with\ megaTinyCore}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ PIN\_PA1\ }\textcolor{comment}{//\ 14}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ PIN\_PA1\ }\textcolor{comment}{//\ 16}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ PIN\_PA5\ }\textcolor{comment}{//\ 1}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ PIN\_PA4\ }\textcolor{comment}{//\ 0}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#undef\ LED\_BUILTIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ No\ LED\ available,\ take\ the\ one\ which\ is\ connected\ to\ the\ DAC\ output}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ LED\_BUILTIN\ \ \ \ \ PIN\_PB5\ }\textcolor{comment}{//\ 4}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny1614\_\_)\ }\textcolor{comment}{//\ For\ use\ with\ megaTinyCore}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ PIN\_PA1\ }\textcolor{comment}{//\ 8}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ PIN\_PA3\ }\textcolor{comment}{//\ 10}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ PIN\_PA5\ }\textcolor{comment}{//\ 1}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ PIN\_PA4\ }\textcolor{comment}{//\ 0}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny1604\_\_)\ }\textcolor{comment}{//\ For\ use\ with\ megaTinyCore}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ PIN\_PA6\ }\textcolor{comment}{//\ 2\ -\/\ To\ be\ compatible\ with\ interrupt\ example,\ pin\ 2\ is\ chosen\ here.}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ PIN\_PA7\ }\textcolor{comment}{//\ 3}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ PIN\_PB2\ }\textcolor{comment}{//\ 5}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#define\ tone(...)\ void()\ \ \ \ \ \ }\textcolor{comment}{//\ Define\ as\ void,\ since\ TCB0\_INT\_vect\ is\ also\ used\ by\ tone()}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ noTone(a)\ void()}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ 42\ }\textcolor{comment}{//\ Dummy\ for\ examples\ using\ it}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATmega1284\_\_)\ ||\ defined(\_\_AVR\_ATmega1284P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega644\_\_)\ ||\ defined(\_\_AVR\_ATmega644P\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324P\_\_)\ ||\ defined(\_\_AVR\_ATmega324A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega324PA\_\_)\ ||\ defined(\_\_AVR\_ATmega164A\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega164P\_\_)\ ||\ defined(\_\_AVR\_ATmega32\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega16\_\_)\ ||\ defined(\_\_AVR\_ATmega8535\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega64\_\_)\ ||\ defined(\_\_AVR\_ATmega128\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega1281\_\_)\ ||\ defined(\_\_AVR\_ATmega2561\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega8515\_\_)\ ||\ defined(\_\_AVR\_ATmega162\_\_)}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ 13}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#\ \ else\ }\textcolor{comment}{//\ Default\ as\ for\ ATmega328\ like\ on\ Uno,\ Nano,\ Leonardo,\ Teensy\ 2.0\ etc.}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2\ }\textcolor{comment}{//\ To\ be\ compatible\ with\ interrupt\ example,\ pin\ 2\ is\ chosen\ here.}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(ARDUINO\_AVR\_PROMICRO)\ }\textcolor{comment}{//\ Sparkfun\ Pro\ Micro\ is\ \_\_AVR\_ATmega32U4\_\_\ but\ has\ different\ external\ circuit}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ We\ have\ no\ built\ in\ LED\ at\ pin\ 13\ -\/>\ reuse\ RX\ LED}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#undef\ LED\_BUILTIN}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#define\ LED\_BUILTIN\ \ \ \ \ \ \ \ \ LED\_BUILTIN\_RX}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(\_\_AVR\_ATtiny25\_\_)...}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_RENESAS\_UNO)\ }\textcolor{comment}{//\ Uno\ R4}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ To\ be\ compatible\ with\ Uno\ R3.}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#elif\ defined(ESP8266)}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#define\ FEEDBACK\_LED\_IS\_ACTIVE\_LOW\ }\textcolor{comment}{//\ The\ LED\ on\ my\ board\ (D4)\ is\ active\ LOW}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ \ 14\ }\textcolor{comment}{//\ D5}}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ 12\ }\textcolor{comment}{//\ D6\ -\/\ D4/pin\ 2\ is\ internal\ LED}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ \ \ \ \ \ 2\ }\textcolor{comment}{//\ D4}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ \ \ \ \ 13\ }\textcolor{comment}{//\ D7}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#define\ tone(...)\ void()\ \ \ \ \ \ }\textcolor{comment}{//\ tone()\ inhibits\ receive\ timer}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#define\ noTone(a)\ void()}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 42\ }\textcolor{comment}{//\ Dummy\ for\ examples\ using\ it\#}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_NOLOGO\_ESP32C3\_SUPER\_MINI)}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#define\ FEEDBACK\_LED\_IS\_ACTIVE\_LOW\ }\textcolor{comment}{//\ The\ LED\ on\ my\ board\ (D8)\ is\ active\ LOW}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ \ \ 2}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ \ \ \ \ 10}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#elif\ defined(CONFIG\_IDF\_TARGET\_ESP32C3)\ ||\ defined(ARDUINO\_ESP32C3\_DEV)}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#define\ NO\_LED\_FEEDBACK\_CODE\ \ \ }\textcolor{comment}{//\ The\ \ WS2812\ on\ pin\ 8\ of\ AI-\/C3\ board\ crashes\ if\ used\ as\ receive\ feedback\ LED,\ other\ I/O\ pins\ are\ working...}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ \ \ 6}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ 7}}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 10}}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ \ \ \ \ 18}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#elif\ defined(ESP32)}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \textcolor{comment}{//\ tone()\ is\ included\ in\ ESP32\ core\ since\ 2.0.2}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#if\ !defined(ESP\_ARDUINO\_VERSION\_VAL)}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#define\ ESP\_ARDUINO\_VERSION\_VAL(major,\ minor,\ patch)\ 12345678}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#if\ ESP\_ARDUINO\_VERSION\ \ <=\ ESP\_ARDUINO\_VERSION\_VAL(2,\ 0,\ 2)}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#define\ TONE\_LEDC\_CHANNEL\ \ \ \ \ \ \ \ 1\ \ }\textcolor{comment}{//\ Using\ channel\ 1\ makes\ tone()\ independent\ of\ receiving\ timer\ -\/>\ No\ need\ to\ stop\ receiving\ timer.}}
+\DoxyCodeLine{00200\ \textcolor{keywordtype}{void}\ tone(uint8\_t\ aPinNumber,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ aFrequency)\{}
+\DoxyCodeLine{00201\ \ \ \ \ ledcAttachPin(aPinNumber,\ TONE\_LEDC\_CHANNEL);}
+\DoxyCodeLine{00202\ \ \ \ \ ledcWriteTone(TONE\_LEDC\_CHANNEL,\ aFrequency);}
+\DoxyCodeLine{00203\ \}}
+\DoxyCodeLine{00204\ \textcolor{keywordtype}{void}\ tone(uint8\_t\ aPinNumber,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ aFrequency,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ aDuration)\{}
+\DoxyCodeLine{00205\ \ \ \ \ ledcAttachPin(aPinNumber,\ TONE\_LEDC\_CHANNEL);}
+\DoxyCodeLine{00206\ \ \ \ \ ledcWriteTone(TONE\_LEDC\_CHANNEL,\ aFrequency);}
+\DoxyCodeLine{00207\ \ \ \ \ delay(aDuration);}
+\DoxyCodeLine{00208\ \ \ \ \ ledcWriteTone(TONE\_LEDC\_CHANNEL,\ 0);}
+\DoxyCodeLine{00209\ \}}
+\DoxyCodeLine{00210\ \textcolor{keywordtype}{void}\ noTone(uint8\_t\ aPinNumber)\{}
+\DoxyCodeLine{00211\ \ \ \ \ ledcWriteTone(TONE\_LEDC\_CHANNEL,\ 0);}
+\DoxyCodeLine{00212\ \}}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ ESP\_ARDUINO\_VERSION\ \ <=\ ESP\_ARDUINO\_VERSION\_VAL(2,\ 0,\ 2)}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ \ 15\ \ }\textcolor{comment}{//\ D15}}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ 4\ \ }\textcolor{comment}{//\ D4}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 27\ \ }\textcolor{comment}{//\ D27\ 25\ \&\ 26\ are\ DAC0\ and\ 1}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ \ \ \ \ 16\ \ }\textcolor{comment}{//\ RX2\ pin}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_STM32)\ ||\ defined(ARDUINO\_ARCH\_STM32F1)\ }\textcolor{comment}{//\ BluePill}}
+\DoxyCodeLine{00221\ \textcolor{comment}{//\ Timer\ 3\ blocks\ PA6,\ PA7,\ PB0,\ PB1\ for\ use\ by\ Servo\ or\ tone()}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ \ PA6}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\_STRING\ \ \ "{}PA6"{}}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ PA7}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\_STRING\ \ \ \ \ \ "{}PA7"{}}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PA3}}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ \ \ \ \ PA5}}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ \ \ \ \ PA2}}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\_STRING\ \ "{}PA2"{}}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#\ \ if\ defined(ARDUINO\_GENERIC\_STM32F103C)\ ||\ defined(ARDUINO\_BLUEPILL\_F103C8)}}
+\DoxyCodeLine{00231\ \textcolor{comment}{//\ BluePill\ LED\ is\ active\ low}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#define\ FEEDBACK\_LED\_IS\_ACTIVE\_LOW}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_APOLLO3)\ }\textcolor{comment}{//\ Sparkfun\ Apollo\ boards}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ 11}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ 12}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_MBED)\ \&\&\ defined(ARDUINO\_ARCH\_MBED\_NANO)\ }\textcolor{comment}{//\ Arduino\ Nano\ 33\ BLE\ and\ Arduino\ Nano\ Connect\ layout\ for\ MBED}}
+\DoxyCodeLine{00241\ \textcolor{comment}{//\ Must\ be\ before\ ARDUINO\_ARCH\_RP2040,\ since\ it\ is\ the\ layout\ for\ the\ MBED\ core\ of\ Arduino\ Nano\ Connect}}
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 3\ \ \ }\textcolor{comment}{//\ GPIO15\ Start\ with\ pin\ 3\ since\ pin\ 2|GPIO25\ is\ connected\ to\ LED\ on\ Pi\ pico}}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 4\ \ \ }\textcolor{comment}{//\ GPIO16}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 6}}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 7\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00247\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 8}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_RP2040)\ }\textcolor{comment}{//\ Arduino\ Nano\ Connect,\ Pi\ Pico\ with\ arduino-\/pico\ core\ https://github.com/earlephilhower/arduino-\/pico}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 15\ \ }\textcolor{comment}{//\ GPIO15\ to\ be\ compatible\ with\ the\ Arduino\ Nano\ RP2040\ Connect\ (pin3)}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 16\ \ }\textcolor{comment}{//\ GPIO16}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 17}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 18}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 19\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 20}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ If\ you\ program\ the\ Nano\ RP2040\ Connect\ with\ this\ core,\ then\ you\ must\ redefine\ LED\_BUILTIN}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ and\ use\ the\ external\ reset\ with\ 1\ kOhm\ to\ ground\ to\ enter\ UF2\ mode}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#undef\ LED\_BUILTIN}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#define\ LED\_BUILTIN\ \ \ \ \ \ \ \ \ \ 6}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#elif\ defined(PARTICLE)\ }\textcolor{comment}{//\ !!!UNTESTED!!!}}
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ A4}}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ A5\ }\textcolor{comment}{//\ Particle\ supports\ multiple\ pins}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \textcolor{preprocessor}{\#define\ LED\_BUILTIN\ \ \ \ \ \ \ \ \ D7}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00269\ \textcolor{comment}{\ *\ 4\ times\ the\ same\ (default)\ layout\ for\ easy\ adaption\ in\ the\ future}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#elif\ defined(TEENSYDUINO)\ }\textcolor{comment}{//\ Teensy\ 2.0\ is\ handled\ at\ default\ for\ ATmega328\ like\ on\ Uno,\ Nano,\ Leonardo\ etc.}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_MBED)\ }\textcolor{comment}{//\ Arduino\ Nano\ 33\ BLE}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#elif\ defined(ARDUINO\_ARCH\_SAMD)\ ||\ defined(ARDUINO\_ARCH\_SAM)}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#if\ !defined(ARDUINO\_SAMD\_ADAFRUIT)\ \&\&\ !defined(ARDUINO\_SEEED\_XIAO\_M0)}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ On\ the\ Zero\ and\ others\ we\ switch\ explicitly\ to\ SerialUSB}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#define\ Serial\ SerialUSB}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{comment}{//\ Definitions\ for\ the\ Chinese\ SAMD21\ M0-\/Mini\ clone,\ which\ has\ no\ led\ connected\ to\ D13/PA17.}}
+\DoxyCodeLine{00301\ \textcolor{comment}{//\ Attention!!!\ D2\ and\ D4\ are\ swapped\ on\ these\ boards!!!}}
+\DoxyCodeLine{00302\ \textcolor{comment}{//\ If\ you\ connect\ the\ LED,\ it\ is\ on\ pin\ 24/PB11.\ In\ this\ case\ activate\ the\ next\ two\ lines.}}
+\DoxyCodeLine{00303\ \textcolor{comment}{//\#undef\ LED\_BUILTIN}}
+\DoxyCodeLine{00304\ \textcolor{comment}{//\#define\ LED\_BUILTIN\ 24\ //\ PB11}}
+\DoxyCodeLine{00305\ \textcolor{comment}{//\ As\ an\ alternative\ you\ can\ choose\ pin\ 25,\ it\ is\ the\ RX-\/LED\ pin\ (PB03),\ but\ active\ low.In\ this\ case\ activate\ the\ next\ 3\ lines.}}
+\DoxyCodeLine{00306\ \textcolor{comment}{//\#undef\ LED\_BUILTIN}}
+\DoxyCodeLine{00307\ \textcolor{comment}{//\#define\ LED\_BUILTIN\ 25\ //\ PB03}}
+\DoxyCodeLine{00308\ \textcolor{comment}{//\#define\ FEEDBACK\_LED\_IS\_ACTIVE\_LOW\ //\ The\ RX\ LED\ on\ the\ M0-\/Mini\ is\ active\ LOW}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#elif\ defined\ (NRF51)\ }\textcolor{comment}{//\ BBC\ micro:bit}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 1}}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 4}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\#define\ tone(...)\ void()\ \ \ \ }\textcolor{comment}{//\ no\ tone()\ available}}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#define\ noTone(a)\ void()}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ 42\ }\textcolor{comment}{//\ Dummy\ for\ examples\ using\ it}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#warning\ Board\ /\ CPU\ is\ not\ detected\ using\ pre-\/processor\ symbols\ -\/>\ using\ default\ values,\ which\ may\ not\ fit.\ Please\ extend\ PinDefinitionsAndMore.h.}}
+\DoxyCodeLine{00322\ \textcolor{comment}{//\ Default\ valued\ for\ unidentified\ boards}}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ \ \ 2}}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\#define\ IR\_SEND\_PIN\ \ \ \ \ \ \ \ \ 3}}
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\#define\ TONE\_PIN\ \ \ \ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00326\ \textcolor{preprocessor}{\#define\ APPLICATION\_PIN\ \ \ \ \ 5}}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\#define\ ALTERNATIVE\_IR\_FEEDBACK\_LED\_PIN\ 6\ }\textcolor{comment}{//\ E.g.\ used\ for\ examples\ which\ use\ LED\_BUILDIN\ for\ example\ output.}}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ defined(ESP8266)}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#if\ defined(ESP32)\ ||\ defined(ARDUINO\_ARCH\_RP2040)\ ||\ defined(PARTICLE)\ ||\ defined(ARDUINO\_ARCH\_MBED)}}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#define\ SEND\_PWM\_BY\_TIMER\ }\textcolor{comment}{//\ We\ do\ not\ have\ pin\ restrictions\ for\ this\ CPU's,\ so\ lets\ use\ the\ hardware\ PWM\ for\ send\ carrier\ signal\ generation}}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\#\ if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\#undef\ IR\_SEND\_PIN\ }\textcolor{comment}{//\ SendPin\ is\ determined\ by\ timer!\ This\ avoids\ warnings\ in\ IRremote.hpp\ and\ IRTimer.hpp}}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \textcolor{preprocessor}{\#if\ !defined\ (FLASHEND)}}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#define\ FLASHEND\ 0xFFFF\ }\textcolor{comment}{//\ Dummy\ value\ for\ platforms\ where\ FLASHEND\ is\ not\ defined}}
+\DoxyCodeLine{00341\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00344\ \textcolor{comment}{\ *\ Helper\ macro\ for\ getting\ a\ macro\ definition\ as\ string}}
+\DoxyCodeLine{00345\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#if\ !defined(STR\_HELPER)}}
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#define\ STR\_HELPER(x)\ \#x}}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#define\ STR(x)\ STR\_HELPER(x)}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

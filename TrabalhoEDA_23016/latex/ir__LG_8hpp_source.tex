@@ -1,0 +1,336 @@
+\doxysection{ir\+\_\+\+LG.\+hpp}
+\hypertarget{ir__LG_8hpp_source}{}\label{ir__LG_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_LG.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_LG.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_LG.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ LG\ IR\ Protocol\ for\ air\ conditioner}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2017-\/2024\ Darryl\ Smith,\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_LG\_HPP}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_LG\_HPP}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ \ GGGG}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ G}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ G\ \ GG}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ L\ \ \ \ \ \ G\ \ \ G}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LLLLL\ \ \ GGG}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00051\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ Protocol=LG\ Address=0xF1\ Command=0x7776\ Raw-\/Data=0xF17776B\ 28\ bits\ MSB\ first}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ +8950,-\/4150}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ +\ 500,-\/1550\ +\ 550,-\/1550\ +\ 500,-\/1550\ +\ 500,-\/1600}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ +\ 500,-\/\ 700\ +\ 350,-\/\ 600\ +\ 450,-\/\ 600\ +\ 450,-\/1550}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ +\ 500,-\/\ 550\ +\ 500,-\/1550\ +\ 500,-\/1600\ +\ 500,-\/1550}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ +\ 550,-\/\ 550\ +\ 500,-\/1550\ +\ 500,-\/1550\ +\ 550,-\/1550}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ +\ 500,-\/\ 550\ +\ 500,-\/1550\ +\ 500,-\/1600\ +\ 500,-\/1550}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ +\ 500,-\/\ 550\ +\ 500,-\/1550\ +\ 500,-\/1600\ +\ 500,-\/\ 550}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ +\ 500,-\/1550\ +\ 500,-\/\ 600\ +\ 450,-\/1600\ +\ 500,-\/1550}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ +\ 500}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ Sum:\ 62400}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ LG\ originally\ added\ by\ Darryl\ Smith\ (based\ on\ the\ JVC\ protocol)}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ see:\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/tree/master/examples/LGAirConditionerSendDemo}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ see:\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#LGAIR}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ MSB\ first,\ 1\ start\ bit\ +\ 8\ bit\ address\ +\ 16\ bit\ command\ +\ 4\ bit\ checksum\ +\ 1\ stop\ bit\ (28\ data\ bits).}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ Bit\ and\ repeat\ timing\ is\ like\ NEC}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ LG2\ has\ different\ header\ timing\ and\ a\ shorter\ bit\ time}}
+\DoxyCodeLine{00071\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *\ LG\ remote\ IR-\/LED\ measurements:\ Type\ AKB\ 73315611\ for\ air\ conditioner,\ Ver1.1\ from\ 2011.03.01}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ *\ Protocol:\ LG2}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ *\ Internal\ crystal:\ 4\ MHz}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ *\ Header:\ \ 8.9\ ms\ mark\ 4.15\ ms\ space}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ *\ Data:\ \ \ \ 500\ /\ 540\ and\ 500\ /\ 1580;}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ *\ Clock\ is\ not\ synchronized\ with\ gate\ so\ you\ have\ 19\ and\ sometimes\ 19\ and\ a\ spike\ pulses\ for\ mark}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *\ Duty:\ \ \ \ 9\ us\ on\ 17\ us\ off\ =>\ around\ 33\ \%\ duty}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ NO\ REPEAT:\ If\ value\ like\ temperature\ has\ changed\ during\ long\ press,\ the\ last\ value\ is\ send\ at\ button\ release.}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *\ If\ you\ do\ a\ double\ press,\ the\ next\ value\ can\ be\ sent\ after\ around\ 118\ ms.\ Tested\ with\ the\ fan\ button.}}
+\DoxyCodeLine{00081\ \textcolor{comment}{}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ LG\ remote\ IR-\/LED\ measurements:\ Type\ AKB\ 75095308\ for\ LG\ TV}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ Protocol:\ NEC!!!}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ Frequency\ 37.88\ kHz}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ *\ Header:\ \ 9.0\ ms\ mark\ 4.5\ ms\ space}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ *\ Data:\ \ \ \ 560\ /\ 560\ and\ 560\ /\ 1680;}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ *\ Clock\ is\ synchronized\ with\ gate,\ mark\ always\ starts\ with\ a\ full\ period}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ *\ Duty:\ \ \ \ 13\ us\ on\ 13\ us\ off\ =>\ 50\ \%\ duty}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ *\ Repeat:\ \ 110\ ms\ 9.0\ ms\ mark,\ 2250\ us\ space,\ 560\ stop}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ *\ LSB\ first!}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ *\ The\ codes\ of\ the\ LG\ air\ conditioner\ are\ documented\ in\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/blob/master/ac\_LG.cpp}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ LG\_ADDRESS\_BITS\ \ \ \ \ \ \ \ \ \ 8}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ LG\_COMMAND\_BITS\ \ \ \ \ \ \ \ \ 16}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ LG\_CHECKSUM\_BITS\ \ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ LG\_BITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (LG\_ADDRESS\_BITS\ +\ LG\_COMMAND\_BITS\ +\ LG\_CHECKSUM\_BITS)\ }\textcolor{comment}{//\ 28}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ LG\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 500\ }\textcolor{comment}{//\ 19\ periods\ of\ 38\ kHz}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ LG\_HEADER\_MARK\ \ \ \ \ \ \ \ \ \ (18\ *\ LG\_UNIT)\ }\textcolor{comment}{//\ 9000}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ LG\_HEADER\_SPACE\ \ \ \ \ \ \ \ \ 4200\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ 4200\ |\ 84}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ LG2\_HEADER\_MARK\ \ \ \ \ \ \ \ \ (19\ *\ LG\_UNIT)\ }\textcolor{comment}{//\ 9500}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ LG2\_HEADER\_SPACE\ \ \ \ \ \ \ \ (6\ *\ LG\_UNIT)\ \ }\textcolor{comment}{//\ 3000}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ LG\_BIT\_MARK\ \ \ \ \ \ \ \ \ \ \ \ \ LG\_UNIT}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ LG\_ONE\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ 1580\ \ }\textcolor{comment}{//\ 60\ periods\ of\ 38\ kHz}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ LG\_ZERO\_SPACE\ \ \ \ \ \ \ \ \ \ \ 550}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ LG\_REPEAT\_HEADER\_SPACE\ \ (4\ *\ LG\_UNIT)\ \ }\textcolor{comment}{//\ 2250}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ LG\_REPEAT\_PERIOD\ \ \ \ \ \ \ \ 110000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 110\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\#define\ LG\_AVERAGE\_DURATION\ \ \ \ \ 58000\ //\ LG\_HEADER\_MARK\ +\ LG\_HEADER\_SPACE\ \ +\ 32\ *\ 2,5\ *\ LG\_UNIT)\ +\ LG\_UNIT\ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\#define\ LG\_REPEAT\_DURATION\ \ \ \ \ \ (LG\_HEADER\_MARK\ \ +\ LG\_REPEAT\_HEADER\_SPACE\ +\ LG\_BIT\_MARK)}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\#define\ LG\_REPEAT\_DISTANCE\ \ \ \ \ \ (LG\_REPEAT\_PERIOD\ -\/\ LG\_AVERAGE\_DURATION)\ //\ 52\ ms}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ LGProtocolConstants\ =\ \{\ LG,\ LG\_KHZ,\ LG\_HEADER\_MARK,\ LG\_HEADER\_SPACE,\ LG\_BIT\_MARK,}
+\DoxyCodeLine{00118\ LG\_ONE\_SPACE,\ LG\_BIT\_MARK,\ LG\_ZERO\_SPACE,\ PROTOCOL\_IS\_MSB\_FIRST,\ (LG\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ \&\mbox{\hyperlink{group__Decoder_ga7c4ddfbbbe38d11709d079dee617f2b2}{sendNECSpecialRepeat}}\ \};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ LG2ProtocolConstants\ =\ \{\ LG2,\ LG\_KHZ,\ LG2\_HEADER\_MARK,\ LG2\_HEADER\_SPACE,\ LG\_BIT\_MARK,}
+\DoxyCodeLine{00121\ LG\_ONE\_SPACE,\ LG\_BIT\_MARK,\ LG\_ZERO\_SPACE,\ PROTOCOL\_IS\_MSB\_FIRST,\ (LG\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ \&\mbox{\hyperlink{group__Decoder_gaddace9c2bd03f63855063a3ce5e65acc}{sendLG2SpecialRepeat}}\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00126\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ *\ Send\ special\ LG2\ repeat\ -\/\ not\ used\ internally}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00129\ \textcolor{keywordtype}{void}\ IRsend::sendLG2Repeat()\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (LG\_KHZ);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00131\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(LG2\_HEADER\_MARK);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 3000}}
+\DoxyCodeLine{00132\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(LG\_REPEAT\_HEADER\_SPACE);\ \ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00133\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(LG\_BIT\_MARK);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 500}}
+\DoxyCodeLine{00134\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00140\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaddace9c2bd03f63855063a3ce5e65acc}{sendLG2SpecialRepeat}}()\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}(LG\_KHZ);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00142\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(LG2\_HEADER\_MARK);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 3000}}
+\DoxyCodeLine{00143\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(LG\_REPEAT\_HEADER\_SPACE);\ \ \textcolor{comment}{//\ -\/\ 2250}}
+\DoxyCodeLine{00144\ \ \ \ \ IrSender.\mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(LG\_BIT\_MARK);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ +\ 500}}
+\DoxyCodeLine{00145\ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ uint32\_t\ IRsend::computeLGRawDataAndChecksum(uint8\_t\ aAddress,\ uint16\_t\ aCommand)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ uint32\_t\ tRawData\ =\ ((uint32\_t)\ aAddress\ <<\ (LG\_COMMAND\_BITS\ +\ LG\_CHECKSUM\_BITS))\ |\ ((uint32\_t)\ aCommand\ <<\ LG\_CHECKSUM\_BITS);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ \ \ \ *\ My\ guess\ of\ the\ 4\ bit\ checksum}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ \ \ \ *\ Addition\ of\ all\ 4\ nibbles\ of\ the\ 16\ bit\ command}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00153\ \ \ \ \ uint8\_t\ tChecksum\ =\ 0;}
+\DoxyCodeLine{00154\ \ \ \ \ uint16\_t\ tTempForChecksum\ =\ aCommand;}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ ++i)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ tChecksum\ +=\ tTempForChecksum\ \&\ 0xF;\ \textcolor{comment}{//\ add\ low\ nibble}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ tTempForChecksum\ >>=\ 4;\ \textcolor{comment}{//\ shift\ by\ a\ nibble}}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ (tRawData\ |\ (tChecksum\ \&\ 0xF));}
+\DoxyCodeLine{00160\ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00165\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaf66c3554913ff21cb203895806e3fe67}{IRsend::sendLG}}(uint8\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&LGProtocolConstants,\ computeLGRawDataAndChecksum(aAddress,\ aCommand),\ LG\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00167\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00172\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga1c3823c3e57516f35c94fa1fd875880f}{IRsend::sendLG2}}(uint8\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&LG2ProtocolConstants,\ computeLGRawDataAndChecksum(aAddress,\ aCommand),\ LG\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00174\ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \textcolor{keywordtype}{bool}\ IRrecv::decodeLG()\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ tProtocol\ =\ LG;}
+\DoxyCodeLine{00178\ \ \ \ \ uint16\_t\ tHeaderSpace\ =\ LG\_HEADER\_SPACE;}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ \ \ \ \ *\ First\ check\ for\ right\ data\ length}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ \ \ \ \ *\ Next\ check\ start\ bit}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ \ \ \ *\ Next\ try\ the\ decode}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (60).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark.}}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ ((2\ *\ LG\_BITS)\ +\ 4)\ \&\&\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ 4))\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 60\ or\ 4"{}}));}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ Check\ header\ "{}mark"{}\ this\ must\ be\ done\ for\ repeat\ and\ data}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ LG\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1],\ LG2\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ tProtocol\ =\ LG2;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ tHeaderSpace\ =\ LG2\_HEADER\_SPACE;}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Header\ mark\ is\ wrong"{}}));}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ neither\ LG\ nor\ LG2\ header}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ Check\ for\ repeat\ -\/\ here\ we\ have\ another\ header\ space\ length}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ ==\ 4)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2],\ LG\_REPEAT\_HEADER\_SPACE)}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[3],\ LG\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}}\ |\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ lastDecodedAddress;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ lastDecodedCommand;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ lastDecodedProtocol;}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Repeat\ header\ space\ is\ wrong"{}}));}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \textcolor{comment}{//\ Check\ command\ header\ space}}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2],\ tHeaderSpace))\ \{}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Header\ space\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&LGProtocolConstants,\ LG\_BITS))\ \{}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00244\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00245\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ LG\_CHECKSUM\_BITS)\ \&\ 0xFFFF;}
+\DoxyCodeLine{00246\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ (LG\_COMMAND\_BITS\ +\ LG\_CHECKSUM\_BITS);\ \textcolor{comment}{//\ first\ 8\ bit}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ \ \ \ *\ My\ guess\ of\ the\ checksum}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00251\ \ \ \ \ uint8\_t\ tChecksum\ =\ 0;}
+\DoxyCodeLine{00252\ \ \ \ \ uint16\_t\ tTempForChecksum\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}};}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ ++i)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ tChecksum\ +=\ tTempForChecksum\ \&\ 0xF;\ \textcolor{comment}{//\ add\ low\ nibble}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ tTempForChecksum\ >>=\ 4;\ \textcolor{comment}{//\ shift\ by\ a\ nibble}}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ Checksum\ check}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{if}\ ((tChecksum\ \&\ 0xF)\ !=\ (decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0xF))\ \{}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}LG:\ "{}}));}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}4\ bit\ checksum\ is\ not\ correct.\ expected=0x"{}}));}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ Serial.print(tChecksum,\ HEX);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ received=0x"{}}));}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ Serial.print((decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0xF),\ HEX);}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ data=0x"{}}));}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ Serial.println(decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}},\ HEX);}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ tProtocol;\ \textcolor{comment}{//\ LG\ or\ LG2}}
+\DoxyCodeLine{00272\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ LG\_BITS;}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00275\ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00286\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga3154c786cde41d26211c1b50d6416d17}{IRsend::sendLGRaw}}(uint32\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&LGProtocolConstants,\ aRawData,\ LG\_BITS,\ aNumberOfRepeats);}
+\DoxyCodeLine{00288\ \}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \textcolor{keywordtype}{bool}\ IRrecv::decodeLGMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ offset\ =\ 1;\ \textcolor{comment}{//\ Skip\ first\ space}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{comment}{//\ Check\ we\ have\ enough\ data\ (60)\ -\/\ +4\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark}}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{if}\ (aResults-\/>rawlen\ !=\ (2\ *\ LG\_BITS)\ +\ 4)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00296\ \ \ \ \ \}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{comment}{//\ Initial\ mark/space}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ LG\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ offset++;}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[offset],\ LG\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ offset++;}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(LG\_BITS,\ offset,\ LG\_BIT\_MARK,\ LG\_ONE\_SPACE,\ 0,\ PROTOCOL\_IS\_MSB\_FIRST))\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \textcolor{comment}{//\ Stop\ bit}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset\ +\ (2\ *\ LG\_BITS)],\ LG\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Stop\ bit\ mark\ length\ is\ wrong"{}}));}
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00318\ \ \ \ \ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00321\ \ \ \ \ aResults-\/>value\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00322\ \ \ \ \ aResults-\/>bits\ =\ LG\_BITS;}
+\DoxyCodeLine{00323\ \ \ \ \ aResults-\/>decode\_type\ =\ LG;}
+\DoxyCodeLine{00324\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ LG;}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00326\ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \textcolor{comment}{//+=============================================================================}}
+\DoxyCodeLine{00329\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaf66c3554913ff21cb203895806e3fe67}{IRsend::sendLG}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits)\ \{}
+\DoxyCodeLine{00330\ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00331\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (LG\_KHZ);}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#if\ !(defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_)\ ||\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_))}}
+\DoxyCodeLine{00333\ \textcolor{comment}{//\ \ \ \ Serial.println(F(}}
+\DoxyCodeLine{00334\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ "{}The\ function\ sendLG(data,\ nbits)\ is\ deprecated\ and\ may\ not\ work\ as\ expected!\ Use\ sendLGRaw(data,\ NumberOfRepeats)\ or\ better\ sendLG(Address,\ Command,\ NumberOfRepeats)."{}));}}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00336\ \textcolor{comment}{//\ Header}}
+\DoxyCodeLine{00337\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(LG\_HEADER\_MARK);}
+\DoxyCodeLine{00338\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(LG\_HEADER\_SPACE);}
+\DoxyCodeLine{00339\ \textcolor{comment}{//\ \ \ \ mark(LG\_BIT\_MARK);}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \textcolor{comment}{//\ Data\ +\ stop\ bit}}
+\DoxyCodeLine{00342\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(LG\_BIT\_MARK,\ LG\_ONE\_SPACE,\ LG\_BIT\_MARK,\ LG\_ZERO\_SPACE,\ data,\ nbits,\ PROTOCOL\_IS\_MSB\_FIRST);}
+\DoxyCodeLine{00343\ \}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_LG\_HPP}}
+
+\end{DoxyCode}

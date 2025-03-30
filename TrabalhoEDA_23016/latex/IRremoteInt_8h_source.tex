@@ -1,0 +1,601 @@
+\doxysection{IRremote\+Int.\+h}
+\hypertarget{IRremoteInt_8h_source}{}\label{IRremoteInt_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremoteInt.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRremoteInt.h}}
+\mbox{\hyperlink{IRremoteInt_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifndef\ \_IR\_REMOTE\_INT\_H}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ \_IR\_REMOTE\_INT\_H}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ MARK\ \ \ 1}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ SPACE\ \ 0}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#if\ defined(PARTICLE)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ F\_CPU\ 16000000\ }\textcolor{comment}{//\ definition\ for\ a\ board\ for\ which\ F\_CPU\ is\ not\ defined}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#if\ defined(F\_CPU)\ }\textcolor{comment}{//\ F\_CPU\ is\ used\ to\ generate\ the\ receive\ send\ timings\ in\ some\ CPU's}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ CLOCKS\_PER\_MICRO\ (F\_CPU\ /\ MICROS\_IN\_ONE\_SECOND)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ For\ backwards\ compatibility}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#if\ defined(SYSCLOCK)\ }\textcolor{comment}{//\ allow\ for\ processor\ specific\ code\ to\ define\ F\_CPU}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#undef\ F\_CPU}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ F\_CPU\ SYSCLOCK\ }\textcolor{comment}{//\ Clock\ frequency\ to\ be\ used\ for\ timing.}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{//\#define\ DEBUG\ //\ Activate\ this\ for\ lots\ of\ lovely\ debug\ output\ from\ the\ IRremote\ core\ and\ all\ protocol\ decoders.}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\#define\ TRACE\ //\ Activate\ this\ for\ more\ debug\ output.}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ DISABLE\_LED\_FEEDBACK\ \ \ \ \ \ \ \ \ \ \ \ false}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ ENABLE\_LED\_FEEDBACK\ \ \ \ \ \ \ \ \ \ \ \ \ true}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN\ \ \ \ 0}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#if\ !defined(RAW\_BUFFER\_LENGTH)}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#\ \ if\ (defined(RAMEND)\ \&\&\ RAMEND\ <=\ 0x8FF)\ ||\ (defined(RAMSIZE)\ \&\&\ RAMSIZE\ <\ 0x8FF)}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ for\ RAMsize\ <=\ 2k}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ RAW\_BUFFER\_LENGTH\ \ 200\ \ }}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ For\ undefined\ or\ bigger\ RAMsize}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ RAW\_BUFFER\_LENGTH\ \ 750\ }\textcolor{comment}{//\ The\ value\ for\ air\ condition\ remotes.}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#if\ RAW\_BUFFER\_LENGTH\ \%\ 2\ ==\ 1}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#error\ RAW\_BUFFER\_LENGTH\ must\ be\ even,\ since\ the\ array\ consists\ of\ space\ /\ mark\ pairs.}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#if\ RAW\_BUFFER\_LENGTH\ <=\ 254\ \ \ \ }\textcolor{comment}{//\ saves\ around\ 75\ bytes\ program\ memory\ and\ speeds\ up\ ISR}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{typedef}\ uint\_fast8\_t\ IRRawlenType;}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00091\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ IRRawlenType;}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ *\ Use\ 8\ bit\ buffer\ for\ IR\ timing\ in\ 50\ ticks\ units.}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ *\ It\ is\ save\ to\ use\ 8\ bit\ if\ RECORD\_GAP\_TICKS\ <\ 256,\ since\ any\ value\ greater\ 255\ is\ interpreted\ as\ frame\ gap\ of\ 12750\ us.}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ *\ The\ default\ for\ frame\ gap\ is\ currently\ 8000!}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ *\ But\ if\ we\ assume\ that\ for\ most\ protocols\ the\ frame\ gap\ is\ way\ greater\ than\ the\ biggest\ mark\ or\ space\ duration,}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ *\ we\ can\ choose\ to\ use\ a\ 8\ bit\ buffer\ even\ for\ frame\ gaps\ up\ to\ 200000\ us.}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ *\ This\ enables\ the\ use\ of\ 8\ bit\ buffer\ even\ for\ more\ some\ protocols\ like\ B\&O\ or\ LG\ air\ conditioner\ etc.}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#if\ RECORD\_GAP\_TICKS\ <=\ 400\ }\textcolor{comment}{//\ Corresponds\ to\ RECORD\_GAP\_MICROS\ of\ 200000.\ A\ value\ of\ 255\ is\ foolproof,\ but\ we\ assume,\ that\ the\ frame\ gap\ is\ way\ greater\ than\ the\ biggest\ mark\ or\ space\ duration.}}
+\DoxyCodeLine{00103\ \textcolor{keyword}{typedef}\ uint8\_t\ IRRawbufType;\ \textcolor{comment}{//\ all\ timings\ up\ to\ the\ gap\ fit\ into\ 8\ bit.}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00105\ \textcolor{keyword}{typedef}\ uint16\_t\ IRRawbufType;\ \textcolor{comment}{//\ The\ gap\ does\ not\ fit\ into\ 8\ bit\ ticks\ value.\ This\ must\ not\ be\ a\ reason\ to\ use\ 16\ bit\ for\ buffer,\ but\ it\ is\ at\ least\ save.}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#if\ (\_\_INT\_WIDTH\_\_\ <\ 32)}}
+\DoxyCodeLine{00109\ \textcolor{keyword}{typedef}\ uint32\_t\ IRRawDataType;}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ BITS\_IN\_RAW\_DATA\_TYPE\ \ \ 32}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{typedef}\ uint64\_t\ IRRawDataType;}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ BITS\_IN\_RAW\_DATA\_TYPE\ \ \ 64}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{comment}{/**********************************************************}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ *\ Declarations\ for\ the\ receiver\ Interrupt\ Service\ Routine}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ **********************************************************/}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//\ ISR\ State-\/Machine\ :\ Receiver\ States}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ IR\_REC\_STATE\_IDLE\ \ \ \ \ \ 0\ }\textcolor{comment}{//\ Counting\ the\ gap\ time\ and\ waiting\ for\ the\ start\ bit\ to\ arrive}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ IR\_REC\_STATE\_MARK\ \ \ \ \ \ 1\ }\textcolor{comment}{//\ A\ mark\ was\ received\ and\ we\ are\ counting\ the\ duration\ of\ it.}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#define\ IR\_REC\_STATE\_SPACE\ \ \ \ \ 2\ }\textcolor{comment}{//\ A\ space\ was\ received\ and\ we\ are\ counting\ the\ duration\ of\ it.\ If\ space\ is\ too\ long,\ we\ assume\ end\ of\ frame.}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ IR\_REC\_STATE\_STOP\ \ \ \ \ \ 3\ }\textcolor{comment}{//\ Stopped\ until\ set\ to\ IR\_REC\_STATE\_IDLE\ which\ can\ only\ be\ done\ by\ resume()}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structirparams__struct}{irparams\_struct}}\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ The\ fields\ are\ ordered\ to\ reduce\ memory\ overflow\ caused\ by\ struct-\/padding}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ \mbox{\hyperlink{structirparams__struct_ac2bf9470f5360f16d4f5488b74375c9d}{StateForISR}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ uint\_fast8\_t\ \mbox{\hyperlink{structirparams__struct_a05989093e40cab0450f33e76eab822d5}{IRReceivePin}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ *IRReceivePinPortInputRegister;}
+\DoxyCodeLine{00135\ \ \ \ \ uint8\_t\ IRReceivePinMask;}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keyword}{volatile}\ uint\_fast16\_t\ \mbox{\hyperlink{structirparams__struct_aa4a9954a9151a1f61f6f072df6f07618}{TickCounterForISR}};\ }
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#if\ !defined(IR\_REMOTE\_DISABLE\_RECEIVE\_COMPLETE\_CALLBACK)}}
+\DoxyCodeLine{00139\ \ \ \ \ void\ (*\mbox{\hyperlink{structirparams__struct_af973296c2c6711e3109d17a43c15ec7e}{ReceiveCompleteCallbackFunction}})(void);\ }
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structirparams__struct_aadd1758e29a80490dae5ff4cd5941444}{OverflowFlag}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ IRRawlenType\ \mbox{\hyperlink{structirparams__struct_af0ff3ead4410762ce9340337452a2520}{rawlen}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00143\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structirparams__struct_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}};\ \ \ }
+\DoxyCodeLine{00144\ \ \ \ \ IRRawbufType\ \mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[\mbox{\hyperlink{IRremoteInt_8h_a589aa40429eeb37b6e83a2c09854a47b}{RAW\_BUFFER\_LENGTH}}];\ }
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ sMicrosAtLastStopTimer;\ \textcolor{comment}{//\ Used\ to\ adjust\ TickCounterForISR\ with\ uncounted\ ticks\ between\ stopTimer()\ and\ restartTimer()}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{IRProtocol_8h}{IRProtocol.h}}"{}}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ *\ Debug\ directives}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ *\ Outputs\ with\ IR\_DEBUG\_PRINT\ can\ only\ be\ activated\ by\ defining\ DEBUG!}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ *\ If\ LOCAL\_DEBUG\ is\ defined\ in\ one\ file,\ all\ outputs\ with\ IR\_DEBUG\_PRINT\ are\ still\ suppressed.}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ ||\ defined(TRACE)}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#\ \ define\ IR\_DEBUG\_PRINT(...)\ \ \ \ Serial.print(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#\ \ define\ IR\_DEBUG\_PRINTLN(...)\ \ Serial.println(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#\ \ define\ IR\_DEBUG\_PRINT(...)\ void()}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#\ \ define\ IR\_DEBUG\_PRINTLN(...)\ void()}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#if\ defined(TRACE)}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#\ \ define\ IR\_TRACE\_PRINT(...)\ \ \ \ Serial.print(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#\ \ define\ IR\_TRACE\_PRINTLN(...)\ \ Serial.println(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#\ \ define\ IR\_TRACE\_PRINT(...)\ void()}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#\ \ define\ IR\_TRACE\_PRINTLN(...)\ void()}}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RECEIVING}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00185\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdecode__results}{decode\_results}}\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ decode\_type;\ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.protocol\ ///<\ UNKNOWN,\ NEC,\ SONY,\ RC5,\ ...}}
+\DoxyCodeLine{00187\ \ \ \ \ uint16\_t\ address;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Used\ by\ Panasonic\ \&\ Sharp\ [16-\/bits]}}
+\DoxyCodeLine{00188\ \ \ \ \ uint32\_t\ value;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.decodedRawData\ ///<\ Decoded\ value\ /\ command\ [max\ 32-\/bits]}}
+\DoxyCodeLine{00189\ \ \ \ \ uint8\_t\ bits;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.numberOfBits\ ///<\ Number\ of\ bits\ in\ decoded\ value}}
+\DoxyCodeLine{00190\ \ \ \ \ uint16\_t\ magnitude;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.extra\ ///<\ Used\ by\ MagiQuest\ [16-\/bits]}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRepeat;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.flags\ ///<\ True\ if\ repeat\ of\ value\ is\ detected}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{comment}{//\ next\ 3\ values\ are\ copies\ of\ irparams\_struct\ values\ -\/\ see\ above}}
+\DoxyCodeLine{00194\ \ \ \ \ uint16\_t\ *rawbuf;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.rawDataPtr-\/>rawbuf\ ///<\ Raw\ intervals\ in\ 50uS\ ticks}}
+\DoxyCodeLine{00195\ \ \ \ \ uint\_fast8\_t\ rawlen;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.rawDataPtr-\/>rawlen\ ///<\ Number\ of\ records\ in\ rawbuf}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{bool}\ overflow;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deprecated,\ moved\ to\ decodedIRData.flags\ ///<\ true\ if\ IR\ raw\ code\ too\ long}}
+\DoxyCodeLine{00197\ \};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00202\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIRrecv}{IRrecv}}\ \{}
+\DoxyCodeLine{00203\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga87cb4058898f8d9be253cb17a54d325c}{IRrecv}}();}
+\DoxyCodeLine{00206\ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga87cb4058898f8d9be253cb17a54d325c}{IRrecv}}(uint\_fast8\_t\ aReceivePin)\ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ the\ default\ IRrecv\ instance\ \(\backslash\)"{}IrReceiver\(\backslash\)"{}\ and\ IrReceiver.begin(),\ and\ not\ your\ own\ IRrecv\ instance."{}})));}
+\DoxyCodeLine{00207\ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga87cb4058898f8d9be253cb17a54d325c}{IRrecv}}(uint\_fast8\_t\ aReceivePin,\ uint\_fast8\_t\ aFeedbackLEDPin)\ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ the\ default\ IRrecv\ instance\ \(\backslash\)"{}IrReceiver\(\backslash\)"{}\ and\ IrReceiver.begin(),\ and\ not\ your\ own\ IRrecv\ instance.."{}})));}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga5fe02bc207c20f9846e2e2e04c96c322}{setReceivePin}}(uint\_fast8\_t\ aReceivePinNumber);}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#if\ !defined(IR\_REMOTE\_DISABLE\_RECEIVE\_COMPLETE\_CALLBACK)}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga840908d2125a37e649cdff3fb60ac011}{registerReceiveCompleteCallback}}(\textcolor{keywordtype}{void}\ (*aReceiveCompleteCallbackFunction)(\textcolor{keywordtype}{void}));}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ \ \ \ *\ Stream\ like\ API}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gab43cf2c58beebf12ad8e91c7d294a638}{begin}}(uint\_fast8\_t\ aReceivePin,\ \textcolor{keywordtype}{bool}\ aEnableLEDFeedback\ =\ \textcolor{keyword}{false},\ uint\_fast8\_t\ aFeedbackLEDPin\ =}
+\DoxyCodeLine{00217\ \ \ \ \ USE\_DEFAULT\_FEEDBACK\_LED\_PIN);}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga60de64d75454385b23995437f1d72669}{start}}();}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga80a94684a2306aad15ba163fbe5df8aa}{enableIRIn}}();\ \textcolor{comment}{//\ alias\ for\ start}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{void}\ restartTimer();}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordtype}{void}\ restartTimer(uint32\_t\ aMicrosecondsToAddToGapCounter);}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordtype}{void}\ restartTimerWithTicksToAdd(uint16\_t\ aTicksToAddToGapCounter);}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga4ec5710a64f3ed4afbb21c0fbc0e15c7}{restartAfterSend}}();}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga4a47f12debf6d5d7273c3e5fb360417a}{available}}();}
+\DoxyCodeLine{00227\ \ \ \ \ \mbox{\hyperlink{structIRData}{IRData}}*\ \mbox{\hyperlink{group__Receiving_ga11312764f6a736a5be7dfeb2b1a04231}{read}}();\ \textcolor{comment}{//\ returns\ decoded\ data}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{comment}{//\ write\ is\ a\ method\ of\ class\ IRsend\ below}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//\ size\_t\ write(IRData\ *aIRSendData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ NO\_REPEATS);}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{void}\ stopTimer();}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga8c528baf37154d347366083f0f816846}{stop}}();}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga56a258de4904bcd670bf45002eb8cebc}{disableIRIn}}();\ \textcolor{comment}{//\ alias\ for\ stop}}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gaaf81d3fdaf258088d7692fa70cece087}{end}}();\ \textcolor{comment}{//\ alias\ for\ stop}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_gaa0a5df82161f69ca17641cbd43784e39}{isIdle}}();}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00238\ \textcolor{comment}{\ \ \ \ \ *\ The\ main\ functions}}
+\DoxyCodeLine{00239\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga74a663ea70562d1a7edb853c0ef9394b}{decode}}();\ \ \textcolor{comment}{//\ Check\ if\ available\ and\ try\ to\ decode}}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga41de8150eff044a237990c271d57ea27}{resume}}();\ \ \textcolor{comment}{//\ Enable\ receiving\ of\ the\ next\ value}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ \ \ \ *\ Useful\ info\ and\ print\ functions}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga0862120e518dc16b269e40d282d9e0a9}{printIRResultMinimal}}(Print\ *aSerial);}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gaa15d4bb54923f5846b595a6247a4a0d5}{printIRResultRawFormatted}}(Print\ *aSerial,\ \textcolor{keywordtype}{bool}\ aOutputMicrosecondsInsteadOfTicks\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga6f39cb682463248c8b62c4cc82bcefcf}{printIRResultAsCVariables}}(Print\ *aSerial);}
+\DoxyCodeLine{00249\ \ \ \ \ uint8\_t\ getMaximumMarkTicksFromRawData();}
+\DoxyCodeLine{00250\ \ \ \ \ uint8\_t\ getMaximumSpaceTicksFromRawData();}
+\DoxyCodeLine{00251\ \ \ \ \ uint8\_t\ getMaximumTicksFromRawData(\textcolor{keywordtype}{bool}\ aSearchSpaceInsteadOfMark);}
+\DoxyCodeLine{00252\ \ \ \ \ uint32\_t\ getTotalDurationOfRawData();}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ \ \ \ *\ Next\ 4\ functions\ are\ also\ available\ as\ non\ member\ functions}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_gaa1ad5e6f5f4802c86cc59d0aece35f7c}{printIRResultShort}}(Print\ *aSerial,\ \textcolor{keywordtype}{bool}\ aPrintRepeatGap\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ aCheckForRecordGapsMicros\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordtype}{void}\ printDistanceWidthTimingInfo(Print\ *aSerial,\ \mbox{\hyperlink{structDistanceWidthTimingInfoStruct}{DistanceWidthTimingInfoStruct}}\ *aDistanceWidthTimingInfo);}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gaf9709a0ee5e11bc28f8a83b118348540}{printIRSendUsage}}(Print\ *aSerial);}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{const}\ \_\_FlashStringHelper*\ getProtocolString();}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ getProtocolString();}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ printActiveIRProtocols(Print\ *aSerial);}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga335c7ecff8e8bf3160f87cfd3ec1359a}{compensateAndPrintIRResultAsCArray}}(Print\ *aSerial,\ \textcolor{keywordtype}{bool}\ aOutputMicrosecondsInsteadOfTicks\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaed99d089de138f3df16e36b9334a205b}{compensateAndPrintIRResultAsPronto}}(Print\ *aSerial,\ uint16\_t\ frequency\ =\ 38000U);}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ \ \ \ \ *\ Store\ the\ data\ for\ further\ processing}}
+\DoxyCodeLine{00272\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_ga2b94dd7c5db8a8831645c5285bee414c}{compensateAndStoreIRResultInArray}}(uint8\_t\ *aArrayPtr);}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ compensateAndStorePronto(String\ *aString,\ uint16\_t\ frequency\ =\ 38000U);}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ \ \ \ \ *\ The\ main\ decoding\ functions\ used\ by\ the\ individual\ decoders}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ *aProtocolConstants,\ uint\_fast8\_t\ aNumberOfBits,}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawlenType\ aStartOffset\ =\ 3);}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(uint\_fast8\_t\ aNumberOfBits,\ IRRawlenType\ aStartOffset,\ uint16\_t\ aOneMarkMicros,}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroMarkMicros,\ \textcolor{keywordtype}{bool}\ aMSBfirst);}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(uint\_fast8\_t\ aNumberOfBits,\ IRRawlenType\ aStartOffset,\ uint16\_t\ aOneMarkMicros,}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aZeroMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroSpaceMicros,\ \textcolor{keywordtype}{bool}\ aMSBfirst)}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ decodePulseDistanceWidthData()\ with\ 6\ parameters."{}})));}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodePulseDistanceWidthDataStrict(uint\_fast8\_t\ aNumberOfBits,\ IRRawlenType\ aStartOffset,\ uint16\_t\ aOneMarkMicros,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aZeroMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroSpaceMicros,\ \textcolor{keywordtype}{bool}\ aMSBfirst);}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeBiPhaseData(uint\_fast8\_t\ aNumberOfBits,\ IRRawlenType\ aStartOffset,\ uint\_fast8\_t\ aStartClockCount,}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ uint\_fast8\_t\ aValueOfSpaceToMarkTransition,\ uint16\_t\ aBiphaseTimeUnit);}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordtype}{void}\ initBiphaselevel(uint\_fast8\_t\ aRCDecodeRawbuffOffset,\ uint16\_t\ aBiphaseTimeUnit);}
+\DoxyCodeLine{00296\ \ \ \ \ uint\_fast8\_t\ \mbox{\hyperlink{group__Receiving_gaa0bec1c1b9a1cfa33f708746f87dbb86}{getBiphaselevel}}();}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00299\ \textcolor{comment}{\ \ \ \ \ *\ All\ standard\ (decode\ address\ +\ command)\ protocol\ decoders}}
+\DoxyCodeLine{00300\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeBangOlufsen();}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeBoseWave();}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeDenon();}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeFAST();}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeJVC();}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeKaseikyo();}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeLegoPowerFunctions();}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeLG();}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeMagiQuest();\ \textcolor{comment}{//\ not\ completely\ standard}}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Decoder_ga455defc31639b9cc247a8e75829cb259}{decodeNEC}}();}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Decoder_ga0c6bc3366367bba144556cebbd71467d}{decodeRC5}}();}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Decoder_gafbcef1e75f14804b30e993ce75bd08de}{decodeRC6}}();}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeSamsung();}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeSharp();\ \textcolor{comment}{//\ redirected\ to\ decodeDenon()}}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeSony();}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeWhynter();}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeDistanceWidth();}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga0a5ca8a5892327092a9e1c977d0d6e6f}{decodeHash}}();}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{comment}{//\ Template\ function\ :-\/)}}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeShuzu();}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00326\ \textcolor{comment}{\ \ \ \ \ *\ Old\ functions}}
+\DoxyCodeLine{00327\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeDenonOld(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeJVCMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeLGMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeNECMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodePanasonicMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeSonyMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeSAMSUNG(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordtype}{bool}\ decodeHashOld(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keywordtype}{bool}\ decode\_old(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults);}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga74a663ea70562d1a7edb853c0ef9394b}{decode}}(}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ IrReceiver.decode()\ without\ a\ parameter\ and\ IrReceiver.decodedIRData.<fieldname>\ ."{}})));}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{comment}{//\ for\ backward\ compatibility.\ Now\ in\ IRFeedbackLED.hpp}}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga3743b8e9fc9f7bea699f6e89cd5aae41}{blink13}}(uint8\_t\ aEnableLEDFeedback)}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ setLEDFeedback()\ or\ enableLEDFeedback()\ /\ disableLEDFeedback()."{}})));}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00348\ \textcolor{comment}{\ \ \ \ \ *\ Internal\ functions}}
+\DoxyCodeLine{00349\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gab577f64dcdbd0b9f5c3137d38f6ff413}{initDecodedIRData}}();}
+\DoxyCodeLine{00351\ \ \ \ \ uint\_fast8\_t\ \mbox{\hyperlink{group__Receiving_gaf6e71db1e5ede49c7cab5c434b913e51}{compare}}(uint16\_t\ oldval,\ uint16\_t\ newval);}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkHeader(\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ *aProtocolConstants);}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordtype}{void}\ checkForRepeatSpaceTicksAndSetFlag(uint16\_t\ aMaximumRepeatSpaceTicks);}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkForRecordGapsMicros(Print\ *aSerial);}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \ \ \mbox{\hyperlink{structIRData}{IRData}}\ decodedIRData;\ \ \ \ \ \ \ \textcolor{comment}{//\ Decoded\ IR\ data\ for\ the\ application}}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{comment}{//\ Last\ decoded\ IR\ data\ for\ repeat\ detection\ and\ parity\ for\ Denon\ autorepeat}}
+\DoxyCodeLine{00359\ \ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ lastDecodedProtocol;}
+\DoxyCodeLine{00360\ \ \ \ \ uint32\_t\ lastDecodedAddress;}
+\DoxyCodeLine{00361\ \ \ \ \ uint32\_t\ lastDecodedCommand;}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \ \ uint8\_t\ repeatCount;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ Used\ e.g.\ for\ Denon\ decode\ for\ autorepeat\ decoding.}}
+\DoxyCodeLine{00364\ \};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{keyword}{extern}\ uint\_fast8\_t\ sBiphaseDecodeRawbuffOffset;\ \textcolor{comment}{//}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00369\ \textcolor{comment}{\ *\ Mark\ \&\ Space\ matching\ functions}}
+\DoxyCodeLine{00370\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00371\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga495b7f49ff71cde1289b118fac0f0674}{matchTicks}}(uint16\_t\ aMeasuredTicks,\ uint16\_t\ aMatchValueMicros);}
+\DoxyCodeLine{00372\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(uint16\_t\ aMeasuredTicks,\ uint16\_t\ aMatchValueMicros);}
+\DoxyCodeLine{00373\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(uint16\_t\ aMeasuredTicks,\ uint16\_t\ aMatchValueMicros);}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00376\ \textcolor{comment}{\ *\ Old\ function\ names}}
+\DoxyCodeLine{00377\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00378\ \textcolor{keywordtype}{bool}\ MATCH(uint16\_t\ measured,\ uint16\_t\ desired);}
+\DoxyCodeLine{00379\ \textcolor{keywordtype}{bool}\ MATCH\_MARK(uint16\_t\ measured\_ticks,\ uint16\_t\ desired\_us);}
+\DoxyCodeLine{00380\ \textcolor{keywordtype}{bool}\ MATCH\_SPACE(uint16\_t\ measured\_ticks,\ uint16\_t\ desired\_us);}
+\DoxyCodeLine{00381\ }
+\DoxyCodeLine{00382\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{group__Receiving_gab1d28d4dd67d6bf808c0328a92e2d863}{getMarkExcessMicros}}();}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \textcolor{keywordtype}{void}\ printActiveIRProtocols(Print\ *aSerial);}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00387\ \textcolor{comment}{\ *\ Feedback\ LED\ related\ functions}}
+\DoxyCodeLine{00388\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00389\ \textcolor{preprocessor}{\#define\ DO\_NOT\_ENABLE\_LED\_FEEDBACK\ \ \ \ \ \ \ \ \ \ 0x00}}
+\DoxyCodeLine{00390\ \textcolor{preprocessor}{\#define\ LED\_FEEDBACK\_DISABLED\_COMPLETELY\ \ \ \ 0x00}}
+\DoxyCodeLine{00391\ \textcolor{preprocessor}{\#define\ LED\_FEEDBACK\_ENABLED\_FOR\_RECEIVE\ \ \ \ 0x01}}
+\DoxyCodeLine{00392\ \textcolor{preprocessor}{\#define\ LED\_FEEDBACK\_ENABLED\_FOR\_SEND\ \ \ \ \ \ \ 0x02}}
+\DoxyCodeLine{00393\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga072624eeba964d8aa105822da00090ba}{setFeedbackLED}}(\textcolor{keywordtype}{bool}\ aSwitchLedOn);}
+\DoxyCodeLine{00394\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(uint8\_t\ aFeedbackLEDPin,\ uint8\_t\ aEnableLEDFeedback);\ \textcolor{comment}{//\ if\ aFeedbackLEDPin\ ==\ 0,\ then\ take\ board\ BLINKLED\_ON()\ and\ BLINKLED\_OFF()\ functions}}
+\DoxyCodeLine{00395\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_gae8f13aac6ecee8b3c1e59d4a2e0bb019}{setLEDFeedback}}(\textcolor{keywordtype}{bool}\ aEnableLEDFeedback);\ \textcolor{comment}{//\ Direct\ replacement\ for\ blink13()}}
+\DoxyCodeLine{00396\ \textcolor{keywordtype}{void}\ enableLEDFeedback();}
+\DoxyCodeLine{00397\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ enableLEDFeedbackForReceive\ =\ enableLEDFeedback;\ \textcolor{comment}{//\ alias\ for\ enableLEDFeedback}}
+\DoxyCodeLine{00398\ \textcolor{keywordtype}{void}\ disableLEDFeedback();}
+\DoxyCodeLine{00399\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ disableLEDFeedbackForReceive\ =\ disableLEDFeedback;\ \textcolor{comment}{//\ alias\ for\ enableLEDFeedback}}
+\DoxyCodeLine{00400\ \textcolor{keywordtype}{void}\ enableLEDFeedbackForSend();}
+\DoxyCodeLine{00401\ \textcolor{keywordtype}{void}\ disableLEDFeedbackForSend();}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__FeedbackLEDFunctions_ga5f1d479f43dcd56febf146e97a3904db}{setBlinkPin}}(uint8\_t\ aFeedbackLEDPin)\ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ setLEDFeedback()."{}})));\ \textcolor{comment}{//\ deprecated}}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00406\ \textcolor{comment}{\ *\ Pulse\ parms\ are\ ((X*50)-\/MARK\_EXCESS\_MICROS)\ for\ the\ Mark\ and\ ((X*50)+MARK\_EXCESS\_MICROS)\ for\ the\ Space.}}
+\DoxyCodeLine{00407\ \textcolor{comment}{\ *\ First\ MARK\ is\ the\ one\ after\ the\ long\ gap}}
+\DoxyCodeLine{00408\ \textcolor{comment}{\ *\ Pulse\ parameters\ in\ microseconds}}
+\DoxyCodeLine{00409\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#if\ !defined(TOLERANCE\_FOR\_DECODERS\_MARK\_OR\_SPACE\_MATCHING\_PERCENT)}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\#define\ TOLERANCE\_FOR\_DECODERS\_MARK\_OR\_SPACE\_MATCHING\_PERCENT\ \ \ \ 25\ }\textcolor{comment}{//\ Relative\ tolerance\ (in\ percent)\ for\ matchTicks(),\ matchMark()\ and\ matchSpace()\ functions\ used\ for\ protocol\ decoding.}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \textcolor{preprocessor}{\#define\ TICKS(us)\ \ \ \ \ \ \ ((us)/MICROS\_PER\_TICK)\ \ }\textcolor{comment}{//\ (us)/50}}
+\DoxyCodeLine{00415\ \textcolor{preprocessor}{\#if\ MICROS\_PER\_TICK\ ==\ 50\ \&\&\ TOLERANCE\_FOR\_DECODERS\_MARK\_OR\_SPACE\_MATCHING\_PERCENT\ ==\ 25\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Defaults}}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#define\ TICKS\_LOW(us)\ \ \ ((us)/67\ )\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ 67\ =\ MICROS\_PER\_TICK\ /\ ((100-\/25)/100)\ =\ (MICROS\_PER\_TICK\ *\ 100)\ /\ (100-\/25)}}
+\DoxyCodeLine{00417\ \textcolor{preprocessor}{\#define\ TICKS\_HIGH(us)\ \ (((us)/40)\ +\ 1)\ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ 40\ =\ MICROS\_PER\_TICK\ /\ ((100+25)/100)\ =\ (MICROS\_PER\_TICK\ *\ 100)\ /\ (100+25)}}
+\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00420\ \textcolor{comment}{//\#define\ LTOL\ \ \ \ \ \ \ \ \ \ \ \ (1.0\ -\/\ (TOLERANCE/100.))}}
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#define\ LTOL\ \ \ \ \ \ \ \ \ \ \ \ (100\ -\/\ TOLERANCE\_FOR\_DECODERS\_MARK\_OR\_SPACE\_MATCHING\_PERCENT)}}
+\DoxyCodeLine{00423\ \textcolor{comment}{//\#define\ UTOL\ \ \ \ \ \ \ \ \ \ \ \ (1.0\ +\ (TOLERANCE/100.))}}
+\DoxyCodeLine{00424\ \textcolor{preprocessor}{\#define\ UTOL\ \ \ \ \ \ \ \ \ \ \ \ (100\ +\ TOLERANCE\_FOR\_DECODERS\_MARK\_OR\_SPACE\_MATCHING\_PERCENT)}}
+\DoxyCodeLine{00425\ \textcolor{preprocessor}{\#define\ TICKS\_LOW(us)\ \ \ ((uint16\_t\ )\ ((long)\ (us)\ *\ LTOL\ /\ (MICROS\_PER\_TICK\ *\ 100)\ ))}}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#define\ TICKS\_HIGH(us)\ \ ((uint16\_t\ )\ ((long)\ (us)\ *\ UTOL\ /\ (MICROS\_PER\_TICK\ *\ 100)\ +\ 1))}}
+\DoxyCodeLine{00427\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00430\ \textcolor{comment}{\ *\ The\ receiver\ instance}}
+\DoxyCodeLine{00431\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00432\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classIRrecv}{IRrecv}}\ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}};}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00435\ \textcolor{comment}{\ *\ The\ receiver\ interrupt\ handler\ for\ timer\ interrupt}}
+\DoxyCodeLine{00436\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00437\ \textcolor{keywordtype}{void}\ IRReceiveTimerInterruptHandler();}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \textcolor{comment}{/****************************************************}}
+\DoxyCodeLine{00440\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SENDING}}
+\DoxyCodeLine{00441\ \textcolor{comment}{\ ****************************************************/}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00446\ \textcolor{preprocessor}{\#define\ NO\_REPEATS\ \ 0}}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#define\ SEND\_REPEAT\_COMMAND\ true\ }}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00452\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIRsend}{IRsend}}\ \{}
+\DoxyCodeLine{00453\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00454\ \ \ \ \ \mbox{\hyperlink{classIRsend}{IRsend}}();}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00457\ \textcolor{comment}{\ \ \ \ \ *\ IR\_SEND\_PIN\ is\ defined\ or\ fixed\ by\ timer,\ value\ of\ IR\_SEND\_PIN\ is\ then\ "{}DeterminedByTimer"{}}}
+\DoxyCodeLine{00458\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00459\ \textcolor{preprocessor}{\#if\ defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}();}
+\DoxyCodeLine{00461\ \ \ \ \ \textcolor{comment}{//\ The\ default\ parameter\ allowed\ to\ specify\ IrSender.begin(7);\ without\ errors,\ if\ IR\_SEND\_PIN\ was\ defined.\ But\ the\ semantics\ is\ not\ the\ one\ the\ user\ expect.}}
+\DoxyCodeLine{00462\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}(\textcolor{keywordtype}{bool}\ aEnableLEDFeedback,\ uint\_fast8\_t\ aFeedbackLEDPin);\ \textcolor{comment}{//\ 4.3.1\ Removed\ default\ value\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN\ for\ last\ parameter}}
+\DoxyCodeLine{00463\ \ \ \ \ \textcolor{comment}{//\ The\ next\ function\ is\ a\ dummy\ to\ avoid\ acceptance\ of\ pre\ 4.3\ calls\ to\ begin(DISABLE\_LED\_FEEDBACK);}}
+\DoxyCodeLine{00464\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}(uint8\_t\ aSendPin)}
+\DoxyCodeLine{00465\ \textcolor{preprocessor}{\#\ \ if\ !defined\ (DOXYGEN)}}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Error:\ IR\_SEND\_PIN\ is\ still\ defined,\ therefore\ the\ function\ begin(aSendPin)\ is\ NOT\ available.\ You\ must\ disable\ '\#define\ IR\_SEND\_PIN'\ to\ enable\ this\ function."{}})));}
+\DoxyCodeLine{00467\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \ \ \ \ \textcolor{comment}{//\ The\ next\ function\ is\ a\ dummy\ to\ avoid\ acceptance\ of\ pre\ 4.0\ calls\ to\ begin(IR\_SEND\_PIN,\ DISABLE\_LED\_FEEDBACK);}}
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}(uint\_fast8\_t\ aSendPin,\ \textcolor{keywordtype}{bool}\ aEnableLEDFeedback)}
+\DoxyCodeLine{00471\ \textcolor{preprocessor}{\#\ \ if\ !defined\ (DOXYGEN)}}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}You\ must\ use\ begin()\ and\ enableLEDFeedback()\ or\ disableLEDFeedback()\ since\ version\ 4.3."{}})));}
+\DoxyCodeLine{00473\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00474\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00475\ \ \ \ \ \mbox{\hyperlink{classIRsend}{IRsend}}(uint\_fast8\_t\ aSendPin);}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}(uint\_fast8\_t\ aSendPin);}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{keywordtype}{void}\ setSendPin(uint\_fast8\_t\ aSendPin);\ \textcolor{comment}{//\ required\ if\ we\ use\ IRsend()\ as\ constructor}}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{comment}{//\ Since\ 4.0\ guarded\ and\ without\ default\ parameter}}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79a724f3f01cc8133a8683acf5c6dbcd}{begin}}(uint\_fast8\_t\ aSendPin,\ \textcolor{keywordtype}{bool}\ aEnableLEDFeedback,\ uint\_fast8\_t\ aFeedbackLEDPin);\ \textcolor{comment}{//\ aFeedbackLEDPin\ can\ be\ USE\_DEFAULT\_FEEDBACK\_LED\_PIN}}
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{group__Sending_ga57f12dba022e7c57dee44aa628e85f2c}{write}}(\mbox{\hyperlink{structIRData}{IRData}}\ *aIRSendData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{group__Sending_ga57f12dba022e7c57dee44aa628e85f2c}{write}}(\mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ aProtocol,\ uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}(uint\_fast8\_t\ aFrequencyKHz);}
+\DoxyCodeLine{00486\ \textcolor{preprocessor}{\#if\ defined(SEND\_PWM\_BY\_TIMER)}}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordtype}{void}\ enableHighFrequencyIROut(uint\_fast16\_t\ aFrequencyKHz);\ \textcolor{comment}{//\ Used\ for\ Bang\&Olufsen}}
+\DoxyCodeLine{00488\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPulseDistanceWidthFromArray(uint\_fast8\_t\ aFrequencyKHz,\ uint16\_t\ aHeaderMarkMicros,\ uint16\_t\ aHeaderSpaceMicros,}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aOneMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroMarkMicros,\ uint16\_t\ aZeroSpaceMicros,}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawDataType\ *aDecodedRawDataArray,\ uint16\_t\ aNumberOfBits,\ uint8\_t\ aFlags,\ uint16\_t\ aRepeatPeriodMillis,}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPulseDistanceWidthFromArray(\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ *aProtocolConstants,}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawDataType\ *aDecodedRawDataArray,\ uint16\_t\ aNumberOfBits,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPulseDistanceWidthFromArray(uint\_fast8\_t\ aFrequencyKHz,\ \mbox{\hyperlink{structDistanceWidthTimingInfoStruct}{DistanceWidthTimingInfoStruct}}\ *aDistanceWidthTimingInfo,}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawDataType\ *aDecodedRawDataArray,\ uint16\_t\ aNumberOfBits,\ uint8\_t\ aFlags,\ uint16\_t\ aRepeatPeriodMillis,}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \ \ \ \ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ *aProtocolConstants,\ IRRawDataType\ aData,}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \ \ uint\_fast8\_t\ aNumberOfBits,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00502\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ *aProtocolConstants,\ IRRawDataType\ aData,}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ uint\_fast8\_t\ aNumberOfBits);}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(uint\_fast8\_t\ aFrequencyKHz,\ uint16\_t\ aHeaderMarkMicros,\ uint16\_t\ aHeaderSpaceMicros,}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aOneMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroMarkMicros,\ uint16\_t\ aZeroSpaceMicros,}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawDataType\ aData,\ uint\_fast8\_t\ aNumberOfBits,\ uint8\_t\ aFlags,\ uint16\_t\ aRepeatPeriodMillis,}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{void}\ (*aSpecialSendRepeatFunction)()\ =\ NULL);}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(uint\_fast8\_t\ aFrequencyKHz,\ uint16\_t\ aHeaderMarkMicros,\ uint16\_t\ aHeaderSpaceMicros,}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aOneMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroMarkMicros,\ uint16\_t\ aZeroSpaceMicros,}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \ \ \ \ IRRawDataType\ aData,\ uint\_fast8\_t\ aNumberOfBits,\ \textcolor{keywordtype}{bool}\ aMSBFirst,\ \textcolor{keywordtype}{bool}\ aSendStopBit,\ uint16\_t\ aRepeatPeriodMillis,}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ \ \ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{void}\ (*aSpecialSendRepeatFunction)()\ =\ NULL)}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Since\ version\ 4.1.0\ parameter\ aSendStopBit\ is\ not\ longer\ required."{}})));}
+\DoxyCodeLine{00513\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(uint16\_t\ aOneMarkMicros,\ uint16\_t\ aOneSpaceMicros,\ uint16\_t\ aZeroMarkMicros,}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ aZeroSpaceMicros,\ IRRawDataType\ aData,\ uint\_fast8\_t\ aNumberOfBits,\ uint8\_t\ aFlags);}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_gac0a53364d6e63c3392acec3ac496f3cd}{sendBiphaseData}}(uint16\_t\ aBiphaseTimeUnit,\ uint32\_t\ aData,\ uint\_fast8\_t\ aNumberOfBits);}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(uint16\_t\ aMarkMicros);}
+\DoxyCodeLine{00518\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(uint16\_t\ aSpaceMicros);}
+\DoxyCodeLine{00519\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_gaaa41dd6193c2252be08aac7fefd90814}{IRLedOff}}();}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00521\ \textcolor{comment}{//\ 8\ Bit\ array}}
+\DoxyCodeLine{00522\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga2ef756de65316f0b7a058d407235dd9e}{sendRaw}}(\textcolor{keyword}{const}\ uint8\_t\ aBufferWithTicks[],\ uint\_fast16\_t\ aLengthOfBuffer,\ uint\_fast8\_t\ aIRFrequencyKilohertz);}
+\DoxyCodeLine{00523\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga27deef933ad9d87903da25ba07e6a4e3}{sendRaw\_P}}(\textcolor{keyword}{const}\ uint8\_t\ aBufferWithTicks[],\ uint\_fast16\_t\ aLengthOfBuffer,\ uint\_fast8\_t\ aIRFrequencyKilohertz);}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ \textcolor{comment}{//\ 16\ Bit\ array}}
+\DoxyCodeLine{00526\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga2ef756de65316f0b7a058d407235dd9e}{sendRaw}}(\textcolor{keyword}{const}\ uint16\_t\ aBufferWithMicroseconds[],\ uint\_fast16\_t\ aLengthOfBuffer,\ uint\_fast8\_t\ aIRFrequencyKilohertz);}
+\DoxyCodeLine{00527\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga27deef933ad9d87903da25ba07e6a4e3}{sendRaw\_P}}(\textcolor{keyword}{const}\ uint16\_t\ aBufferWithMicroseconds[],\ uint\_fast16\_t\ aLengthOfBuffer,\ uint\_fast8\_t\ aIRFrequencyKilohertz);}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00530\ \textcolor{comment}{\ \ \ \ \ *\ New\ send\ functions}}
+\DoxyCodeLine{00531\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00532\ \ \ \ \ \textcolor{keywordtype}{void}\ sendBangOlufsen(uint16\_t\ aHeader,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}},}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ aNumberOfHeaderBits\ =\ 8);}
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keywordtype}{void}\ sendBangOlufsenDataLink(uint32\_t\ aHeader,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}},}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ aNumberOfHeaderBits\ =\ 8);}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordtype}{void}\ sendBangOlufsenRaw(uint32\_t\ aRawData,\ int\_fast8\_t\ aBits,\ \textcolor{keywordtype}{bool}\ aBackToBack\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00537\ \ \ \ \ \textcolor{keywordtype}{void}\ sendBangOlufsenRawDataLink(uint64\_t\ aRawData,\ int\_fast8\_t\ aBits,\ \textcolor{keywordtype}{bool}\ aBackToBack\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ aUseDatalinkTiming\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keywordtype}{void}\ sendBoseWave(uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00540\ \ \ \ \ \textcolor{keywordtype}{void}\ sendDenon(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aSendSharp\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keywordtype}{void}\ sendDenonRaw(uint16\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}})}
+\DoxyCodeLine{00542\ \textcolor{preprocessor}{\#if\ !defined\ (DOXYGEN)}}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ sendDenon(aAddress,\ aCommand,\ aNumberOfRepeats)."{}})));}
+\DoxyCodeLine{00544\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6d47b606cee252b091f0832beb2eaee6}{sendFAST}}(uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00546\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaa6c28eb6a3ac255064c4a4d8827d77d7}{sendJVC}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \ \ \ \ \textcolor{keywordtype}{void}\ sendLG2Repeat();}
+\DoxyCodeLine{00549\ \ \ \ \ uint32\_t\ computeLGRawDataAndChecksum(uint8\_t\ aAddress,\ uint16\_t\ aCommand);}
+\DoxyCodeLine{00550\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaf66c3554913ff21cb203895806e3fe67}{sendLG}}(uint8\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00551\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga1c3823c3e57516f35c94fa1fd875880f}{sendLG2}}(uint8\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00552\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga3154c786cde41d26211c1b50d6416d17}{sendLGRaw}}(uint32\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00553\ }
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga81e3e03f6a18a2a87715e351d67d3fa8}{sendNECRepeat}}();}
+\DoxyCodeLine{00555\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{group__Decoder_ga35cb54636e53721f2305beb769686bf7}{computeNECRawDataAndChecksum}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand);}
+\DoxyCodeLine{00556\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga78112c5ae382a3d32dc37a4a4d79cab7}{sendNEC}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00557\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga49e141ad8314836cbe0c564227b6d543}{sendNEC2}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00558\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga78dee8a4463654ca502406a590fd0648}{sendNECRaw}}(uint32\_t\ aRawData,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{comment}{//\ NEC\ variants}}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gabef0f59ad36a25a35126172b62c97474}{sendOnkyo}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga043e7f3939e3832071bd83748f0232bf}{sendApple}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga0090db2cce3dbcb6b03431f70b5dd71b}{sendKaseikyo}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats,\ uint16\_t\ aVendorCode);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00564\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga187c4e21e0d46154b7653c839ad63780}{sendPanasonic}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00565\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gac1a957459a8ead45a8185477c1a29adf}{sendKaseikyo\_Denon}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00566\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga470d3ae93c4d0d74b8b10a194985b614}{sendKaseikyo\_Mitsubishi}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga3fd58cb447683c09726e2ca02c809668}{sendKaseikyo\_Sharp}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga03178ffefe1657866afdd0bc0061d166}{sendKaseikyo\_JVC}}(uint16\_t\ aAddress,\ uint8\_t\ aData,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ LSB\ first}}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga2e533e9efda39d3c5507003d039b43b5}{sendRC5}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aEnableAutomaticToggle\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00571\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga2cc2f9242548675370ffd268c4483654}{sendRC6}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ \textcolor{keywordtype}{bool}\ aEnableAutomaticToggle\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga979d29a98a6798369d939b5bc650c1fa}{sendRC6A}}(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ uint16\_t\ aCustomer,\ \textcolor{keywordtype}{bool}\ aEnableAutomaticToggle\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga140019a5b77c84b42e6b231d2b6dace7}{sendSamsungLGRepeat}}();}
+\DoxyCodeLine{00574\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga8b68c7ff32da204dc5c9dd535d4b0f74}{sendSamsung}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga06a4b56568b103e51ec45ab313f92bb9}{sendSamsung16BitAddressAnd8BitCommand}}(uint16\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga532399b0d6e76ed7a5477f5455ae8656}{sendSamsung16BitAddressAndCommand}}(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga9bda5b532618676bb602c92f25e79b60}{sendSamsung48}}(uint16\_t\ aAddress,\ uint32\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSamsungLG(uint16\_t\ aAddress,\ uint16\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSharp(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);\ \textcolor{comment}{//\ redirected\ to\ sendDenon}}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6c88e27473df92b7b73694940bb7836e}{sendSony}}(uint16\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ uint8\_t\ numberOfBits\ =\ 12);\ \textcolor{comment}{//\ SIRCS\_12\_PROTOCOL}}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \ \ \ \ \textcolor{keywordtype}{void}\ sendLegoPowerFunctions(uint8\_t\ aChannel,\ uint8\_t\ tCommand,\ uint8\_t\ aMode,\ \textcolor{keywordtype}{bool}\ aDoSend5Times\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{keywordtype}{void}\ sendLegoPowerFunctions(uint16\_t\ aRawData,\ \textcolor{keywordtype}{bool}\ aDoSend5Times\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{keywordtype}{void}\ sendLegoPowerFunctions(uint16\_t\ aRawData,\ uint8\_t\ aChannel,\ \textcolor{keywordtype}{bool}\ aDoSend5Times\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classIRsend_aaac3581931579c22a0e750ec1b8c3045}{sendMagiQuest}}(uint32\_t\ aWandId,\ uint16\_t\ aMagnitude);}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPronto(\textcolor{keyword}{const}\ \_\_FlashStringHelper\ *str,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00589\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPronto(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *prontoHexString,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00590\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPronto(\textcolor{keyword}{const}\ uint16\_t\ *data,\ uint16\_t\ length,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00593\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPronto\_PF(uint\_farptr\_t\ str,\ int\_fast8\_t\ aNumberOfRepeats\ =\ \mbox{\hyperlink{IRremoteInt_8h_a5d35fb37031b53f0083f8b88ae3cf2c2}{NO\_REPEATS}});}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPronto\_P(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00595\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00596\ }
+\DoxyCodeLine{00597\ \textcolor{comment}{//\ Template\ protocol\ :-\/)}}
+\DoxyCodeLine{00598\ \ \ \ \ \textcolor{keywordtype}{void}\ sendShuzu(uint16\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats);}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00601\ \textcolor{comment}{\ \ \ \ \ *\ OLD\ send\ functions}}
+\DoxyCodeLine{00602\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keywordtype}{void}\ sendDenon(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nbits)}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}The\ function\ sendDenon(data,\ nbits)\ is\ deprecated\ and\ may\ not\ work\ as\ expected!\ Use\ sendDenonRaw(data,\ NumberOfRepeats)\ or\ better\ sendDenon(Address,\ Command,\ NumberOfRepeats)."{}})));}
+\DoxyCodeLine{00606\ \ \ \ \ \textcolor{keywordtype}{void}\ sendDish(uint16\_t\ aData);}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaa6c28eb6a3ac255064c4a4d8827d77d7}{sendJVC}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits,}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ repeat)}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}This\ old\ function\ sends\ MSB\ first!\ Please\ use\ sendJVC(aAddress,\ aCommand,\ aNumberOfRepeats)."{}})))\ \{}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Decoder_gac85d4b3ebee8ccaff8c32b1ac1ef47a8}{sendJVCMSB}}(data,\ nbits,\ repeat);}
+\DoxyCodeLine{00611\ \ \ \ \ \}}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gac85d4b3ebee8ccaff8c32b1ac1ef47a8}{sendJVCMSB}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits,\ \textcolor{keywordtype}{bool}\ repeat\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaf66c3554913ff21cb203895806e3fe67}{sendLG}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nbits)}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}The\ function\ sendLG(data,\ nbits)\ is\ deprecated\ and\ may\ not\ work\ as\ expected!\ Use\ sendLGRaw(data,\ NumberOfRepeats)\ or\ better\ sendLG(Address,\ Command,\ NumberOfRepeats)."{}})));}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga78112c5ae382a3d32dc37a4a4d79cab7}{sendNEC}}(uint32\_t\ aRawData,}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ nbits)}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}This\ old\ function\ sends\ MSB\ first!\ Please\ use\ sendNECMSB()\ or\ sendNEC(aAddress,\ aCommand,\ aNumberOfRepeats)."{}})))\ \{}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Decoder_ga86fb63d8460828c733054381576affca}{sendNECMSB}}(aRawData,\ nbits);}
+\DoxyCodeLine{00622\ \ \ \ \ \}}
+\DoxyCodeLine{00623\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga86fb63d8460828c733054381576affca}{sendNECMSB}}(uint32\_t\ data,\ uint8\_t\ nbits,\ \textcolor{keywordtype}{bool}\ repeat\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00624\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga2e533e9efda39d3c5507003d039b43b5}{sendRC5}}(uint32\_t\ data,\ uint8\_t\ nbits);}
+\DoxyCodeLine{00625\ \ \ \ \ \textcolor{keywordtype}{void}\ sendRC5ext(uint8\_t\ addr,\ uint8\_t\ cmd,\ \textcolor{keywordtype}{bool}\ toggle);}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keywordtype}{void}\ sendRC6Raw(uint32\_t\ data,\ uint8\_t\ nbits);}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga2cc2f9242548675370ffd268c4483654}{sendRC6}}(uint32\_t\ data,\ uint8\_t\ nbits)\ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ sendRC6Raw()."{}})));}
+\DoxyCodeLine{00628\ \ \ \ \ \textcolor{keywordtype}{void}\ sendRC6Raw(uint64\_t\ data,\ uint8\_t\ nbits);}
+\DoxyCodeLine{00629\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga2cc2f9242548675370ffd268c4483654}{sendRC6}}(uint64\_t\ data,\ uint8\_t\ nbits)\ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}Please\ use\ sendRC6Raw()."{}})));}
+\DoxyCodeLine{00630\ \ \ \ \ ;}
+\DoxyCodeLine{00631\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSharpRaw(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits);}
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSharp(uint16\_t\ address,\ uint16\_t\ command);}
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSAMSUNG(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits);}
+\DoxyCodeLine{00634\ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}This\ old\ function\ sends\ MSB\ first!\ Please\ use\ sendSamsung()."{}})));}
+\DoxyCodeLine{00635\ \ \ \ \ \textcolor{keywordtype}{void}\ sendSamsungMSB(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits);}
+\DoxyCodeLine{00636\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga9c19e03e460589cf1cddf9cd303df07a}{sendSonyMSB}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits);}
+\DoxyCodeLine{00637\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6c88e27473df92b7b73694940bb7836e}{sendSony}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nbits)}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_attribute\_\_\ ((deprecated\ (\textcolor{stringliteral}{"{}This\ old\ function\ sends\ MSB\ first!\ Please\ use\ sendSony(aAddress,\ aCommand,\ aNumberOfRepeats)."{}})));}
+\DoxyCodeLine{00640\ \ \ \ \ ;}
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keywordtype}{void}\ sendWhynter(uint32\_t\ aData,\ uint8\_t\ aNumberOfBitsToSend);}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \textcolor{preprocessor}{\#if\ !defined(IR\_SEND\_PIN)}}
+\DoxyCodeLine{00644\ \ \ \ \ uint8\_t\ sendPin;}
+\DoxyCodeLine{00645\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00646\ \ \ \ \ uint16\_t\ periodTimeMicros;}
+\DoxyCodeLine{00647\ \ \ \ \ uint16\_t\ periodOnTimeMicros;\ \textcolor{comment}{//\ compensated\ with\ PULSE\_CORRECTION\_NANOS\ for\ duration\ of\ digitalWrite.\ Around\ 8\ microseconds\ for\ 38\ kHz.}}
+\DoxyCodeLine{00648\ \ \ \ \ uint16\_t\ getPulseCorrectionNanos();}
+\DoxyCodeLine{00649\ }
+\DoxyCodeLine{00650\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Sending_ga8cf5e2a0e2d115741c978a306160f317}{customDelayMicroseconds}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ aMicroseconds);}
+\DoxyCodeLine{00651\ \};}
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00653\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00654\ \textcolor{comment}{\ *\ The\ sender\ instance}}
+\DoxyCodeLine{00655\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00656\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classIRsend}{IRsend}}\ IrSender;}
+\DoxyCodeLine{00657\ }
+\DoxyCodeLine{00658\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga7c4ddfbbbe38d11709d079dee617f2b2}{sendNECSpecialRepeat}}();}
+\DoxyCodeLine{00659\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gaddace9c2bd03f63855063a3ce5e65acc}{sendLG2SpecialRepeat}}();}
+\DoxyCodeLine{00660\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_gad3b594eed28121c2406e7d80d1636c82}{sendSamsungLGSpecialRepeat}}();}
+\DoxyCodeLine{00661\ }
+\DoxyCodeLine{00662\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_REMOTE\_INT\_H}}
+
+\end{DoxyCode}

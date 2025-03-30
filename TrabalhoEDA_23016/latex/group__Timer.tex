@@ -1,0 +1,82 @@
+\doxysubsection{Usage of timers for the different CPU / boards}
+\hypertarget{group__Timer}{}\label{group__Timer}\index{Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}}
+\doxysubsubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__Timer_ga301c12193509807588b4db8e1b4ad5e7}{ISR}}()
+\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__Timer_ga8cca92581b5452eaac5b3075227c6c56}{timer\+Config\+For\+Receive}} ()
+\item 
+void \mbox{\hyperlink{group__Timer_gae0ec21c275dd13fff83445ce6cc900d7}{timer\+Enable\+Receive\+Interrupt}} ()
+\item 
+void \mbox{\hyperlink{group__Timer_ga0b0e97d0a44ceb967a83b44aa88c6bd2}{timer\+Disable\+Receive\+Interrupt}} ()
+\item 
+\Hypertarget{group__Timer_ga41e88e0b7edea76b3c77643ca7a3468f}\label{group__Timer_ga41e88e0b7edea76b3c77643ca7a3468f} 
+void {\bfseries timer\+Reset\+Interrupt\+Pending} ()
+\item 
+\Hypertarget{group__Timer_gab4f8dc26e10c0481e8859252afa4d42b}\label{group__Timer_gab4f8dc26e10c0481e8859252afa4d42b} 
+void {\bfseries timer\+Config\+For\+Send} (uint16\+\_\+t a\+Frequency\+KHz)
+\item 
+\Hypertarget{group__Timer_gac67e6a15f31989aa182389cd4a8729c9}\label{group__Timer_gac67e6a15f31989aa182389cd4a8729c9} 
+void {\bfseries enable\+Send\+PWMBy\+Timer} ()
+\item 
+\Hypertarget{group__Timer_ga352399811c67be16548d81a18e3cd337}\label{group__Timer_ga352399811c67be16548d81a18e3cd337} 
+void {\bfseries disable\+Send\+PWMBy\+Timer} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+
+
+\doxysubsubsection{Macro Definition Documentation}
+\Hypertarget{group__Timer_ga301c12193509807588b4db8e1b4ad5e7}\index{Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}!ISR@{ISR}}
+\index{ISR@{ISR}!Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}}
+\doxysubsubsubsection{\texorpdfstring{ISR}{ISR}}
+{\footnotesize\ttfamily \label{group__Timer_ga301c12193509807588b4db8e1b4ad5e7} 
+\#define ISR(\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ notImplemented(\textcolor{keywordtype}{void})}
+
+\end{DoxyCode}
+
+
+\doxysubsubsection{Function Documentation}
+\Hypertarget{group__Timer_ga8cca92581b5452eaac5b3075227c6c56}\index{Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}!timerConfigForReceive@{timerConfigForReceive}}
+\index{timerConfigForReceive@{timerConfigForReceive}!Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}}
+\doxysubsubsubsection{\texorpdfstring{timerConfigForReceive()}{timerConfigForReceive()}}
+{\footnotesize\ttfamily \label{group__Timer_ga8cca92581b5452eaac5b3075227c6c56} 
+void timer\+Config\+For\+Receive (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{02038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{02039\ \}}
+
+\end{DoxyCode}
+\Hypertarget{group__Timer_ga0b0e97d0a44ceb967a83b44aa88c6bd2}\index{Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}!timerDisableReceiveInterrupt@{timerDisableReceiveInterrupt}}
+\index{timerDisableReceiveInterrupt@{timerDisableReceiveInterrupt}!Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}}
+\doxysubsubsubsection{\texorpdfstring{timerDisableReceiveInterrupt()}{timerDisableReceiveInterrupt()}}
+{\footnotesize\ttfamily \label{group__Timer_ga0b0e97d0a44ceb967a83b44aa88c6bd2} 
+void timer\+Disable\+Receive\+Interrupt (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{02031\ \{\};}
+
+\end{DoxyCode}
+\Hypertarget{group__Timer_gae0ec21c275dd13fff83445ce6cc900d7}\index{Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}!timerEnableReceiveInterrupt@{timerEnableReceiveInterrupt}}
+\index{timerEnableReceiveInterrupt@{timerEnableReceiveInterrupt}!Usage of timers for the different CPU / boards@{Usage of timers for the different CPU / boards}}
+\doxysubsubsubsection{\texorpdfstring{timerEnableReceiveInterrupt()}{timerEnableReceiveInterrupt()}}
+{\footnotesize\ttfamily \label{group__Timer_gae0ec21c275dd13fff83445ce6cc900d7} 
+void timer\+Enable\+Receive\+Interrupt (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{02030\ \{\};}
+
+\end{DoxyCode}

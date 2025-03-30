@@ -1,0 +1,737 @@
+\doxysection{Liquid\+Crystal\+\_\+\+I2C Class Reference}
+\hypertarget{classLiquidCrystal__I2C}{}\label{classLiquidCrystal__I2C}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLiquidCrystal__I2C_a4af6079617ee3830d3ff92e67d735bc9}{Liquid\+Crystal\+\_\+\+I2C}} (uint8\+\_\+t lcd\+\_\+\+Addr, uint8\+\_\+t lcd\+\_\+cols, uint8\+\_\+t lcd\+\_\+rows)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a740cfc267b3736222f19316b28a96901}{begin}} (uint8\+\_\+t cols, uint8\+\_\+t rows, uint8\+\_\+t charsize=LCD\+\_\+5x8\+DOTS)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_ac8bb3912a3ce86b15842e79d0b421204}{clear}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a0da5d9617e961b8c9430815ce7dba80f}{home}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a7442e94b84097f0ac945d3209b789bfe}{no\+Display}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a1e5b20fed15743656bb6d2e6a6ea6269}{display}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a7c524ccde03edf1f576337e06d811ae2}{no\+Blink}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a5664bd38fc668253a0152e6b319aafbb}{blink}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a660628c03e0460a81f0970d32ffb34ed}{no\+Cursor}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_afdf8b11048d012d36e1bc5b975bff017}{cursor}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a105576b9890de18b5ef227223ae2ab52}{scroll\+Display\+Left}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_ac56c28936aad0d0ba2f2b3140d119b70}{scroll\+Display\+Right}} ()
+\item 
+\Hypertarget{classLiquidCrystal__I2C_aa3b59321978ee1ff1fe0fa2c3869647a}\label{classLiquidCrystal__I2C_aa3b59321978ee1ff1fe0fa2c3869647a} 
+void {\bfseries print\+Left} ()
+\item 
+\Hypertarget{classLiquidCrystal__I2C_ac21027eb37a4b9a9aabbe3f17c28b05c}\label{classLiquidCrystal__I2C_ac21027eb37a4b9a9aabbe3f17c28b05c} 
+void {\bfseries print\+Right} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a4fcc7eefb8001246e0e8309b3e800494}{left\+To\+Right}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a03f4a60565bb781cf3c0221c60fb0535}{right\+To\+Left}} ()
+\item 
+\Hypertarget{classLiquidCrystal__I2C_a551c90dde17bde34bf19bb5cf7a4bc4c}\label{classLiquidCrystal__I2C_a551c90dde17bde34bf19bb5cf7a4bc4c} 
+void {\bfseries shift\+Increment} ()
+\item 
+\Hypertarget{classLiquidCrystal__I2C_a8e36dafccb103f42f6e14126ddbc5152}\label{classLiquidCrystal__I2C_a8e36dafccb103f42f6e14126ddbc5152} 
+void {\bfseries shift\+Decrement} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_aba24fe48920f523cfa2348f7d056647b}{no\+Backlight}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a8a3ea392c4db978f7cbe49d0ae56e92e}{backlight}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a64203ced3c4b406ee07cac9fa17e798e}{autoscroll}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a12d5cd7257128d74a9ba52881e2dce54}{no\+Autoscroll}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a5cb3a36ea41f4a5e0a5b2df062021168}{create\+Char}} (uint8\+\_\+t, uint8\+\_\+t\mbox{[}$\,$\mbox{]})
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_ae34b27dc74fb795aa3eee2e08cd91092}{create\+Char}} (uint8\+\_\+t location, const char \texorpdfstring{$\ast$}{*}charmap)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a47ac87bf6b94b962349966a54dc5a199}{set\+Cursor}} (uint8\+\_\+t, uint8\+\_\+t)
+\item 
+size\+\_\+t \mbox{\hyperlink{classLiquidCrystal__I2C_a4921dd89e0f14a9b77dfb3d7960401ca}{write}} (uint8\+\_\+t)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a49f9ea91f01bde872d58941e9b68ea1e}{command}} (uint8\+\_\+t)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a02fd73d861ef2e4aabb38c0c9ff82947}{init}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a8c50659733df2acac1580d209db8e97f}{oled\+\_\+init}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_aa0857c17339c2e5f1b85bc9e42670da5}{blink\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a083a8bb93f71bd25e7b2a9011bc16a58}{blink\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a30b676011ae5558387bc5dd207dae2f8}{cursor\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a63788ca00dc2b61a3b734f133a65f091}{cursor\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a74bbfa9ac3cbbd7e674b5f3d1afed182}{set\+Backlight}} (uint8\+\_\+t new\+\_\+val)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a12290e687c0c0bdbf272782f5d3dcfa3}{load\+\_\+custom\+\_\+character}} (uint8\+\_\+t char\+\_\+num, uint8\+\_\+t \texorpdfstring{$\ast$}{*}rows)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_abf3eb142cb9d1cbb6e6d5d69bc09eaa0}{printstr}} (const char\mbox{[}$\,$\mbox{]})
+\item 
+uint8\+\_\+t \mbox{\hyperlink{classLiquidCrystal__I2C_a0c85186eaa3177792722853718cc1f07}{status}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_aeb7326b493856a63226b0d76bb983f4d}{set\+Contrast}} (uint8\+\_\+t new\+\_\+val)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{classLiquidCrystal__I2C_ab48b48d3963e8e5b2661cee10ac7254b}{keypad}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_ad47cc3091aa9b6f0be7bbb76ee83705d}{set\+Delay}} (int, int)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_af5a2f93105e0a24634af5793d2c5c5b8}{on}} ()
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a2f241b422ebdbd7a570178ceaebdd2fa}{off}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{classLiquidCrystal__I2C_ada462e1addd4d2157a3be230cbfd1632}{init\+\_\+bargraph}} (uint8\+\_\+t graphtype)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a56ee44b1e74b4aec8a4e48a0c319af20}{draw\+\_\+horizontal\+\_\+graph}} (uint8\+\_\+t row, uint8\+\_\+t column, uint8\+\_\+t len, uint8\+\_\+t pixel\+\_\+col\+\_\+end)
+\item 
+void \mbox{\hyperlink{classLiquidCrystal__I2C_a4ff0cc1a9bcd79bdfd6fb539c0aff0e3}{draw\+\_\+vertical\+\_\+graph}} (uint8\+\_\+t row, uint8\+\_\+t column, uint8\+\_\+t len, uint8\+\_\+t pixel\+\_\+col\+\_\+end)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classLiquidCrystal__I2C_a4af6079617ee3830d3ff92e67d735bc9}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{LiquidCrystal\_I2C()}{LiquidCrystal\_I2C()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a4af6079617ee3830d3ff92e67d735bc9} 
+\mbox{\hyperlink{classLiquidCrystal__I2C}{Liquid\+Crystal\+\_\+\+I2C}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{lcd\+\_\+\+Addr}{, }\item[{uint8\+\_\+t}]{lcd\+\_\+cols}{, }\item[{uint8\+\_\+t}]{lcd\+\_\+rows}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \_Addr\ =\ lcd\_Addr;}
+\DoxyCodeLine{00070\ \ \ \ \ \_cols\ =\ lcd\_cols;}
+\DoxyCodeLine{00071\ \ \ \ \ \_rows\ =\ lcd\_rows;}
+\DoxyCodeLine{00072\ \ \ \ \ \_backlightval\ =\ LCD\_NOBACKLIGHT;}
+\DoxyCodeLine{00073\ \ \ \ \ \_oled\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00074\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classLiquidCrystal__I2C_a64203ced3c4b406ee07cac9fa17e798e}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!autoscroll@{autoscroll}}
+\index{autoscroll@{autoscroll}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{autoscroll()}{autoscroll()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a64203ced3c4b406ee07cac9fa17e798e} 
+void autoscroll (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \_displaymode\ |=\ LCD\_ENTRYSHIFTINCREMENT;}
+\DoxyCodeLine{00232\ \ \ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00233\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a8a3ea392c4db978f7cbe49d0ae56e92e}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!backlight@{backlight}}
+\index{backlight@{backlight}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{backlight()}{backlight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a8a3ea392c4db978f7cbe49d0ae56e92e} 
+void backlight (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \_backlightval\ =\ LCD\_BACKLIGHT;}
+\DoxyCodeLine{00268\ \ \ \ \ expanderWrite(0);}
+\DoxyCodeLine{00269\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a740cfc267b3736222f19316b28a96901}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!begin@{begin}}
+\index{begin@{begin}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a740cfc267b3736222f19316b28a96901} 
+void begin (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cols}{, }\item[{uint8\+\_\+t}]{rows}{, }\item[{uint8\+\_\+t}]{charsize}{ = {\ttfamily LCD\+\_\+5x8DOTS}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (lines\ >\ 1)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \_displayfunction\ |=\ LCD\_2LINE;}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \_numlines\ =\ lines;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ for\ some\ 1\ line\ displays\ you\ can\ select\ a\ 10\ pixel\ high\ font}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ ((dotsize\ !=\ 0)\ \&\&\ (lines\ ==\ 1))\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \_displayfunction\ |=\ LCD\_5x10DOTS;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//\ SEE\ PAGE\ 45/46\ FOR\ INITIALIZATION\ SPECIFICATION!}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ according\ to\ datasheet,\ we\ need\ at\ least\ 40ms\ after\ power\ rises\ above\ 2.7V}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{comment}{//\ before\ sending\ commands.\ Arduino\ can\ turn\ on\ way\ before\ 4.5V\ so\ we'll\ wait\ 50}}
+\DoxyCodeLine{00109\ \ \ \ \ delay(50);}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{comment}{//\ Now\ we\ pull\ both\ RS\ and\ R/W\ low\ to\ begin\ commands}}
+\DoxyCodeLine{00112\ \ \ \ \ expanderWrite(\_backlightval);\ \ \ \textcolor{comment}{//\ reset\ expander\ and\ turn\ backlight\ off\ (Bit\ 8\ =1)}}
+\DoxyCodeLine{00113\ \ \ \ \ delay(1000);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//put\ the\ LCD\ into\ 4\ bit\ mode}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ this\ is\ according\ to\ the\ hitachi\ HD44780\ datasheet}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ figure\ 24,\ pg\ 46}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ we\ start\ in\ 8bit\ mode,\ try\ to\ set\ 4\ bit\ mode}}
+\DoxyCodeLine{00120\ \ \ \ \ write4bits(0x03\ <<\ 4);}
+\DoxyCodeLine{00121\ \ \ \ \ delayMicroseconds(4500);\ \textcolor{comment}{//\ wait\ min\ 4.1ms}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ second\ try}}
+\DoxyCodeLine{00124\ \ \ \ \ write4bits(0x03\ <<\ 4);}
+\DoxyCodeLine{00125\ \ \ \ \ delayMicroseconds(4500);\ \textcolor{comment}{//\ wait\ min\ 4.1ms}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{comment}{//\ third\ go!}}
+\DoxyCodeLine{00128\ \ \ \ \ write4bits(0x03\ <<\ 4);}
+\DoxyCodeLine{00129\ \ \ \ \ delayMicroseconds(150);}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ finally,\ set\ to\ 4-\/bit\ interface}}
+\DoxyCodeLine{00132\ \ \ \ \ write4bits(0x02\ <<\ 4);}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//\ set\ \#\ lines,\ font\ size,\ etc.}}
+\DoxyCodeLine{00135\ \ \ \ \ command(LCD\_FUNCTIONSET\ |\ \_displayfunction);}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//\ turn\ the\ display\ on\ with\ no\ cursor\ or\ blinking\ default}}
+\DoxyCodeLine{00138\ \ \ \ \ \_displaycontrol\ =\ LCD\_DISPLAYON\ |\ LCD\_CURSOROFF\ |\ LCD\_BLINKOFF;}
+\DoxyCodeLine{00139\ \ \ \ \ display();}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ clear\ it\ off}}
+\DoxyCodeLine{00142\ \ \ \ \ clear();}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{comment}{//\ Initialize\ to\ default\ text\ direction\ (for\ roman\ languages)}}
+\DoxyCodeLine{00145\ \ \ \ \ \_displaymode\ =\ LCD\_ENTRYLEFT\ |\ LCD\_ENTRYSHIFTDECREMENT;}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ set\ the\ entry\ mode}}
+\DoxyCodeLine{00148\ \ \ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ home();}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a5664bd38fc668253a0152e6b319aafbb}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!blink@{blink}}
+\index{blink@{blink}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{blink()}{blink()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a5664bd38fc668253a0152e6b319aafbb} 
+void blink (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \_displaycontrol\ |=\ LCD\_BLINKON;}
+\DoxyCodeLine{00206\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00207\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a083a8bb93f71bd25e7b2a9011bc16a58}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!blink\_off@{blink\_off}}
+\index{blink\_off@{blink\_off}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{blink\_off()}{blink\_off()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a083a8bb93f71bd25e7b2a9011bc16a58} 
+void blink\+\_\+off (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00328\ \ \ \ \ noBlink();}
+\DoxyCodeLine{00329\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_aa0857c17339c2e5f1b85bc9e42670da5}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!blink\_on@{blink\_on}}
+\index{blink\_on@{blink\_on}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{blink\_on()}{blink\_on()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_aa0857c17339c2e5f1b85bc9e42670da5} 
+void blink\+\_\+on (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00324\ \ \ \ \ blink();}
+\DoxyCodeLine{00325\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ac8bb3912a3ce86b15842e79d0b421204}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!clear@{clear}}
+\index{clear@{clear}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ac8bb3912a3ce86b15842e79d0b421204} 
+void clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ command(LCD\_CLEARDISPLAY);\ \textcolor{comment}{//\ clear\ display,\ set\ cursor\ position\ to\ zero}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#if\ defined(USE\_FAST\_TIMING)}}
+\DoxyCodeLine{00158\ \ \ \ \ delayMicroseconds(1500);\ \ \textcolor{comment}{//\ this\ command\ takes\ a\ long\ time!\ //\ AJ\ 20.9.23\ 1200\ is\ too\ short\ for\ my\ 2004\ LCD's,\ 1400\ is\ OK}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00160\ \ \ \ \ delayMicroseconds(2000);\ \ \textcolor{comment}{//\ this\ command\ takes\ a\ long\ time!}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_oled)}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ setCursor(0,\ 0);}
+\DoxyCodeLine{00164\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a49f9ea91f01bde872d58941e9b68ea1e}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!command@{command}}
+\index{command@{command}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{command()}{command()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a49f9ea91f01bde872d58941e9b68ea1e} 
+void command (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00274\ \ \ \ \ send(value,\ 0);}
+\DoxyCodeLine{00275\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ae34b27dc74fb795aa3eee2e08cd91092}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!createChar@{createChar}}
+\index{createChar@{createChar}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{createChar()}{createChar()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ae34b27dc74fb795aa3eee2e08cd91092} 
+void create\+Char (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{location}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{charmap}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ location\ \&=\ 0x7;\ \textcolor{comment}{//\ we\ only\ have\ 8\ locations\ 0-\/7}}
+\DoxyCodeLine{00254\ \ \ \ \ command(LCD\_SETCGRAMADDR\ |\ (location\ <<\ 3));}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ write(pgm\_read\_byte\_near(charmap++));}
+\DoxyCodeLine{00257\ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a5cb3a36ea41f4a5e0a5b2df062021168}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!createChar@{createChar}}
+\index{createChar@{createChar}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{createChar()}{createChar()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a5cb3a36ea41f4a5e0a5b2df062021168} 
+void create\+Char (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{location}{, }\item[{uint8\+\_\+t}]{charmap}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00244\ \ \ \ \ location\ \&=\ 0x7;\ \textcolor{comment}{//\ we\ only\ have\ 8\ locations\ 0-\/7}}
+\DoxyCodeLine{00245\ \ \ \ \ command(LCD\_SETCGRAMADDR\ |\ (location\ <<\ 3));}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ write(charmap[i]);}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_afdf8b11048d012d36e1bc5b975bff017}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!cursor@{cursor}}
+\index{cursor@{cursor}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{cursor()}{cursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_afdf8b11048d012d36e1bc5b975bff017} 
+void cursor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \_displaycontrol\ |=\ LCD\_CURSORON;}
+\DoxyCodeLine{00196\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00197\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a63788ca00dc2b61a3b734f133a65f091}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!cursor\_off@{cursor\_off}}
+\index{cursor\_off@{cursor\_off}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{cursor\_off()}{cursor\_off()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a63788ca00dc2b61a3b734f133a65f091} 
+void cursor\+\_\+off (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00320\ \ \ \ \ noCursor();}
+\DoxyCodeLine{00321\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a30b676011ae5558387bc5dd207dae2f8}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!cursor\_on@{cursor\_on}}
+\index{cursor\_on@{cursor\_on}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{cursor\_on()}{cursor\_on()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a30b676011ae5558387bc5dd207dae2f8} 
+void cursor\+\_\+on (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00316\ \ \ \ \ cursor();}
+\DoxyCodeLine{00317\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a1e5b20fed15743656bb6d2e6a6ea6269}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!display@{display}}
+\index{display@{display}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a1e5b20fed15743656bb6d2e6a6ea6269} 
+void display (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \_displaycontrol\ |=\ LCD\_DISPLAYON;}
+\DoxyCodeLine{00186\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00187\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a56ee44b1e74b4aec8a4e48a0c319af20}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!draw\_horizontal\_graph@{draw\_horizontal\_graph}}
+\index{draw\_horizontal\_graph@{draw\_horizontal\_graph}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{draw\_horizontal\_graph()}{draw\_horizontal\_graph()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a56ee44b1e74b4aec8a4e48a0c319af20} 
+void draw\+\_\+horizontal\+\_\+graph (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row}{, }\item[{uint8\+\_\+t}]{column}{, }\item[{uint8\+\_\+t}]{len}{, }\item[{uint8\+\_\+t}]{pixel\+\_\+col\+\_\+end}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00368\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a4ff0cc1a9bcd79bdfd6fb539c0aff0e3}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!draw\_vertical\_graph@{draw\_vertical\_graph}}
+\index{draw\_vertical\_graph@{draw\_vertical\_graph}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{draw\_vertical\_graph()}{draw\_vertical\_graph()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a4ff0cc1a9bcd79bdfd6fb539c0aff0e3} 
+void draw\+\_\+vertical\+\_\+graph (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row}{, }\item[{uint8\+\_\+t}]{column}{, }\item[{uint8\+\_\+t}]{len}{, }\item[{uint8\+\_\+t}]{pixel\+\_\+col\+\_\+end}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00370\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a0da5d9617e961b8c9430815ce7dba80f}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!home@{home}}
+\index{home@{home}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{home()}{home()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a0da5d9617e961b8c9430815ce7dba80f} 
+void home (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ command(LCD\_RETURNHOME);\ \ \textcolor{comment}{//\ set\ cursor\ position\ to\ zero}}
+\DoxyCodeLine{00168\ \ \ \ \ delayMicroseconds(2000);\ \ \textcolor{comment}{//\ this\ command\ takes\ a\ long\ time!}}
+\DoxyCodeLine{00169\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a02fd73d861ef2e4aabb38c0c9ff82947}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!init@{init}}
+\index{init@{init}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a02fd73d861ef2e4aabb38c0c9ff82947} 
+void init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ init\_priv();}
+\DoxyCodeLine{00083\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ada462e1addd4d2157a3be230cbfd1632}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!init\_bargraph@{init\_bargraph}}
+\index{init\_bargraph@{init\_bargraph}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{init\_bargraph()}{init\_bargraph()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ada462e1addd4d2157a3be230cbfd1632} 
+uint8\+\_\+t init\+\_\+bargraph (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{graphtype}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00366\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ab48b48d3963e8e5b2661cee10ac7254b}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!keypad@{keypad}}
+\index{keypad@{keypad}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{keypad()}{keypad()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ab48b48d3963e8e5b2661cee10ac7254b} 
+uint8\+\_\+t keypad (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00363\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a4fcc7eefb8001246e0e8309b3e800494}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!leftToRight@{leftToRight}}
+\index{leftToRight@{leftToRight}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{leftToRight()}{leftToRight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a4fcc7eefb8001246e0e8309b3e800494} 
+void left\+To\+Right (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \_displaymode\ |=\ LCD\_ENTRYLEFT;}
+\DoxyCodeLine{00220\ \ \ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00221\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a12290e687c0c0bdbf272782f5d3dcfa3}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!load\_custom\_character@{load\_custom\_character}}
+\index{load\_custom\_character@{load\_custom\_character}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{load\_custom\_character()}{load\_custom\_character()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a12290e687c0c0bdbf272782f5d3dcfa3} 
+void load\+\_\+custom\+\_\+character (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{char\+\_\+num}{, }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{rows}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00332\ \ \ \ \ createChar(char\_num,\ rows);}
+\DoxyCodeLine{00333\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a12d5cd7257128d74a9ba52881e2dce54}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!noAutoscroll@{noAutoscroll}}
+\index{noAutoscroll@{noAutoscroll}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{noAutoscroll()}{noAutoscroll()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a12d5cd7257128d74a9ba52881e2dce54} 
+void no\+Autoscroll (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \_displaymode\ \&=\ \string~LCD\_ENTRYSHIFTINCREMENT;}
+\DoxyCodeLine{00238\ \ \ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00239\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_aba24fe48920f523cfa2348f7d056647b}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!noBacklight@{noBacklight}}
+\index{noBacklight@{noBacklight}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{noBacklight()}{noBacklight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_aba24fe48920f523cfa2348f7d056647b} 
+void no\+Backlight (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \_backlightval\ =\ LCD\_NOBACKLIGHT;}
+\DoxyCodeLine{00263\ \ \ \ \ expanderWrite(0);}
+\DoxyCodeLine{00264\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a7c524ccde03edf1f576337e06d811ae2}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!noBlink@{noBlink}}
+\index{noBlink@{noBlink}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{noBlink()}{noBlink()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a7c524ccde03edf1f576337e06d811ae2} 
+void no\+Blink (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \_displaycontrol\ \&=\ \string~LCD\_BLINKON;}
+\DoxyCodeLine{00202\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00203\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a660628c03e0460a81f0970d32ffb34ed}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!noCursor@{noCursor}}
+\index{noCursor@{noCursor}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{noCursor()}{noCursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a660628c03e0460a81f0970d32ffb34ed} 
+void no\+Cursor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \_displaycontrol\ \&=\ \string~LCD\_CURSORON;}
+\DoxyCodeLine{00192\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00193\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a7442e94b84097f0ac945d3209b789bfe}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!noDisplay@{noDisplay}}
+\index{noDisplay@{noDisplay}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{noDisplay()}{noDisplay()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a7442e94b84097f0ac945d3209b789bfe} 
+void no\+Display (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \_displaycontrol\ \&=\ \string~LCD\_DISPLAYON;}
+\DoxyCodeLine{00182\ \ \ \ \ command(LCD\_DISPLAYCONTROL\ |\ \_displaycontrol);}
+\DoxyCodeLine{00183\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a2f241b422ebdbd7a570178ceaebdd2fa}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!off@{off}}
+\index{off@{off}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{off()}{off()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a2f241b422ebdbd7a570178ceaebdd2fa} 
+void off (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00353\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a8c50659733df2acac1580d209db8e97f}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!oled\_init@{oled\_init}}
+\index{oled\_init@{oled\_init}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{oled\_init()}{oled\_init()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a8c50659733df2acac1580d209db8e97f} 
+void oled\+\_\+init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \_oled\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00078\ \ \ \ \ init\_priv();}
+\DoxyCodeLine{00079\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_af5a2f93105e0a24634af5793d2c5c5b8}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!on@{on}}
+\index{on@{on}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{on()}{on()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_af5a2f93105e0a24634af5793d2c5c5b8} 
+void on (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00355\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_abf3eb142cb9d1cbb6e6d5d69bc09eaa0}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!printstr@{printstr}}
+\index{printstr@{printstr}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{printstr()}{printstr()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_abf3eb142cb9d1cbb6e6d5d69bc09eaa0} 
+void printstr (\begin{DoxyParamCaption}\item[{const char}]{c}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{comment}{//This\ function\ is\ not\ identical\ to\ the\ function\ used\ for\ "{}real"{}\ I2C\ displays}}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{comment}{//it's\ here\ so\ the\ user\ sketch\ doesn't\ have\ to\ be\ changed}}
+\DoxyCodeLine{00346\ \ \ \ \ print(c);}
+\DoxyCodeLine{00347\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a03f4a60565bb781cf3c0221c60fb0535}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!rightToLeft@{rightToLeft}}
+\index{rightToLeft@{rightToLeft}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{rightToLeft()}{rightToLeft()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a03f4a60565bb781cf3c0221c60fb0535} 
+void right\+To\+Left (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \_displaymode\ \&=\ \string~LCD\_ENTRYLEFT;}
+\DoxyCodeLine{00226\ \ \ \ \ command(LCD\_ENTRYMODESET\ |\ \_displaymode);}
+\DoxyCodeLine{00227\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a105576b9890de18b5ef227223ae2ab52}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!scrollDisplayLeft@{scrollDisplayLeft}}
+\index{scrollDisplayLeft@{scrollDisplayLeft}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{scrollDisplayLeft()}{scrollDisplayLeft()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a105576b9890de18b5ef227223ae2ab52} 
+void scroll\+Display\+Left (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ command(LCD\_CURSORSHIFT\ |\ LCD\_DISPLAYMOVE\ |\ LCD\_MOVELEFT);}
+\DoxyCodeLine{00212\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ac56c28936aad0d0ba2f2b3140d119b70}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!scrollDisplayRight@{scrollDisplayRight}}
+\index{scrollDisplayRight@{scrollDisplayRight}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{scrollDisplayRight()}{scrollDisplayRight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ac56c28936aad0d0ba2f2b3140d119b70} 
+void scroll\+Display\+Right (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00214\ \ \ \ \ command(LCD\_CURSORSHIFT\ |\ LCD\_DISPLAYMOVE\ |\ LCD\_MOVERIGHT);}
+\DoxyCodeLine{00215\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a74bbfa9ac3cbbd7e674b5f3d1afed182}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!setBacklight@{setBacklight}}
+\index{setBacklight@{setBacklight}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{setBacklight()}{setBacklight()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a74bbfa9ac3cbbd7e674b5f3d1afed182} 
+void set\+Backlight (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{new\+\_\+val}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{if}\ (new\_val)\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ backlight();\ \ \ \ \ \ \ \ \textcolor{comment}{//\ turn\ backlight\ on}}
+\DoxyCodeLine{00338\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ noBacklight();\ \ \ \ \ \ \textcolor{comment}{//\ turn\ backlight\ off}}
+\DoxyCodeLine{00340\ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_aeb7326b493856a63226b0d76bb983f4d}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!setContrast@{setContrast}}
+\index{setContrast@{setContrast}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{setContrast()}{setContrast()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_aeb7326b493856a63226b0d76bb983f4d} 
+void set\+Contrast (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{new\+\_\+val}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00372\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a47ac87bf6b94b962349966a54dc5a199}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!setCursor@{setCursor}}
+\index{setCursor@{setCursor}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{setCursor()}{setCursor()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a47ac87bf6b94b962349966a54dc5a199} 
+void set\+Cursor (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{col}{, }\item[{uint8\+\_\+t}]{row}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{int}\ row\_offsets[]\ =\ \{\ 0x00,\ 0x40,\ 0x14,\ 0x54\ \};}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{if}\ (row\ >\ \_numlines)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ row\ =\ \_numlines\ -\/\ 1;\ \ \ \ \textcolor{comment}{//\ we\ count\ rows\ starting\ w/0}}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ command(LCD\_SETDDRAMADDR\ |\ (col\ +\ row\_offsets[row]));}
+\DoxyCodeLine{00177\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_ad47cc3091aa9b6f0be7bbb76ee83705d}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!setDelay@{setDelay}}
+\index{setDelay@{setDelay}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{setDelay()}{setDelay()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_ad47cc3091aa9b6f0be7bbb76ee83705d} 
+void set\+Delay (\begin{DoxyParamCaption}\item[{int}]{cmd\+Delay}{, }\item[{int}]{char\+Delay}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00357\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a0c85186eaa3177792722853718cc1f07}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!status@{status}}
+\index{status@{status}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{status()}{status()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a0c85186eaa3177792722853718cc1f07} 
+uint8\+\_\+t status (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00360\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classLiquidCrystal__I2C_a4921dd89e0f14a9b77dfb3d7960401ca}\index{LiquidCrystal\_I2C@{LiquidCrystal\_I2C}!write@{write}}
+\index{write@{write}!LiquidCrystal\_I2C@{LiquidCrystal\_I2C}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{classLiquidCrystal__I2C_a4921dd89e0f14a9b77dfb3d7960401ca} 
+size\+\_\+t write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ send(value,\ Rs);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00026\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+All\+Protocols\+On\+LCD/Liquid\+Crystal\+\_\+\+I2\+C.\+h\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+All\+Protocols\+On\+LCD/Liquid\+Crystal\+\_\+\+I2\+C.\+cpp\end{DoxyCompactItemize}

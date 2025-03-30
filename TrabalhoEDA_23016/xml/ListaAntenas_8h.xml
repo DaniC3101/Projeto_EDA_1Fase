@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="ListaAntenas_8h" kind="file" language="C++">
+    <compoundname>ListaAntenas.h</compoundname>
+    <includes refid="Antena_8h" local="yes">Antena.h</includes>
+    <includedby refid="ListaAntenas_8c" local="yes">Fase1/Fase1/ListaAntenas.c</includedby>
+    <includedby refid="Matriz_8h" local="yes">Fase1/Fase1/Matriz.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>Antena.h</label>
+        <link refid="Antena_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>Fase1/Fase1/Dados.h</label>
+        <link refid="Dados_8h_source"/>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structListaAntenas" prot="public">ListaAntenas</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ListaAntenas_8h_1a76440711b7b06aebbc40f36c84bbe183" prot="public" static="no">
+        <name>LISTAANTENA_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaAntenas.h" line="3" column="9" bodyfile="Fase1/Fase1/ListaAntenas.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="ListaAntenas_8h_1a661a6e02efc979539211ae7ee8b5c7e0" prot="public" static="no">
+        <type>struct ListaAntenas</type>
+        <definition>typedef struct ListaAntenas ListaAntenas</definition>
+        <argsstring></argsstring>
+        <name>ListaAntenas</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaAntenas.h" line="10" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>LISTAANTENA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LISTAANTENA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Antena.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="structListaAntenas" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structListaAntenas" kindref="compound">ListaAntenas</ref></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tamMatriz[2];</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structAntena" kindref="compound">Antena</ref>*<sp/>primAntena;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">}<ref refid="structListaAntenas" kindref="compound">ListaAntenas</ref>;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/ListaAntenas.h"/>
+  </compounddef>
+</doxygen>

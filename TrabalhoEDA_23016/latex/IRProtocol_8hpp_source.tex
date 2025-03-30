@@ -1,0 +1,280 @@
+\doxysection{IRProtocol.\+hpp}
+\hypertarget{IRProtocol_8hpp_source}{}\label{IRProtocol_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRProtocol.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRProtocol.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ IRReceive.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ This\ file\ is\ exclusively\ included\ by\ IRremote.h\ to\ enable\ easy\ configuration\ of\ library\ switches}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Contains\ all\ protocol\ functions\ used\ by\ receiver\ and\ sender.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2009-\/2023\ Ken\ Shirriff,\ Rafi\ Khan,\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifndef\ \_IR\_PROTOCOL\_HPP}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ \_IR\_PROTOCOL\_HPP}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Unknown[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}UNKNOWN"{}};}
+\DoxyCodeLine{00047\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_PulseWidth[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}PulseWidth"{}};}
+\DoxyCodeLine{00048\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_PulseDistance[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}PulseDistance"{}};}
+\DoxyCodeLine{00049\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Apple[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Apple"{}};}
+\DoxyCodeLine{00050\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Denon[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Denon"{}};}
+\DoxyCodeLine{00051\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_JVC[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}JVC"{}};}
+\DoxyCodeLine{00052\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_LG[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}LG"{}};}
+\DoxyCodeLine{00053\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_LG2[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}LG2"{}};}
+\DoxyCodeLine{00054\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_NEC[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}NEC"{}};}
+\DoxyCodeLine{00055\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_NEC2[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}NEC2"{}};}
+\DoxyCodeLine{00056\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Onkyo[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Onkyo"{}};}
+\DoxyCodeLine{00057\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Panasonic[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Panasonic"{}};}
+\DoxyCodeLine{00058\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Kaseikyo[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Kaseikyo"{}};}
+\DoxyCodeLine{00059\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Kaseikyo\_Denon[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Kaseikyo\_Denon"{}};}
+\DoxyCodeLine{00060\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Kaseikyo\_Sharp[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Kaseikyo\_Sharp"{}};}
+\DoxyCodeLine{00061\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Kaseikyo\_JVC[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Kaseikyo\_JVC"{}};}
+\DoxyCodeLine{00062\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Kaseikyo\_Mitsubishi[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Kaseikyo\_Mitsubishi"{}};}
+\DoxyCodeLine{00063\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_RC5[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}RC5"{}};}
+\DoxyCodeLine{00064\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_RC6[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}RC6"{}};}
+\DoxyCodeLine{00065\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_RC6A[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}RC6A"{}};}
+\DoxyCodeLine{00066\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Samsung[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Samsung"{}};}
+\DoxyCodeLine{00067\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_SamsungLG[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}SamsungLG"{}};}
+\DoxyCodeLine{00068\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Samsung48[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Samsung48"{}};}
+\DoxyCodeLine{00069\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Sharp[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Sharp"{}};}
+\DoxyCodeLine{00070\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Sony[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Sony"{}};}
+\DoxyCodeLine{00071\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_BangOlufsen[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Bang\&Olufsen"{}};}
+\DoxyCodeLine{00072\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_BoseWave[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}BoseWave"{}};}
+\DoxyCodeLine{00073\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Lego[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Lego"{}};}
+\DoxyCodeLine{00074\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_MagiQuest[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}MagiQuest"{}};}
+\DoxyCodeLine{00075\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_Whynter[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}Whynter"{}};}
+\DoxyCodeLine{00076\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ string\_FAST[]\ PROGMEM\ =\ \textcolor{stringliteral}{"{}FAST"{}};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ !!Must\ be\ the\ same\ order\ as\ in\ decode\_type\_t\ in\ IRProtocol.h!!!}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\textcolor{keyword}{const}\ ProtocolNames[]}
+\DoxyCodeLine{00082\ PROGMEM\ =\ \{\ string\_Unknown,\ string\_PulseWidth,\ string\_PulseDistance,\ string\_Apple,\ string\_Denon,\ string\_JVC,\ string\_LG,\ string\_LG2,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ string\_NEC,\ string\_NEC2,\ string\_Onkyo,\ string\_Panasonic,\ string\_Kaseikyo,\ string\_Kaseikyo\_Denon,\ string\_Kaseikyo\_Sharp,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ string\_Kaseikyo\_JVC,\ string\_Kaseikyo\_Mitsubishi,\ string\_RC5,\ string\_RC6,\ string\_RC6A,\ string\_Samsung,\ string\_SamsungLG,\ string\_Samsung48,}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ string\_Sharp,\ string\_Sony}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#if\ !defined(EXCLUDE\_EXOTIC\_PROTOCOLS)}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ ,\ string\_BangOlufsen,\ string\_BoseWave,\ string\_Lego,\ string\_MagiQuest,\ string\_Whynter,\ string\_FAST}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00092\ \textcolor{keyword}{const}\ \_\_FlashStringHelper*\ getProtocolString(\mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ aProtocol)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *tProtocolStringPtr\ =\ (\textcolor{keywordtype}{char}*)\ pgm\_read\_word(\&ProtocolNames[aProtocol]);}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\_\_FlashStringHelper*)\ (tProtocolStringPtr));}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ getProtocolString(\mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ aProtocol)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ ProtocolNames[aProtocol];}
+\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#if\ (\_\_INT\_WIDTH\_\_\ >=\ 32)}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#\ \ if\ \_\_has\_include(<type\_traits>)}}
+\DoxyCodeLine{00104\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ *\ This\ code\ to\ handle\ the\ missing\ print(unsigned\ long\ long...)\ function\ of\ seeduino\ core\ was\ contributed\ by\ sklott}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ *\ https://stackoverflow.com/questions/74622227/avoid-\/calling-\/of-\/function-\/size-\/t-\/printprintunsigned-\/long-\/long-\/n-\/int-\/base-\/if}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ If\ you\ have\ C++17\ you\ can\ just\ use\ std::void\_t,\ or\ use\ this\ for\ all\ versions}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#if\ \_\_cpp\_lib\_void\_t\ >=\ 201411L}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00113\ \textcolor{keyword}{using\ }void\_t\ =\ std::void\_t<T>;}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ...\ Ts>\ \textcolor{keyword}{struct\ }make\_void\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ type;}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ...\ Ts>\ \textcolor{keyword}{using\ }void\_t\ =\ \textcolor{keyword}{typename}\ make\_void<Ts...>::type;}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ Detecting\ if\ we\ have\ print(unsigned\ long\ long\ value,\ int\ base)\ /\ print(0ull,\ 0)\ overload}}
+\DoxyCodeLine{00122\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00123\ \textcolor{keyword}{struct\ }has\_ull\_print:\ std::false\_type\ \{}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00126\ \textcolor{keyword}{struct\ }has\_ull\_print<T,\ void\_t<decltype(std::declval<T>().print(0ull,\ 0))>>\ :\ std::true\_type\ \{}
+\DoxyCodeLine{00127\ \};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{comment}{//\ Must\ be\ namespace,\ to\ avoid\ public\ and\ static\ declarations\ for\ class}}
+\DoxyCodeLine{00130\ \textcolor{keyword}{namespace\ }PrintULL\ \{}
+\DoxyCodeLine{00131\ template<typename\ PrintImplType,\ typename\ std::enable\_if<!has\_ull\_print<PrintImplType>::value,\ \textcolor{keywordtype}{bool}>::type\ =\ \textcolor{keyword}{true}>}
+\DoxyCodeLine{00132\ \textcolor{keywordtype}{size\_t}\ print(PrintImplType\ *p,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value,\ \textcolor{keywordtype}{int}\ base)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ tLength\ =\ p-\/>print(\textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(value\ >>\ 32),\ base);}
+\DoxyCodeLine{00134\ \ \ \ \ tLength\ +=\ p-\/>print(\textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(value),\ base);}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{return}\ tLength;}
+\DoxyCodeLine{00136\ \}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ template<typename\ PrintImplType,\ typename\ std::enable\_if<has\_ull\_print<PrintImplType>::value,\ \textcolor{keywordtype}{bool}>::type\ =\ \textcolor{keyword}{true}>}
+\DoxyCodeLine{00139\ \textcolor{keywordtype}{size\_t}\ print(PrintImplType\ *p,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value,\ \textcolor{keywordtype}{int}\ base)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ p-\/>print(value,\ base);}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ \}}
+\DoxyCodeLine{00143\ ;}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00145\ \textcolor{keyword}{namespace\ }PrintULL\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ print(Print\ *aSerial,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ n,\ \textcolor{keywordtype}{int}\ base)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ aSerial-\/>print(n,\ base);}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \};}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00163\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gac45e8ead5e96868e61c65cd354758d4d}{printIRResultShort}}(Print\ *aSerial,\ \mbox{\hyperlink{structIRData}{IRData}}\ *aIRDataPtr,\ \textcolor{keywordtype}{bool}\ aPrintRepeatGap)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_a1acaa14d5a437ad317e17489e845f401}{IRDATA\_FLAGS\_WAS\_OVERFLOW}})\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}Overflow"{}}));}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}Protocol="{}}));}
+\DoxyCodeLine{00169\ \ \ \ \ aSerial-\/>print(getProtocolString(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}));}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ ==\ UNKNOWN)\ \{}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#if\ defined(DECODE\_HASH)}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Hash=0x"{}}));}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#if\ (\_\_INT\_WIDTH\_\_\ <\ 32)}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ PrintULL::print(aSerial,aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ aSerial-\/>print(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ aSerial-\/>print((aIRDataPtr-\/>\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ +\ 1)\ /\ 2,\ DEC);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}\ bits\ (incl.\ gap\ and\ start)\ received"{}}));}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00185\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#if\ defined(DECODE\_DISTANCE\_WIDTH)}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ !=\ PULSE\_DISTANCE\ \&\&\ aIRDataPtr-\/>\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ !=\ PULSE\_WIDTH)\ \{}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ New\ decoders\ have\ address\ and\ command}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Address=0x"{}}));}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}},\ HEX);}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Command=0x"{}}));}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}},\ HEX);}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_abf3b16f9ab35f4e4b95c8c362aca2d71}{IRDATA\_FLAGS\_EXTRA\_INFO}})\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Extra=0x"{}}));}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a08a6d5eaf26fbbcc3271bcc930d6e331}{extra}},\ HEX);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}})\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Parity\ fail"{}}));}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_a169a0ae23ab363f24027f769881db0b0}{IRDATA\_FLAGS\_TOGGLE\_BIT}})\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Toggle=1"{}}));}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#if\ defined(DECODE\_DISTANCE\_WIDTH)}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ (\mbox{\hyperlink{IRProtocol_8h_a5c5e6ae69aa440bfa132550d120ace08}{IRDATA\_FLAGS\_IS\_AUTO\_REPEAT}}\ |\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}}))\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_a5c5e6ae69aa440bfa132550d120ace08}{IRDATA\_FLAGS\_IS\_AUTO\_REPEAT}})\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}Auto-\/"{}}));}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}Repeat"{}}));}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_CODE\_FOR\_RECEIVER)}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aPrintRepeatGap)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ gap="{}}));}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print((uint32\_t)\ aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}}\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}us"{}}));}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ (void)aPrintRepeatGap;}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Print\ raw\ data}}
+\DoxyCodeLine{00232\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}})\ ||\ aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ !=\ 0)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ Raw-\/Data=0x"{}}));}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#if\ (\_\_INT\_WIDTH\_\_\ <\ 32)}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ PrintULL::print(aSerial,\ aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00241\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Print\ number\ of\ bits\ processed}}
+\DoxyCodeLine{00242\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(aIRDataPtr-\/>\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}},\ DEC);}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ bits"{}}));}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aIRDataPtr-\/>\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}})\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}\ MSB\ first"{}}));}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>println(F(\textcolor{stringliteral}{"{}\ LSB\ first"{}}));}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \textcolor{comment}{/**********************************************************************************************************************}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ *\ Function\ to\ bit\ reverse\ OLD\ MSB\ values\ of\ e.g.\ NEC.}}
+\DoxyCodeLine{00261\ \textcolor{comment}{\ **********************************************************************************************************************/}}
+\DoxyCodeLine{00262\ uint8\_t\ bitreverseOneByte(uint8\_t\ aValue)\ \{}
+\DoxyCodeLine{00263\ \textcolor{comment}{//\ \ \ \ uint8\_t\ tReversedValue;}}
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ \ \ \ return\ \_\_builtin\_avr\_insert\_bits(0x01234567,\ aValue,\ tReversedValue);}}
+\DoxyCodeLine{00265\ \textcolor{comment}{//\ 76543210}}
+\DoxyCodeLine{00266\ \ \ \ \ aValue\ =\ (aValue\ >>\ 4)\ |\ (aValue\ <<\ 4);\ \textcolor{comment}{//\ Swap\ in\ groups\ of\ 4}}
+\DoxyCodeLine{00267\ \textcolor{comment}{//\ 32107654}}
+\DoxyCodeLine{00268\ \ \ \ \ aValue\ =\ ((aValue\ \&\ 0xcc)\ >>\ 2)\ |\ ((aValue\ \&\ 0x33)\ <<\ 2);\ \textcolor{comment}{//\ Swap\ in\ groups\ of\ 2}}
+\DoxyCodeLine{00269\ \textcolor{comment}{//\ 10325476}}
+\DoxyCodeLine{00270\ \ \ \ \ aValue\ =\ ((aValue\ \&\ 0xaa)\ >>\ 1)\ |\ ((aValue\ \&\ 0x55)\ <<\ 1);\ \textcolor{comment}{//\ Swap\ bit\ pairs}}
+\DoxyCodeLine{00271\ \textcolor{comment}{//\ 01234567}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ aValue;}
+\DoxyCodeLine{00273\ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ uint32\_t\ bitreverse32Bit(uint32\_t\ aInput)\ \{}
+\DoxyCodeLine{00276\ \textcolor{comment}{//\ \ \ \ \_\_builtin\_avr\_insert\_bits();}}
+\DoxyCodeLine{00277\ \ \ \ \ \mbox{\hyperlink{unionLongUnion}{LongUnion}}\ tValue;}
+\DoxyCodeLine{00278\ \ \ \ \ tValue.UByte.HighByte\ =\ bitreverseOneByte(aInput);}
+\DoxyCodeLine{00279\ \ \ \ \ tValue.UByte.MidHighByte\ =\ bitreverseOneByte(aInput\ >>\ 8);}
+\DoxyCodeLine{00280\ \ \ \ \ tValue.UByte.MidLowByte\ =\ bitreverseOneByte(aInput\ >>\ 16);}
+\DoxyCodeLine{00281\ \ \ \ \ tValue.UByte.LowByte\ =\ bitreverseOneByte(aInput\ >>\ 24);}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ tValue.ULong;}
+\DoxyCodeLine{00283\ \}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_PROTOCOL\_HPP}}
+
+\end{DoxyCode}

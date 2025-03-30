@@ -1,0 +1,144 @@
+\doxysection{IRCommand\+Dispatcher.\+h}
+\hypertarget{IRCommandDispatcher_8h_source}{}\label{IRCommandDispatcher_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRDispatcherDemo/IRCommandDispatcher.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/examples/IRDispatcherDemo/IRCommandDispatcher.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ IRCommandDispatcher.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Library\ to\ process\ IR\ commands\ by\ calling\ functions\ specified\ in\ a\ mapping\ array.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ To\ run\ this\ example\ you\ need\ to\ install\ the\ "{}IRremote"{}\ or\ "{}IRMP"{}\ library\ under\ "{}Tools\ -\/>\ Manage\ Libraries..."{}\ or\ "{}Ctrl+Shift+I"{}}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ Copyright\ (C)\ 2019-\/2024\ \ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ \ armin.joachimsmeyer@gmail.com}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ ServoEasing\ https://github.com/ArminJo/ServoEasing.}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ IRMP\ https://github.com/IRMP-\/org/IRMP.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ \ IRCommandDispatcher\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ \ See\ the\ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/gpl.html>.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#ifndef\ \_IR\_COMMAND\_DISPATCHER\_H}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ \_IR\_COMMAND\_DISPATCHER\_H}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ For\ command\ mapping\ file}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_BLOCKING\ \ \ \ \ \ \ \ 0x00\ }\textcolor{comment}{//\ default\ -\/\ blocking\ command,\ repeat\ not\ accepted,\ only\ one\ command\ at\ a\ time.\ Stops\ an\ already\ running\ command.}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_REPEATABLE\ \ \ \ \ \ 0x01\ }\textcolor{comment}{//\ repeat\ accepted}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_NON\_BLOCKING\ \ \ \ 0x02\ }\textcolor{comment}{//\ Non\ blocking\ (short)\ command\ that\ can\ be\ processed\ any\ time\ and\ may\ interrupt\ other\ IR\ commands\ -\/\ used\ for\ stop,\ set\ direction\ etc.}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_REPEATABLE\_NON\_BLOCKING\ (IR\_COMMAND\_FLAG\_REPEATABLE\ |\ IR\_COMMAND\_FLAG\_NON\_BLOCKING)}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_BEEP\ \ \ \ \ \ \ \ \ \ \ \ 0x04\ }\textcolor{comment}{//\ Do\ a\ single\ short\ beep\ before\ executing\ command.\ May\ not\ be\ useful\ for\ short\ or\ repeating\ commands.}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ IR\_COMMAND\_FLAG\_BLOCKING\_BEEP\ \ \ (IR\_COMMAND\_FLAG\_BLOCKING\ |\ IR\_COMMAND\_FLAG\_BEEP)}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#if\ !defined(IS\_STOP\_REQUESTED)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ IS\_STOP\_REQUESTED\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IRDispatcher.requestToStopReceived}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#if\ !defined(RETURN\_IF\_STOP)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ RETURN\_IF\_STOP\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (IRDispatcher.requestToStopReceived)\ return}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#if\ !defined(BREAK\_IF\_STOP)}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ BREAK\_IF\_STOP\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (IRDispatcher.requestToStopReceived)\ break}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#if\ !defined(DELAY\_AND\_RETURN\_IF\_STOP)}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ DELAY\_AND\_RETURN\_IF\_STOP(aDurationMillis)\ \ \ if\ (IRDispatcher.delayAndCheckForStop(aDurationMillis))\ return}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ Basic\ mapping\ structure}}
+\DoxyCodeLine{00059\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRToCommandMappingStruct}{IRToCommandMappingStruct}}\ \{}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#if\ defined(IR\_COMMAND\_HAS\_MORE\_THAN\_8\_BIT)}}
+\DoxyCodeLine{00061\ \ \ \ \ uint16\_t\ IRCode;}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00063\ \ \ \ \ uint8\_t\ IRCode;}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00065\ \ \ \ \ uint8\_t\ Flags;}
+\DoxyCodeLine{00066\ \ \ \ \ void\ (*CommandToCall)();}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *CommandString;}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRDataForCommandDispatcherStruct}{IRDataForCommandDispatcherStruct}}\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ uint16\_t\ address;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ to\ distinguish\ between\ multiple\ senders}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#if\ defined(IR\_COMMAND\_HAS\_MORE\_THAN\_8\_BIT)}}
+\DoxyCodeLine{00073\ \ \ \ \ uint16\_t\ command;}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00075\ \ \ \ \ uint8\_t\ command;}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRepeat;}
+\DoxyCodeLine{00078\ \ \ \ \ uint32\_t\ MillisOfLastCode;\ \ \textcolor{comment}{//\ millis()\ of\ last\ IR\ command\ -\/including\ repeats!-\/\ received\ -\/\ for\ timeouts\ etc.}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ isAvailable;\ \ \textcolor{comment}{//\ flag\ for\ a\ polling\ interpreting\ function,\ that\ a\ new\ command\ has\ arrived.\ Is\ set\ true\ by\ library\ and\ set\ false\ by\ main\ loop.}}
+\DoxyCodeLine{00080\ \};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ Special\ codes\ (hopefully)\ not\ sent\ by\ the\ remote\ -\/\ otherwise\ please\ redefine\ it\ here}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#if\ defined(IR\_COMMAND\_HAS\_MORE\_THAN\_8\_BIT)}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ COMMAND\_EMPTY\ \ \ \ \ \ \ 0xFFFF\ }\textcolor{comment}{//\ code\ no\ command}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ COMMAND\_EMPTY\ \ \ \ \ \ \ 0xFF\ }\textcolor{comment}{//\ code\ no\ command}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIRCommandDispatcher}{IRCommandDispatcher}}\ \{}
+\DoxyCodeLine{00092\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{void}\ init();}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{void}\ printIRInfo(Print\ *aSerial);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkAndRunNonBlockingCommands();}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkAndRunSuspendedBlockingCommands();}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#if\ defined(IR\_COMMAND\_HAS\_MORE\_THAN\_8\_BIT)}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ setNextBlockingCommand(uint16\_t\ aBlockingCommandToRunNext);}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{void}\ setNextBlockingCommand(uint8\_t\ aBlockingCommandToRunNext);}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{bool}\ delayAndCheckForStop(uint16\_t\ aDelayMillis);}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\ The\ main\ dispatcher\ function}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ checkAndCallCommand(\textcolor{keywordtype}{bool}\ aCallBlockingCommandImmediately);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ printIRCommandString(Print\ *aSerial);}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ setRequestToStopReceived(\textcolor{keywordtype}{bool}\ aRequestToStopReceived\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#if\ defined(IR\_COMMAND\_HAS\_MORE\_THAN\_8\_BIT)}}
+\DoxyCodeLine{00112\ \ \ \ \ uint16\_t\ currentBlockingCommandCalled\ =\ COMMAND\_EMPTY;\ \textcolor{comment}{//\ The\ code\ for\ the\ current\ called\ command}}
+\DoxyCodeLine{00113\ \ \ \ \ uint16\_t\ lastBlockingCommandCalled\ =\ COMMAND\_EMPTY;\ \textcolor{comment}{//\ The\ code\ for\ the\ last\ called\ command.\ Can\ be\ evaluated\ by\ main\ loop}}
+\DoxyCodeLine{00114\ \ \ \ \ uint16\_t\ BlockingCommandToRunNext\ =\ COMMAND\_EMPTY;\ \ \textcolor{comment}{//\ Storage\ for\ command\ currently\ suspended\ to\ allow\ the\ current\ command\ to\ end,\ before\ it\ is\ called\ by\ main\ loop}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00116\ \ \ \ \ uint8\_t\ currentBlockingCommandCalled\ =\ COMMAND\_EMPTY;\ \textcolor{comment}{//\ The\ code\ for\ the\ current\ called\ command}}
+\DoxyCodeLine{00117\ \ \ \ \ uint8\_t\ lastBlockingCommandCalled\ =\ COMMAND\_EMPTY;\ \ \textcolor{comment}{//\ The\ code\ for\ the\ last\ called\ command.\ Can\ be\ evaluated\ by\ main\ loop}}
+\DoxyCodeLine{00118\ \ \ \ \ uint8\_t\ BlockingCommandToRunNext\ =\ COMMAND\_EMPTY;\ \ \ \textcolor{comment}{//\ Storage\ for\ command\ currently\ suspended\ to\ allow\ the\ current\ command\ to\ end,\ before\ it\ is\ called\ by\ main\ loop}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{bool}\ justCalledBlockingCommand\ =\ \textcolor{keyword}{false};\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Flag\ that\ a\ blocking\ command\ was\ received\ and\ called\ -\/\ is\ set\ before\ call\ of\ command}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ \ \ \ *\ Flag\ for\ running\ blocking\ commands\ to\ terminate.\ To\ check,\ you\ can\ use\ "{}if\ (IRDispatcher.requestToStopReceived)\ return;"{}\ (available\ as\ macro\ RETURN\_IF\_STOP).}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ \ \ \ *\ It\ is\ set\ if\ a\ blocking\ IR\ command\ received,\ which\ cannot\ be\ executed\ directly.\ Can\ be\ reset\ by\ main\ loop,\ if\ command\ has\ stopped.}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ \ *\ It\ is\ reset\ before\ executing\ a\ blocking\ command.}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ requestToStopReceived;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ \ \ \ \ *\ This\ flag\ must\ be\ true,\ if\ we\ have\ a\ function,\ which\ want\ to\ interpret\ the\ IR\ codes\ by\ itself\ e.g.\ the\ calibrate\ function\ of\ QuadrupedControl}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{bool}\ doNotUseDispatcher\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRDataForCommandDispatcherStruct}{IRDataForCommandDispatcherStruct}}\ IRReceivedData;}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \};}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classIRCommandDispatcher}{IRCommandDispatcher}}\ IRDispatcher;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_COMMAND\_DISPATCHER\_H}}
+
+\end{DoxyCode}

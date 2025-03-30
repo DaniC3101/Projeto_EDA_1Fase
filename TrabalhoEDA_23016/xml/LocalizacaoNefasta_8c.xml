@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="LocalizacaoNefasta_8c" kind="file" language="C++">
+    <compoundname>LocalizacaoNefasta.c</compoundname>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes refid="LocalizacaoNefasta_8h" local="yes">LocalizacaoNefasta.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Fase1/Fase1/LocalizacaoNefasta.c</label>
+        <link refid="LocalizacaoNefasta_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+      <node id="2">
+        <label>stdio.h</label>
+      </node>
+      <node id="3">
+        <label>stdlib.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="LocalizacaoNefasta_8c_1a3df9f96d35d90b7e86870c0d07cf7816" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VerificarNefasta</definition>
+        <argsstring>(int posNefastaAntes[], int posNefastaAtual[], int linhas, int colunas)</argsstring>
+        <name>VerificarNefasta</name>
+        <param>
+          <type>int</type>
+          <declname>posNefastaAntes</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>posNefastaAtual</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>linhas</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>colunas</declname>
+        </param>
+        <briefdescription>
+<para>Verifica se existe uma interferência (zona nefasta) entre duas posições especificadas nas variáveis <computeroutput>posNefastaAntes</computeroutput> e <computeroutput>posNefastaAtual</computeroutput>. A interferência é calculada com base na diferença das posições e ajusta as posições de forma a garantir que a zona nefasta seja criada corretamente. Caso a nova posição ultrapasse os limites da matriz, a posição é anulada. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>posNefastaAntes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena ou local antes da interferência.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>posNefastaAtual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Posição da antena ou local após a interferência.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linhas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número total de linhas na matriz.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>colunas</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número total de colunas na matriz.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/LocalizacaoNefasta.c" line="15" column="6" bodyfile="Fase1/Fase1/LocalizacaoNefasta.c" bodystart="15" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="LocalizacaoNefasta_8c_1aa44ff6f729e77748335ca1ecd675f6bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Abs</definition>
+        <argsstring>(int n)</argsstring>
+        <name>Abs</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Função auxiliar que retorna o valor absoluto de um número inteiro. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Número inteiro a ser verificado.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Retorna o valor absoluto de <computeroutput>n</computeroutput>.</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/LocalizacaoNefasta.c" line="81" column="5" bodyfile="Fase1/Fase1/LocalizacaoNefasta.c" bodystart="81" bodyend="85"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;LocalizacaoNefasta.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>VerificarNefasta(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posNefastaAntes[],<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>posNefastaAtual[],<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>linhas,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colunas)</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>xNovo<sp/>=<sp/>0,<sp/>yNovo<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Calcula<sp/>a<sp/>diferença entre<sp/>as<sp/>posições<sp/>ao<sp/>longo<sp/>do<sp/>eixo<sp/>X<sp/>e<sp/>Y</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>xNovo<sp/>=<sp/>Abs(posNefastaAntes[0]<sp/>-<sp/>posNefastaAtual[0]);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>yNovo<sp/>=<sp/>Abs(posNefastaAntes[1]<sp/>-<sp/>posNefastaAtual[1]);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Verifica<sp/>se<sp/>a<sp/>diferença nas<sp/>posições<sp/>é suficiente<sp/>para<sp/>se<sp/>considerar<sp/>uma<sp/>zona<sp/>nefasta</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((xNovo<sp/>+<sp/>yNovo<sp/>&gt;=<sp/>2)<sp/>&amp;&amp;<sp/>(posNefastaAntes[0]<sp/>+<sp/>xNovo<sp/>==<sp/>posNefastaAtual[0]))</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ajusta<sp/>a<sp/>posição<sp/>no<sp/>eixo<sp/>X</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[0]<sp/>=<sp/>posNefastaAntes[0]<sp/>-<sp/>xNovo;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[0]<sp/>=<sp/>posNefastaAtual[0]<sp/>+<sp/>xNovo;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ajusta<sp/>a<sp/>posição<sp/>no<sp/>eixo<sp/>Y,<sp/>dependendo<sp/>da<sp/>direção<sp/>da<sp/>interferência</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(posNefastaAntes[1]<sp/>+<sp/>yNovo<sp/>==<sp/>posNefastaAtual[1])</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[1]<sp/>=<sp/>posNefastaAntes[1]<sp/>-<sp/>yNovo;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[1]<sp/>=<sp/>posNefastaAtual[1]<sp/>+<sp/>yNovo;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[1]<sp/>=<sp/>posNefastaAntes[1]<sp/>+<sp/>yNovo;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[1]<sp/>=<sp/>posNefastaAtual[1]<sp/>-<sp/>yNovo;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ajusta<sp/>a<sp/>posição<sp/>no<sp/>eixo<sp/>X<sp/>em<sp/>caso<sp/>de<sp/>diferença não suficiente</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[0]<sp/>=<sp/>posNefastaAntes[0]<sp/>+<sp/>xNovo;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[0]<sp/>=<sp/>posNefastaAtual[0]<sp/>-<sp/>xNovo;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ajusta<sp/>a<sp/>posição<sp/>no<sp/>eixo<sp/>Y</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(posNefastaAntes[1]<sp/>+<sp/>yNovo<sp/>==<sp/>posNefastaAtual[1])</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[1]<sp/>=<sp/>posNefastaAntes[1]<sp/>-<sp/>yNovo;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[1]<sp/>=<sp/>posNefastaAtual[1]<sp/>+<sp/>yNovo;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[1]<sp/>=<sp/>posNefastaAntes[1]<sp/>+<sp/>yNovo;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[1]<sp/>=<sp/>posNefastaAtual[1]<sp/>-<sp/>yNovo;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Verifica<sp/>se<sp/>as<sp/>novas<sp/>posições<sp/>ultrapassam<sp/>os<sp/>limites<sp/>da<sp/>matriz</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(posNefastaAntes[0]<sp/>&gt;<sp/>linhas<sp/>||<sp/>posNefastaAntes[1]<sp/>&gt;<sp/>colunas)</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Anula<sp/>a<sp/>posição,<sp/>caso<sp/>ela<sp/>ultrapasse<sp/>o<sp/>limite</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[0]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAntes[1]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(posNefastaAtual[0]<sp/>&gt;<sp/>linhas<sp/>||<sp/>posNefastaAtual[1]<sp/>&gt;<sp/>colunas)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Anula<sp/>a<sp/>posição,<sp/>caso<sp/>ela<sp/>ultrapasse<sp/>o<sp/>limite</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[0]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posNefastaAtual[1]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Abs(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&lt;<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-n;<sp/><sp/></highlight><highlight class="comment">//<sp/>Se<sp/>`n`<sp/>for<sp/>negativo,<sp/>retorna<sp/>o<sp/>valor<sp/>positivo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Caso<sp/>contrário,<sp/>retorna<sp/>`n`<sp/>tal<sp/>como<sp/>está</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/LocalizacaoNefasta.c"/>
+  </compounddef>
+</doxygen>

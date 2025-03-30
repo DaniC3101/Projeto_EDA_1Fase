@@ -1,0 +1,484 @@
+\doxysection{ir\+\_\+\+Distance\+Width\+Protocol.\+hpp}
+\hypertarget{ir__DistanceWidthProtocol_8hpp_source}{}\label{ir__DistanceWidthProtocol_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_DistanceWidthProtocol.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_DistanceWidthProtocol.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_DistanceWidthProtocol.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Contains\ only\ the\ decoder\ functions\ for\ universal\ pulse\ width\ or\ pulse\ distance\ protocols!}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ The\ send\ functions\ are\ used\ by\ almost\ all\ protocols\ and\ are\ therefore\ located\ in\ IRSend.hpp.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ If\ RAM\ is\ not\ more\ than\ 2k,\ the\ decoder\ only\ accepts\ mark\ or\ space\ durations\ up\ to\ 50\ *\ 50\ (MICROS\_PER\_TICK)\ =\ 2500\ microseconds}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ to\ save\ RAM\ space,\ otherwise\ it\ accepts\ durations\ up\ to\ 10\ ms.}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ This\ decoder\ tries\ to\ decode\ a\ pulse\ distance\ or\ pulse\ distance\ width\ with\ constant\ period\ (or\ pulse\ width\ -\/\ not\ enabled\ yet)\ protocol.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ 1.\ Analyze\ all\ space\ and\ mark\ length}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ 2.\ Decide\ which\ protocol\ we\ have}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ 3.\ Try\ to\ decode\ with\ the\ mark\ and\ space\ data\ found\ in\ step\ 1}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ 4.\ Assume\ one\ start\ bit\ /\ header\ and\ one\ stop\ bit,\ since\ pulse\ distance\ data\ must\ have\ a\ stop\ bit!}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ No\ data\ and\ address\ decoding,\ only\ raw\ data\ as\ result.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ Pulse\ distance\ data\ can\ be\ sent\ with\ the\ generic\ function\ as\ in\ SendDemo\ example\ line\ 155:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/blob/d51b540cb2ddf1424888d2d9e6b62fe1ef46859d/examples/SendDemo/SendDemo.ino\#L155}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ void\ sendPulseDistanceWidthData(unsigned\ int\ aOneMarkMicros,\ unsigned\ int\ aOneSpaceMicros,\ unsigned\ int\ aZeroMarkMicros,}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ unsigned\ int\ aZeroSpaceMicros,\ uint32\_t\ aData,\ uint8\_t\ aNumberOfBits,\ bool\ aMSBfirst,\ bool\ aSendStopBit\ =\ false)}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ The\ header\ must\ be\ sent\ manually\ with:}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ IrSender.mark(MarkMicros)}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ IrSender.space(SpaceMicros);}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ Or\ send\ it\ by\ filling\ a\ DecodedRawDataArray\ and\ with\ the\ sendPulseDistanceWidthFromArray()\ function\ as\ in\ SendDemo\ example\ line\ 175:}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote/blob/d51b540cb2ddf1424888d2d9e6b62fe1ef46859d/examples/SendDemo/SendDemo.ino\#L175}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ sendPulseDistanceWidthFromArray(uint\_fast8\_t\ aFrequencyKHz,\ unsigned\ int\ aHeaderMarkMicros,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ unsigned\ int\ aHeaderSpaceMicros,\ unsigned\ int\ aOneMarkMicros,\ unsigned\ int\ aOneSpaceMicros,\ unsigned\ int\ aZeroMarkMicros,}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ unsigned\ int\ aZeroSpaceMicros,\ uint32\_t\ *aDecodedRawDataArray,\ unsigned\ int\ aNumberOfBits,\ uint8\_t\ aFlags,}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ unsigned\ int\ aRepeatPeriodMillis,\ int\_fast8\_t\ aNumberOfRepeats)}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2022-\/2024\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#ifndef\ \_IR\_DISTANCE\_WIDTH\_HPP}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ \_IR\_DISTANCE\_WIDTH\_HPP}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#if\ !defined(DISTANCE\_WIDTH\_MAXIMUM\_REPEAT\_DISTANCE\_MICROS)}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ DISTANCE\_WIDTH\_MAXIMUM\_REPEAT\_DISTANCE\_MICROS\ \ \ \ \ \ \ 100000\ }\textcolor{comment}{//\ 100\ ms,\ bit\ it\ is\ just\ a\ guess}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#if\ !defined(DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE)}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#\ \ if\ (defined(RAMEND)\ \&\&\ RAMEND\ <=\ 0x8FF)\ ||\ (defined(RAMSIZE)\ \&\&\ RAMSIZE\ <\ 0x8FF)}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE\ 50\ }\textcolor{comment}{//\ To\ save\ program\ space,\ the\ decoder\ only\ accepts\ mark\ or\ space\ durations\ up\ to\ 50\ *\ 50\ (MICROS\_PER\_TICK)\ =\ 2500\ microseconds}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE\ 200\ }\textcolor{comment}{//\ The\ decoder\ accepts\ mark\ or\ space\ durations\ up\ to\ 200\ *\ 50\ (MICROS\_PER\_TICK)\ =\ 10\ milliseconds}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ Switch\ the\ decoding\ according\ to\ your\ needs}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\#define\ USE\_MSB\_DECODING\_FOR\_DISTANCE\_DECODER\ //\ If\ active,\ it\ resembles\ LG,\ otherwise\ LSB\ first\ as\ most\ other\ protocols\ e.g.\ NEC\ and\ Kaseikyo/Panasonic}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00085\ \textcolor{comment}{//=====================================================================================}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ DDD\ \ \ III\ \ \ SSS\ \ TTTTTT\ \ \ AA\ \ \ N\ \ \ N\ \ \ CCC\ \ EEEE\ \ \ \ \ W\ \ \ \ \ W\ \ III\ \ DDD\ \ TTTTTT\ \ H\ \ H}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ D\ \ D\ \ \ I\ \ \ S\ \ \ \ \ \ \ TT\ \ \ \ A\ \ A\ \ NN\ \ N\ \ C\ \ \ \ \ E\ \ \ \ \ \ \ \ W\ \ \ \ \ W\ \ \ I\ \ \ D\ \ D\ \ \ TT\ \ \ \ H\ \ H}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ D\ \ D\ \ \ I\ \ \ \ SSS\ \ \ \ TT\ \ \ \ AAAA\ \ N\ N\ N\ \ C\ \ \ \ \ EEE\ \ \ \ \ \ W\ \ W\ \ W\ \ \ I\ \ \ D\ \ D\ \ \ TT\ \ \ \ HHHH}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ D\ \ D\ \ \ I\ \ \ \ \ \ \ S\ \ \ TT\ \ \ \ A\ \ A\ \ N\ \ NN\ \ C\ \ \ \ \ E\ \ \ \ \ \ \ \ \ W\ W\ W\ \ \ \ I\ \ \ D\ \ D\ \ \ TT\ \ \ \ H\ \ H}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ DDD\ \ \ III\ \ SSSS\ \ \ \ TT\ \ \ \ A\ \ A\ \ N\ \ \ N\ \ \ CCC\ \ EEEE\ \ \ \ \ \ \ W\ W\ \ \ \ III\ \ DDD\ \ \ \ TT\ \ \ \ H\ \ H}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//=====================================================================================}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ see:\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#Codings}}
+\DoxyCodeLine{00093\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ Example\ output\ of\ UnitTest.ino\ for\ PulseWidth\ protocol:}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ Protocol=PulseWidth\ Raw-\/Data=0x87654321\ 32\ bits\ LSB\ first}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ Send\ on\ a\ 8\ bit\ platform\ with:\ IrSender.sendPulseDistanceWidth(38,\ 950,\ 550,\ 600,\ 300,\ 300,\ 300,\ 0x87654321,\ 32,\ PROTOCOL\_IS\_LSB\_FIRST,\ <RepeatPeriodMillis>,\ <numberOfRepeats>);}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ rawData[66]:}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ -\/1088600}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ +\ 950,-\/\ 550}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ +\ 600,-\/\ 300\ +\ 300,-\/\ 300\ +\ 350,-\/\ 250\ +\ 350,-\/\ 250}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ +\ 350,-\/\ 300\ +\ 600,-\/\ 300\ +\ 300,-\/\ 300\ +\ 300,-\/\ 300}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ +\ 650,-\/\ 250\ +\ 650,-\/\ 250\ +\ 300,-\/\ 300\ +\ 350,-\/\ 250}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ +\ 350,-\/\ 300\ +\ 300,-\/\ 300\ +\ 600,-\/\ 300\ +\ 300,-\/\ 300}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ +\ 600,-\/\ 300\ +\ 350,-\/\ 250\ +\ 600,-\/\ 300\ +\ 350,-\/\ 250}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ +\ 350,-\/\ 300\ +\ 600,-\/\ 300\ +\ 600,-\/\ 300\ +\ 300,-\/\ 300}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ +\ 600,-\/\ 300\ +\ 600,-\/\ 300\ +\ 600,-\/\ 300\ +\ 300,-\/\ 300}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ +\ 300,-\/\ 300\ +\ 300,-\/\ 300\ +\ 350,-\/\ 250\ +\ 650}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ Sum:\ 24500}}
+\DoxyCodeLine{00109\ \textcolor{comment}{}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ Example\ output\ of\ UnitTest.ino\ for\ PulseDistanceWidth\ protocol:}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ Protocol=PulseDistance\ Raw-\/Data=0x76\ 7\ bits\ LSB\ first}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ Send\ on\ a\ 8\ bit\ platform\ with:\ IrSender.sendPulseDistanceWidth(38,\ 5950,\ 500,\ 550,\ 1450,\ 1550,\ 500,\ 0x76,\ 7,\ PROTOCOL\_IS\_LSB\_FIRST,\ <RepeatPeriodMillis>,\ <numberOfRepeats>);}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ rawData[18]:}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ -\/1092450}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ +5950,-\/\ 500}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ +1500,-\/\ 500\ +\ 500,-\/1450\ +\ 550,-\/1450\ +1550,-\/\ 450}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ +\ 550,-\/1450\ +\ 550,-\/1450\ +\ 550,-\/1450\ +\ 550}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ Sum:\ 20950}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00122\ \textcolor{keywordtype}{void}\ printDurations(uint8\_t\ aArray[],\ uint8\_t\ aMaxIndex)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <=\ aMaxIndex;\ i++)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Print\ index\ at\ the\ beginning\ of\ a\ new\ line}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ \%\ 10\ ==\ 0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ 0)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(\textcolor{charliteral}{'\ '});\ \textcolor{comment}{//\ indentation\ for\ the\ first\ index\ 0}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println();\ \textcolor{comment}{//\ new\ line\ for\ next\ indexes\ 10,\ 20\ etc.}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(i);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}:\ "{}}));}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ number\ of\ values\ in\ array\ and\ duration\ if\ !=\ 0}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ Serial.print(aArray[i]);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aArray[i]\ !=\ 0)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(\textcolor{charliteral}{'x'});}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(i\ *\ (uint16\_t)\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ |\ "{}}));}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00143\ \}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ *\ We\ count\ all\ consecutive\ (allow\ only\ one\ gap\ between)\ durations\ and\ compute\ the\ average.}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ *\ @return\ false\ if\ more\ than\ 2\ distinct\ duration\ values\ found}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00150\ \textcolor{keywordtype}{bool}\ aggregateArrayCounts(uint8\_t\ aArray[],\ uint8\_t\ aMaxIndex,\ uint8\_t\ *aShortIndex,\ uint8\_t\ *aLongIndex)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ uint8\_t\ tSum\ =\ 0;}
+\DoxyCodeLine{00152\ \ \ \ \ uint16\_t\ tWeightedSum\ =\ 0;}
+\DoxyCodeLine{00153\ \ \ \ \ uint8\_t\ tGapCount\ =\ 0;}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <=\ aMaxIndex;\ i++)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ uint8\_t\ tCurrentDurations\ =\ aArray[i];}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tCurrentDurations\ !=\ 0)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ it\ to\ sum\ and\ remove\ array\ content}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ tSum\ +=\ tCurrentDurations;}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ tWeightedSum\ +=\ (tCurrentDurations\ *\ i);}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ aArray[i]\ =\ 0;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ tGapCount\ =\ 0;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ tGapCount++;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSum\ !=\ 0\ \&\&\ (i\ ==\ aMaxIndex\ ||\ tGapCount\ >\ 1))\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Here\ we\ have\ a\ sum\ AND\ last\ element\ OR\ more\ than\ 1\ consecutive\ gap}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ tAggregateIndex\ =\ (tWeightedSum\ +\ (tSum\ /\ 2))\ /\ tSum;\ \textcolor{comment}{//\ with\ rounding}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ aArray[tAggregateIndex]\ =\ tSum;\ \textcolor{comment}{//\ disabling\ this\ line\ increases\ code\ size\ by\ 2\ -\/\ unbelievable!}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ store\ aggregate\ for\ later\ decoding}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (*aShortIndex\ ==\ 0)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *aShortIndex\ =\ tAggregateIndex;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (*aLongIndex\ ==\ 0)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *aLongIndex\ =\ tAggregateIndex;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ have\ 3\ bins\ =>\ this\ is\ likely\ no\ pulse\ width\ or\ distance\ protocol.\ e.g.\ it\ can\ be\ RC5.}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ initialize\ for\ next\ aggregation}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ tSum\ =\ 0;}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ tWeightedSum\ =\ 0;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ *\ Try\ to\ decode\ a\ pulse\ distance\ or\ pulse\ width\ protocol.}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ *\ 1.\ Analyze\ all\ space\ and\ mark\ length}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ *\ 2.\ Decide\ if\ we\ have\ an\ pulse\ width\ or\ distance\ protocol}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ *\ 3.\ Try\ to\ decode\ with\ the\ mark\ and\ space\ data\ found\ in\ step\ 1}}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ *\ No\ data\ and\ address\ decoding,\ only\ raw\ data\ as\ result.}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ *\ calloc()\ version\ is\ 700\ bytes\ larger\ :-\/(}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00197\ \textcolor{keywordtype}{bool}\ IRrecv::decodeDistanceWidth()\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ \ \ \ *\ Array\ for\ up\ to\ 49\ ticks\ /\ 2500\ us\ (or\ 199\ \ ticks\ /\ 10\ ms\ us\ if\ RAM\ >\ 2k)}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ \ \ \ *\ 0\ tick\ covers\ mark\ or\ space\ durations\ from\ 0\ to\ 49\ us,\ and\ 49\ ticks\ from\ 2450\ to\ 2499\ us}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00202\ \ \ \ \ uint8\_t\ tDurationArray[DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE];}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ \ \ \ *\ Accept\ only\ protocols\ with\ at\ least\ 7\ bits}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ <\ (2\ *\ 7)\ +\ 4)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ less\ than\ 18"{}}));}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00213\ \ \ \ \ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ Reset\ duration\ array}}
+\DoxyCodeLine{00216\ \ \ \ \ memset(tDurationArray,\ 0,\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ uint8\_t\ tIndexOfMaxDuration\ =\ 0;}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ \ \ \ \ *\ Count\ number\ of\ mark\ durations.\ Skip\ leading\ start\ and\ trailing\ stop\ bit.}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{for}\ (IRRawlenType\ i\ =\ 3;\ i\ <\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 2;\ i\ +=\ 2)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tDurationTicks\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[i];}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tDurationTicks\ <\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ tDurationArray[tDurationTicks]++;\ \textcolor{comment}{//\ count\ duration\ if\ less\ than\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tIndexOfMaxDuration\ <\ tDurationTicks)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tIndexOfMaxDuration\ =\ tDurationTicks;}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Mark\ "{}}));}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(tDurationTicks\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ is\ longer\ than\ maximum\ "{}}));}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ us.\ Index="{}}));}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(i);}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ \ \ \ *\ Aggregate\ mark\ counts\ to\ one\ duration\ bin}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00246\ \ \ \ \ uint8\_t\ tMarkTicksShort\ =\ 0;}
+\DoxyCodeLine{00247\ \ \ \ \ uint8\_t\ tMarkTicksLong\ =\ 0;}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{bool}\ tSuccess\ =\ aggregateArrayCounts(tDurationArray,\ tIndexOfMaxDuration,\ \&tMarkTicksShort,\ \&tMarkTicksLong);}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00250\ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Mark:"{}}));}
+\DoxyCodeLine{00251\ \ \ \ \ printDurations(tDurationArray,\ tIndexOfMaxDuration);}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordflow}{if}\ (!tSuccess)\ \{}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Mark\ aggregation\ failed,\ more\ than\ 2\ distinct\ mark\ duration\ values\ found"{}}));}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{//\ Reset\ duration\ array}}
+\DoxyCodeLine{00263\ \ \ \ \ memset(tDurationArray,\ 0,\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE);}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ \ \ \ \ *\ Count\ number\ of\ space\ durations.\ Skip\ leading\ start\ and\ trailing\ stop\ bit.}}
+\DoxyCodeLine{00267\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00268\ \ \ \ \ tIndexOfMaxDuration\ =\ 0;}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{for}\ (IRRawlenType\ i\ =\ 4;\ i\ <\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 2;\ i\ +=\ 2)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tDurationTicks\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[i];}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tDurationTicks\ <\ DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE)\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ tDurationArray[tDurationTicks]++;}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tIndexOfMaxDuration\ <\ tDurationTicks)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tIndexOfMaxDuration\ =\ tDurationTicks;}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Space\ "{}}));}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(tDurationTicks\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ is\ longer\ than\ maximum\ "{}}));}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(DISTANCE\_WIDTH\_DECODER\_DURATION\_ARRAY\_SIZE\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ us.\ Index="{}}));}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(i);}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00291\ \textcolor{comment}{\ \ \ \ \ *\ Aggregate\ space\ counts\ to\ one\ duration\ bin}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00293\ \ \ \ \ uint8\_t\ tSpaceTicksShort\ =\ 0;}
+\DoxyCodeLine{00294\ \ \ \ \ uint8\_t\ tSpaceTicksLong\ =\ 0;}
+\DoxyCodeLine{00295\ \ \ \ \ tSuccess\ =\ aggregateArrayCounts(tDurationArray,\ tIndexOfMaxDuration,\ \&tSpaceTicksShort,\ \&tSpaceTicksLong);}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00297\ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Space:"{}}));}
+\DoxyCodeLine{00298\ \ \ \ \ printDurations(tDurationArray,\ tIndexOfMaxDuration);}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{if}\ (!tSuccess)\ \{}
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Space\ aggregation\ failed,\ more\ than\ 2\ distinct\ space\ duration\ values\ found"{}}));}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ \ \ \ *\ Print\ characteristics\ of\ this\ protocol.\ Durations\ are\ in\ (50\ us)\ ticks.}}
+\DoxyCodeLine{00311\ \textcolor{comment}{\ \ \ \ \ *\ Number\ of\ bits,\ start\ bit,\ start\ pause,\ long\ mark,\ long\ space,\ short\ mark,\ short\ space}}
+\DoxyCodeLine{00312\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{00313\ \textcolor{comment}{\ \ \ \ \ *\ NEC:\ \ \ \ \ \ \ \ \ 32,\ 180,\ 90,\ \ 0,\ 34,\ 11,\ 11}}
+\DoxyCodeLine{00314\ \textcolor{comment}{\ \ \ \ \ *\ Samsung32:\ \ \ 32,\ \ 90,\ 90,\ \ 0,\ 34,\ 11,\ 11}}
+\DoxyCodeLine{00315\ \textcolor{comment}{\ \ \ \ \ *\ LG:\ \ \ \ \ \ \ \ \ \ 28,\ 180,\ 84,\ \ 0,\ 32,\ 10,\ 11}}
+\DoxyCodeLine{00316\ \textcolor{comment}{\ \ \ \ \ *\ JVC:\ \ \ \ \ \ \ \ \ 16,\ 168,\ 84,\ \ 0,\ 32,\ 10,\ 10}}
+\DoxyCodeLine{00317\ \textcolor{comment}{\ \ \ \ \ *\ Kaseikyo:\ \ \ \ 48.\ \ 69,\ 35,\ \ 0,\ 26,\ \ 9,\ \ 9}}
+\DoxyCodeLine{00318\ \textcolor{comment}{\ \ \ \ \ *\ Sony:\ \ 12|15|20,\ \ 48,\ 12,\ 24,\ \ 0,\ 12,\ 12\ //\ the\ only\ known\ pulse\ width\ protocol}}
+\DoxyCodeLine{00319\ \textcolor{comment}{\ \ \ \ \ *\ Disney\ monorail}}
+\DoxyCodeLine{00320\ \textcolor{comment}{\ \ \ \ \ *\ \ \ model:\ \ \ \ \ \ 7,\ 120,\ 10,\ 30,\ 30,\ 10,\ 10\ //\ PulseDistanceWidth.\ Can\ be\ seen\ as\ direct\ conversion\ of\ a\ 7\ bit\ serial\ timing\ at\ 250\ baud\ with\ a\ 6\ ms\ start\ bit.}}
+\DoxyCodeLine{00321\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00323\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}DistanceWidthTimingInfoStruct:\ "{}}));}
+\DoxyCodeLine{00324\ \ \ \ \ Serial.print(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1]\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00325\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{},\ "{}}));}
+\DoxyCodeLine{00326\ \ \ \ \ Serial.print(decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2]\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00327\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{},\ "{}}));}
+\DoxyCodeLine{00328\ \ \ \ \ Serial.print(tMarkTicksLong\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00329\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{},\ "{}}));}
+\DoxyCodeLine{00330\ \ \ \ \ Serial.print(tSpaceTicksLong\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00331\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{},\ "{}}));}
+\DoxyCodeLine{00332\ \ \ \ \ Serial.print(tMarkTicksShort\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00333\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{},\ "{}}));}
+\DoxyCodeLine{00334\ \ \ \ \ Serial.println(tSpaceTicksShort\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\#if\ RAW\_BUFFER\_LENGTH\ <=\ (512\ -\/4)}}
+\DoxyCodeLine{00337\ \ \ \ \ uint\_fast8\_t\ tNumberOfBits;}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00339\ \ \ \ \ uint16\_t\ tNumberOfBits;}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00341\ \ \ \ \ tNumberOfBits\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ /\ 2)\ -\/\ 1;}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{if}\ (tSpaceTicksLong\ >\ 0)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ PULSE\_DISTANCE\ -\/including\ PULSE\_DISTANCE\_WIDTH-\/\ a\ stop\ bit\ is\ mandatory,\ for\ PULSE\_WIDTH\ it\ is\ not\ required!}}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ tNumberOfBits-\/-\/;\ \textcolor{comment}{//\ Correct\ for\ stop\ bit}}
+\DoxyCodeLine{00345\ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ tNumberOfBits;}
+\DoxyCodeLine{00347\ \ \ \ \ uint8\_t\ tNumberOfAdditionalArrayValues\ =\ (tNumberOfBits\ -\/\ 1)\ /\ BITS\_IN\_RAW\_DATA\_TYPE;}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00350\ \textcolor{comment}{\ \ \ \ \ *\ We\ can\ have\ the\ following\ protocol\ timings}}
+\DoxyCodeLine{00351\ \textcolor{comment}{\ \ \ \ \ *\ PULSE\_DISTANCE:\ \ \ \ \ \ \ Pause/spaces\ have\ different\ length\ and\ determine\ the\ bit\ value,\ longer\ space\ is\ 1.\ Pulses/marks\ can\ be\ constant,\ like\ NEC.}}
+\DoxyCodeLine{00352\ \textcolor{comment}{\ \ \ \ \ *\ PULSE\_WIDTH:\ \ \ \ \ \ \ \ \ \ Pulses/marks\ have\ different\ length\ and\ determine\ the\ bit\ value,\ longer\ mark\ is\ 1.\ Pause/spaces\ can\ be\ constant,\ like\ Sony.}}
+\DoxyCodeLine{00353\ \textcolor{comment}{\ \ \ \ \ *\ PULSE\_DISTANCE\_WIDTH:\ Pulses/marks\ and\ pause/spaces\ have\ different\ length,\ often\ the\ bit\ length\ is\ constant,\ like\ MagiQuest.\ Can\ be\ decoded\ by\ PULSE\_DISTANCE\ decoder.}}
+\DoxyCodeLine{00354\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{if}\ (tMarkTicksLong\ ==\ 0\ \&\&\ tSpaceTicksLong\ ==\ 0)\ \{}
+\DoxyCodeLine{00357\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_DISTANCE:\ "{}}));}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Only\ 1\ distinct\ duration\ value\ for\ each\ space\ and\ mark\ found"{}}));}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00362\ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tSpaceMicrosShort;}
+\DoxyCodeLine{00364\ \textcolor{preprocessor}{\#if\ defined\ DECODE\_STRICT\_CHECKS}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(tMarkTicksLong\ >\ 0\ \&\&\ tSpaceTicksLong\ >\ 0)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ have\ different\ mark\ and\ space\ length\ here,\ so\ signal\ decodePulseDistanceWidthData()\ not\ to\ check\ against\ constant\ length\ decodePulseDistanceWidthData}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ tSpaceMicrosShort\ =\ 0;}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00370\ \ \ \ \ tSpaceMicrosShort\ =\ tSpaceTicksShort\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tMarkMicrosShort\ =\ tMarkTicksShort\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tMarkMicrosLong\ =\ tMarkTicksLong\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tSpaceMicrosLong\ =\ tSpaceTicksLong\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}};}
+\DoxyCodeLine{00374\ \ \ \ \ IRRawlenType\ tStartIndex\ =\ 3;\ \ \textcolor{comment}{//\ skip\ leading\ start\ bit\ for\ decoding.}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <=\ tNumberOfAdditionalArrayValues;\ ++i)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ uint8\_t\ tNumberOfBitsForOneDecode\ =\ tNumberOfBits;}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00379\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Decode\ in\ 32/64\ bit\ chunks.\ Only\ the\ last\ chunk\ can\ contain\ less\ than\ 32/64\ bits}}
+\DoxyCodeLine{00380\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfBitsForOneDecode\ >\ BITS\_IN\_RAW\_DATA\_TYPE)\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ tNumberOfBitsForOneDecode\ =\ BITS\_IN\_RAW\_DATA\_TYPE;}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ tResult;}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSpaceTicksLong\ >\ 0)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00387\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Here\ short\ and\ long\ space\ durations\ found.}}
+\DoxyCodeLine{00388\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Since\ parameters\ aOneMarkMicros\ and\ aOneSpaceMicros\ are\ equal,\ we\ only\ check\ tSpaceMicrosLong\ here.}}
+\DoxyCodeLine{00389\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ PULSE\_DISTANCE;\ \textcolor{comment}{//\ Sony\ +\ PULSE\_DISTANCE\_WIDTH}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ tResult\ =\ \mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(tNumberOfBitsForOneDecode,\ tStartIndex,\ tMarkMicrosShort,\ tSpaceMicrosLong,}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tMarkMicrosShort,}
+\DoxyCodeLine{00393\ \#\textcolor{keywordflow}{if}\ defined(USE\_MSB\_DECODING\_FOR\_DISTANCE\_DECODER)}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true}}
+\DoxyCodeLine{00395\ \#\textcolor{keywordflow}{else}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false}}
+\DoxyCodeLine{00397\ \#endif}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00401\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Here\ no\ long\ space\ duration\ found.\ =>\ short\ and\ long\ mark\ durations\ found,\ check\ tMarkMicrosLong\ here}}
+\DoxyCodeLine{00402\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ This\ else\ case\ will\ most\ likely\ never\ be\ used,\ but\ it\ only\ requires\ 12\ bytes\ additional\ programming\ space\ :-\/)}}
+\DoxyCodeLine{00403\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ PULSE\_WIDTH;\ \textcolor{comment}{//\ NEC\ etc.}}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ tResult\ =\ \mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(tNumberOfBitsForOneDecode,\ tStartIndex,\ tMarkMicrosLong,\ tSpaceMicrosShort,}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tMarkMicrosShort,}
+\DoxyCodeLine{00407\ \#\textcolor{keywordflow}{if}\ defined(USE\_MSB\_DECODING\_FOR\_DISTANCE\_DECODER)}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true}}
+\DoxyCodeLine{00409\ \#\textcolor{keywordflow}{else}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false}}
+\DoxyCodeLine{00411\ \#endif}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!tResult)\ \{}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}PULSE\_WIDTH:\ "{}}));}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}decodedRawData=0x"{}}));}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ Serial.println(decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}},\ HEX);}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ fill\ array\ with\ decoded\ data}}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ decodedIRData.decodedRawDataArray[i]\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ tStartIndex\ +=\ (2\ *\ BITS\_IN\_RAW\_DATA\_TYPE);}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ tNumberOfBits\ -\/=\ BITS\_IN\_RAW\_DATA\_TYPE;}
+\DoxyCodeLine{00431\ \ \ \ \ \}}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \textcolor{preprocessor}{\#if\ defined(USE\_MSB\_DECODING\_FOR\_DISTANCE\_DECODER)}}
+\DoxyCodeLine{00434\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a7f6872e6f83c0571e3150ba86428af4c}{IRDATA\_FLAGS\_IS\_MSB\_FIRST}};}
+\DoxyCodeLine{00435\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ repeat}}
+\DoxyCodeLine{00438\ \ \ \ \ checkForRepeatSpaceTicksAndSetFlag(DISTANCE\_WIDTH\_MAXIMUM\_REPEAT\_DISTANCE\_MICROS\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00441\ \textcolor{comment}{\ \ \ \ \ *\ Store\ timing\ data\ to\ reproduce\ frame\ for\ sending}}
+\DoxyCodeLine{00442\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00443\ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.HeaderMarkMicros\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[1]\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00444\ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.HeaderSpaceMicros\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}}-\/>\mbox{\hyperlink{structirparams__struct_ae0891646d6c275153dd88915072185d0}{rawbuf}}[2]\ *\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00445\ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.ZeroMarkMicros\ =\ tMarkMicrosShort;}
+\DoxyCodeLine{00446\ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.ZeroSpaceMicros\ =\ tSpaceMicrosShort;}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keywordflow}{if}\ (tMarkMicrosLong\ !=\ 0)\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSpaceMicrosLong\ ==\ 0)\ \{}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PULSE\_DISTANCE,\ Sony}}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneMarkMicros\ =\ tMarkMicrosLong;}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneSpaceMicros\ =\ tSpaceMicrosShort;}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PULSE\_DISTANCE\_WIDTH,\ we\ have\ 4\ distinct\ values\ here}}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Assume\ long\ space\ for\ a\ one\ when\ we\ have\ PulseDistanceWidth\ like\ for\ RS232,\ where\ a\ long\ inactive\ period\ (high)\ is\ a\ 1}}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneSpaceMicros\ =\ tSpaceMicrosLong;}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneMarkMicros\ =\ tMarkMicrosShort;}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.ZeroMarkMicros\ =\ tMarkMicrosLong;}
+\DoxyCodeLine{00458\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ //\ Assume\ long\ mark\ for\ a\ one\ when\ we\ have\ PulseDistanceWidth}}
+\DoxyCodeLine{00459\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneSpaceMicros\ =\ tSpaceMicrosShort;}}
+\DoxyCodeLine{00460\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.ZeroSpaceMicros\ =\ tSpaceMicrosLong;}}
+\DoxyCodeLine{00461\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneMarkMicros\ =\ tMarkMicrosLong;}}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00463\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PULSE\_WIDTH,\ NEC\ etc.}}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ tMarkMicrosLong\ is\ 0\ =>\ tSpaceMicrosLong\ !=\ 0}}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneMarkMicros\ =\ tMarkMicrosShort;}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ decodedIRData.DistanceWidthTimingInfo.OneSpaceMicros\ =\ tSpaceMicrosLong;}
+\DoxyCodeLine{00468\ \ \ \ \ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00471\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}DistanceWidthTimingInfo="{}}));}
+\DoxyCodeLine{00472\ \ \ \ \ \mbox{\hyperlink{group__Receiving_ga6813a2b456e5359ce674699c85a61cf9}{IrReceiver}}.printDistanceWidthTimingInfo(\&Serial,\ \&decodedIRData.DistanceWidthTimingInfo);}
+\DoxyCodeLine{00473\ \ \ \ \ Serial.println();}
+\DoxyCodeLine{00474\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00476\ \}}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00479\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00482\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_DISTANCE\_WIDTH\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,696 @@
+\doxysection{Tiny\+IRReceiver.\+hpp}
+\hypertarget{TinyIRReceiver_8hpp_source}{}\label{TinyIRReceiver_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIRReceiver.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/TinyIRReceiver.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ \ TinyIRReceiver.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Receives\ IR\ protocol\ data\ of\ NEC\ protocol\ using\ pin\ change\ interrupts.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ NEC\ is\ the\ protocol\ of\ most\ cheap\ remote\ controls\ for\ Arduino.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ Parity\ check\ is\ done\ for\ address\ and\ data.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ On\ a\ completely\ received\ IR\ command,\ the\ user\ function\ handleReceivedIRData(uint8\_t\ aAddress,\ uint8\_t\ aCommand,\ uint8\_t\ aFlags)}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ \ is\ called\ in\ interrupt\ context\ but\ with\ interrupts\ being\ enabled\ to\ enable\ use\ of\ delay()\ etc.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ \ !!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ \ Functions\ called\ in\ interrupt\ context\ should\ be\ running\ as\ short\ as\ possible,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ \ so\ if\ you\ require\ longer\ action,\ save\ the\ data\ (address\ +\ command)\ and\ handle\ them\ in\ the\ main\ loop.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ \ !!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ \ aFlags\ can\ contain\ one\ of\ IRDATA\_FLAGS\_EMPTY,\ IRDATA\_FLAGS\_IS\_REPEAT\ and\ IRDATA\_FLAGS\_PARITY\_FAILED\ bits}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ The\ FAST\ protocol\ is\ a\ proprietary\ modified\ JVC\ protocol\ without\ address,\ with\ parity\ and\ with\ a\ shorter\ header.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ \ FAST\ Protocol\ characteristics:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ -\/\ Bit\ timing\ is\ like\ NEC\ or\ JVC}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ -\/\ The\ header\ is\ shorter,\ 3156\ vs.\ 12500}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ -\/\ No\ address\ and\ 16\ bit\ data,\ interpreted\ as\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command,}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ \ \ \ \ leading\ to\ a\ fixed\ protocol\ length\ of\ (6\ +\ (16\ *\ 3)\ +\ 1)\ *\ 526\ =\ 55\ *\ 526\ =\ 28930\ microseconds\ or\ 29\ ms.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ -\/\ Repeats\ are\ sent\ as\ complete\ frames\ but\ in\ a\ 50\ ms\ period\ /\ with\ a\ 21\ ms\ distance.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ IRMP\ https://github.com/IRMP-\/org/IRMP.}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2022-\/2024\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ This\ library\ can\ be\ configured\ at\ compile\ time\ by\ the\ following\ options\ /\ macros:}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *\ For\ more\ details\ see:\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote\#compile-\/options-\/-\/macros-\/for-\/this-\/library\ (scroll\ down)}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ -\/\ IR\_RECEIVE\_PIN\ \ \ \ \ \ \ \ \ The\ pin\ number\ for\ TinyIRReceiver\ IR\ input.}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ *\ -\/\ IR\_FEEDBACK\_LED\_PIN\ \ \ \ The\ pin\ number\ for\ TinyIRReceiver\ feedback\ LED.}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ -\/\ NO\_LED\_FEEDBACK\_CODE\ \ \ Disables\ the\ feedback\ LED\ function.\ Saves\ 14\ bytes\ program\ memory.}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ *\ -\/\ DISABLE\_PARITY\_CHECKS\ \ Disable\ parity\ checks.\ Saves\ 48\ bytes\ of\ program\ memory.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ *\ -\/\ USE\_EXTENDED\_NEC\_PROTOCOL\ Like\ NEC,\ but\ take\ the\ 16\ bit\ address\ as\ one\ 16\ bit\ value\ and\ not\ as\ 8\ bit\ normal\ and\ 8\ bit\ inverted\ value.}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ *\ -\/\ USE\_ONKYO\_PROTOCOL\ \ \ \ \ Like\ NEC,\ but\ take\ the\ 16\ bit\ address\ and\ command\ each\ as\ one\ 16\ bit\ value\ and\ not\ as\ 8\ bit\ normal\ and\ 8\ bit\ inverted\ value.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *\ -\/\ USE\_FAST\_PROTOCOL\ \ \ \ \ \ Use\ FAST\ protocol\ (no\ address\ and\ 16\ bit\ data,\ interpreted\ as\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command)\ instead\ of\ NEC.}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ *\ -\/\ ENABLE\_NEC2\_REPEATS\ \ \ \ Instead\ of\ sending\ /\ receiving\ the\ NEC\ special\ repeat\ code,\ send\ /\ receive\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *\ -\/\ USE\_CALLBACK\_FOR\_TINY\_RECEIVER\ \ \ Call\ the\ fixed\ function\ "{}void\ handleReceivedTinyIRData()"{}\ each\ time\ a\ frame\ or\ repeat\ is\ received.}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#ifndef\ \_TINY\_IR\_RECEIVER\_HPP}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ \_TINY\_IR\_RECEIVER\_HPP}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *\ Protocol\ selection}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\#define\ DISABLE\_PARITY\_CHECKS\ //\ Disable\ parity\ checks.\ Saves\ 48\ bytes\ of\ program\ memory.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\#define\ USE\_EXTENDED\_NEC\_PROTOCOL\ //\ Like\ NEC,\ but\ take\ the\ 16\ bit\ address\ as\ one\ 16\ bit\ value\ and\ not\ as\ 8\ bit\ normal\ and\ 8\ bit\ inverted\ value.}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\#define\ USE\_ONKYO\_PROTOCOL\ \ \ \ //\ Like\ NEC,\ but\ take\ the\ 16\ bit\ address\ and\ command\ each\ as\ one\ 16\ bit\ value\ and\ not\ as\ 8\ bit\ normal\ and\ 8\ bit\ inverted\ value.}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\#define\ USE\_FAST\_PROTOCOL\ \ \ \ \ //\ Use\ FAST\ protocol\ instead\ of\ NEC\ /\ ONKYO.}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\#define\ ENABLE\_NEC2\_REPEATS\ //\ Instead\ of\ sending\ /\ receiving\ the\ NEC\ special\ repeat\ code,\ send\ /\ receive\ the\ original\ frame\ for\ repeat.}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#include\ "{}TinyIR.h"{}}\ \textcolor{comment}{//\ If\ not\ defined,\ it\ defines\ IR\_RECEIVE\_PIN,\ IR\_FEEDBACK\_LED\_PIN\ and\ TINY\_RECEIVER\_USE\_ARDUINO\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#include\ "{}digitalWriteFast.h"{}}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#if\ defined(DEBUG)}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\_ATTACH\_INTERRUPT\ \ //\ to\ see\ if\ attachInterrupt()\ or\ static\ interrupt\ (by\ register\ tweaking)\ is\ used}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#if\ defined(TRACE)}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ LOCAL\_TRACE\_STATE\_MACHINE}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\#define\ LOCAL\_TRACE\_STATE\_MACHINE\ \ //\ to\ see\ the\ state\ of\ the\ ISR\ (Interrupt\ Service\ Routine)\ state\ machine}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{comment}{//\#define\ \_IR\_MEASURE\_TIMING\ \ \ \ \ \ \ \ //\ Activate\ this\ if\ you\ want\ to\ enable\ internal\ hardware\ timing\ measurement.}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\#define\ \_IR\_TIMING\_TEST\_PIN\ 7}}
+\DoxyCodeLine{00107\ \mbox{\hyperlink{structTinyIRReceiverStruct}{TinyIRReceiverStruct}}\ TinyIRReceiverControl;}
+\DoxyCodeLine{00108\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct}{TinyIRReceiverCallbackDataStruct}}\ TinyIRReceiverData;}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ *\ Set\ input\ pin\ and\ output\ pin\ definitions\ etc.}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#if\ defined(IR\_INPUT\_PIN)}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#warning\ "{}IR\_INPUT\_PIN\ is\ deprecated,\ use\ IR\_RECEIVE\_PIN"{}}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ IR\_INPUT\_PIN}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#if\ !defined(IR\_RECEIVE\_PIN)}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_ATtiny1616\_\_)\ ||\ defined(\_\_AVR\_ATtiny3216\_\_)\ ||\ defined(\_\_AVR\_ATtiny3217\_\_)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#warning\ "{}IR\_RECEIVE\_PIN\ is\ not\ defined,\ so\ it\ is\ set\ to\ 10"{}}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ 10}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#elif\ defined(\_\_AVR\_ATtiny816\_\_)}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#warning\ "{}IR\_RECEIVE\_PIN\ is\ not\ defined,\ so\ it\ is\ set\ to\ 14"{}}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ 14}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#warning\ "{}IR\_RECEIVE\_PIN\ is\ not\ defined,\ so\ it\ is\ set\ to\ 2"{}}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ IR\_RECEIVE\_PIN\ \ \ \ 2}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#if\ !defined(IR\_FEEDBACK\_LED\_PIN)\ \&\&\ defined(LED\_BUILTIN)}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#define\ IR\_FEEDBACK\_LED\_PIN\ \ \ \ LED\_BUILTIN}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#if\ !(\ \(\backslash\)}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\ \ \ (defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_))\ }\textcolor{comment}{/*\ ATtinyX5\ */}\textcolor{preprocessor}{\ \(\backslash\)}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATtiny88\_\_)\ }\textcolor{comment}{/*\ MH-\/ET\ LIVE\ Tiny88\ */}\textcolor{preprocessor}{\ \(\backslash\)}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega1281\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_)\ ||\ defined(\_\_AVR\_ATmega2561\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega16U4\_\_)\ ||\ defined(\_\_AVR\_ATmega32U4\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega8\_\_)\ ||\ defined(\_\_AVR\_ATmega48\_\_)\ ||\ defined(\_\_AVR\_ATmega48P\_\_)\ ||\ defined(\_\_AVR\_ATmega48PB\_\_)\ ||\ defined(\_\_AVR\_ATmega88P\_\_)\ ||\ defined(\_\_AVR\_ATmega88PB\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{||\ defined(\_\_AVR\_ATmega168\_\_)\ ||\ defined(\_\_AVR\_ATmega168PA\_\_)\ ||\ defined(\_\_AVR\_ATmega168PB\_\_)\ ||\ defined(\_\_AVR\_ATmega328\_\_)\ ||\ defined(\_\_AVR\_ATmega328P\_\_)\ ||\ defined(\_\_AVR\_ATmega328PB\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\ \ }\textcolor{comment}{/*\ ATmegas\ with\ ports\ 0,1,2\ above\ and\ ATtiny167\ only\ 2\ pins\ below\ */}\textcolor{preprocessor}{\ \(\backslash\)}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{||\ (\ (defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_))\ \&\&\ (\ (defined(ARDUINO\_AVR\_DIGISPARKPRO)\ \&\&\ ((IR\_RECEIVE\_PIN\ ==\ 3)\ ||\ (IR\_RECEIVE\_PIN\ ==\ 9)))\ }\textcolor{comment}{/*ATtinyX7(digisparkpro)\ and\ pin\ 3\ or\ 9\ */}\textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ ||\ (!\ defined(ARDUINO\_AVR\_DIGISPARKPRO)\ \&\&\ ((IR\_RECEIVE\_PIN\ ==\ 3)\ ||\ (IR\_RECEIVE\_PIN\ ==\ 14))))\ )\ }\textcolor{comment}{/*ATtinyX7(ATTinyCore)\ and\ pin\ 3\ or\ 14\ */}\textcolor{preprocessor}{\ \(\backslash\)}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{)}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#define\ TINY\_RECEIVER\_USE\_ARDUINO\_ATTACH\_INTERRUPT\ }\textcolor{comment}{//\ Cannot\ use\ any\ static\ ISR\ vector\ here.\ In\ other\ cases\ we\ have\ code\ provided\ for\ generating\ interrupt\ on\ pin\ change.}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00152\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__TinyReceiver_gaa968353e3a3d31ca950fe4dd5be38b71}{handleTinyReceivedIRData}}();}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00155\ uint32\_t\ sMicrosOfGap;\ \textcolor{comment}{//\ The\ length\ of\ the\ gap\ before\ the\ start\ bit}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#if\ defined(ESP8266)\ ||\ defined(ESP32)}}
+\DoxyCodeLine{00163\ IRAM\_ATTR}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00165\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__TinyReceiver_ga3c3d6703d25dbcc0555823e23eec0e69}{IRPinChangeInterruptHandler}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#if\ defined(\_IR\_MEASURE\_TIMING)\ \&\&\ defined(\_IR\_TIMING\_TEST\_PIN)}}
+\DoxyCodeLine{00167\ \ \ \ \ digitalWriteFast(\_IR\_TIMING\_TEST\_PIN,\ HIGH);\ \textcolor{comment}{//\ 2\ clock\ cycles}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ \ \ \ *\ Save\ IR\ input\ level}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ \ \ \ \ *\ Negative\ logic,\ true\ /\ HIGH\ means\ inactive\ /\ IR\ space,\ LOW\ /\ false\ means\ IR\ mark.}}
+\DoxyCodeLine{00172\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00173\ \ \ \ \ uint\_fast8\_t\ tIRLevel\ =\ digitalReadFast(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#if\ !defined(NO\_LED\_FEEDBACK\_CODE)\ \&\&\ defined(IR\_FEEDBACK\_LED\_PIN)}}
+\DoxyCodeLine{00176\ \ \ \ \ digitalWriteFast(IR\_FEEDBACK\_LED\_PIN,\ !tIRLevel);}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ \ \ \ \ *\ 1.\ compute\ microseconds\ after\ last\ change}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{comment}{//\ Repeats\ can\ be\ sent\ after\ a\ pause,\ which\ is\ longer\ than\ 64000\ microseconds,\ so\ we\ need\ a\ 32\ bit\ value\ for\ check\ of\ repeats}}
+\DoxyCodeLine{00183\ \ \ \ \ uint32\_t\ tCurrentMicros\ =\ micros();}
+\DoxyCodeLine{00184\ \ \ \ \ uint32\_t\ tMicrosOfMarkOrSpace32\ =\ tCurrentMicros\ -\/\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_ad7b6f95e5a153384b352d09bb84a2444}{LastChangeMicros}};}
+\DoxyCodeLine{00185\ \ \ \ \ uint16\_t\ tMicrosOfMarkOrSpace\ =\ tMicrosOfMarkOrSpace32;}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_ad7b6f95e5a153384b352d09bb84a2444}{LastChangeMicros}}\ =\ tCurrentMicros;}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ uint8\_t\ tState\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a04a9f384aca34cc05024a4a2bfe0c646}{IRReceiverState}};}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_TRACE\_STATE\_MACHINE)}}
+\DoxyCodeLine{00192\ \ \ \ \ Serial.print(tState);}
+\DoxyCodeLine{00193\ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ D="{}}));}
+\DoxyCodeLine{00194\ \ \ \ \ Serial.print(tMicrosOfMarkOrSpace);}
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ \ \ \ Serial.print(F("{}\ I="{}));}}
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ \ \ \ Serial.print(tIRLevel);}}
+\DoxyCodeLine{00197\ \ \ \ \ Serial.print(\textcolor{charliteral}{'|'});}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{if}\ (tIRLevel\ ==\ LOW)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ We\ have\ a\ mark\ here}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >\ 2\ *\ TINY\_RECEIVER\_HEADER\_MARK)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ timeout\ -\/>\ must\ reset\ state\ machine}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tState\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ are\ at\ the\ beginning\ of\ the\ header\ mark,\ check\ timing\ at\ the\ next\ transition}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_SPACE;}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ =\ IRDATA\_FLAGS\_EMPTY;\ \textcolor{comment}{//\ If\ we\ do\ it\ here,\ it\ saves\ 4\ bytes}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_TRACE)}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ sMicrosOfGap\ =\ tMicrosOfMarkOrSpace32;}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_NEC2\_REPEATS)}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ repeat,\ where\ full\ frame\ is\ sent\ again\ after\ TINY\_RECEIVER\_REPEAT\_PERIOD\ ms}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Not\ required\ for\ NEC,\ where\ repeats\ are\ detected\ by\ a\ special\ header\ space\ duration}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Must\ use\ 32\ bit\ arithmetic\ here!}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace32\ <\ TINY\_RECEIVER\_MAXIMUM\_REPEAT\_DISTANCE)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (tState\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_FIRST\_DATA\_MARK)\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ lowerValue25Percent(TINY\_RECEIVER\_HEADER\_SPACE)}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ tMicrosOfMarkOrSpace\ <=\ upperValue25Percent(TINY\_RECEIVER\_HEADER\_SPACE))\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ We\ have\ a\ valid\ data\ header\ space\ here\ -\/>\ initialize\ data}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a880e6b24e5109e97c390fd936dc252ee}{IRRawDataBitCounter}}\ =\ 0;}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_BITS\ >\ 16)}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.ULong\ =\ 0;}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UWord\ =\ 0;}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}}\ =\ 1;}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_SPACE;}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#if\ !defined(ENABLE\_NEC2\_REPEATS)}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ NEC\ repeat\ header}}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ lowerValue25Percent(NEC\_REPEAT\_HEADER\_SPACE)}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ tMicrosOfMarkOrSpace\ <=\ upperValue25Percent(NEC\_REPEAT\_HEADER\_SPACE)}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a880e6b24e5109e97c390fd936dc252ee}{IRRawDataBitCounter}}\ >=\ TINY\_RECEIVER\_BITS)\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ We\ have\ a\ repeat\ header\ here\ and\ no\ broken\ receive\ before\ -\/>\ set\ repeat\ flag}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_SPACE;}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ This\ parts\ are\ optimized\ by\ the\ compiler\ into\ jumps\ to\ one\ code\ :-\/)}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wrong\ length\ -\/>\ reset\ state}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (tState\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_MARK)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ data\ space\ length}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ lowerValue50Percent(TINY\_RECEIVER\_ZERO\_SPACE)}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ tMicrosOfMarkOrSpace\ <=\ upperValue50Percent(TINY\_RECEIVER\_ONE\_SPACE))\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ have\ a\ valid\ bit\ here}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_SPACE;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ 2\ *\ TINY\_RECEIVER\_UNIT)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ received\ a\ 1}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_BITS\ >\ 16)}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.ULong\ |=\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}};}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UWord\ |=\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}};}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ received\ a\ 0\ -\/\ empty\ code\ for\ documentation}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prepare\ for\ next\ bit}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}}\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a5eafe8535ef995c504408dca09446f45}{IRRawDataMask}}\ <<\ 1;}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a880e6b24e5109e97c390fd936dc252ee}{IRRawDataBitCounter}}++;}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wrong\ length\ -\/>\ reset\ state}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ error\ wrong\ state\ for\ the\ received\ level,\ e.g.\ if\ we\ missed\ one\ change\ interrupt\ -\/>\ reset\ state}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00288\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ We\ have\ a\ space\ here}}
+\DoxyCodeLine{00289\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tState\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_SPACE)\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ length\ of\ header\ mark\ here}}
+\DoxyCodeLine{00293\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ lowerValue25Percent(TINY\_RECEIVER\_HEADER\_MARK)}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ tMicrosOfMarkOrSpace\ <=\ upperValue25Percent(TINY\_RECEIVER\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_FIRST\_DATA\_MARK;}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wrong\ length\ of\ header\ mark\ -\/>\ reset\ state}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (tState\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_SPACE)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ data\ mark\ length}}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tMicrosOfMarkOrSpace\ >=\ lowerValue50Percent(TINY\_RECEIVER\_BIT\_MARK)}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ tMicrosOfMarkOrSpace\ <=\ upperValue50Percent(TINY\_RECEIVER\_BIT\_MARK))\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ We\ have\ a\ valid\ mark\ here,\ check\ for\ transmission\ complete,\ i.e.\ the\ mark\ of\ the\ stop\ bit}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a880e6b24e5109e97c390fd936dc252ee}{IRRawDataBitCounter}}\ >=\ TINY\_RECEIVER\_BITS}
+\DoxyCodeLine{00311\ \#\textcolor{keywordflow}{if}\ !defined(ENABLE\_NEC2\_REPEATS)}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ \&\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}})\ \textcolor{comment}{//\ Do\ not\ check\ for\ full\ length\ received,\ if\ we\ have\ a\ short\ repeat\ frame}}
+\DoxyCodeLine{00313\ \#endif}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00316\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Code\ complete\ -\/>\ optionally\ check\ parity}}
+\DoxyCodeLine{00317\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Reset\ state\ for\ new\ start}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_PARITY\_CHECKS)\ \&\&\ (TINY\_RECEIVER\_ADDRESS\_BITS\ ==\ 16)\ \&\&\ TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00323\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ address\ parity}}
+\DoxyCodeLine{00324\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Address\ is\ sent\ first\ and\ contained\ in\ the\ lower\ word}}
+\DoxyCodeLine{00325\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[0]\ !=\ (uint8\_t)\ (\string~TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[1]))\ \{}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_NEC2\_REPEATS)}}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};\ \textcolor{comment}{//\ here\ we\ can\ have\ the\ repeat\ flag\ already\ set}}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};\ \textcolor{comment}{//\ here\ we\ do\ not\ check\ anything,\ if\ we\ have\ a\ repeat}}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_PARITY\_CHECKS)\ \&\&\ (TINY\_RECEIVER\_COMMAND\_BITS\ ==\ 16)\ \&\&\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00336\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ command\ parity}}
+\DoxyCodeLine{00337\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_ADDRESS\_BITS\ >\ 0)}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[2]\ !=\ (uint8\_t)\ (\string~TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[3]))\ \{}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#if\ defined(ENABLE\_NEC2\_REPEATS)}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00344\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\#\ \ if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Parity\ check\ for\ command\ failed.\ Command="{}}));}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[2],\ HEX);}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ parity="{}}));}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[3],\ HEX);}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ address,\ so\ command\ and\ parity\ are\ in\ the\ lowest\ bytes}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[0]\ !=\ (uint8\_t)\ (\string~TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[1]))\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}}\ |=\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00355\ \textcolor{preprocessor}{\#\ \ if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Parity\ check\ for\ command\ failed.\ Command="{}}));}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[0],\ HEX);}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ parity="{}}));}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[1],\ HEX);}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00361\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00365\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Call\ user\ provided\ callback\ here}}
+\DoxyCodeLine{00366\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ The\ parameter\ size\ is\ dependent\ of\ the\ code\ variant\ used\ in\ order\ to\ save\ program\ memory.}}
+\DoxyCodeLine{00367\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ We\ have\ 6\ cases:\ 0,\ 8\ bit\ or\ 16\ bit\ address,\ each\ with\ 8\ or\ 16\ bit\ command}}
+\DoxyCodeLine{00368\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#if\ !defined(ARDUINO\_ARCH\_MBED)\ \&\&\ !defined(ESP32)\ }\textcolor{comment}{//\ no\ Serial\ etc.\ in\ callback\ for\ ESP\ -\/>\ no\ interrupt\ required,\ WDT\ is\ running!}}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ interrupts();\ \textcolor{comment}{//\ enable\ interrupts,\ so\ delay()\ etc.\ works\ in\ callback}}
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.\mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe}{justWritten}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Flags\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_aeb3f0fed7dd127f81565f62281a7ae41}{Flags}};}
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#if\ (TINY\_RECEIVER\_ADDRESS\_BITS\ >\ 0)}}
+\DoxyCodeLine{00375\ \textcolor{preprocessor}{\#\ \ if\ TINY\_RECEIVER\_ADDRESS\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 8\ bit\ address}}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Address\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[0];}
+\DoxyCodeLine{00378\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 16\ bit\ address}}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Address\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UWord.LowWord;}
+\DoxyCodeLine{00381\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#\ \ if\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 8\ bit\ command}}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Command\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[2];}
+\DoxyCodeLine{00385\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 16\ bit\ command}}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Command\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UWord.HighWord;}
+\DoxyCodeLine{00388\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ NO\ address}}
+\DoxyCodeLine{00392\ \textcolor{preprocessor}{\#\ \ if\ TINY\_RECEIVER\_COMMAND\_HAS\_8\_BIT\_PARITY}}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 8\ bit\ command}}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Command\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UBytes[0];}
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Here\ we\ have\ 16\ bit\ command}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TinyIRReceiverData.Command\ =\ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a8bae85970767a7c24b11848610a20e2c}{IRRawData}}.UWord;}
+\DoxyCodeLine{00398\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00399\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00400\ \textcolor{preprocessor}{\#if\ defined(USE\_CALLBACK\_FOR\_TINY\_RECEIVER)}}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ handleReceivedTinyIRData();}
+\DoxyCodeLine{00402\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ not\ finished\ yet}}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_DATA\_MARK;}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wrong\ length\ -\/>\ reset\ state}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ error\ wrong\ state\ for\ the\ received\ level,\ e.g.\ if\ we\ missed\ one\ change\ interrupt\ -\/>\ reset\ state}}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ tState\ =\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK;}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00416\ \ \ \ \ \}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a04a9f384aca34cc05024a4a2bfe0c646}{IRReceiverState}}\ =\ tState;}
+\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#ifdef\ \_IR\_MEASURE\_TIMING}}
+\DoxyCodeLine{00420\ \ \ \ \ digitalWriteFast(\_IR\_TIMING\_TEST\_PIN,\ LOW);\ \textcolor{comment}{//\ 2\ clock\ cycles}}
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00422\ \}}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \textcolor{keywordtype}{bool}\ isTinyReceiverIdle()\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keywordflow}{return}\ (TinyIRReceiverControl.\mbox{\hyperlink{structTinyIRReceiverStruct_a04a9f384aca34cc05024a4a2bfe0c646}{IRReceiverState}}\ ==\ IR\_RECEIVER\_STATE\_WAITING\_FOR\_START\_MARK);}
+\DoxyCodeLine{00426\ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00429\ \textcolor{comment}{\ *\ Function\ to\ be\ used\ as\ drop\ in\ for\ IrReceiver.decode()}}
+\DoxyCodeLine{00430\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00431\ \textcolor{keywordtype}{bool}\ TinyReceiverDecode()\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keywordtype}{bool}\ tJustWritten\ =\ TinyIRReceiverData.\mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe}{justWritten}};}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordflow}{if}\ (tJustWritten)\ \{}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ TinyIRReceiverData.\mbox{\hyperlink{structTinyIRReceiverCallbackDataStruct_aff079c5dbb9e3bb1aa10907f8f89bebe}{justWritten}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00435\ \ \ \ \ \}}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keywordflow}{return}\ tJustWritten;}
+\DoxyCodeLine{00437\ \}}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00440\ \textcolor{comment}{\ *\ Checks\ if\ IR\_RECEIVE\_PIN\ is\ connected\ and\ high}}
+\DoxyCodeLine{00441\ \textcolor{comment}{\ *\ @return\ true,\ if\ IR\ Receiver\ is\ attached}}
+\DoxyCodeLine{00442\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00443\ \textcolor{keywordtype}{bool}\ isIRReceiverAttachedForTinyReceiver()\ \{}
+\DoxyCodeLine{00444\ \ \ \ \ pinModeFast(IR\_RECEIVE\_PIN,\ OUTPUT);}
+\DoxyCodeLine{00445\ \ \ \ \ digitalWriteFast(IR\_RECEIVE\_PIN,\ LOW);\ \textcolor{comment}{//\ discharge\ pin\ capacity}}
+\DoxyCodeLine{00446\ \ \ \ \ pinModeFast(IR\_RECEIVE\_PIN,\ INPUT);}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keywordflow}{return}\ digitalRead(IR\_RECEIVE\_PIN);\ \textcolor{comment}{//\ use\ slow\ digitalRead\ here,\ since\ the\ pin\ capacity\ is\ not\ fully\ charged\ again\ if\ we\ use\ digitalReadFast.}}
+\DoxyCodeLine{00448\ \}}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00454\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__TinyReceiver_gaafb51bc656ba199129d261afa3f950c2}{initPCIInterruptForTinyReceiver}}()\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ pinModeFast(IR\_RECEIVE\_PIN,\ INPUT);}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \textcolor{preprocessor}{\#if\ !defined(NO\_LED\_FEEDBACK\_CODE)\ \&\&\ defined(IR\_FEEDBACK\_LED\_PIN)}}
+\DoxyCodeLine{00458\ \ \ \ \ pinModeFast(IR\_FEEDBACK\_LED\_PIN,\ OUTPUT);}
+\DoxyCodeLine{00459\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__TinyReceiver_gacc1eec5de7563e88aa73d16aa9e60a10}{enablePCIInterruptForTinyReceiver}}();}
+\DoxyCodeLine{00461\ \}}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \textcolor{keywordtype}{void}\ printTinyReceiverResultMinimal(Print\ *aSerial)\ \{}
+\DoxyCodeLine{00464\ \textcolor{comment}{//\ Print\ only\ very\ short\ output,\ since\ we\ are\ in\ an\ interrupt\ context\ and\ do\ not\ want\ to\ miss\ the\ next\ interrupts\ of\ the\ repeats\ coming\ soon}}
+\DoxyCodeLine{00465\ \ \ \ \ \textcolor{comment}{//\ Print\ only\ very\ short\ output,\ since\ we\ are\ in\ an\ interrupt\ context\ and\ do\ not\ want\ to\ miss\ the\ next\ interrupts\ of\ the\ repeats\ coming\ soon}}
+\DoxyCodeLine{00466\ \textcolor{preprocessor}{\#if\ defined(USE\_FAST\_PROTOCOL)}}
+\DoxyCodeLine{00467\ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}C=0x"{}}));}
+\DoxyCodeLine{00468\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00469\ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}A=0x"{}}));}
+\DoxyCodeLine{00470\ \ \ \ \ aSerial-\/>print(TinyIRReceiverData.Address,\ HEX);}
+\DoxyCodeLine{00471\ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ C=0x"{}}));}
+\DoxyCodeLine{00472\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00473\ \ \ \ \ aSerial-\/>print(TinyIRReceiverData.Command,\ HEX);}
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverData.Flags\ ==\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}})\ \{}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ R"{}}));}
+\DoxyCodeLine{00476\ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \textcolor{preprocessor}{\#if\ !defined(DISABLE\_PARITY\_CHECKS)}}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{keywordflow}{if}\ (TinyIRReceiverData.Flags\ ==\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}})\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ aSerial-\/>print(F(\textcolor{stringliteral}{"{}\ P"{}}));}
+\DoxyCodeLine{00480\ \ \ \ \ \}}
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00482\ \ \ \ \ aSerial-\/>println();}
+\DoxyCodeLine{00483\ \}}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00485\ \textcolor{preprocessor}{\#if\ defined\ (LOCAL\_DEBUG\_ATTACH\_INTERRUPT)\ \&\&\ !defined(STR)}}
+\DoxyCodeLine{00486\ \textcolor{comment}{//\ Helper\ macro\ for\ getting\ a\ macro\ definition\ as\ string}}
+\DoxyCodeLine{00487\ \textcolor{preprocessor}{\#define\ STR\_HELPER(x)\ \#x}}
+\DoxyCodeLine{00488\ \textcolor{preprocessor}{\#define\ STR(x)\ STR\_HELPER(x)}}
+\DoxyCodeLine{00489\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \textcolor{comment}{/**************************************************}}
+\DoxyCodeLine{00492\ \textcolor{comment}{\ *\ Pin\ to\ interrupt\ mapping\ for\ different\ platforms}}
+\DoxyCodeLine{00493\ \textcolor{comment}{\ **************************************************/}}
+\DoxyCodeLine{00494\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_ATtiny816\_\_)\ ||\ defined(\_\_AVR\_ATtiny1616\_\_)\ ||\ defined(\_\_AVR\_ATtiny3216\_\_)\ ||\ defined(\_\_AVR\_ATtiny3217\_\_)}}
+\DoxyCodeLine{00495\ \textcolor{preprocessor}{\#define\ USE\_ATTACH\_INTERRUPT\_DIRECT}}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \textcolor{preprocessor}{\#elif\ !defined(\_\_AVR\_\_)\ ||\ defined(TINY\_RECEIVER\_USE\_ARDUINO\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00498\ \textcolor{comment}{//\ Default\ for\ all\ NON\ AVR\ platforms}}
+\DoxyCodeLine{00499\ \textcolor{preprocessor}{\#define\ USE\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00500\ }
+\DoxyCodeLine{00501\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00502\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_AVR\_ATtiny25\_\_)\ ||\ defined(\_\_AVR\_ATtiny45\_\_)\ ||\ defined(\_\_AVR\_ATtiny85\_\_)}}
+\DoxyCodeLine{00503\ \textcolor{preprocessor}{\#define\ USE\_PCIE}}
+\DoxyCodeLine{00504\ }
+\DoxyCodeLine{00505\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_AVR\_ATtiny87\_\_)\ ||\ defined(\_\_AVR\_ATtiny167\_\_)}}
+\DoxyCodeLine{00506\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(ARDUINO\_AVR\_DIGISPARKPRO)}}
+\DoxyCodeLine{00507\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ (IR\_RECEIVE\_PIN\ ==\ 3)}}
+\DoxyCodeLine{00508\ \textcolor{preprocessor}{\#define\ USE\_INT0}}
+\DoxyCodeLine{00509\ \textcolor{preprocessor}{\#\ \ \ \ \ \ elif\ (IR\_RECEIVE\_PIN\ ==\ 9)}}
+\DoxyCodeLine{00510\ \textcolor{preprocessor}{\#define\ USE\_INT1}}
+\DoxyCodeLine{00511\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{00512\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ \ error\ "{}IR\_RECEIVE\_PIN\ must\ be\ 9\ or\ 3."{}}}
+\DoxyCodeLine{00513\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif\ }\textcolor{comment}{//\ if\ (IR\_RECEIVE\_PIN\ ==\ 9)}}
+\DoxyCodeLine{00514\ \textcolor{preprocessor}{\#\ \ \ \ else\ }\textcolor{comment}{//\ defined(ARDUINO\_AVR\_DIGISPARKPRO)}}
+\DoxyCodeLine{00515\ \textcolor{preprocessor}{\#\ \ \ \ \ \ if\ (IR\_RECEIVE\_PIN\ ==\ 14)}}
+\DoxyCodeLine{00516\ \textcolor{preprocessor}{\#define\ USE\_INT0}}
+\DoxyCodeLine{00517\ \textcolor{preprocessor}{\#\ \ \ \ \ \ elif\ (IR\_RECEIVE\_PIN\ ==\ 3)}}
+\DoxyCodeLine{00518\ \textcolor{preprocessor}{\#define\ USE\_INT1}}
+\DoxyCodeLine{00519\ \textcolor{preprocessor}{\#\ \ \ \ \ \ else}}
+\DoxyCodeLine{00520\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ \ error\ "{}IR\_RECEIVE\_PIN\ must\ be\ 14\ or\ 3."{}}}
+\DoxyCodeLine{00521\ \textcolor{preprocessor}{\#\ \ \ \ \ \ endif\ }\textcolor{comment}{//\ if\ (IR\_RECEIVE\_PIN\ ==\ 14)}}
+\DoxyCodeLine{00522\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \textcolor{preprocessor}{\#\ \ elif\ (defined(\_\_AVR\_ATmega1280\_\_)\ ||\ defined(\_\_AVR\_ATmega2560\_\_))}}
+\DoxyCodeLine{00525\ \textcolor{preprocessor}{\#\ \ \ \ if\ (IR\_RECEIVE\_PIN\ ==\ 21)}}
+\DoxyCodeLine{00526\ \textcolor{preprocessor}{\#define\ USE\_INT0}}
+\DoxyCodeLine{00527\ \textcolor{preprocessor}{\#\ \ \ \ elif\ (IR\_RECEIVE\_PIN\ ==\ 20)}}
+\DoxyCodeLine{00528\ \textcolor{preprocessor}{\#define\ USE\_INT1}}
+\DoxyCodeLine{00529\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00530\ \textcolor{preprocessor}{\#warning\ "{}No\ pin\ mapping\ for\ IR\_RECEIVE\_PIN\ to\ interrupt\ found\ -\/>\ attachInterrupt()\ is\ used\ now."{}}}
+\DoxyCodeLine{00531\ \textcolor{preprocessor}{\#define\ USE\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00532\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \textcolor{preprocessor}{\#\ \ else\ }\textcolor{comment}{//\ defined(\_\_AVR\_ATtiny25\_\_)}}
+\DoxyCodeLine{00535\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00536\ \textcolor{comment}{\ *\ ATmegas\ +\ ATtiny88\ here}}
+\DoxyCodeLine{00537\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00538\ \textcolor{preprocessor}{\#\ \ \ \ if\ (IR\_RECEIVE\_PIN\ ==\ 2)}}
+\DoxyCodeLine{00539\ \textcolor{preprocessor}{\#define\ USE\_INT0}}
+\DoxyCodeLine{00540\ \textcolor{preprocessor}{\#\ \ \ \ elif\ (IR\_RECEIVE\_PIN\ ==\ 3)}}
+\DoxyCodeLine{00541\ \textcolor{preprocessor}{\#define\ USE\_INT1}}
+\DoxyCodeLine{00542\ }
+\DoxyCodeLine{00543\ \textcolor{preprocessor}{\#\ \ \ \ elif\ IR\_RECEIVE\_PIN\ ==\ 4\ ||\ IR\_RECEIVE\_PIN\ ==\ 5\ ||\ IR\_RECEIVE\_PIN\ ==\ 6\ ||\ IR\_RECEIVE\_PIN\ ==\ 7}}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{comment}{//ATmega328\ (Uno,\ Nano\ )\ etc.\ Enable\ pin\ change\ interrupt\ 20\ to\ 23\ for\ port\ PD4\ to\ PD7\ (Arduino\ pin\ 4\ to\ 7)}}
+\DoxyCodeLine{00545\ \textcolor{preprocessor}{\#define\ USE\_PCINT2}}
+\DoxyCodeLine{00546\ \textcolor{preprocessor}{\#\ \ \ \ elif\ IR\_RECEIVE\_PIN\ ==\ 8\ ||\ IR\_RECEIVE\_PIN\ ==\ 9\ ||\ IR\_RECEIVE\_PIN\ ==\ 10\ ||\ IR\_RECEIVE\_PIN\ ==\ 11\ ||\ IR\_RECEIVE\_PIN\ ==\ 12\ ||\ IR\_RECEIVE\_PIN\ ==\ 13}}
+\DoxyCodeLine{00547\ \ \ \ \ \textcolor{comment}{//ATmega328\ (Uno,\ Nano\ )\ etc.\ Enable\ pin\ change\ interrupt\ 0\ to\ 5\ for\ port\ PB0\ to\ PB5\ (Arduino\ pin\ 8\ to\ 13)}}
+\DoxyCodeLine{00548\ \textcolor{preprocessor}{\#define\ USE\_PCINT0}}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#\ \ \ \ elif\ IR\_RECEIVE\_PIN\ ==\ A0\ ||\ IR\_RECEIVE\_PIN\ ==\ A1\ ||\ IR\_RECEIVE\_PIN\ ==\ A2\ ||\ IR\_RECEIVE\_PIN\ ==\ A3\ ||\ IR\_RECEIVE\_PIN\ ==\ A4\ ||\ IR\_RECEIVE\_PIN\ ==\ A5}}
+\DoxyCodeLine{00550\ \ \ \ \ \textcolor{comment}{//ATmega328\ (Uno,\ Nano\ )\ etc.\ Enable\ pin\ change\ interrupt\ 8\ to\ 13\ for\ port\ PC0\ to\ PC5\ (Arduino\ pin\ A0\ to\ A5)}}
+\DoxyCodeLine{00551\ \textcolor{preprocessor}{\#define\ USE\_PCINT1}}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \textcolor{preprocessor}{\#\ \ \ \ else}}
+\DoxyCodeLine{00554\ \textcolor{preprocessor}{\#warning\ "{}No\ pin\ mapping\ for\ IR\_RECEIVE\_PIN\ to\ interrupt\ found\ -\/>\ attachInterrupt()\ is\ used\ now."{}}}
+\DoxyCodeLine{00555\ \textcolor{preprocessor}{\#define\ USE\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00556\ \textcolor{preprocessor}{\#\ \ \ \ endif\ }\textcolor{comment}{//\ if\ (IR\_RECEIVE\_PIN\ ==\ 2)}}
+\DoxyCodeLine{00557\ \textcolor{preprocessor}{\#\ \ endif\ }\textcolor{comment}{//\ defined(\_\_AVR\_ATtiny25\_\_)}}
+\DoxyCodeLine{00558\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\ defined(\_\_AVR\_\_)\ ||\ defined(TINY\_RECEIVER\_USE\_ARDUINO\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00564\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__TinyReceiver_gacc1eec5de7563e88aa73d16aa9e60a10}{enablePCIInterruptForTinyReceiver}}()\ \{}
+\DoxyCodeLine{00565\ \textcolor{preprocessor}{\#if\ defined(\_IR\_MEASURE\_TIMING)\ \&\&\ defined(\_IR\_TIMING\_TEST\_PIN)}}
+\DoxyCodeLine{00566\ \ \ \ \ pinModeFast(\_IR\_TIMING\_TEST\_PIN,\ OUTPUT);}
+\DoxyCodeLine{00567\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \textcolor{preprocessor}{\#if\ defined(USE\_ATTACH\_INTERRUPT)\ ||\ defined(USE\_ATTACH\_INTERRUPT\_DIRECT)}}
+\DoxyCodeLine{00570\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00571\ \textcolor{preprocessor}{\#if\ defined(NOT\_AN\_INTERRUPT)}}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordflow}{if}(digitalPinToInterrupt(IR\_RECEIVE\_PIN)\ ==\ NOT\_AN\_INTERRUPT)\{}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00574\ \ \ \ \ \}}
+\DoxyCodeLine{00575\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{comment}{//\ costs\ 112\ bytes\ program\ memory\ +\ 4\ bytes\ RAM}}
+\DoxyCodeLine{00577\ \ \ \ \ attachInterrupt(digitalPinToInterrupt(IR\_RECEIVE\_PIN),\ \mbox{\hyperlink{group__TinyReceiver_ga3c3d6703d25dbcc0555823e23eec0e69}{IRPinChangeInterruptHandler}},\ CHANGE);}
+\DoxyCodeLine{00578\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{comment}{//\ 2.2\ us\ more\ than\ version\ configured\ with\ macros\ and\ not\ compatible}}
+\DoxyCodeLine{00580\ \ \ \ \ attachInterrupt(IR\_RECEIVE\_PIN,\ \mbox{\hyperlink{group__TinyReceiver_ga3c3d6703d25dbcc0555823e23eec0e69}{IRPinChangeInterruptHandler}},\ CHANGE);\ \textcolor{comment}{//\ no\ extra\ pin\ mapping\ here}}
+\DoxyCodeLine{00581\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \textcolor{preprocessor}{\#\ \ if\ defined(LOCAL\_DEBUG\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00584\ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Use\ attachInterrupt\ for\ pin="{}}\ STR(IR\_RECEIVE\_PIN)));}
+\DoxyCodeLine{00585\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00588\ \textcolor{preprocessor}{\#\ \ if\ defined(LOCAL\_DEBUG\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00589\ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Use\ static\ interrupt\ for\ pin="{}}\ STR(IR\_RECEIVE\_PIN)));}
+\DoxyCodeLine{00590\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00591\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_INT0)}}
+\DoxyCodeLine{00592\ \ \ \ \ \textcolor{comment}{//\ interrupt\ on\ any\ logical\ change}}
+\DoxyCodeLine{00593\ \ \ \ \ EICRA\ |=\ \_BV(ISC00);}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00595\ \ \ \ \ EIFR\ |=\ 1\ <<\ INTF0;}
+\DoxyCodeLine{00596\ \ \ \ \ \textcolor{comment}{//\ enable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00597\ \ \ \ \ EIMSK\ |=\ 1\ <<\ INT0;}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_INT1)}}
+\DoxyCodeLine{00600\ \ \ \ \ EICRA\ |=\ \_BV(ISC10);}
+\DoxyCodeLine{00601\ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00602\ \ \ \ \ EIFR\ |=\ 1\ <<\ INTF1;}
+\DoxyCodeLine{00603\ \textcolor{comment}{//\ enable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00604\ \ \ \ \ EIMSK\ |=\ 1\ <<\ INT1;}
+\DoxyCodeLine{00605\ }
+\DoxyCodeLine{00606\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCIE)\ }\textcolor{comment}{//\ For\ ATtiny85\ etc.}}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{comment}{//\ use\ PinChangeInterrupt\ no\ INT0\ for\ pin\ PB2}}
+\DoxyCodeLine{00608\ \ \ \ \ PCMSK\ =\ \_BV(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00609\ \ \ \ \ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00610\ \ \ \ \ GIFR\ |=\ 1\ <<\ PCIF;}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{comment}{//\ enable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00612\ \ \ \ \ GIMSK\ |=\ 1\ <<\ PCIE;}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT0)}}
+\DoxyCodeLine{00615\ \ \ \ \ PCICR\ |=\ \_BV(PCIE0);}
+\DoxyCodeLine{00616\ \ \ \ \ PCMSK0\ =\ digitalPinToBitMask(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00617\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT1)}}
+\DoxyCodeLine{00618\ \ \ \ \ PCICR\ |=\ \_BV(PCIE1);}
+\DoxyCodeLine{00619\ \ \ \ \ PCMSK1\ =\ digitalPinToBitMask(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00620\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT2)}}
+\DoxyCodeLine{00621\ \ \ \ \ PCICR\ |=\ \_BV(PCIE2);}
+\DoxyCodeLine{00622\ \ \ \ \ PCMSK2\ =\ digitalPinToBitMask(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00623\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00624\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00625\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00626\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ defined(USE\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00628\ \}}
+\DoxyCodeLine{00629\ }
+\DoxyCodeLine{00630\ \textcolor{keywordtype}{void}\ disablePCIInterruptForTinyReceiver()\ \{}
+\DoxyCodeLine{00631\ \textcolor{preprocessor}{\#if\ defined(\_IR\_MEASURE\_TIMING)\ \&\&\ defined(\_IR\_TIMING\_TEST\_PIN)}}
+\DoxyCodeLine{00632\ \ \ \ \ pinModeFast(\_IR\_TIMING\_TEST\_PIN,\ OUTPUT);}
+\DoxyCodeLine{00633\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ \textcolor{preprocessor}{\#if\ defined(USE\_ATTACH\_INTERRUPT)\ ||\ defined(USE\_ATTACH\_INTERRUPT\_DIRECT)}}
+\DoxyCodeLine{00636\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00637\ \ \ \ \ detachInterrupt(digitalPinToInterrupt(IR\_RECEIVE\_PIN));}
+\DoxyCodeLine{00638\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00639\ \ \ \ \ detachInterrupt(IR\_RECEIVE\_PIN);}
+\DoxyCodeLine{00640\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00643\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_INT0)}}
+\DoxyCodeLine{00644\ \ \ \ \ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00645\ \ \ \ \ EIFR\ |=\ 1\ <<\ INTF0;}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{comment}{//\ disable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00647\ \ \ \ \ EIMSK\ \&=\ \string~(1\ <<\ INT0);}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_INT1)}}
+\DoxyCodeLine{00650\ \ \ \ \ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00651\ \ \ \ \ EIFR\ |=\ 1\ <<\ INTF1;}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{comment}{//\ disable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00653\ \ \ \ \ EIMSK\ \&=\ \string~(1\ <<\ INT1);}
+\DoxyCodeLine{00654\ }
+\DoxyCodeLine{00655\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCIE)\ }\textcolor{comment}{//\ For\ ATtiny85\ etc.}}
+\DoxyCodeLine{00656\ \ \ \ \ \textcolor{comment}{//\ clear\ interrupt\ bit}}
+\DoxyCodeLine{00657\ \ \ \ \ GIFR\ |=\ 1\ <<\ PCIF;}
+\DoxyCodeLine{00658\ \ \ \ \ \textcolor{comment}{//\ disable\ interrupt\ on\ next\ change}}
+\DoxyCodeLine{00659\ \ \ \ \ GIMSK\ \&=\ \string~(1\ <<\ PCIE);}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT0)}}
+\DoxyCodeLine{00662\ \ \ \ \ PCICR\ \&=\ \string~(\_BV(PCIE0));}
+\DoxyCodeLine{00663\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT1)}}
+\DoxyCodeLine{00664\ \ \ \ \ PCICR\ \&=\ \string~(\_BV(PCIE1));}
+\DoxyCodeLine{00665\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT2)}}
+\DoxyCodeLine{00666\ \ \ \ \ PCICR\ \&=\ \string~(\_BV(PCIE2));}
+\DoxyCodeLine{00667\ }
+\DoxyCodeLine{00668\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00669\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ defined(USE\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00670\ \}}
+\DoxyCodeLine{00671\ }
+\DoxyCodeLine{00672\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00673\ \textcolor{comment}{\ *\ Specify\ the\ right\ INT0,\ INT1\ or\ PCINT0\ interrupt\ vector\ according\ to\ different\ pins\ and\ cores.}}
+\DoxyCodeLine{00674\ \textcolor{comment}{\ *\ The\ default\ value\ of\ TINY\_RECEIVER\_USE\_ARDUINO\_ATTACH\_INTERRUPT\ is\ set\ in\ TinyIRReceiver.h}}
+\DoxyCodeLine{00675\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00676\ \textcolor{preprocessor}{\#if\ !(defined(USE\_ATTACH\_INTERRUPT)\ ||\ defined(USE\_ATTACH\_INTERRUPT\_DIRECT))}}
+\DoxyCodeLine{00677\ \textcolor{preprocessor}{\#\ \ if\ defined(USE\_INT0)}}
+\DoxyCodeLine{00678\ ISR(INT0\_vect)}
+\DoxyCodeLine{00679\ }
+\DoxyCodeLine{00680\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_INT1)}}
+\DoxyCodeLine{00681\ ISR(INT1\_vect)}
+\DoxyCodeLine{00682\ }
+\DoxyCodeLine{00683\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCIE)\ }\textcolor{comment}{//\ For\ ATtiny85\ etc.}}
+\DoxyCodeLine{00684\ \textcolor{comment}{//\ on\ ATtinyX5\ we\ do\ not\ have\ a\ INT1\_vect\ but\ we\ can\ use\ the\ PCINT0\_vect}}
+\DoxyCodeLine{00685\ ISR(PCINT0\_vect)}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00687\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT0)}}
+\DoxyCodeLine{00688\ ISR(PCINT0\_vect)}
+\DoxyCodeLine{00689\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT1)}}
+\DoxyCodeLine{00690\ ISR(PCINT1\_vect)}
+\DoxyCodeLine{00691\ \textcolor{preprocessor}{\#\ \ elif\ defined(USE\_PCINT2)}}
+\DoxyCodeLine{00692\ ISR(PCINT2\_vect)}
+\DoxyCodeLine{00693\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00694\ \textcolor{keywordtype}{void}\ dummyFunctionToAvoidCompilerErrors()}
+\DoxyCodeLine{00695\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00696\ \{}
+\DoxyCodeLine{00697\ \ \ \ \ \mbox{\hyperlink{group__TinyReceiver_ga3c3d6703d25dbcc0555823e23eec0e69}{IRPinChangeInterruptHandler}}();}
+\DoxyCodeLine{00698\ \}}
+\DoxyCodeLine{00699\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !(defined(USE\_ATTACH\_INTERRUPT)\ ||\ defined(USE\_ATTACH\_INTERRUPT\_DIRECT))}}
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00703\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG\_ATTACH\_INTERRUPT)}}
+\DoxyCodeLine{00704\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG\_ATTACH\_INTERRUPT}}
+\DoxyCodeLine{00705\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00706\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_TRACE\_STATE\_MACHINE)}}
+\DoxyCodeLine{00707\ \textcolor{preprocessor}{\#undef\ LOCAL\_TRACE\_STATE\_MACHINE}}
+\DoxyCodeLine{00708\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00709\ }
+\DoxyCodeLine{00710\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00711\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00712\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00713\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_TINY\_IR\_RECEIVER\_HPP}}
+
+\end{DoxyCode}

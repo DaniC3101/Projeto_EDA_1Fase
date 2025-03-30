@@ -1,0 +1,149 @@
+\doxysection{IRProtocol.\+h}
+\hypertarget{IRProtocol_8h_source}{}\label{IRProtocol_8h_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRProtocol.h@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/IRProtocol.h}}
+\mbox{\hyperlink{IRProtocol_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_IR\_PROTOCOL\_H}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_IR\_PROTOCOL\_H}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ UNKNOWN\ =\ 0,}
+\DoxyCodeLine{00042\ \ \ \ \ PULSE\_WIDTH,}
+\DoxyCodeLine{00043\ \ \ \ \ PULSE\_DISTANCE,}
+\DoxyCodeLine{00044\ \ \ \ \ APPLE,}
+\DoxyCodeLine{00045\ \ \ \ \ DENON,}
+\DoxyCodeLine{00046\ \ \ \ \ JVC,}
+\DoxyCodeLine{00047\ \ \ \ \ LG,}
+\DoxyCodeLine{00048\ \ \ \ \ LG2,}
+\DoxyCodeLine{00049\ \ \ \ \ NEC,}
+\DoxyCodeLine{00050\ \ \ \ \ NEC2,\ \textcolor{comment}{/*\ 10\ NEC\ with\ full\ frame\ as\ repeat\ */}}
+\DoxyCodeLine{00051\ \ \ \ \ ONKYO,}
+\DoxyCodeLine{00052\ \ \ \ \ PANASONIC,}
+\DoxyCodeLine{00053\ \ \ \ \ KASEIKYO,}
+\DoxyCodeLine{00054\ \ \ \ \ KASEIKYO\_DENON,}
+\DoxyCodeLine{00055\ \ \ \ \ KASEIKYO\_SHARP,}
+\DoxyCodeLine{00056\ \ \ \ \ KASEIKYO\_JVC,}
+\DoxyCodeLine{00057\ \ \ \ \ KASEIKYO\_MITSUBISHI,}
+\DoxyCodeLine{00058\ \ \ \ \ RC5,}
+\DoxyCodeLine{00059\ \ \ \ \ RC6,}
+\DoxyCodeLine{00060\ \ \ \ \ RC6A,\ \textcolor{comment}{/*31\ bit\ +\ \ 3\ fixed\ 0b110\ mode\ bits*/}}
+\DoxyCodeLine{00061\ \ \ \ \ SAMSUNG,\ \textcolor{comment}{/*\ 20*/}}
+\DoxyCodeLine{00062\ \ \ \ \ SAMSUNGLG,}
+\DoxyCodeLine{00063\ \ \ \ \ SAMSUNG48,}
+\DoxyCodeLine{00064\ \ \ \ \ SHARP,}
+\DoxyCodeLine{00065\ \ \ \ \ SONY,}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{/*\ Now\ the\ exotic\ protocols\ */}}
+\DoxyCodeLine{00067\ \ \ \ \ BANG\_OLUFSEN,}
+\DoxyCodeLine{00068\ \ \ \ \ BOSEWAVE,}
+\DoxyCodeLine{00069\ \ \ \ \ LEGO\_PF,}
+\DoxyCodeLine{00070\ \ \ \ \ MAGIQUEST,}
+\DoxyCodeLine{00071\ \ \ \ \ WHYNTER,\ \textcolor{comment}{/*\ 30\ */}}
+\DoxyCodeLine{00072\ \ \ \ \ FAST}
+\DoxyCodeLine{00073\ \}\ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}};}
+\DoxyCodeLine{00074\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\textcolor{keyword}{const}\ ProtocolNames[];\ \textcolor{comment}{//\ The\ array\ of\ name\ strings\ for\ the\ decode\_type\_t\ enum}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ SIRCS\_12\_PROTOCOL\ \ \ \ \ \ \ 12}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ SIRCS\_15\_PROTOCOL\ \ \ \ \ \ \ 15}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ SIRCS\_20\_PROTOCOL\ \ \ \ \ \ \ 20}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDistanceWidthTimingInfoStruct}{DistanceWidthTimingInfoStruct}}\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ uint16\_t\ HeaderMarkMicros;}
+\DoxyCodeLine{00082\ \ \ \ \ uint16\_t\ HeaderSpaceMicros;}
+\DoxyCodeLine{00083\ \ \ \ \ uint16\_t\ OneMarkMicros;}
+\DoxyCodeLine{00084\ \ \ \ \ uint16\_t\ OneSpaceMicros;}
+\DoxyCodeLine{00085\ \ \ \ \ uint16\_t\ ZeroMarkMicros;}
+\DoxyCodeLine{00086\ \ \ \ \ uint16\_t\ ZeroSpaceMicros;}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ *\ Definitions\ for\ member\ IRData.flags}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_EMPTY\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x00}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_REPEAT\ \ \ \ \ \ \ \ \ \ 0x01\ }}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_AUTO\_REPEAT\ \ \ \ \ 0x02\ }}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_PARITY\_FAILED\ \ \ \ \ \ 0x04\ }}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_TOGGLE\_BIT\ \ \ \ \ \ \ \ \ 0x08\ }}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ IRDATA\_TOGGLE\_BIT\_MASK\ \ \ \ \ \ \ \ \ \ 0x08\ }}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_EXTRA\_INFO\ \ \ \ \ \ \ \ \ 0x10\ }}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_PROTOCOL\_WITH\_DIFFERENT\_REPEAT\ 0x20\ }}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_WAS\_OVERFLOW\ \ \ \ \ \ \ 0x40\ }}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_MSB\_FIRST\ \ \ \ \ \ \ 0x80\ }}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ IRDATA\_FLAGS\_IS\_LSB\_FIRST\ \ \ \ \ \ \ 0x00}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ RAW\_DATA\_ARRAY\_SIZE\ \ \ \ \ \ \ \ \ \ \ \ \ ((((RAW\_BUFFER\_LENGTH\ -\/\ 2)\ -\/\ 1)\ /\ (2\ *\ BITS\_IN\_RAW\_DATA\_TYPE))\ +\ 1)\ }\textcolor{comment}{//\ The\ -\/2\ is\ for\ initial\ gap\ +\ stop\ bit\ mark,\ 128\ mark\ +\ spaces\ for\ 64\ bit.}}
+\DoxyCodeLine{00109\ struct\ IRData\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ \mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}};\ }
+\DoxyCodeLine{00111\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}};\ }
+\DoxyCodeLine{00112\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a08a6d5eaf26fbbcc3271bcc930d6e331}{extra}};\ }
+\DoxyCodeLine{00114\ \ \ \ \ IRRawDataType\ \mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#if\ defined(DECODE\_DISTANCE\_WIDTH)}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ This\ replaces\ the\ address,\ command,\ extra\ and\ decodedRawData\ in\ case\ of\ protocol\ ==\ PULSE\_DISTANCE\ or\ -\/rather\ seldom-\/\ protocol\ ==\ PULSE\_WIDTH.}}
+\DoxyCodeLine{00117\ \ \ \ \ \mbox{\hyperlink{structDistanceWidthTimingInfoStruct}{DistanceWidthTimingInfoStruct}}\ DistanceWidthTimingInfo;\ \textcolor{comment}{//\ 12\ bytes}}
+\DoxyCodeLine{00118\ \ \ \ \ IRRawDataType\ decodedRawDataArray[RAW\_DATA\_ARRAY\_SIZE];\ }
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00120\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}};\ }
+\DoxyCodeLine{00121\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ \ *\ These\ 2\ variables\ allow\ to\ call\ resume()\ directly\ after\ decode.}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ \ \ \ *\ After\ resume(),\ decodedIRData.rawDataPtr-\/>initialGapTicks\ and\ decodedIRData.rawDataPtr-\/>rawlen\ are}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ \ \ \ *\ the\ first\ variables,\ which\ are\ overwritten\ by\ the\ next\ received\ frame.}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ \ \ \ \ *\ since\ 4.3.0.}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00129\ \ \ \ \ IRRawlenType\ \mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00130\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structIRData_a2cb445f10b0ed8b2a14b7d474883a242}{initialGapTicks}};\ \ \ }
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \mbox{\hyperlink{structirparams__struct}{irparams\_struct}}\ *\mbox{\hyperlink{structIRData_a7efcbc176923f05424538e3eb6d77ee3}{rawDataPtr}};\ }
+\DoxyCodeLine{00133\ \};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{keyword}{extern}\ uint8\_t\ sLastSendToggleValue;\ \textcolor{comment}{//\ Currently\ used\ by\ RC5\ +\ RC6}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ ProtocolIndex;}
+\DoxyCodeLine{00139\ \ \ \ \ uint\_fast8\_t\ FrequencyKHz;}
+\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{structDistanceWidthTimingInfoStruct}{DistanceWidthTimingInfoStruct}}\ DistanceWidthTimingInfo;}
+\DoxyCodeLine{00141\ \ \ \ \ uint8\_t\ Flags;}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ RepeatPeriodMillis;}
+\DoxyCodeLine{00143\ \ \ \ \ void\ (*SpecialSendRepeatFunction)();\ \textcolor{comment}{//\ using\ non\ member\ functions\ here\ saves\ up\ to\ 250\ bytes\ for\ send\ demo}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//\ \ \ \ void\ (IRsend::*SpecialSendRepeatFunction)();}}
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ *\ Definitions\ for\ member\ PulseDistanceWidthProtocolConstants.Flags}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#define\ SUPPRESS\_STOP\_BIT\ \ \ \ \ \ \ 0x20\ }\textcolor{comment}{//\ Stop\ bit\ is\ otherwise\ sent\ for\ all\ pulse\ distance\ protocols,\ i.e.\ aOneSpaceMicros\ !=\ aZeroSpaceMicros.}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ PROTOCOL\_IS\_MSB\_FIRST\ \ \ IRDATA\_FLAGS\_IS\_MSB\_FIRST}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#define\ PROTOCOL\_IS\_LSB\_FIRST\ \ \ IRDATA\_FLAGS\_IS\_LSB\_FIRST}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ *\ Carrier\ frequencies\ for\ various\ protocols}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#if\ !defined(BEO\_KHZ)\ }\textcolor{comment}{//\ guard\ used\ for\ unit\ test,\ which\ sends\ and\ receive\ Bang\&Olufsen\ with\ 38\ kHz.}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#define\ BEO\_KHZ\ \ \ \ \ \ \ \ \ 455}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#define\ SONY\_KHZ\ \ \ \ \ \ \ \ 40}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ BOSEWAVE\_KHZ\ \ \ \ 38}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#define\ DENON\_KHZ\ \ \ \ \ \ \ 38}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#define\ JVC\_KHZ\ \ \ \ \ \ \ \ \ 38}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ LG\_KHZ\ \ \ \ \ \ \ \ \ \ 38}}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#define\ NEC\_KHZ\ \ \ \ \ \ \ \ \ 38}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#define\ SAMSUNG\_KHZ\ \ \ \ \ 38}}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#define\ KASEIKYO\_KHZ\ \ \ \ 37}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#define\ RC5\_RC6\_KHZ\ \ \ \ \ 36}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#if\ defined(\_\_AVR\_\_)}}
+\DoxyCodeLine{00170\ \textcolor{keyword}{const}\ \_\_FlashStringHelper*\ getProtocolString(\mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ aProtocol);}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00172\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ getProtocolString(\mbox{\hyperlink{IRProtocol_8h_ad5b287a488a8c1b7b8661f029ab56fad}{decode\_type\_t}}\ aProtocol);}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00174\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Receiving_gac45e8ead5e96868e61c65cd354758d4d}{printIRResultShort}}(Print\ *aSerial,\ \mbox{\hyperlink{structIRData}{IRData}}\ *aIRDataPtr,\ \textcolor{keywordtype}{bool}\ aPrintGap);\ \textcolor{comment}{//\ A\ static\ function\ to\ be\ able\ to\ print\ send\ or\ copied\ received\ data.}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ *\ Convenience\ functions\ to\ convert\ MSB\ to\ LSB\ values}}
+\DoxyCodeLine{00178\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00179\ uint8\_t\ bitreverseOneByte(uint8\_t\ aValue);}
+\DoxyCodeLine{00180\ uint32\_t\ bitreverse32Bit(uint32\_t\ aInput);}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_PROTOCOL\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['macros_20for_20this_20library_0',['Compile options / macros for this library',['../index.html#autotoc_md147',1,'']]],
+  ['macros_20with_20platformio_1',['Modifying compile options / macros with PlatformIO',['../index.html#autotoc_md149',1,'']]],
+  ['macros_20with_20sloeber_20ide_2',['Modifying compile options / macros with Sloeber IDE',['../index.html#autotoc_md150',1,'']]],
+  ['map_3a_3',['Nibble reverse map:',['../index.html#autotoc_md72',1,'']]],
+  ['mark_4',['mark',['../group__Sending.html#ga79c32266db5f6ebb003089f316199380',1,'IRsend']]],
+  ['mark_5fexcess_5fmicros_5',['MARK_EXCESS_MICROS',['../IRremote_8hpp.html#a6cb4ad1bc3f0b5d2c4503615058a1d90',1,'IRremote.hpp']]],
+  ['master_20changelog_20md_20history_20a_6',['&lt;a href=&quot;https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md&quot; &gt;History&lt;/a&gt;',['../index.html#autotoc_md163',1,'']]],
+  ['master_20contributors_20md_20contributors_20a_7',['&lt;a href=&quot;https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributors.md&quot; &gt;Contributors&lt;/a&gt;',['../index.html#autotoc_md165',1,'']]],
+  ['matchmark_8',['matchMark',['../group__Receiving.html#ga4472564ea96b1ee10b51f594f60d7aeb',1,'matchMark(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp'],['../group__Receiving.html#ga4472564ea96b1ee10b51f594f60d7aeb',1,'matchMark(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp']]],
+  ['matchspace_9',['matchSpace',['../group__Receiving.html#ga7902b620f6c01463b5b6e50ef604ac8b',1,'matchSpace(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp'],['../group__Receiving.html#ga7902b620f6c01463b5b6e50ef604ac8b',1,'matchSpace(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp']]],
+  ['matchticks_10',['matchTicks',['../group__Receiving.html#ga495b7f49ff71cde1289b118fac0f0674',1,'matchTicks(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp'],['../group__Receiving.html#ga495b7f49ff71cde1289b118fac0f0674',1,'matchTicks(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros):&#160;IRReceive.hpp']]],
+  ['matriz_11',['Matriz',['../structMatriz.html',1,'']]],
+  ['md_20contributors_20a_12',['&lt;a href=&quot;https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/Contributors.md&quot; &gt;Contributors&lt;/a&gt;',['../index.html#autotoc_md165',1,'']]],
+  ['md_20history_20a_13',['&lt;a href=&quot;https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/changelog.md&quot; &gt;History&lt;/a&gt;',['../index.html#autotoc_md163',1,'']]],
+  ['micros_5fper_5ftick_14',['MICROS_PER_TICK',['../IRremote_8hpp.html#a1c7eebb527483c272812530caa313d20',1,'IRremote.hpp']]],
+  ['minimal_20cpu_20clock_20frequency_15',['Minimal CPU clock frequency',['../index.html#autotoc_md123',1,'']]],
+  ['minimal_20receiver_20for_20nec_20and_20fast_20protocol_16',['Minimal receiver for NEC and FAST protocol',['../group__TinyReceiver.html',1,'']]],
+  ['minimal_20sender_20for_20nec_20and_20fast_20protocol_17',['Minimal sender for NEC and FAST protocol',['../group__TinySender.html',1,'']]],
+  ['modifying_20compile_20options_20macros_20with_20platformio_18',['Modifying compile options / macros with PlatformIO',['../index.html#autotoc_md149',1,'']]],
+  ['modifying_20compile_20options_20macros_20with_20sloeber_20ide_19',['Modifying compile options / macros with Sloeber IDE',['../index.html#autotoc_md150',1,'']]],
+  ['motor_20',['Receiving stops after analogWrite() or tone() or after running a motor.',['../index.html#autotoc_md117',1,'']]],
+  ['msb_20first_2032_20bit_20ir_20data_20codes_20to_20new_20lsb_20first_2032_20bit_20ir_20data_20codes_21',['How to convert old MSB first 32 bit IR data codes to new LSB first 32 bit IR data codes',['../index.html#autotoc_md71',1,'']]],
+  ['multiple_20ir_20receiver_20and_20sender_22',['Multiple IR receiver and sender',['../index.html#autotoc_md121',1,'']]],
+  ['multiple_20protocols_23',['multiple protocols',['../group__Receiving.html',1,'Receiving IR data for multiple protocols'],['../group__Sending.html',1,'Sending IR data for multiple protocols']]]
+];

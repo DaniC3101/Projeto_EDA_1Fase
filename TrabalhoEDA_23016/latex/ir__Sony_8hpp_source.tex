@@ -1,0 +1,231 @@
+\doxysection{ir\+\_\+\+Sony.\+hpp}
+\hypertarget{ir__Sony_8hpp_source}{}\label{ir__Sony_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Sony.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_Sony.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_Sony.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ SIRCS/Sony\ IR\ Protocol\ in\ "{}raw"{}\ and\ standard\ format\ with\ 5\ bit\ address\ 7\ bit\ command}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#ifndef\ \_IR\_SONY\_HPP}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ \_IR\_SONY\_HPP}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSSS\ \ \ OOO\ \ \ N\ \ \ N\ \ Y\ \ \ Y}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S\ \ \ \ \ \ O\ \ \ O\ \ NN\ \ N\ \ \ Y\ Y}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSS\ \ \ O\ \ \ O\ \ N\ N\ N\ \ \ \ Y}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S\ \ O\ \ \ O\ \ N\ \ NN\ \ \ \ Y}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SSSS\ \ \ \ OOO\ \ \ N\ \ \ N\ \ \ \ Y}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00049\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *\ Protocol=Sony\ Address=0x4B9\ Command=0x7\ Raw-\/Data=0x25C87\ 20\ bits\ LSB\ first}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ +2550,-\/\ 400}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ //\ 7\ command\ bits}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ +1300,-\/\ 450\ +1350,-\/\ 450\ +1300,-\/\ 450\ +\ 700,-\/\ 450}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ +\ 700,-\/\ 450\ +\ 750,-\/\ 450\ +\ 700,-\/\ 400}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ //\ (5,8,)\ 13\ address\ bits\ and\ NO\ stop\ bit!}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ +1300,-\/\ 500}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ +\ 700,-\/\ 450\ +\ 700,-\/\ 450\ +1300,-\/\ 500\ +1300,-\/\ 450}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ +1300,-\/\ 450\ +\ 700,-\/\ 450\ +1350,-\/\ 400\ +\ 750,-\/\ 450}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ +\ 700,-\/\ 450\ +1300,-\/\ 450\ +\ 700,-\/\ 450\ +\ 700}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ Sum:\ 31100}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00062\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *\ Sony\ is\ the\ only\ protocol\ using\ the\ pulse\ width\ encoding,\ which\ requires\ no\ stop\ bit}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ see\ https://www.sbprojects.net/knowledge/ir/sirc.php}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ https://www.mikrocontroller.net/articles/IRMP\_-\/\_english\#SIRCS}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ Frames\ are\ repeated\ every\ 45ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ This\ leads\ to\ a\ 15\ ms\ gap\ for\ a\ Sony20\ protocol!}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ Here\ http://picprojects.org.uk/projects/sirc/\ it\ is\ claimed,\ that\ many\ Sony\ remotes\ send\ each\ frame\ a\ minimum\ of\ 3\ times.\ But\ 1\ repeat\ (2\ sends)\ has\ also\ been\ seen\ in\ real\ life.}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ LSB\ first,\ start\ bit\ +\ 7\ command\ +\ 5\ to\ 13\ address,\ no\ stop\ bit}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ IRP:\ Sony12\ \{40k,600\}<1,-\/1|2,-\/1>(4,-\/1,F:7,D:5,\string^45m)+\ ==>\ 40\ kHz,\ Unit\ is\ 600,\ LSB,\ One\ mark\ is\ 2\ units,\ Start\ bit\ is\ 4\ units,\ 7\ bit\ Function,\ 5\ bit\ Device,\ no\ Stop\ bit,\ every\ 45\ milliseconds}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ IRP:\ Sony15\ \{40k,600\}<1,-\/1|2,-\/1>(4,-\/1,F:7,D:8,\string^45m)+\ ==>\ 8\ bit\ Device}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ IRP:\ Sony20\ \{40k,600\}<1,-\/1|2,-\/1>(4,-\/1,F:7,D:5,S:8,\string^45m)+\ ==>\ 5\ bit\ Device,\ 8\ bit\ Subdevice}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ SONY\_ADDRESS\_BITS\ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ SONY\_COMMAND\_BITS\ \ \ \ \ \ \ 7}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ SONY\_EXTRA\_BITS\ \ \ \ \ \ \ \ \ 8}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ SONY\_BITS\_MIN\ \ \ \ \ \ \ \ \ \ \ (SONY\_COMMAND\_BITS\ +\ SONY\_ADDRESS\_BITS)\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ 12\ bits}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ SONY\_BITS\_15\ \ \ \ \ \ \ \ \ \ \ \ (SONY\_COMMAND\_BITS\ +\ SONY\_ADDRESS\_BITS\ +\ 3)\ \ \ \ }\textcolor{comment}{//\ 15\ bits}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ SONY\_BITS\_MAX\ \ \ \ \ \ \ \ \ \ \ (SONY\_COMMAND\_BITS\ +\ SONY\_ADDRESS\_BITS\ +\ SONY\_EXTRA\_BITS)\ \ \ \ }\textcolor{comment}{//\ 20\ bits\ ==\ SIRCS\_20\_PROTOCOL}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ SONY\_UNIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 600\ }\textcolor{comment}{//\ 24\ periods\ of\ 40kHz}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ SONY\_HEADER\_MARK\ \ \ \ \ \ \ \ (4\ *\ SONY\_UNIT)\ }\textcolor{comment}{//\ 2400}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ SONY\_ONE\_MARK\ \ \ \ \ \ \ \ \ \ \ (2\ *\ SONY\_UNIT)\ }\textcolor{comment}{//\ 1200}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ SONY\_ZERO\_MARK\ \ \ \ \ \ \ \ \ \ SONY\_UNIT}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ SONY\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ \ \ SONY\_UNIT}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ SONY\_AVERAGE\_DURATION\_MIN\ \ \ 21000\ }\textcolor{comment}{//\ SONY\_HEADER\_MARK\ +\ SONY\_SPACE\ \ +\ 12\ *\ 2,5\ *\ SONY\_UNIT\ \ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ SONY\_AVERAGE\_DURATION\_MAX\ \ \ 33000\ }\textcolor{comment}{//\ SONY\_HEADER\_MARK\ +\ SONY\_SPACE\ \ +\ 20\ *\ 2,5\ *\ SONY\_UNIT\ \ //\ 2.5\ because\ we\ assume\ more\ zeros\ than\ ones}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ SONY\_REPEAT\_PERIOD\ \ \ \ \ \ \ \ \ \ 45000\ }\textcolor{comment}{//\ Commands\ are\ repeated\ every\ 45\ ms\ (measured\ from\ start\ to\ start)\ for\ as\ long\ as\ the\ key\ on\ the\ remote\ control\ is\ held\ down.}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ SONY\_MAXIMUM\_REPEAT\_DISTANCE\ \ \ \ (SONY\_REPEAT\_PERIOD\ -\/\ SONY\_AVERAGE\_DURATION\_MIN)\ }\textcolor{comment}{//\ 24\ ms}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ SonyProtocolConstants\ =\ \{\ SONY,\ SONY\_KHZ,\ SONY\_HEADER\_MARK,\ SONY\_SPACE,\ SONY\_ONE\_MARK,}
+\DoxyCodeLine{00094\ SONY\_SPACE,\ SONY\_ZERO\_MARK,\ SONY\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (SONY\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),\ NULL\ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6c88e27473df92b7b73694940bb7836e}{IRsend::sendSony}}(uint16\_t\ aAddress,\ uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats,\ uint8\_t\ numberOfBits)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ uint32\_t\ tData\ =\ (uint32\_t)\ aAddress\ <<\ 7\ |\ (aCommand\ \&\ 0x7F);}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\ send\ 5,\ 8,\ 13\ address\ bits\ LSB\ first}}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga49d2033873078143dc9b23d053ab8ece}{sendPulseDistanceWidth}}(\&SonyProtocolConstants,\ tData,\ numberOfBits,\ aNumberOfRepeats);}
+\DoxyCodeLine{00107\ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{keywordtype}{bool}\ IRrecv::decodeSony()\ \{}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&SonyProtocolConstants))\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ enough\ data.\ +2\ for\ initial\ gap\ and\ start\ bit\ mark\ and\ space\ minus\ the\ last/MSB\ space.\ NO\ stop\ bit!\ 26,\ 32,\ 42}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ SONY\_BITS\_MIN)\ +\ 2\ \&\&\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ SONY\_BITS\_MAX)\ +\ 2}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ (2\ *\ SONY\_BITS\_15)\ +\ 2)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Sony:\ "{}}));}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 12,\ 15\ or\ 20"{}}));}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&SonyProtocolConstants,\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 1)\ /\ 2,\ 3))\ \{}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Sony:\ "{}}));}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00135\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ \&\ 0x7F;\ \ \textcolor{comment}{//\ first\ 7\ bits}}
+\DoxyCodeLine{00136\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}}\ >>\ 7;\ \ \ \ \textcolor{comment}{//\ next\ 5\ or\ 8\ or\ 13\ bits}}
+\DoxyCodeLine{00137\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ -\/\ 1)\ /\ 2;}
+\DoxyCodeLine{00138\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ SONY;}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//Check\ for\ repeat}}
+\DoxyCodeLine{00141\ \ \ \ \ checkForRepeatSpaceTicksAndSetFlag(SONY\_MAXIMUM\_REPEAT\_DISTANCE\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00144\ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{comment}{/*********************************************************************************}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ *\ Old\ deprecated\ functions,\ kept\ for\ backward\ compatibility\ to\ old\ 2.0\ tutorials}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ *********************************************************************************/}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ *\ Old\ version\ with\ MSB\ first\ data}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#define\ SONY\_DOUBLE\_SPACE\_USECS\ \ \ \ 500\ }\textcolor{comment}{//\ usually\ see\ 713\ -\/\ not\ using\ ticks\ as\ get\ number\ wrap\ around}}
+\DoxyCodeLine{00154\ \textcolor{keywordtype}{bool}\ IRrecv::decodeSonyMSB(\mbox{\hyperlink{structdecode__results}{decode\_results}}\ *aResults)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{long}\ data\ =\ 0;}
+\DoxyCodeLine{00156\ \ \ \ \ uint8\_t\ bits\ =\ 0;}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ offset\ =\ 0;\ \ \textcolor{comment}{//\ Dont\ skip\ first\ space,\ check\ its\ size}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (aResults-\/>rawlen\ <\ (2\ *\ SONY\_BITS\_MIN)\ +\ 2)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//\ Some\ Sony's\ deliver\ repeats\ fast\ after\ first}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ unfortunately\ can't\ spot\ difference\ from\ of\ repeat\ from\ two\ fast\ clicks}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (aResults-\/>rawbuf[0]\ <\ (SONY\_DOUBLE\_SPACE\_USECS\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}}))\ \{}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}IR\ Gap\ found"{}}));}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ aResults-\/>bits\ =\ 0;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ aResults-\/>value\ =\ 0xFFFFFFFF;}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_aaa9952cd64b58083c28873484c494abf}{IRDATA\_FLAGS\_IS\_REPEAT}};}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ SONY;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ offset++;}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{comment}{//\ Check\ header\ "{}mark"{}}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ SONY\_HEADER\_MARK))\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ offset++;}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ MSB\ first\ -\/\ Not\ compatible\ to\ standard,\ which\ says\ LSB\ first\ :-\/(}}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{while}\ (offset\ +\ 1\ <\ aResults-\/>rawlen)\ \{}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ First\ check\ for\ the\ constant\ space\ length,\ we\ do\ not\ have\ a\ space\ at\ the\ end\ of\ raw\ data}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ are\ lucky,\ since\ the\ start\ space\ is\ equal\ the\ data\ space.}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga7902b620f6c01463b5b6e50ef604ac8b}{matchSpace}}(aResults-\/>rawbuf[offset],\ SONY\_SPACE))\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ offset++;}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ bit\ value\ is\ determined\ by\ length\ of\ the\ mark}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ SONY\_ONE\_MARK))\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ data\ =\ (data\ <<\ 1)\ |\ 1;}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{group__Receiving_ga4472564ea96b1ee10b51f594f60d7aeb}{matchMark}}(aResults-\/>rawbuf[offset],\ SONY\_ZERO\_MARK))\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ data\ =\ (data\ <<\ 1)\ |\ 0;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ offset++;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ bits++;}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ aResults-\/>bits\ =\ bits;}
+\DoxyCodeLine{00207\ \ \ \ \ aResults-\/>value\ =\ data;}
+\DoxyCodeLine{00208\ \ \ \ \ aResults-\/>decode\_type\ =\ SONY;}
+\DoxyCodeLine{00209\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ SONY;}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00211\ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00216\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga9c19e03e460589cf1cddf9cd303df07a}{IRsend::sendSonyMSB}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00218\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}\ (SONY\_KHZ);}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//\ Header}}
+\DoxyCodeLine{00221\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(SONY\_HEADER\_MARK);}
+\DoxyCodeLine{00222\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(SONY\_SPACE);}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{comment}{//\ Old\ version\ with\ MSB\ first\ Data}}
+\DoxyCodeLine{00225\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(SONY\_ONE\_MARK,\ SONY\_SPACE,\ SONY\_ZERO\_MARK,\ SONY\_SPACE,\ data,\ nbits,\ PROTOCOL\_IS\_MSB\_FIRST);}
+\DoxyCodeLine{00226\ \}}
+\DoxyCodeLine{00227\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6c88e27473df92b7b73694940bb7836e}{IRsend::sendSony}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ data,\ \textcolor{keywordtype}{int}\ nbits)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \mbox{\hyperlink{group__Decoder_ga9c19e03e460589cf1cddf9cd303df07a}{sendSonyMSB}}(data,\ nbits);}
+\DoxyCodeLine{00229\ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_SONY\_HPP}}
+
+\end{DoxyCode}

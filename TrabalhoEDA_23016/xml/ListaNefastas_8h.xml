@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="ListaNefastas_8h" kind="file" language="C++">
+    <compoundname>ListaNefastas.h</compoundname>
+    <includes refid="LocalizacaoNefasta_8h" local="yes">LocalizacaoNefasta.h</includes>
+    <includedby refid="Antena_8h" local="yes">Fase1/Fase1/Antena.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Fase1/Fase1/ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>LocalizacaoNefasta.h</label>
+        <link refid="LocalizacaoNefasta_8h_source"/>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Fase1/Fase1/Antena.h</label>
+        <link refid="Antena_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Fase1/Fase1/Dados.h</label>
+        <link refid="Dados_8h_source"/>
+      </node>
+      <node id="3">
+        <label>Fase1/Fase1/ListaAntenas.h</label>
+        <link refid="ListaAntenas_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Fase1/Fase1/ListaNefastas.h</label>
+        <link refid="ListaNefastas_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Fase1/Fase1/Matriz.h</label>
+        <link refid="Matriz_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structListaNefastas" prot="public">ListaNefastas</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ListaNefastas_8h_1abcc06fe8d23700227b68ea67f1442480" prot="public" static="no">
+        <name>LISTANEFASTA_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaNefastas.h" line="3" column="9" bodyfile="Fase1/Fase1/ListaNefastas.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="ListaNefastas_8h_1a54b8207ce83f7a6bdd12abb0d5b84be2" prot="public" static="no">
+        <type>struct ListaNefastas</type>
+        <definition>typedef struct ListaNefastas ListaNefastas</definition>
+        <argsstring></argsstring>
+        <name>ListaNefastas</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaNefastas.h" line="9" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>LISTANEFASTA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LISTANEFASTA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;LocalizacaoNefasta.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="structListaNefastas" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref>*<sp/>locNefasta;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal">}<ref refid="structListaNefastas" kindref="compound">ListaNefastas</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Fase1/Fase1/ListaNefastas.h"/>
+  </compounddef>
+</doxygen>

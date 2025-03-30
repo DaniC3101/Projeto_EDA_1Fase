@@ -1,0 +1,271 @@
+\doxysection{IRCommand\+Dispatcher Class Reference}
+\hypertarget{classIRCommandDispatcher}{}\label{classIRCommandDispatcher}\index{IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classIRCommandDispatcher_a02fd73d861ef2e4aabb38c0c9ff82947}\label{classIRCommandDispatcher_a02fd73d861ef2e4aabb38c0c9ff82947} 
+void {\bfseries init} ()
+\item 
+\Hypertarget{classIRCommandDispatcher_ada13591ec2b9f4c81d663ce3ab905057}\label{classIRCommandDispatcher_ada13591ec2b9f4c81d663ce3ab905057} 
+void {\bfseries print\+IRInfo} (Print \texorpdfstring{$\ast$}{*}a\+Serial)
+\item 
+\Hypertarget{classIRCommandDispatcher_a46b1b8bbae4203b1252f69d5d2845268}\label{classIRCommandDispatcher_a46b1b8bbae4203b1252f69d5d2845268} 
+bool {\bfseries check\+And\+Run\+Non\+Blocking\+Commands} ()
+\item 
+bool \mbox{\hyperlink{classIRCommandDispatcher_a1f85891eab97a5f0d8d366b414982aa3}{check\+And\+Run\+Suspended\+Blocking\+Commands}} ()
+\item 
+void \mbox{\hyperlink{classIRCommandDispatcher_a010be609e2095a31b562e5642f835a5a}{set\+Next\+Blocking\+Command}} (uint8\+\_\+t a\+Blocking\+Command\+To\+Run\+Next)
+\item 
+bool \mbox{\hyperlink{classIRCommandDispatcher_a3bd966bdfb64b2c7da489b7424d8530c}{delay\+And\+Check\+For\+Stop}} (uint16\+\_\+t a\+Delay\+Millis)
+\item 
+void \mbox{\hyperlink{classIRCommandDispatcher_a73bb111cc73e6939170a28ef2ed433d9}{check\+And\+Call\+Command}} (bool a\+Call\+Blocking\+Command\+Immediately)
+\item 
+void \mbox{\hyperlink{classIRCommandDispatcher_af45461a83ad087b71c9d0f3d3dc4b276}{print\+IRCommand\+String}} (Print \texorpdfstring{$\ast$}{*}a\+Serial)
+\item 
+void \mbox{\hyperlink{classIRCommandDispatcher_a6406f52759cc791839e22f5ca77dd0fa}{set\+Request\+To\+Stop\+Received}} (bool a\+Request\+To\+Stop\+Received=true)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classIRCommandDispatcher_a7c70b94493837357b03752ba1630a019}\label{classIRCommandDispatcher_a7c70b94493837357b03752ba1630a019} 
+uint8\+\_\+t {\bfseries current\+Blocking\+Command\+Called} = COMMAND\+\_\+\+EMPTY
+\item 
+\Hypertarget{classIRCommandDispatcher_a7b5634270a98445561706bf8ea468b20}\label{classIRCommandDispatcher_a7b5634270a98445561706bf8ea468b20} 
+uint8\+\_\+t {\bfseries last\+Blocking\+Command\+Called} = COMMAND\+\_\+\+EMPTY
+\item 
+\Hypertarget{classIRCommandDispatcher_af5941bd9709582a500a6414326bdcc32}\label{classIRCommandDispatcher_af5941bd9709582a500a6414326bdcc32} 
+uint8\+\_\+t {\bfseries Blocking\+Command\+To\+Run\+Next} = COMMAND\+\_\+\+EMPTY
+\item 
+\Hypertarget{classIRCommandDispatcher_a931b3303b4730501ca3d84fb774a9e1e}\label{classIRCommandDispatcher_a931b3303b4730501ca3d84fb774a9e1e} 
+bool {\bfseries just\+Called\+Blocking\+Command} = false
+\item 
+\Hypertarget{classIRCommandDispatcher_ab64a3737b1a421922e559977dd23bd03}\label{classIRCommandDispatcher_ab64a3737b1a421922e559977dd23bd03} 
+volatile bool {\bfseries request\+To\+Stop\+Received}
+\item 
+\Hypertarget{classIRCommandDispatcher_aac3787327ccb6aff54f27860db44baaf}\label{classIRCommandDispatcher_aac3787327ccb6aff54f27860db44baaf} 
+bool {\bfseries do\+Not\+Use\+Dispatcher} = false
+\item 
+\Hypertarget{classIRCommandDispatcher_a6e1ae99baff0be13838acf16e16e9e10}\label{classIRCommandDispatcher_a6e1ae99baff0be13838acf16e16e9e10} 
+struct \mbox{\hyperlink{structIRDataForCommandDispatcherStruct}{IRData\+For\+Command\+Dispatcher\+Struct}} {\bfseries IRReceived\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classIRCommandDispatcher_a73bb111cc73e6939170a28ef2ed433d9}\index{IRCommandDispatcher@{IRCommandDispatcher}!checkAndCallCommand@{checkAndCallCommand}}
+\index{checkAndCallCommand@{checkAndCallCommand}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{checkAndCallCommand()}{checkAndCallCommand()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_a73bb111cc73e6939170a28ef2ed433d9} 
+void check\+And\+Call\+Command (\begin{DoxyParamCaption}\item[{bool}]{a\+Call\+Blocking\+Command\+Immediately}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{if}\ (IRReceivedData.command\ ==\ COMMAND\_EMPTY)\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ \ \ \ \ *\ Search\ for\ command\ in\ Array\ of\ IRToCommandMappingStruct}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ \textcolor{keyword}{sizeof}(IRMapping)\ /\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRToCommandMappingStruct}{IRToCommandMappingStruct}});\ ++i)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IRReceivedData.command\ ==\ IRMapping[i].IRCode)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Command\ found}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_INFO)}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \_\_FlashStringHelper\ *tCommandName\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\_\_FlashStringHelper*\textcolor{keyword}{>}(IRMapping[i].CommandString);}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Check\ for\ repeat\ and\ if\ repeat\ is\ allowed\ for\ the\ current\ command}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IRReceivedData.isRepeat\ \&\&\ !(IRMapping[i].Flags\ \&\ IR\_COMMAND\_FLAG\_REPEATABLE))\ \{}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Repeats\ of\ command\ \(\backslash\)"{}"{}}));}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(tCommandName);}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(\textcolor{stringliteral}{"{}\(\backslash\)"{}\ not\ accepted"{}});}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Do\ not\ accept\ recursive\ call\ of\ the\ same\ command}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (currentBlockingCommandCalled\ ==\ IRReceivedData.command)\ \{}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}Recursive\ command\ \(\backslash\)"{}"{}}));}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.print(tCommandName);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(\textcolor{stringliteral}{"{}\(\backslash\)"{}\ not\ accepted"{}});}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ Execute\ commands}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ tIsNonBlockingCommand\ =\ (IRMapping[i].Flags\ \&\ IR\_COMMAND\_FLAG\_NON\_BLOCKING);}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tIsNonBlockingCommand)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ short\ command\ here,\ just\ call}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINT(F(\textcolor{stringliteral}{"{}Run\ non\ blocking\ command:\ "{}}));}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINTLN(tCommandName);}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#if\ defined(BUZZER\_PIN)\ \&\&\ defined(USE\_TINY\_IR\_RECEIVER)}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Do\ (non\ blocking)\ buzzer\ feedback\ before\ command\ is\ executed}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(IRMapping[i].Flags\ \&\ IR\_COMMAND\_FLAG\_BEEP)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tone(BUZZER\_PIN,\ 2200,\ 50);}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IRMapping[i].CommandToCall();}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Blocking\ command\ here}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aCallBlockingCommandImmediately\ \&\&\ currentBlockingCommandCalled\ ==\ COMMAND\_EMPTY)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Here\ no\ blocking\ command\ was\ running\ and\ we\ are\ called\ from\ main\ loop}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ requestToStopReceived\ =\ \textcolor{keyword}{false};\ \ \textcolor{comment}{//\ Do\ not\ stop\ the\ command\ executed\ now}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ justCalledBlockingCommand\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentBlockingCommandCalled\ =\ IRReceivedData.command;\ \ \textcolor{comment}{//\ set\ lock\ for\ recursive\ calls}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ lastBlockingCommandCalled\ =\ IRReceivedData.command;\ \ \ \ \ \textcolor{comment}{//\ set\ history,\ can\ be\ evaluated\ by\ main\ loop}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ This\ call\ is\ blocking!!!}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINT(F(\textcolor{stringliteral}{"{}Run\ blocking\ command:\ "{}}));}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINTLN(tCommandName);}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#if\ defined(BUZZER\_PIN)\ \&\&\ defined(USE\_TINY\_IR\_RECEIVER)}}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00262\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Do\ (non\ blocking)\ buzzer\ feedback\ before\ command\ is\ executed}}
+\DoxyCodeLine{00263\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(IRMapping[i].Flags\ \&\ IR\_COMMAND\_FLAG\_BEEP)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tone(BUZZER\_PIN,\ 2200,\ 50);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IRMapping[i].CommandToCall();}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#if\ defined(TRACE)}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}End\ of\ blocking\ command"{}}));}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentBlockingCommandCalled\ =\ COMMAND\_EMPTY;}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Called\ by\ ISR\ or\ another\ command\ still\ running.}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ Do\ not\ run\ command\ directly,\ but\ set\ request\ to\ stop\ to\ true\ and\ store\ command}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ for\ main\ loop\ to\ execute\ by\ checkAndRunSuspendedBlockingCommands()}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BlockingCommandToRunNext\ =\ IRReceivedData.command;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ requestToStopReceived\ =\ \textcolor{keyword}{true};\ \textcolor{comment}{//\ to\ stop\ running\ command}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINT(F(\textcolor{stringliteral}{"{}Requested\ stop\ and\ stored\ blocking\ command\ "{}}));}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINT(tCommandName);}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CD\_INFO\_PRINTLN(F(\textcolor{stringliteral}{"{}\ as\ next\ command\ to\ run."{}}));}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ command\ found}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \}\ \textcolor{comment}{//\ if\ (IRReceivedData.command\ ==\ IRMapping[i].IRCode)}}
+\DoxyCodeLine{00289\ \ \ \ \ \}\ \textcolor{comment}{//\ for\ loop}}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00291\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRCommandDispatcher_a1f85891eab97a5f0d8d366b414982aa3}\index{IRCommandDispatcher@{IRCommandDispatcher}!checkAndRunSuspendedBlockingCommands@{checkAndRunSuspendedBlockingCommands}}
+\index{checkAndRunSuspendedBlockingCommands@{checkAndRunSuspendedBlockingCommands}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{checkAndRunSuspendedBlockingCommands()}{checkAndRunSuspendedBlockingCommands()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_a1f85891eab97a5f0d8d366b414982aa3} 
+bool check\+And\+Run\+Suspended\+Blocking\+Commands (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00299\ \textcolor{comment}{\ \ \ \ \ *\ Take\ last\ rejected\ command\ and\ call\ associated\ function}}
+\DoxyCodeLine{00300\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{if}\ (BlockingCommandToRunNext\ !=\ COMMAND\_EMPTY)\ \{}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ CD\_INFO\_PRINT(F(\textcolor{stringliteral}{"{}Run\ stored\ command=0x"{}}));}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ CD\_INFO\_PRINTLN(BlockingCommandToRunNext,\ HEX);}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ IRReceivedData.command\ =\ BlockingCommandToRunNext;}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ BlockingCommandToRunNext\ =\ COMMAND\_EMPTY;}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ IRReceivedData.isRepeat\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ requestToStopReceived\ =\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ Do\ not\ stop\ the\ command\ executed\ now}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ checkAndCallCommand(\textcolor{keyword}{true});}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00314\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRCommandDispatcher_a3bd966bdfb64b2c7da489b7424d8530c}\index{IRCommandDispatcher@{IRCommandDispatcher}!delayAndCheckForStop@{delayAndCheckForStop}}
+\index{delayAndCheckForStop@{delayAndCheckForStop}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{delayAndCheckForStop()}{delayAndCheckForStop()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_a3bd966bdfb64b2c7da489b7424d8530c} 
+bool delay\+And\+Check\+For\+Stop (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{a\+Delay\+Millis}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00337\ \ \ \ \ uint32\_t\ tStartMillis\ =\ millis();}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (requestToStopReceived)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (millis()\ -\/\ tStartMillis\ <\ aDelayMillis);}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00344\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRCommandDispatcher_af45461a83ad087b71c9d0f3d3dc4b276}\index{IRCommandDispatcher@{IRCommandDispatcher}!printIRCommandString@{printIRCommandString}}
+\index{printIRCommandString@{printIRCommandString}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{printIRCommandString()}{printIRCommandString()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_af45461a83ad087b71c9d0f3d3dc4b276} 
+void print\+IRCommand\+String (\begin{DoxyParamCaption}\item[{Print \texorpdfstring{$\ast$}{*}}]{a\+Serial}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\_fast8\_t\ i\ =\ 0;\ i\ <\ \textcolor{keyword}{sizeof}(IRMapping)\ /\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct\ }\mbox{\hyperlink{structIRToCommandMappingStruct}{IRToCommandMappingStruct}});\ ++i)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IRReceivedData.command\ ==\ IRMapping[i].IRCode)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ aSerial-\/>println(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\_\_FlashStringHelper*\textcolor{keyword}{>}(IRMapping[i].CommandString));}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ aSerial-\/>println(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\_\_FlashStringHelper*\textcolor{keyword}{>}(unknown));}
+\DoxyCodeLine{00354\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRCommandDispatcher_a010be609e2095a31b562e5642f835a5a}\index{IRCommandDispatcher@{IRCommandDispatcher}!setNextBlockingCommand@{setNextBlockingCommand}}
+\index{setNextBlockingCommand@{setNextBlockingCommand}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{setNextBlockingCommand()}{setNextBlockingCommand()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_a010be609e2095a31b562e5642f835a5a} 
+void set\+Next\+Blocking\+Command (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{a\+Blocking\+Command\+To\+Run\+Next}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00325\ \ \ \ \ CD\_INFO\_PRINT(F(\textcolor{stringliteral}{"{}Set\ next\ command\ to\ run\ to\ 0x"{}}));}
+\DoxyCodeLine{00326\ \ \ \ \ CD\_INFO\_PRINTLN(aBlockingCommandToRunNext,\ HEX);}
+\DoxyCodeLine{00327\ \ \ \ \ BlockingCommandToRunNext\ =\ aBlockingCommandToRunNext;}
+\DoxyCodeLine{00328\ \ \ \ \ requestToStopReceived\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00329\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRCommandDispatcher_a6406f52759cc791839e22f5ca77dd0fa}\index{IRCommandDispatcher@{IRCommandDispatcher}!setRequestToStopReceived@{setRequestToStopReceived}}
+\index{setRequestToStopReceived@{setRequestToStopReceived}!IRCommandDispatcher@{IRCommandDispatcher}}
+\doxysubsubsection{\texorpdfstring{setRequestToStopReceived()}{setRequestToStopReceived()}}
+{\footnotesize\ttfamily \label{classIRCommandDispatcher_a6406f52759cc791839e22f5ca77dd0fa} 
+void set\+Request\+To\+Stop\+Received (\begin{DoxyParamCaption}\item[{bool}]{a\+Request\+To\+Stop\+Received}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00357\ \ \ \ \ requestToStopReceived\ =\ aRequestToStopReceived;}
+\DoxyCodeLine{00358\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+IRDispatcher\+Demo/IRCommand\+Dispatcher.\+h\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+IRDispatcher\+Demo/IRCommand\+Dispatcher.\+hpp\end{DoxyCompactItemize}

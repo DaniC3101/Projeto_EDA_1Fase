@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="structListaNefastas" kind="struct" language="C++" prot="public">
+    <compoundname>ListaNefastas</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structListaNefastas_1af17ffd3508b88760748985621dc15736" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structLocalizaoNefasta" kindref="compound">LocalizaoNefasta</ref> *</type>
+        <definition>struct LocalizaoNefasta* locNefasta</definition>
+        <argsstring></argsstring>
+        <name>locNefasta</name>
+        <qualifiedname>ListaNefastas::locNefasta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaNefastas.h" line="8" column="24" bodyfile="Fase1/Fase1/ListaNefastas.h" bodystart="8" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>ListaNefastas</label>
+        <link refid="structListaNefastas"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>locNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>LocalizaoNefasta</label>
+        <link refid="structLocalizaoNefasta"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>proxNefasta</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Fase1/Fase1/ListaNefastas.h" line="6" column="1" bodyfile="Fase1/Fase1/ListaNefastas.h" bodystart="7" bodyend="9"/>
+    <listofallmembers>
+      <member refid="structListaNefastas_1af17ffd3508b88760748985621dc15736" prot="public" virt="non-virtual"><scope>ListaNefastas</scope><name>locNefasta</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

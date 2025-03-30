@@ -1,0 +1,154 @@
+\doxysection{ir\+\_\+\+FAST.\+hpp}
+\hypertarget{ir__FAST_8hpp_source}{}\label{ir__FAST_8hpp_source}\index{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_FAST.hpp@{C:/Users/danib/Documents/Arduino/libraries/IRremote/src/ir\_FAST.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ ir\_FAST.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Contains\ functions\ for\ receiving\ and\ sending\ FAST\ IR\ protocol}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ with\ no\ address\ and\ 16\ bit\ data,\ interpreted\ as\ 8\ bit\ command\ and\ 8\ bit\ inverted\ command}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ This\ file\ is\ part\ of\ Arduino-\/IRremote\ https://github.com/Arduino-\/IRremote/Arduino-\/IRremote.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ MIT\ License}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2023\ Armin\ Joachimsmeyer}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR\ IMPLIED,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS\ FOR\ A}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR\ COPYRIGHT}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ ************************************************************************************}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifndef\ \_IR\_FAST\_HPP}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ \_IR\_FAST\_HPP}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}TinyIR.h"{}}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#if\ defined(DEBUG)\ \&\&\ !defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\#define\ LOCAL\_DEBUG\ //\ This\ enables\ debug\ output\ only\ for\ this\ file}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ generated\ with\ https://patorjk.com/software/taag/\#p=display\&f=Alphabet\&t=FAST}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FFFF\ \ \ AA\ \ \ \ SSS\ \ TTTTTT}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ F\ \ \ \ \ A\ \ A\ \ S\ \ \ \ \ \ \ TT}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FFF\ \ \ AAAA\ \ \ SSS\ \ \ \ TT}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ F\ \ \ \ \ A\ \ A\ \ \ \ \ \ S\ \ \ TT}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ F\ \ \ \ \ A\ \ A\ \ SSSS\ \ \ \ TT}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ "{}TinyIR.h"{}}}
+\DoxyCodeLine{00056\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00057\ \textcolor{comment}{Protocol=FAST\ Address=0x0\ Command=0x76\ Raw-\/Data=0x8976\ 16\ bits\ LSB\ first}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ +2100,-\/1050}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ +\ 550,-\/\ 500\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/1550\ +\ 550,-\/\ 500}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ +\ 550,-\/1550\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/1550}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/\ 500\ +\ 550,-\/1550}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ +\ 550}}
+\DoxyCodeLine{00064\ \textcolor{comment}{Sum:\ 28900}}
+\DoxyCodeLine{00065\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPulseDistanceWidthProtocolConstants}{PulseDistanceWidthProtocolConstants}}\ FASTProtocolConstants\ =\ \{\ FAST,\ \mbox{\hyperlink{group__TinyReceiver_ga433cb7141a714640247d749a232f71e9}{FAST\_KHZ}},\ FAST\_HEADER\_MARK,\ FAST\_HEADER\_SPACE,}
+\DoxyCodeLine{00067\ FAST\_BIT\_MARK,\ FAST\_ONE\_SPACE,\ FAST\_BIT\_MARK,\ FAST\_ZERO\_SPACE,\ PROTOCOL\_IS\_LSB\_FIRST,\ (FAST\_REPEAT\_PERIOD\ /\ MICROS\_IN\_ONE\_MILLI),}
+\DoxyCodeLine{00068\ NULL\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{/************************************}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ Start\ of\ send\ and\ decode\ functions}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ ************************************/}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00077\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__Decoder_ga6d47b606cee252b091f0832beb2eaee6}{IRsend::sendFAST}}(uint8\_t\ aCommand,\ int\_fast8\_t\ aNumberOfRepeats)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{//\ Set\ IR\ carrier\ frequency}}
+\DoxyCodeLine{00079\ \ \ \ \ \mbox{\hyperlink{group__Sending_ga3eb4658ab8116150bfe96f6f316a362c}{enableIROut}}(\mbox{\hyperlink{group__TinyReceiver_ga433cb7141a714640247d749a232f71e9}{FAST\_KHZ}});\ \textcolor{comment}{//\ 38\ kHz}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ uint\_fast8\_t\ tNumberOfCommands\ =\ aNumberOfRepeats\ +\ 1;}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{while}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga79c32266db5f6ebb003089f316199380}{mark}}(FAST\_HEADER\_MARK);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga22c997889d78c88e7479644d01b9beb9}{space}}(FAST\_HEADER\_SPACE);}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__Sending_ga12edfafeced16b19a87d83ed29e39bfd}{sendPulseDistanceWidthData}}(\&FASTProtocolConstants,\ aCommand\ |\ (((uint8\_t)(\string~aCommand))\ <<\ 8),\ FAST\_BITS);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ tNumberOfCommands-\/-\/;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ last\ delay!}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tNumberOfCommands\ >\ 0)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ repeated\ command\ in\ a\ fixed\ raster}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ delay(FAST\_REPEAT\_DISTANCE\ /\ MICROS\_IN\_ONE\_MILLI);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{keywordtype}{bool}\ IRrecv::decodeFAST()\ \{}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ \ \ uint\_fast8\_t\ tRawlen\ =\ decodedIRData.rawlen;\ //\ Using\ a\ local\ variable\ does\ not\ improve\ code\ size}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ Check\ we\ have\ the\ right\ amount\ of\ data\ (36).\ The\ +4\ is\ for\ initial\ gap,\ start\ bit\ mark\ and\ space\ +\ stop\ bit\ mark.}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{if}\ (decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}}\ !=\ ((2\ *\ FAST\_BITS)\ +\ 4))\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}FAST:\ "{}}));}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(F(\textcolor{stringliteral}{"{}Data\ length="{}}));}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_a093a1c04e9dd4d6845a48163554143a0}{IR\_DEBUG\_PRINT}}(decodedIRData.\mbox{\hyperlink{structIRData_af0ff3ead4410762ce9340337452a2520}{rawlen}});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{IRremoteInt_8h_aebf95fa57eb370cfe65ce6a9728b6e1f}{IR\_DEBUG\_PRINTLN}}(F(\textcolor{stringliteral}{"{}\ is\ not\ 36"{}}));}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (!checkHeader(\&FASTProtocolConstants))\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__Receiving_ga5af27164546bc3609d6f2d4fca23ffd6}{decodePulseDistanceWidthData}}(\&FASTProtocolConstants,\ FAST\_BITS))\ \{}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}FAST:\ "{}}));}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Decode\ failed"{}}));}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \mbox{\hyperlink{unionWordUnion}{WordUnion}}\ tValue;}
+\DoxyCodeLine{00124\ \ \ \ \ tValue.UWord\ =\ decodedIRData.\mbox{\hyperlink{structIRData_a94b943381c93413cdff738c2bb126f08}{decodedRawData}};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{if}\ (tValue.UByte.LowByte\ !=\ (uint8\_t)\string~(tValue.UByte.HighByte))\ \{}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}FAST:\ "{}}));}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}8\ bit\ parity\ is\ not\ correct.\ Expected=0x"{}}));}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ Serial.print((uint8\_t)\string~(tValue.UByte.LowByte),\ HEX);}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ received=0x"{}}));}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ Serial.print(tValue.UByte.HighByte,\ HEX);}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ Serial.print(F(\textcolor{stringliteral}{"{}\ data=0x"{}}));}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ Serial.println(tValue.UWord,\ HEX);}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_aa2585d779da0ab21273a8d92de9a0ebe}{flags}}\ =\ \mbox{\hyperlink{IRProtocol_8h_a1a60f95f0885b1865dc5514ddd80e093}{IRDATA\_FLAGS\_PARITY\_FAILED}};}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \ \ checkForRepeatSpaceTicksAndSetFlag(FAST\_MAXIMUM\_REPEAT\_DISTANCE\ /\ \mbox{\hyperlink{IRremote_8hpp_a1c7eebb527483c272812530caa313d20}{MICROS\_PER\_TICK}});}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ Success}}
+\DoxyCodeLine{00142\ \textcolor{comment}{//\ \ \ \ decodedIRData.flags\ =\ IRDATA\_FLAGS\_IS\_LSB\_FIRST;\ //\ Not\ required,\ since\ this\ is\ the\ start\ value}}
+\DoxyCodeLine{00143\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a4635796d5c7e7a2639b11dfe83718acc}{command}}\ =\ tValue.UByte.LowByte;}
+\DoxyCodeLine{00144\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a643d30df67a67c5915fde941c934f9f8}{address}}\ =\ 0;\ \textcolor{comment}{//\ No\ address\ for\ this\ protocol}}
+\DoxyCodeLine{00145\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_a58f82df7fae70a5783ea69a445eaa43c}{numberOfBits}}\ =\ FAST\_BITS;}
+\DoxyCodeLine{00146\ \ \ \ \ decodedIRData.\mbox{\hyperlink{structIRData_abe6f6332009b65cb297c4c593424ecef}{protocol}}\ =\ FAST;}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00149\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#if\ defined(LOCAL\_DEBUG)}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#undef\ LOCAL\_DEBUG}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_IR\_FAST\_HPP}}
+
+\end{DoxyCode}

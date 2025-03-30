@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.12.0" xml:lang="en-US">
+  <compounddef id="structListaAntenas" kind="struct" language="C++" prot="public">
+    <compoundname>ListaAntenas</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structListaAntenas_1a4cd008d60f3498a2b352d2d216aece97" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int tamMatriz[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>tamMatriz</name>
+        <qualifiedname>ListaAntenas::tamMatriz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaAntenas.h" line="8" column="5" bodyfile="Fase1/Fase1/ListaAntenas.h" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structListaAntenas_1a7da4d8f323c52e06f2ce59937e17e462" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structAntena" kindref="compound">Antena</ref> *</type>
+        <definition>struct Antena* primAntena</definition>
+        <argsstring></argsstring>
+        <name>primAntena</name>
+        <qualifiedname>ListaAntenas::primAntena</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Fase1/Fase1/ListaAntenas.h" line="9" column="14" bodyfile="Fase1/Fase1/ListaAntenas.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Antena</label>
+        <link refid="structAntena"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>proxAntena</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>listaNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ListaAntenas</label>
+        <link refid="structListaAntenas"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>primAntena</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ListaNefastas</label>
+        <link refid="structListaNefastas"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>locNefasta</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LocalizaoNefasta</label>
+        <link refid="structLocalizaoNefasta"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>proxNefasta</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Fase1/Fase1/ListaAntenas.h" line="6" column="1" bodyfile="Fase1/Fase1/ListaAntenas.h" bodystart="7" bodyend="10"/>
+    <listofallmembers>
+      <member refid="structListaAntenas_1a7da4d8f323c52e06f2ce59937e17e462" prot="public" virt="non-virtual"><scope>ListaAntenas</scope><name>primAntena</name></member>
+      <member refid="structListaAntenas_1a4cd008d60f3498a2b352d2d216aece97" prot="public" virt="non-virtual"><scope>ListaAntenas</scope><name>tamMatriz</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,84 @@
+\doxysection{IRExtension\+Class Class Reference}
+\hypertarget{classIRExtensionClass}{}\label{classIRExtensionClass}\index{IRExtensionClass@{IRExtensionClass}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classIRExtensionClass_acfa0535eaf54477470925701537966a4}{IRExtension\+Class}} (\mbox{\hyperlink{classIRrecv}{IRrecv}} \texorpdfstring{$\ast$}{*}a\+Ir\+Receiver)
+\item 
+bool \mbox{\hyperlink{classIRExtensionClass_a74a663ea70562d1a7edb853c0ef9394b}{decode}} ()
+\item 
+bool \mbox{\hyperlink{classIRExtensionClass_aa1ad5e6f5f4802c86cc59d0aece35f7c}{print\+IRResult\+Short}} (Print \texorpdfstring{$\ast$}{*}a\+Serial, bool a\+Print\+Repeat\+Gap=true, bool a\+Check\+For\+Record\+Gaps\+Micros=true)
+\item 
+void \mbox{\hyperlink{classIRExtensionClass_a41de8150eff044a237990c271d57ea27}{resume}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classIRExtensionClass_a642a9a65b6ad79eb64952f356e40fc7b}\label{classIRExtensionClass_a642a9a65b6ad79eb64952f356e40fc7b} 
+\mbox{\hyperlink{classIRrecv}{IRrecv}} \texorpdfstring{$\ast$}{*} {\bfseries My\+Ir\+Receiver}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classIRExtensionClass_acfa0535eaf54477470925701537966a4}\index{IRExtensionClass@{IRExtensionClass}!IRExtensionClass@{IRExtensionClass}}
+\index{IRExtensionClass@{IRExtensionClass}!IRExtensionClass@{IRExtensionClass}}
+\doxysubsubsection{\texorpdfstring{IRExtensionClass()}{IRExtensionClass()}}
+{\footnotesize\ttfamily \label{classIRExtensionClass_acfa0535eaf54477470925701537966a4} 
+\mbox{\hyperlink{classIRExtensionClass}{IRExtension\+Class}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classIRrecv}{IRrecv}} \texorpdfstring{$\ast$}{*}}]{a\+Ir\+Receiver}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ MyIrReceiver\ =\ aIrReceiver;}
+\DoxyCodeLine{00051\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classIRExtensionClass_a74a663ea70562d1a7edb853c0ef9394b}\index{IRExtensionClass@{IRExtensionClass}!decode@{decode}}
+\index{decode@{decode}!IRExtensionClass@{IRExtensionClass}}
+\doxysubsubsection{\texorpdfstring{decode()}{decode()}}
+{\footnotesize\ttfamily \label{classIRExtensionClass_a74a663ea70562d1a7edb853c0ef9394b} 
+bool decode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ MyIrReceiver-\/>\mbox{\hyperlink{group__Receiving_ga74a663ea70562d1a7edb853c0ef9394b}{decode}}();}
+\DoxyCodeLine{00054\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRExtensionClass_aa1ad5e6f5f4802c86cc59d0aece35f7c}\index{IRExtensionClass@{IRExtensionClass}!printIRResultShort@{printIRResultShort}}
+\index{printIRResultShort@{printIRResultShort}!IRExtensionClass@{IRExtensionClass}}
+\doxysubsubsection{\texorpdfstring{printIRResultShort()}{printIRResultShort()}}
+{\footnotesize\ttfamily \label{classIRExtensionClass_aa1ad5e6f5f4802c86cc59d0aece35f7c} 
+bool print\+IRResult\+Short (\begin{DoxyParamCaption}\item[{Print \texorpdfstring{$\ast$}{*}}]{a\+Serial}{, }\item[{bool}]{a\+Print\+Repeat\+Gap}{ = {\ttfamily true}, }\item[{bool}]{a\+Check\+For\+Record\+Gaps\+Micros}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ MyIrReceiver-\/>\mbox{\hyperlink{group__Receiving_gaa1ad5e6f5f4802c86cc59d0aece35f7c}{printIRResultShort}}(aSerial,\ aPrintRepeatGap,\ aCheckForRecordGapsMicros);}
+\DoxyCodeLine{00058\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classIRExtensionClass_a41de8150eff044a237990c271d57ea27}\index{IRExtensionClass@{IRExtensionClass}!resume@{resume}}
+\index{resume@{resume}!IRExtensionClass@{IRExtensionClass}}
+\doxysubsubsection{\texorpdfstring{resume()}{resume()}}
+{\footnotesize\ttfamily \label{classIRExtensionClass_a41de8150eff044a237990c271d57ea27} 
+void resume (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ Serial.println(F(\textcolor{stringliteral}{"{}Call\ resume()"{}}));}
+\DoxyCodeLine{00062\ \ \ \ \ MyIrReceiver-\/>\mbox{\hyperlink{group__Receiving_ga41de8150eff044a237990c271d57ea27}{resume}}();}
+\DoxyCodeLine{00063\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+IRremote\+Extension\+Test/IRremote\+Extension\+Class.\+h\item 
+C\+:/\+Users/danib/\+Documents/\+Arduino/libraries/\+IRremote/examples/\+IRremote\+Extension\+Test/IRremote\+Extension\+Class.\+cpp\end{DoxyCompactItemize}
